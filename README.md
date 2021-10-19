@@ -1,2 +1,5 @@
-# guam-community-client
-Guam 2.0 클라이언트 Repository입니다. 
+# guam_community_client
+
+- **We Connect Developers**
+
+- We develop Guam using Flutter framework based on Dart language.
