@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<Authenticate>(create: (_) => Authenticate()),
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           initialRoute: '/',
           routes: {
             '/': (context) => Root(),

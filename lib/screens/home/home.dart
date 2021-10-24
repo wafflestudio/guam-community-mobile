@@ -14,10 +14,10 @@ class Home extends StatelessWidget {
         onTap: (idx) => homeProvider.idx = idx,
         currentIndex: homeProvider.idx,
         items: homeProvider.bottomNavItems.map((e) =>
-            BottomNavigationBarItem(
-              label: e['label'],
-              icon: Icon(e['icon']),
-            )
+          BottomNavigationBarItem(
+            label: e['label'],
+            icon: Icon(e['icon']),
+          )
         ).toList(),
       ),
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../screens/homes/homes_app.dart';
+import '../../screens/boards/boards_app.dart';
 import '../../screens/search/search_app.dart';
 import '../../screens/notifications/notifications_app.dart';
 import '../../screens/profiles/profiles_app.dart';
@@ -8,7 +8,7 @@ class HomeProvider with ChangeNotifier {
   int _idx = 0;
 
   final List<Widget> bodyItems = [
-    HomesApp(),
+    BoardsApp(),
     SearchApp(),
     NotificationsApp(),
     ProfilesApp()
