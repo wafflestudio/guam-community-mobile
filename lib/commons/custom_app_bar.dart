@@ -20,14 +20,16 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
     if (Platform.isAndroid) {
       return AppBar(
-        title: Text(
-          title ?? "",
-          style: TextStyle(color: textColor),
+        elevation: 1,
+        title: Center(
+          child: Text(
+            title ?? "",
+            style: TextStyle(color: textColor),
+          ),
         ),
-        leading: Material(
-          color: Colors.transparent,
-          child: leading,
-        ),
+        leading: trailing != null
+          ? Material(color: Colors.transparent, child: leading)
+          : null,
         actions: trailing == null
             ? []
             : [Material(color: Colors.transparent, child: trailing)],
@@ -38,16 +40,17 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       );
     } else {
       return CupertinoNavigationBar(
-        middle: Text(
-          title ?? "",
-          style: TextStyle(
-            color: textColor,
+        middle: Center(
+          child: Text(
+            title ?? "",
+            style: TextStyle(
+              color: textColor,
+            ),
           ),
         ),
-        leading: Material(
-          color: Colors.transparent,
-          child: leading,
-        ),
+        leading: trailing != null
+            ? Material(color: Colors.transparent, child: leading)
+            : null,
         trailing: Material(
           color: Colors.transparent,
           child: trailing,

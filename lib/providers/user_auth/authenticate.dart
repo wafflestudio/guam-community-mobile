@@ -7,8 +7,8 @@ import '../../helpers/http_request.dart';
 import '../../mixins/toast.dart';
 
 class Authenticate extends ChangeNotifier with Toast {
-  final _kakaoClientId = "367d8cf339e2ba59376ba647c7135dd2";
-  final _kakaoJavascriptClientId = "2edf60d1ebf23061d200cfe4a68a235a";
+  // final _kakaoClientId = "367d8cf339e2ba59376ba647c7135dd2";
+  // final _kakaoJavascriptClientId = "2edf60d1ebf23061d200cfe4a68a235a";
 
   // FirebaseAuth auth = FirebaseAuth.instance;
   // Profile me;

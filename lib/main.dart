@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_auth/authenticate.dart';
@@ -9,6 +10,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static HexColor themeColor = HexColor('#6951FF');
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
           routes: {
             '/': (context) => Root(),
           },
-          theme: ThemeData(primaryColor: HexColor('#6951FF')),
+          theme: ThemeData(primaryColor: themeColor),
         )
     );
   }
