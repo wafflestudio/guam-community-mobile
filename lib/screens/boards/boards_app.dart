@@ -3,9 +3,10 @@ import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/boards/posts/post_button.dart';
 import 'package:guam_community_client/screens/messages/message.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import '../../commons/custom_app_bar.dart';
-import 'boards_body.dart';
+import 'boards_feed.dart';
 
 class BoardsApp extends StatelessWidget {
   @override
@@ -19,16 +20,52 @@ class BoardsApp extends StatelessWidget {
   }
 }
 
-class BoardsAppScaffold extends StatelessWidget {
+class BoardsAppScaffold extends StatefulWidget {
+  @override
+  State<BoardsAppScaffold> createState() => _BoardsAppScaffoldState();
+}
+
+class _BoardsAppScaffoldState extends State<BoardsAppScaffold> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: '홈',
-        trailing: Message()
-      ),
-      body: BoardsBody(),
-      floatingActionButton: PostButton()
+    return DefaultTabController(
+      length: 6,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(100),
+          child: CustomAppBar(
+            title: '홈',
+            trailing: Message(),
+            bottom: TabBar(
+              isScrollable: true,
+              physics: BouncingScrollPhysics(),
+              labelColor: HexColor('#1D1D1D'),
+              unselectedLabelColor: HexColor('#A0A0A0'),
+              indicatorColor: HexColor('#1D1D1D'),
+              indicatorWeight: 2,
+              tabs: [
+                Tab(child: Text('피드')),
+                Tab(child: Text('익명')),
+                Tab(child: Text('자유')),
+                Tab(child: Text('구인')),
+                Tab(child: Text('정보공유')),
+                Tab(child: Text('홍보')),
+              ],
+            ),
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            BoardsFeed(),
+            BoardsFeed(),
+            BoardsFeed(),
+            BoardsFeed(),
+            BoardsFeed(),
+            BoardsFeed(),
+          ],
+        ),
+        floatingActionButton: PostButton()
+      )
     );
   }
 }
