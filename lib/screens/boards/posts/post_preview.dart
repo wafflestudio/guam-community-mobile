@@ -3,6 +3,7 @@ import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/screens/boards/posts/post_preview_banner.dart';
 import 'package:guam_community_client/screens/boards/posts/post_preview_info.dart';
+import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class PostPreview extends StatelessWidget {
@@ -40,7 +41,12 @@ class PostPreview extends StatelessWidget {
               Padding(padding: EdgeInsets.only(top: 8)),
               Text(
                 post.content,
-                style: TextStyle(fontSize: 12, color: HexColor('A0A0A0')),
+                style: TextStyle(
+                  height: 1.4,
+                  fontSize: 12,
+                  fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                  color: HexColor('A0A0A0'),
+                ),
                 maxLines: 4,
                 overflow: TextOverflow.ellipsis,
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class IconText extends StatelessWidget {
@@ -26,6 +27,7 @@ class IconText extends StatelessWidget {
           text,
           style: TextStyle(
             fontSize: 12,
+            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
             color: textHexColor,
           ),
         ),

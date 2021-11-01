@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
+import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class PostPreviewInfo extends StatelessWidget {
@@ -33,7 +34,11 @@ class PostPreviewInfo extends StatelessWidget {
             ),
             Text(
               post.profile.nickname,
-              style: TextStyle(fontSize: 12, color: HexColor('#767676')),
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                color: HexColor('#767676'),
+              ),
             ),
           ],
         ),

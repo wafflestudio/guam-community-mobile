@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_auth/authenticate.dart';
@@ -24,7 +25,10 @@ class MyApp extends StatelessWidget {
           routes: {
             '/': (context) => Root(),
           },
-          theme: ThemeData(primaryColor: themeColor),
+          theme: ThemeData(
+            primaryColor: themeColor,
+            fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
+          ),
         )
     );
   }
