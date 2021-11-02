@@ -18,7 +18,9 @@ class Home extends StatelessWidget {
         items: homeProvider.bottomNavItems.map((e) =>
           BottomNavigationBarItem(
             label: e['label'],
-            icon: Icon(e['icon']),
+            icon: homeProvider.idx == homeProvider.bottomNavItems.indexOf(e)
+            ? e['selected_icon']
+            : e['unselected_icon'],
           )
         ).toList(),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/models/boards/post.dart';
+import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -48,7 +49,7 @@ class PostPreviewBanner extends StatelessWidget {
           style: TextStyle(
             fontSize: 10,
             fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-            color: HexColor('#A0A0A0'),
+            color: GuamColorFamily.grayscaleGray4,
           ),
         )
       ],

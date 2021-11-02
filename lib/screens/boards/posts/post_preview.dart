@@ -4,6 +4,7 @@ import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/screens/boards/posts/post_preview_banner.dart';
 import 'package:guam_community_client/screens/boards/posts/post_preview_info.dart';
+import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -20,7 +21,7 @@ class PostPreview extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.only(left: 24, right: 24, top: 12),
         decoration: BoxDecoration(
-          color: HexColor('#FFFFFF'),
+          color: GuamColorFamily.grayscaleWhite,
           borderRadius: BorderRadius.circular(24)
         ),
         child: InkWell(
@@ -31,7 +32,7 @@ class PostPreview extends StatelessWidget {
               PostPreviewBanner(post),
               Divider(
                 thickness: 1,
-                color: HexColor('#F2F2F2'),
+                color: GuamColorFamily.grayscaleGray7,
               ),
               Row(
                 children: [
@@ -41,7 +42,7 @@ class PostPreview extends StatelessWidget {
                     constraints: BoxConstraints(),
                     icon: SvgPicture.asset(
                       'assets/icons/picture.svg',
-                      color: HexColor('#C5C5C5'),
+                      color: GuamColorFamily.grayscaleGray5,
                       width: 20,
                       height: 20,
                     ),
@@ -61,7 +62,7 @@ class PostPreview extends StatelessWidget {
                   height: 1.4,
                   fontSize: 12,
                   fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                  color: HexColor('A0A0A0'),
+                  color: GuamColorFamily.grayscaleGray4,
                 ),
                 maxLines: 4,
                 overflow: TextOverflow.ellipsis,

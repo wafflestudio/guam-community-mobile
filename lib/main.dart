@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  static HexColor themeColor = HexColor('#6951FF');
+  static HexColor themeColor = GuamColorFamily.purpleCore;
 
   @override
   Widget build(BuildContext context) {

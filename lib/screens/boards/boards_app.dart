@@ -3,7 +3,7 @@ import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/boards/posts/post_button.dart';
 import 'package:guam_community_client/screens/messages/message.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
 import '../../commons/custom_app_bar.dart';
 import 'boards_feed.dart';
@@ -39,9 +39,9 @@ class _BoardsAppScaffoldState extends State<BoardsAppScaffold> {
             bottom: TabBar(
               isScrollable: true,
               physics: BouncingScrollPhysics(),
-              labelColor: HexColor('#1D1D1D'),
-              unselectedLabelColor: HexColor('#A0A0A0'),
-              indicatorColor: HexColor('#1D1D1D'),
+              labelColor: GuamColorFamily.grayscaleGray1,
+              unselectedLabelColor: GuamColorFamily.grayscaleGray4,
+              indicatorColor: GuamColorFamily.grayscaleGray1,
               indicatorWeight: 2,
               tabs: [
                 Tab(child: Text('피드')),

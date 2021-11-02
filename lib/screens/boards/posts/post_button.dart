@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guam_community_client/styles/colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class PostButton extends StatelessWidget {
@@ -11,11 +12,11 @@ class PostButton extends StatelessWidget {
       child: FittedBox(
         child: FloatingActionButton(
           onPressed: () {},
-          backgroundColor: HexColor('#6951FF'),
+          backgroundColor: GuamColorFamily.purpleCore,
           child: IconButton(
             icon: SvgPicture.asset(
               'assets/icons/write.svg',
-              color: Colors.white,
+              color: GuamColorFamily.grayscaleWhite,
               width: 30,
               height: 30,
             ),

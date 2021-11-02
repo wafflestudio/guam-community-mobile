@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
+import 'package:guam_community_client/styles/colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
@@ -13,7 +14,7 @@ class PostList extends StatelessWidget {
     final postsProvider = context.read<Posts>();
 
     return Container(
-      decoration: BoxDecoration(color: HexColor('#F9F8FF')), // background color
+      decoration: BoxDecoration(color: GuamColorFamily.purpleLight3), // background color
       child: Column(
         children: [
           Padding(
@@ -26,8 +27,8 @@ class PostList extends StatelessWidget {
                   text: "관심사 설정",
                   iconPath: 'assets/icons/setting.svg',
                   onPressed: (){},
-                  iconHexColor: HexColor('#9F8FFF'),
-                  textHexColor: HexColor('#9F8FFF'),
+                  iconHexColor: GuamColorFamily.purpleLight1,
+                  textHexColor: GuamColorFamily.purpleLight1,
                 ),
               ],
             ),

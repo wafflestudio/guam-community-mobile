@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
+import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -37,7 +38,7 @@ class PostPreviewInfo extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                color: HexColor('#767676'),
+                color: GuamColorFamily.grayscaleGray3,
               ),
             ),
           ],
@@ -52,15 +53,15 @@ class PostPreviewInfo extends StatelessWidget {
                   : 'assets/icons/like_outlined.svg',
               onPressed: (){},
               iconHexColor: post.isLiked
-                  ? HexColor('#F37462')
-                  : HexColor('#C5C5C5'),
-              textHexColor: HexColor('#C5C5C5'),
+                  ? GuamColorFamily.redCore
+                  : GuamColorFamily.grayscaleGray5,
+              textHexColor: GuamColorFamily.grayscaleGray5,
             ),
             IconText(
               text: post.commentCnt.toString(),
               iconPath: 'assets/icons/comment.svg',
-              iconHexColor: HexColor('#C5C5C5'),
-              textHexColor: HexColor('#C5C5C5'),
+              iconHexColor: GuamColorFamily.grayscaleGray5,
+              textHexColor: GuamColorFamily.grayscaleGray5,
             ),
             IconText(
               text: post.scrap.toString(),
@@ -69,9 +70,9 @@ class PostPreviewInfo extends StatelessWidget {
                   : 'assets/icons/scrap_outlined.svg',
               onPressed: (){},
               iconHexColor: post.isScrapped
-                  ? HexColor('##6951FF')
-                  : HexColor('#C5C5C5'),
-              textHexColor: HexColor('#C5C5C5'),
+                  ? GuamColorFamily.purpleCore
+                  : GuamColorFamily.grayscaleGray5,
+              textHexColor: GuamColorFamily.grayscaleGray5,
             ),
           ],
         ),
