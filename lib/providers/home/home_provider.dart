@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../screens/homes/homes_app.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guam_community_client/styles/colors.dart';
+import '../../screens/boards/boards_app.dart';
 import '../../screens/search/search_app.dart';
 import '../../screens/notifications/notifications_app.dart';
 import '../../screens/profiles/profiles_app.dart';
@@ -8,7 +10,7 @@ class HomeProvider with ChangeNotifier {
   int _idx = 0;
 
   final List<Widget> bodyItems = [
-    HomesApp(),
+    BoardsApp(),
     SearchApp(),
     NotificationsApp(),
     ProfilesApp()
@@ -17,19 +19,47 @@ class HomeProvider with ChangeNotifier {
   final List<Map<String, dynamic>> bottomNavItems = [
     {
       'label': '홈',
-      'icon': Icons.house_sharp,
+      'selected_icon': SvgPicture.asset(
+        'assets/icons/home_filled.svg',
+        color: GuamColorFamily.purpleCore,
+      ),
+      'unselected_icon': SvgPicture.asset(
+        'assets/icons/home_outlined.svg',
+        color: GuamColorFamily.grayscaleGray4,
+      ),
     },
     {
       'label': '검색',
-      'icon': Icons.search,
+      'selected_icon': SvgPicture.asset(
+        'assets/icons/search.svg',
+        color: GuamColorFamily.purpleCore,
+      ),
+      'unselected_icon': SvgPicture.asset(
+        'assets/icons/search.svg',
+        color: GuamColorFamily.grayscaleGray4,
+      ),
     },
     {
       'label': '알림',
-      'icon': Icons.notifications,
+      'selected_icon': SvgPicture.asset(
+        'assets/icons/notification_filled_default.svg',
+        color: GuamColorFamily.purpleCore,
+      ),
+      'unselected_icon': SvgPicture.asset(
+        'assets/icons/notification_outlined_default.svg',
+        color: GuamColorFamily.grayscaleGray4,
+      ),
     },
     {
       'label': '프로필',
-      'icon': Icons.person,
+      'selected_icon': SvgPicture.asset(
+        'assets/icons/profile_filled.svg',
+        color: GuamColorFamily.purpleCore,
+      ),
+      'unselected_icon': SvgPicture.asset(
+        'assets/icons/profile_outlined.svg',
+        color: GuamColorFamily.grayscaleGray4,
+      ),
     },
   ];
 

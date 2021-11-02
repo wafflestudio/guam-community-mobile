@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/styles/colors.dart';
+import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_auth/authenticate.dart';
@@ -9,6 +11,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static HexColor themeColor = GuamColorFamily.purpleCore;
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -16,11 +20,15 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<Authenticate>(create: (_) => Authenticate()),
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           initialRoute: '/',
           routes: {
             '/': (context) => Root(),
           },
-          theme: ThemeData(primaryColor: HexColor('#6951FF')),
+          theme: ThemeData(
+            primaryColor: themeColor,
+            fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
+          ),
         )
     );
   }
