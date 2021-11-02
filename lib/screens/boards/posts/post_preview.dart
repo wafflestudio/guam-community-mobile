@@ -6,7 +6,6 @@ import 'package:guam_community_client/screens/boards/posts/post_preview_banner.d
 import 'package:guam_community_client/screens/boards/posts/post_preview_info.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class PostPreview extends StatelessWidget {
   final Post post;

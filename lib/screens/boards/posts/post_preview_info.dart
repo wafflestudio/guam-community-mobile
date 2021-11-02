@@ -4,7 +4,6 @@ import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class PostPreviewInfo extends StatelessWidget {
   final Post post;

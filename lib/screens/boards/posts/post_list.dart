@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/screens/boards/posts/post_preview.dart';

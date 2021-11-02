@@ -10,14 +10,14 @@ class PostPreviewBanner extends StatelessWidget {
   PostPreviewBanner(this.post);
 
   colorOfInterest(String interest) {
-    String textColor;
+    HexColor textColor;
 
     switch (interest) {
-      case '개발': textColor = '#6951FF'; break;
-      case '데이터분석': textColor = '#75D973'; break;
-      case '디자인': textColor = '#E874F2'; break;
-      case '기획/마케팅': textColor = '#5483F1'; break;
-      default: textColor = '#F3B962'; break;
+      case '개발': textColor = GuamColorFamily.purpleCore; break;
+      case '데이터분석': textColor = GuamColorFamily.greenCore; break;
+      case '디자인': textColor = GuamColorFamily.pinkCore; break;
+      case '기획/마케팅': textColor = GuamColorFamily.blueCore; break;
+      default: textColor = GuamColorFamily.orangeCore; break;
     }
     return textColor;
   }
@@ -34,7 +34,7 @@ class PostPreviewBanner extends StatelessWidget {
               "#" + post.interest,
               style: TextStyle(
                 fontSize: 12,
-                color: HexColor(colorOfInterest(post.interest)),
+                color: colorOfInterest(post.interest),
               ),
             ),
             style: TextButton.styleFrom(
