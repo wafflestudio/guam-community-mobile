@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/screens/boards/posts/post_preview_banner.dart';
@@ -32,11 +33,26 @@ class PostPreview extends StatelessWidget {
                 thickness: 1,
                 color: HexColor('#F2F2F2'),
               ),
-              Text(
-                post.title,
-                style: TextStyle(fontSize: 14),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              Row(
+                children: [
+                  if (post.pictures.length > 0)
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(),
+                    icon: SvgPicture.asset(
+                      'assets/icons/picture.svg',
+                      color: HexColor('#C5C5C5'),
+                      width: 20,
+                      height: 20,
+                    ),
+                  ),
+                  Text(
+                    post.title,
+                    style: TextStyle(fontSize: 14),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
               Padding(padding: EdgeInsets.only(top: 8)),
               Text(

@@ -17,7 +17,7 @@ class PostList extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 22, right: 16),
+            padding: EdgeInsets.only(top: 10, left: 22, right: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
