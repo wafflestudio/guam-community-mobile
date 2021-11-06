@@ -3,7 +3,7 @@ import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
-import 'package:guam_community_client/screens/boards/posts/post_preview.dart';
+import 'package:guam_community_client/screens/boards/posts/preview/post_preview.dart';
 
 import '../../../commons/sub_headings.dart';
 
@@ -17,7 +17,7 @@ class PostList extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 10, left: 22, right: 16),
+            padding: EdgeInsets.only(top: 24, left: 22, right: 10, bottom: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -26,16 +26,19 @@ class PostList extends StatelessWidget {
                   text: "관심사 설정",
                   iconPath: 'assets/icons/setting.svg',
                   onPressed: (){},
-                  iconHexColor: GuamColorFamily.purpleLight1,
-                  textHexColor: GuamColorFamily.purpleLight1,
+                  iconColor: GuamColorFamily.purpleLight1,
+                  textColor: GuamColorFamily.purpleLight1,
                 ),
               ],
             ),
           ),
-          Column(
-            children: [
-              ...postsProvider.posts.map((post) => PostPreview(post, postsProvider))
-            ]
+          Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: Column(
+              children: [
+                ...postsProvider.posts.map((post) => PostPreview(post, postsProvider))
+              ]
+            ),
           )
         ],
       ),
