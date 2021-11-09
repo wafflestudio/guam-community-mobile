@@ -3,8 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/models/boards/post.dart';
-import 'package:guam_community_client/screens/boards/comments/comment_banner.dart';
-import 'package:guam_community_client/screens/boards/comments/comment_body.dart';
 import 'package:guam_community_client/screens/boards/comments/comments.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_banner.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_body.dart';

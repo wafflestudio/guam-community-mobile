@@ -1,4 +1,13 @@
+import 'dart:ui';
+
 import 'package:hexcolor/hexcolor.dart';
+
+class HexColorToColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    return int.parse(hexColor, radix: 16);
+  }
+  HexColorToColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
 
 class GuamColorFamily {
   static HexColor grayscaleGray1 = HexColor('#1D1D1D');
