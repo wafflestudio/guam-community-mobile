@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/picture.dart';
-import 'package:guam_community_client/models/profile.dart';
+import 'package:guam_community_client/models/profiles/profile.dart';
 
 class Comment extends ChangeNotifier {
   final int id;

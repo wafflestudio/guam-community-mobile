@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import 'package:guam_community_client/models/picture.dart';
-import '../profile.dart';
+import '../profiles/profile.dart';
 
 class Post extends ChangeNotifier {
   final int id;

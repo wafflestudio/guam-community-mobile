@@ -23,8 +23,8 @@ class CommentBanner extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: comment.profile.profileImageUrl != null
-                    ? NetworkImage(comment.profile.profileImageUrl)
+                image: comment.profile.profileImg != null
+                    ? NetworkImage(comment.profile.profileImg.urlPath)
                     : SvgProvider('assets/icons/profile_image.svg'),
               ),
             ),

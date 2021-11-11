@@ -42,7 +42,7 @@ class Authenticate with ChangeNotifier {
   //유저 로그인/회원가입 서버 개발 전 임시방편 코드
   Future signIn({Map<String, dynamic> params}) async {
     List<dynamic> tempUsers = [
-      { "email": "gajagajago@naver.com", "password": "daniel1004" },
+      { "email": "gajagajago@naver.com", "password": "1234" },
       { "email": "khko", "password": "123456" },
     ];
     print(params);

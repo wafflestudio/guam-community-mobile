@@ -35,8 +35,8 @@ class PostInfo extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: post.profile.profileImageUrl != null
-                          ? NetworkImage(post.profile.profileImageUrl)
+                      image: post.profile.profileImg != null
+                          ? NetworkImage(post.profile.profileImg.urlPath)
                           : SvgProvider('assets/icons/profile_image.svg')
                     ),
                   ),
