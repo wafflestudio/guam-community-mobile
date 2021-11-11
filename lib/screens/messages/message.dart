@@ -7,14 +7,12 @@ class Message extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        icon: SvgPicture.asset(
-          newMessage
-            ? 'assets/icons/message_new.svg'
-            : 'assets/icons/message_default.svg',
-          width: 24,
-          height: 24,
-        ),
-    onPressed: () {}
+      icon: SvgPicture.asset(
+        newMessage
+          ? 'assets/icons/message_new.svg'
+          : 'assets/icons/message_default.svg'
+      ),
+      onPressed: () {}
     );
   }
 }

@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import '../../screens/boards/boards_app.dart';
-import '../../screens/search/search_app.dart';
-import '../../screens/notifications/notifications_app.dart';
-import '../../screens/profiles/profiles_app.dart';
 
 class HomeProvider with ChangeNotifier {
   int _idx = 0;
-
-  final List<Widget> bodyItems = [
-    BoardsApp(),
-    SearchApp(),
-    NotificationsApp(),
-    ProfilesApp()
-  ];
 
   final List<Map<String, dynamic>> bottomNavItems = [
     {
@@ -70,6 +59,5 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Widget get bodyItem => bodyItems[_idx];
   Map<String, dynamic> get bottomNavItem => bottomNavItems[_idx];
 }

@@ -28,7 +28,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             style: TextStyle(color: textColor),
           ),
         ),
-        leading: trailing != null
+        leading: leading != null
             ? Material(color: Colors.transparent, child: leading)
             : null,
         bottom: bottom,
@@ -50,7 +50,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             ),
           ),
         ),
-        leading: trailing != null
+        leading: leading != null
             ? Material(color: Colors.transparent, child: leading)
             : null,
         bottom: bottom,

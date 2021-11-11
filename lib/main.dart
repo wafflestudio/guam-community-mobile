@@ -4,7 +4,7 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_auth/authenticate.dart';
-import 'screens/home/root.dart';
+import 'screens/app/app.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           initialRoute: '/',
           routes: {
-            '/': (context) => Root(),
+            '/': (context) => App(),
           },
           theme: ThemeData(
             primaryColor: themeColor,

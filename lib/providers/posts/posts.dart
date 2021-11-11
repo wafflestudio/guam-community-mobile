@@ -19,6 +19,7 @@ class Posts with ChangeNotifier {
       List<Map<String, dynamic>> posts = [
         {
           'id': 1,
+          'boardType': '자유게시판',
           'profile': {
             'id': 1,
             'nickname': 'marcelko',
@@ -34,6 +35,44 @@ class Posts with ChangeNotifier {
           'interest': '개발',
           'pictures': [],
           'like': 31,
+          'comments': [
+            {
+              'id': 1,
+              'profile': {
+                'id': 3,
+                'nickname': 'bluesky',
+                'profileImageUrl': 'https://w.namu.la/s/40de86374ddd74756b31d4694a7434ee9398baa51fa5ae72d28f2eeeafdadf0c475c55c58e29a684920e0d6a42602b339f8aaf6d19764b04405a0f8bee7f598d2922db9475579419aac4635d0a71fdb8a4b2343cb550e6ed93e13c1a05cede75',
+              },
+              'isAuthor': false,
+              'isLiked': true,
+              'comment': '저도 궁금하네요 ㅎㅎ',
+              'like': 3,
+            },
+            {
+              'id': 2,
+              'profile': {
+                'id': 6,
+                'nickname': 'jhkang',
+                // 'profileImageUrl': 'https://w.namu.la/s/40de86374ddd74756b31d4694a7434ee9398baa51fa5ae72d28f2eeeafdadf0c475c55c58e29a684920e0d6a42602b339f8aaf6d19764b04405a0f8bee7f598d2922db9475579419aac4635d0a71fdb8a4b2343cb550e6ed93e13c1a05cede75',
+              },
+              'isAuthor': false,
+              'isLiked': true,
+              'comment': '안녕하세요. 혹시 과외하실 생각 있으시면 저한테 쪽지 보내주세요! 제 프로필에 정보 나와있습니다.',
+              'like': 2,
+            },
+            {
+              'id': 3,
+              'profile': {
+                'id': 1,
+                'nickname': 'marcelko',
+                // 'profileImageUrl': 'https://w.namu.la/s/40de86374ddd74756b31d4694a7434ee9398baa51fa5ae72d28f2eeeafdadf0c475c55c58e29a684920e0d6a42602b339f8aaf6d19764b04405a0f8bee7f598d2922db9475579419aac4635d0a71fdb8a4b2343cb550e6ed93e13c1a05cede75',
+              },
+              'isAuthor': true,
+              'isLiked': false,
+              'comment': '@jhkang 쪽지 드렸습니다!🙏',
+              'like': 0,
+            }
+          ],
           'commentCnt': 10,
           'scrap': 10,
           'isLiked': true,
@@ -43,6 +82,7 @@ class Posts with ChangeNotifier {
 
         {
           'id': 2,
+          'boardType': '자유게시판',
           'profile': {
             'id': 2,
             'nickname': 'jwjeong',
@@ -60,8 +100,25 @@ class Posts with ChangeNotifier {
               'id': 1,
               'urlPath': 'https://blog.kakaocdn.net/dn/K8Wt1/btq3otTvVJq/i1bXW8koOEg7Sy6azhWuLK/img.png',
             },
+            {
+              'id': 2,
+              'urlPath': 'http://img.danawa.com/prod_img/500000/030/472/img/4472030_1.jpg?shrink=330:330&_v=20160923121953',
+            },
+            {
+              'id': 3,
+              'urlPath': 'https://w.namu.la/s/40de86374ddd74756b31d4694a7434ee9398baa51fa5ae72d28f2eeeafdadf0c475c55c58e29a684920e0d6a42602b339f8aaf6d19764b04405a0f8bee7f598d2922db9475579419aac4635d0a71fdb8a4b2343cb550e6ed93e13c1a05cede75',
+            },
+            {
+              'id': 4,
+              'urlPath': 'https://t1.daumcdn.net/cfile/tistory/99A97E4C5D25E9C226',
+            },
+            {
+              'id': 5,
+              'urlPath': 'https://t1.daumcdn.net/cfile/tistory/241F824757B095710E',
+            }
           ],
           'like': 87,
+          'comments': [],
           'commentCnt': 30,
           'scrap': 10,
           'isLiked': false,
@@ -70,6 +127,7 @@ class Posts with ChangeNotifier {
         },
         {
           'id': 3,
+          'boardType': '자유게시판',
           'profile': {
             'id': 3,
             'nickname': 'bluesky',
@@ -84,6 +142,32 @@ class Posts with ChangeNotifier {
           'interest': '디자인',
           'pictures': [],
           'like': 10,
+          'comments': [
+            {
+              'id': 4,
+              'profile': {
+                'id': 7,
+                'nickname': 'anthony',
+                // 'profileImageUrl': '',
+              },
+              'isAuthor': false,
+              'isLiked': false,
+              'comment': '모니터 쓰실거면 13인치 추천합니다~',
+              'like': 2,
+            },
+            {
+              'id': 8,
+              'profile': {
+                'id': 6,
+                'nickname': 'dsnkim',
+                // 'profileImageUrl': 'https://w.namu.la/s/40de86374ddd74756b31d4694a7434ee9398baa51fa5ae72d28f2eeeafdadf0c475c55c58e29a684920e0d6a42602b339f8aaf6d19764b04405a0f8bee7f598d2922db9475579419aac4635d0a71fdb8a4b2343cb550e6ed93e13c1a05cede75',
+              },
+              'isAuthor': false,
+              'isLiked': false,
+              'comment': '저는 좀 기다리셔서 16인치요. 13인치 가벼워서 좋은데 모니터 너무 작아서 후회하고 있어요 ㅠㅠ',
+              'like': 1,
+            },
+          ],
           'commentCnt': 5,
           'scrap': 3,
           'isLiked': true,
@@ -92,6 +176,7 @@ class Posts with ChangeNotifier {
         },
         {
           'id': 4,
+          'boardType': '자유게시판',
           'profile': {
             'id': 4,
             'nickname': '맨날비와',
@@ -106,6 +191,7 @@ class Posts with ChangeNotifier {
           'interest': '기획/마케팅',
           'pictures': [],
           'like': 23,
+          'comments': [],
           'commentCnt': 14,
           'scrap': 10,
           'isLiked': false,
@@ -114,6 +200,7 @@ class Posts with ChangeNotifier {
         },
         {
           'id': 5,
+          'boardType': '자유게시판',
           'profile': {
             'id': 5,
             'nickname': '해피언니',
@@ -128,6 +215,7 @@ class Posts with ChangeNotifier {
           'interest': '기타',
           'pictures': [],
           'like': 23,
+          'comments': [],
           'commentCnt': 14,
           'scrap': 10,
           'isLiked': true,

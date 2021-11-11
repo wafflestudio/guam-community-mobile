@@ -4,39 +4,39 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class IconText extends StatelessWidget {
-  final double size;
+  final double iconSize;
+  final double fontSize;
   final String text;
   final String iconPath;
   final Function onPressed;
-  final HexColor iconHexColor;
-  final HexColor textHexColor;
+  final HexColor iconColor;
+  final HexColor textColor;
 
-  IconText({this.size=20, this.text, this.iconPath, this.onPressed, this.iconHexColor, this.textHexColor});
+  IconText({this.iconSize=20, this.fontSize=12, this.text="", this.iconPath, this.onPressed, this.iconColor, this.textColor});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TextButton.icon(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(
-          padding: EdgeInsets.zero,
-          minimumSize: Size(50, 30),
-          alignment: Alignment.centerLeft,
+    return TextButton.icon(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.only(right: 10),
+        minimumSize: Size.zero,
+        alignment: Alignment.centerLeft,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      label: Text(
+        text,
+        style: TextStyle(
+          color: textColor,
+          fontSize: fontSize,
+          fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
         ),
-        label: Text(
-          text,
-          style: TextStyle(
-            fontSize: 12,
-            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-            color: textHexColor,
-          ),
-        ),
-        icon: SvgPicture.asset(
-          iconPath,
-          color: iconHexColor,
-          width: size,
-          height: size,
-        ),
+      ),
+      icon: SvgPicture.asset(
+        iconPath,
+        color: iconColor,
+        width: iconSize,
+        height: iconSize,
       ),
     );
   }
