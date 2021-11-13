@@ -7,6 +7,7 @@ import 'package:guam_community_client/screens/profiles/profile/profile_web_butto
 import '../../models/profiles/profile.dart';
 import 'buttons/profile_edit_button.dart';
 import 'profile/profile_skillset.dart';
+import 'profile/profile_bottom_buttons.dart';
 
 class ProfilesBody extends StatelessWidget {
   final Profile dummy = Profile(
@@ -42,6 +43,7 @@ class ProfilesBody extends StatelessWidget {
           ProfileIntro(dummy.intro),
           ProfileWebButtons(githubId: dummy.githubId, blogUrl: dummy.blogUrl),
           ProfileSkillSet(dummy.skillSet),
+          ProfileBottomButtons(),
         ],
       ),
     );
