@@ -9,6 +9,7 @@ class ProfileEditButton extends StatelessWidget {
       iconSize: 18,
       iconPath: 'assets/icons/write.svg',
       iconColor: GuamColorFamily.purpleLight1,
+      paddingBtw: 0,
       onPressed: () {},
     );
   }

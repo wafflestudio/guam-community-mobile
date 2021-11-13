@@ -14,6 +14,7 @@ class WebButton extends StatelessWidget {
       iconSize: 24,
       iconPath: iconPath,
       iconColor: GuamColorFamily.grayscaleGray6,
+      paddingBtw: 0,
       onPressed: () {},
     );
   }

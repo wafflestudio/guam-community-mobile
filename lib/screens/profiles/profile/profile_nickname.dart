@@ -20,7 +20,8 @@ class ProfileNickname extends StatelessWidget {
             height: 28.8/18
         ),
       ),
-      padding: EdgeInsets.fromLTRB((36+8).toDouble(), 16, 8, 16), // left 36 to align nickname at center
+      // left 26 of icon text width to align nickname at center
+      padding: EdgeInsets.fromLTRB((26+8).toDouble(), 16, 8, 16),
     );
   }
 }

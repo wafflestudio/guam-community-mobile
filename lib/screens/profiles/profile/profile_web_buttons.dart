@@ -10,7 +10,7 @@ class ProfileWebButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 5, 0, 24),
+      padding: EdgeInsets.fromLTRB(8, 5, 0, 24),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.,
