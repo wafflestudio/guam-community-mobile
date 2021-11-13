@@ -71,7 +71,7 @@ class Posts with ChangeNotifier {
               'isLiked': false,
               'comment': '@jhkang 쪽지 드렸습니다!🙏',
               'like': 0,
-            }
+            },
           ],
           'commentCnt': 10,
           'scrap': 10,

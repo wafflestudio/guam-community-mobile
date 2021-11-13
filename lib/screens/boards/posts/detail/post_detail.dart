@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/back.dart';
+import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/screens/boards/comments/comments.dart';
@@ -42,7 +43,7 @@ class PostDetail extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
+          padding: EdgeInsets.only(left: 24, right: 24, bottom: 56),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -71,13 +72,22 @@ class PostDetail extends StatelessWidget {
                 color: GuamColorFamily.grayscaleGray7,
               ),
               Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ...post.comments.map((comment) => Comments(comment: comment))
-                ]
+                  Column(
+                    children: [
+                      ...post.comments.map((comment) => Comments(comment: comment))
+                    ]
+                  ),
+                ],
               ),
             ],
           ),
         ),
+      ),
+      bottomSheet: SizedBox(
+        height: 56,
+        child: CommonTextField(onTap: null, editTarget: null),
       ),
     );
   }

@@ -5,7 +5,7 @@ class SearchApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(title: '검색')
+      appBar: CustomAppBar(title: '검색'),
     );
   }
 }
