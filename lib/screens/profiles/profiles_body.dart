@@ -6,6 +6,7 @@ import 'package:guam_community_client/screens/profiles/profile/profile_nickname.
 import 'package:guam_community_client/screens/profiles/profile/profile_web_buttons.dart';
 import '../../models/profiles/profile.dart';
 import 'buttons/profile_edit_button.dart';
+import 'profile/profile_skillset.dart';
 
 class ProfilesBody extends StatelessWidget {
   final Profile dummy = Profile(
@@ -18,7 +19,7 @@ class ProfilesBody extends StatelessWidget {
     intro: "🦋 N년차 프로덕트 디자이너\n🐶 강아지 몽무와 동거 중\n✉️ abcd@abcd.com\n📷 @abcddesign",
     githubId: "abcddesign111",
     blogUrl: "tistory.abcddesign",
-    skillSet: [1,2,3],
+    skillSet: ["figma","photoshop","illustrator","adobe xd","primere pro","aftereffect","cinema4D", "zeplin", "sketch"],
   );
 
   @override
@@ -40,6 +41,7 @@ class ProfilesBody extends StatelessWidget {
           ),
           ProfileIntro(dummy.intro),
           ProfileWebButtons(githubId: dummy.githubId, blogUrl: dummy.blogUrl),
+          ProfileSkillSet(dummy.skillSet),
         ],
       ),
     );
