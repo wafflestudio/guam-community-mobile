@@ -32,10 +32,10 @@ dependencies:
   conditional_builder: ^1.0.2
   flutter_form_builder: ^6.0.0-nullsafety.1
   intl: ^0.17.0
-  flutter_svg: ^0.21.0+1
   bot_toast: ^4.0.1
 
   # Image
+  flutter_svg: ^0.23.0+1
   transparent_image: ^2.0.0
   image_picker: ^0.7.4
 
