@@ -21,12 +21,11 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
     if (Platform.isAndroid) {
       return AppBar(
+        centerTitle: true,
         elevation: 1,
-        title: Center(
-          child: Text(
-            title ?? "",
-            style: TextStyle(color: textColor),
-          ),
+        title: Text(
+          title ?? "",
+          style: TextStyle(color: textColor),
         ),
         leading: leading != null
             ? Material(color: Colors.transparent, child: leading)
@@ -42,13 +41,11 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       );
     } else {
       return AppBar(
-        title: Center(
-          child: Text(
-            title ?? "",
-            style: TextStyle(
-              color: textColor,
-            ),
-          ),
+        centerTitle: true,
+        elevation: 1,
+        title: Text(
+          title ?? "",
+          style: TextStyle(color: textColor),
         ),
         leading: leading != null
             ? Material(color: Colors.transparent, child: leading)
