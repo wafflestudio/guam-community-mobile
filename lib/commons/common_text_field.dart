@@ -6,31 +6,28 @@ import 'package:flutter/foundation.dart';
 import 'dart:io';
 import '../helpers/pick_image.dart';
 import 'image_thumbnail.dart';
-import 'common_icon_button.dart';
 import 'button_size_circular_progress_indicator.dart';
 
 class CommonTextField extends StatefulWidget {
   final Function onTap;
   final dynamic editTarget;
-  final bool allowImages;
 
-  CommonTextField({@required this.onTap, this.editTarget, this.allowImages = true});
+  CommonTextField({@required this.onTap, this.editTarget});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();
 }
 
 class _CommonTextFieldState extends State<CommonTextField> {
-  final _threadTextFieldController = TextEditingController();
+  final _commentTextFieldController = TextEditingController();
   final double maxImgSize = 80;
-  final double deleteImgButtonRadius = 12;
-  List<PickedFile> imageFileList = [];
   bool sending = false;
+  List<PickedFile> imageFileList = [];
 
   @override
   void dispose() {
     imageFileList.clear();
-    _threadTextFieldController.dispose();
+    _commentTextFieldController.dispose();
     super.dispose();
   }
 
@@ -41,130 +38,125 @@ class _CommonTextFieldState extends State<CommonTextField> {
   }
 
   void deleteImageFile(int idx) {
-    setState(() {
-      imageFileList.removeAt(idx);
-    });
+    setState(() => imageFileList.removeAt(idx));
   }
 
   void toggleSending() {
-    setState(() {
-      sending = !sending;
-    });
+    setState(() => sending = !sending);
   }
 
   @override
   Widget build(BuildContext context) {
     bool isEdit = widget.editTarget != null;
-    _threadTextFieldController.text = isEdit ? widget.editTarget.content : null;
+    _commentTextFieldController.text = isEdit ? widget.editTarget.content : null;
 
-    Future<void> send() async {
-      toggleSending();
+    // Future<void> send() async {
+    //   toggleSending();
+    //
+    //   try {
+    //     if (isEdit) {
+    //       await widget.onTap(
+    //         id: widget.editTarget.id,
+    //         fields: {"content": _commentTextFieldController.text},
+    //       ).then((successful) {
+    //         if (successful) {
+    //           _commentTextFieldController.clear();
+    //           FocusScope.of(context).unfocus();
+    //         }
+    //       });
+    //     } else {
+    //       await widget.onTap(
+    //         files: [...imageFileList.map((e) => File(e.path))],
+    //         fields: {"content": _commentTextFieldController.text},
+    //       ).then((successful) {
+    //         if (successful) {
+    //           imageFileList.clear();
+    //           _commentTextFieldController.clear();
+    //           FocusScope.of(context).unfocus();
+    //         }
+    //       });
+    //     }
+    //   } catch (e) {
+    //     print(e);
+    //   } finally {
+    //     toggleSending();
+    //   }
+    // }
 
-      try {
-        if (isEdit) {
-          await widget.onTap(
-            id: widget.editTarget.id,
-            fields: {"content": _threadTextFieldController.text},
-          ).then((successful) {
-            if (successful) {
-              _threadTextFieldController.clear();
-              FocusScope.of(context).unfocus();
-            }
-          });
-        } else {
-          await widget.onTap(
-            files: [...imageFileList.map((e) => File(e.path))],
-            fields: {"content": _threadTextFieldController.text},
-          ).then((successful) {
-            if (successful) {
-              imageFileList.clear();
-              _threadTextFieldController.clear();
-              FocusScope.of(context).unfocus();
-            }
-          });
-        }
-      } catch (e) {
-        print(e);
-      } finally {
-        toggleSending();
-      }
-    }
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.05),
-            blurRadius: 4,
-            offset: Offset(0, -2), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              if (!isEdit && widget.allowImages) Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: IconButton(
-                  iconSize: 24,
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
-                  icon: SvgPicture.asset('assets/icons/camera.svg'),
-                  onPressed: !sending
-                      ? () {
-                    pickImage(type: 'gallery').then((img) =>
-                        setImageFile(img));
-                  }
-                      : null,
-                ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                if (imageFileList.isNotEmpty) Container(
-                  constraints: BoxConstraints(maxHeight: maxImgSize + deleteImgButtonRadius),
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: imageFileList.length,
-                    itemBuilder: (_, idx) =>
-                      Stack(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                              top: deleteImgButtonRadius,
-                              right: deleteImgButtonRadius,
-                            ),
-                            child: ImageThumbnail(
-                              width: maxImgSize,
-                              height: maxImgSize,
-                              image: Image(
-                                image: FileImage(File(imageFileList[idx].path)),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
+    return SizedBox(
+      height: imageFileList.isNotEmpty
+          ? 152 // 96 + 56
+          : 56,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: GuamColorFamily.grayscaleWhite,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.05),
+              blurRadius: 4,
+              offset: Offset(0, -2), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            imageFileList.isNotEmpty
+            ? Container(
+              color: GuamColorFamily.grayscaleGray1.withOpacity(0.4),
+              padding: EdgeInsets.only(left: 23, top: 8, bottom: 8),
+              constraints: BoxConstraints(maxHeight: maxImgSize + 15),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: imageFileList.length,
+                itemBuilder: (_, idx) =>
+                  Stack(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(right: 14.87),
+                        child: ImageThumbnail(
+                          width: maxImgSize,
+                          height: maxImgSize,
+                          image: Image(
+                            image: FileImage(File(imageFileList[idx].path)),
+                            fit: BoxFit.fill,
                           ),
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: CommonIconButton(
-                              icon: Icons.remove_circle,
-                              iconColor: Colors.red,
-                              onPressed: () => deleteImageFile(idx),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
+                      Positioned(
+                        top: 4,
+                        right: 18,
+                        child: IconButton(
+                          iconSize: 18,
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(),
+                          icon: SvgPicture.asset('assets/icons/cancel_filled.svg'),
+                          onPressed: () => deleteImageFile(idx),
+                        ),
+                      )
+                    ],
+                  ),
+              ),
+            )
+            : Container(),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (!isEdit) Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: IconButton(
+                    iconSize: 24,
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(),
+                    icon: SvgPicture.asset('assets/icons/camera.svg'),
+                    onPressed: !sending
+                        ? () => pickImage(type: 'gallery').then((img) =>
+                        setImageFile(img))
+                        : null,
                   ),
                 ),
                 Expanded(
                   child: TextField(
-                    controller: _threadTextFieldController,
+                    controller: _commentTextFieldController,
                     maxLines: null,
                     style: TextStyle(fontSize: 14),
                     decoration: InputDecoration(
@@ -175,30 +167,26 @@ class _CommonTextFieldState extends State<CommonTextField> {
                       enabledBorder: InputBorder.none,
                       errorBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
-                      contentPadding: EdgeInsets.only(top: 18, bottom: 15),
+                      contentPadding: EdgeInsets.only(top: 18, bottom: 20),
                     ),
                   ),
                 ),
+                !sending
+                    ? TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        '등록',
+                        style: TextStyle(
+                          color: GuamColorFamily.purpleCore,
+                          fontSize: 16,
+                        ),
+                      ),
+                    )
+                    : ButtonSizeCircularProgressIndicator()
               ],
             ),
-          ),
-          !sending ? TextButton(
-            // autofocus: true,
-            onPressed: () {},
-            style: ButtonStyle(
-              padding: MaterialStateProperty.all(
-                  EdgeInsets.symmetric(vertical: 15, horizontal: 16)),
-            ),
-            child: Text(
-              '등록',
-              style: TextStyle(
-                color: GuamColorFamily.purpleCore,
-                fontSize: 16,
-              ),
-            ),
-          )
-              : ButtonSizeCircularProgressIndicator()
-        ],
+          ],
+        ),
       ),
     );
   }

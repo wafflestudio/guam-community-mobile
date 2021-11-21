@@ -85,10 +85,7 @@ class PostDetail extends StatelessWidget {
           ),
         ),
       ),
-      bottomSheet: SizedBox(
-        height: 56,
-        child: CommonTextField(onTap: null, editTarget: null),
-      ),
+      bottomSheet: CommonTextField(onTap: null, editTarget: null),
     );
   }
 }
