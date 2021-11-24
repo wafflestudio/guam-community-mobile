@@ -27,7 +27,7 @@ class CommentBody extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 32, top: 4),
+          padding: EdgeInsets.only(left: 32, top: 4, bottom: 8),
           child: IconText(
             iconSize: 18,
             fontSize: 10,

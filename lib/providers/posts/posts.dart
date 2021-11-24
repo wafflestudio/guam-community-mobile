@@ -71,7 +71,7 @@ class Posts with ChangeNotifier {
               'isLiked': false,
               'comment': '@jhkang 쪽지 드렸습니다!🙏',
               'like': 0,
-            }
+            },
           ],
           'commentCnt': 10,
           'scrap': 10,
@@ -118,7 +118,44 @@ class Posts with ChangeNotifier {
             }
           ],
           'like': 87,
-          'comments': [],
+          'comments': [
+            {
+              'id': 4,
+              'profile': {
+                'id': 3,
+                'nickname': 'bluesky',
+                'profileImageUrl': 'https://w.namu.la/s/40de86374ddd74756b31d4694a7434ee9398baa51fa5ae72d28f2eeeafdadf0c475c55c58e29a684920e0d6a42602b339f8aaf6d19764b04405a0f8bee7f598d2922db9475579419aac4635d0a71fdb8a4b2343cb550e6ed93e13c1a05cede75',
+              },
+              'isAuthor': false,
+              'isLiked': true,
+              'comment': '모든 문제 다 풀으셨나요?',
+              'like': 3,
+            },
+            {
+              'id': 5,
+              'profile': {
+                'id': 6,
+                'nickname': 'jhkang',
+                // 'profileImageUrl': 'https://w.namu.la/s/40de86374ddd74756b31d4694a7434ee9398baa51fa5ae72d28f2eeeafdadf0c475c55c58e29a684920e0d6a42602b339f8aaf6d19764b04405a0f8bee7f598d2922db9475579419aac4635d0a71fdb8a4b2343cb550e6ed93e13c1a05cede75',
+              },
+              'isAuthor': false,
+              'isLiked': true,
+              'comment': '안녕하세요. 혹시 과외하실 생각 있으시면 저한테 쪽지 보내주세요! 제 프로필에 정보 나와있습니다.',
+              'like': 2,
+            },
+            {
+              'id': 6,
+              'profile': {
+                'id': 2,
+                'nickname': 'jwjeong',
+                'profileImageUrl': 'https://cdn.speconomy.com/news/photo/201705/20170514_1_bodyimg_82397.png',
+              },
+              'isAuthor': true,
+              'isLiked': false,
+              'comment': '@bluesky 어우 당연하죠 엄청 쉽던데요? \n @jhkang 쪽지 드렸습니다!🙏',
+              'like': 0,
+            },
+          ],
           'commentCnt': 30,
           'scrap': 10,
           'isLiked': false,
