@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
-import '../helpers/http_request.dart';
+import '../../helpers/http_request.dart';
 import 'closable_image_expanded.dart';
 
 class ImageThumbnail extends StatelessWidget {

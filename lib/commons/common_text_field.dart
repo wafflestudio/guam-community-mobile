@@ -5,14 +5,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:io';
 import '../helpers/pick_image.dart';
-import 'image_thumbnail.dart';
+import 'image/image_thumbnail.dart';
 import 'button_size_circular_progress_indicator.dart';
 
 class CommonTextField extends StatefulWidget {
   final Function onTap;
+  final Function addCommentImage;
+  final Function removeCommentImage;
   final dynamic editTarget;
 
-  CommonTextField({@required this.onTap, this.editTarget});
+  CommonTextField({@required this.onTap, this.addCommentImage, this.removeCommentImage, this.editTarget});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();
@@ -50,6 +52,11 @@ class _CommonTextFieldState extends State<CommonTextField> {
     bool isEdit = widget.editTarget != null;
     _commentTextFieldController.text = isEdit ? widget.editTarget.content : null;
 
+    // if (imageFileList.isNotEmpty) {
+    //   widget.addCommentImage();
+    // } else {
+    //   widget.removeCommentImage();
+    // }
     // Future<void> send() async {
     //   toggleSending();
     //
@@ -92,7 +99,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
           color: GuamColorFamily.grayscaleWhite,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.05),
+              color: Colors.grey.withOpacity(0.1),
               blurRadius: 4,
               offset: Offset(0, -2), // changes position of shadow
             ),
@@ -130,7 +137,10 @@ class _CommonTextFieldState extends State<CommonTextField> {
                           padding: EdgeInsets.zero,
                           constraints: BoxConstraints(),
                           icon: SvgPicture.asset('assets/icons/cancel_filled.svg'),
-                          onPressed: () => deleteImageFile(idx),
+                          onPressed: () {
+                            deleteImageFile(idx);
+                            if (imageFileList.isEmpty) widget.removeCommentImage();
+                          },
                         ),
                       )
                     ],
@@ -149,8 +159,10 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     constraints: BoxConstraints(),
                     icon: SvgPicture.asset('assets/icons/camera.svg'),
                     onPressed: !sending
-                        ? () => pickImage(type: 'gallery').then((img) =>
-                        setImageFile(img))
+                        ? () => pickImage(type: 'gallery').then((img) {
+                          setImageFile(img);
+                          widget.addCommentImage();
+                        })
                         : null,
                   ),
                 ),

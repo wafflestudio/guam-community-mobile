@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'custom_app_bar.dart';
+import '../custom_app_bar.dart';
 import 'image_expanded.dart';
 
 class ClosableImageExpanded extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'common_icon_button.dart';
+import '../common_icon_button.dart';
 import 'image_thumbnail.dart';
 
 class CommonImageField extends StatefulWidget {
@@ -37,7 +37,7 @@ class _CommonImageFieldState extends State<CommonImageField> {
   Widget build(BuildContext context) {
     print(imageFileList);
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8),
       child:
       imageFileList.isNotEmpty ?
       Container(

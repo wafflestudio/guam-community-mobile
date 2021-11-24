@@ -10,11 +10,26 @@ import 'package:guam_community_client/screens/boards/posts/detail/post_detail_bo
 import 'package:guam_community_client/screens/boards/posts/post_info.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
-class PostDetail extends StatelessWidget {
-  final int maxRenderImgCnt = 4;
+class PostDetail extends StatefulWidget {
   final Post post;
 
   PostDetail(this.post);
+
+  @override
+  State<PostDetail> createState() => _PostDetailState();
+}
+
+class _PostDetailState extends State<PostDetail> {
+  final int maxRenderImgCnt = 4;
+  bool commentImageExist = false;
+
+  void addCommentImage() {
+    setState(() => commentImageExist = true);
+  }
+
+  void removeCommentImage() {
+    setState(() => commentImageExist = false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +58,15 @@ class PostDetail extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(left: 24, right: 24, bottom: 56),
+          padding: EdgeInsets.only(
+            left: 24,
+            right: 24,
+            bottom: commentImageExist ? 156 : 56,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              PostDetailBanner(post),
+              PostDetailBanner(widget.post),
               Padding(
                 padding: EdgeInsets.only(top: 8, bottom: 20),
                 child: Divider(
@@ -56,11 +75,11 @@ class PostDetail extends StatelessWidget {
                   color: GuamColorFamily.grayscaleGray7,
                 ),
               ),
-              PostDetailBody(post),
+              PostDetailBody(widget.post),
               Padding(
                 padding: EdgeInsets.only(top: 14, bottom: 8),
                 child: PostInfo(
-                  post: post,
+                  post: widget.post,
                   iconSize: 24,
                   showProfile: false,
                   iconColor: GuamColorFamily.grayscaleGray4,
@@ -76,7 +95,7 @@ class PostDetail extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      ...post.comments.map((comment) => Comments(comment: comment))
+                      ...widget.post.comments.map((comment) => Comments(comment: comment))
                     ]
                   ),
                 ],
@@ -85,7 +104,15 @@ class PostDetail extends StatelessWidget {
           ),
         ),
       ),
-      bottomSheet: CommonTextField(onTap: null, editTarget: null),
+      bottomSheet: Container(
+        color: Colors.black.withOpacity(0.3),
+        child: CommonTextField(
+          onTap: null,
+          addCommentImage: addCommentImage,
+          removeCommentImage: removeCommentImage,
+          editTarget: null,
+        ),
+      ),
     );
   }
 }
