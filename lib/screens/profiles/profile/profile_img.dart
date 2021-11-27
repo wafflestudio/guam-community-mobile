@@ -6,14 +6,16 @@ import 'package:transparent_image/transparent_image.dart';
 
 class ProfileImg extends StatelessWidget {
   final Picture profileImg;
+  final double height;
+  final double width;
 
-  ProfileImg(this.profileImg);
+  ProfileImg({this.profileImg, this.height, this.width});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 120,
-      width: 120,
+      height: height,
+      width: width,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: profileImg != null ? Colors.transparent : Colors.grey,

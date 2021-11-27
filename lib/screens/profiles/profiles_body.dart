@@ -31,7 +31,7 @@ class ProfilesBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ProfileImg(dummy.profileImg),
+          ProfileImg(profileImg: dummy.profileImg, height: 144, width: 144),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
