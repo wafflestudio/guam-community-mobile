@@ -33,12 +33,12 @@ class IconText extends StatelessWidget {
           fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
         ),
       ),
-      icon: SvgPicture.asset(
+      icon: iconPath != null ? SvgPicture.asset(
         iconPath,
         color: iconColor,
         width: iconSize,
         height: iconSize,
-      ),
+      ) : null,
     );
   }
 }

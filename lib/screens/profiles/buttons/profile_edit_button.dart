@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/styles/colors.dart';
+import '../profiles_edit.dart';
 
 class ProfileEditButton extends StatelessWidget {
   @override
@@ -10,7 +11,11 @@ class ProfileEditButton extends StatelessWidget {
       iconPath: 'assets/icons/write.svg',
       iconColor: GuamColorFamily.purpleLight1,
       paddingBtw: 0,
-      onPressed: () {},
+      onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (_) => ProfilesEdit()
+          )
+      ),
     );
   }
 }
