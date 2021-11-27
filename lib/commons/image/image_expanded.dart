@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
-import '../helpers/http_request.dart';
+import '../../helpers/http_request.dart';
 
 class ImageExpanded extends StatelessWidget{
   final Widget image;
@@ -15,11 +15,11 @@ class ImageExpanded extends StatelessWidget{
       width: double.infinity,
       height: double.infinity,
       child: InteractiveViewer(
-          child: image ?? FadeInImage(
-            placeholder: MemoryImage(kTransparentImage),
-            image: NetworkImage(HttpRequest().s3BaseAuthority + imagePath),
-            fit: BoxFit.fitWidth,
-          )
+        child: image ?? FadeInImage(
+          placeholder: MemoryImage(kTransparentImage),
+          image: NetworkImage(HttpRequest().s3BaseAuthority + imagePath),
+          fit: BoxFit.fitWidth,
+        )
       ),
     );
   }

@@ -30,6 +30,8 @@ class AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime currentBackPressTime;
+
     return ChangeNotifierProvider(
       create: (_) => HomeProvider(),
       child: WillPopScope(
@@ -37,13 +39,22 @@ class AppState extends State<App> {
           final isFirstRouteInCurrentTab = await _navigatorKeys[_currentTab].currentState.maybePop();
           if (isFirstRouteInCurrentTab) {
             // if not on the 'main' tab
-            if (_currentTab != TabItem.home) {
+            if (_currentTab == TabItem.home) {
               // select 'main' tab
               _selectTab(TabItem.home);
               // back button handled by app
               return false;
             }
           }
+          DateTime now = DateTime.now();
+          if (currentBackPressTime == null ||
+              now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+            currentBackPressTime = now;
+            // 토스트 넣을 때 '뒤로가기를 한번 더 누르면 앱이 종료 됩니다.' 처리하기
+            // Fluttertoast.showToast(msg: exit_warning);
+            return Future.value(false);
+          }
+          return Future.value(true);
           // let system handle back button if we're on the first route
           return isFirstRouteInCurrentTab;
         },

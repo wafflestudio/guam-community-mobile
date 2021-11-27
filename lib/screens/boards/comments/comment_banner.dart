@@ -13,7 +13,7 @@ class CommentBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 18),
+      padding: EdgeInsets.only(top: 10),
       child: Row(
         children: [
           Container(
