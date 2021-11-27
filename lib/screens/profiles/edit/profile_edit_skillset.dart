@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'profile_edit_label.dart';
 import '../../../commons/next.dart';
 import '../profile/profile_skillset.dart';
+import 'profile_edit_skillset_detail.dart';
 
 class ProfileEditSkillSet extends StatelessWidget {
   final List<String> dummySkillset = ["figma","photoshop","illustrator",
@@ -15,7 +16,11 @@ class ProfileEditSkillSet extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ProfileEditLabel('기술 스택'),
-            Next(onPressed: null),
+            Next(onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => ProfileEditSkillSetDetail()
+              )
+            )),
           ],
         ),
         if (dummySkillset.isNotEmpty)
