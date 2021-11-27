@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/commons/closable_image_expanded.dart';
+import 'package:guam_community_client/commons/image/closable_image_expanded.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/picture.dart';
 import 'package:transparent_image/transparent_image.dart';
