@@ -11,25 +11,23 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  static HexColor themeColor = GuamColorFamily.purpleCore;
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<Authenticate>(create: (_) => Authenticate()),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          initialRoute: '/',
-          routes: {
-            '/': (context) => App(),
-          },
-          theme: ThemeData(
-            primaryColor: themeColor,
-            fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
-          ),
-        )
+      providers: [
+        ChangeNotifierProvider<Authenticate>(create: (_) => Authenticate()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        routes: {
+          '/': (context) => App(),
+        },
+        theme: ThemeData(
+          primaryColor: GuamColorFamily.purpleCore,
+          fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
+        ),
+      )
     );
   }
 }
