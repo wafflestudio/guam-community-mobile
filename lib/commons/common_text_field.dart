@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -23,6 +25,8 @@ class CommonTextField extends StatefulWidget {
 class _CommonTextFieldState extends State<CommonTextField> {
   final _commentTextFieldController = TextEditingController();
   final double maxImgSize = 80;
+  final double imgSheetHeight = 96;
+  double bottomSheetHeight = 56;
   bool sending = false;
   List<PickedFile> imageFileList = [];
 
@@ -49,8 +53,24 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
   @override
   Widget build(BuildContext context) {
-    bool isEdit = widget.editTarget != null;
-    _commentTextFieldController.text = isEdit ? widget.editTarget.content : null;
+
+    // count the number of TextField lines for controlling a bottom Sheet
+    final span=TextSpan(text:_commentTextFieldController.text);
+    final tp =TextPainter(text:span,maxLines: 1,textDirection: TextDirection.ltr);
+    tp.layout(maxWidth: MediaQuery.of(context).size.width - (56 + 62));
+    List<LineMetrics> lines = tp.computeLineMetrics();
+    int numberOfLines = lines.length;
+
+    void heightOfBottomSheet(int numberOfLines){
+      setState(() {
+        if (numberOfLines == 2) bottomSheetHeight = 73;
+        if (numberOfLines == 3) bottomSheetHeight = 90;
+        if (numberOfLines == 4) bottomSheetHeight = 107;
+      });
+    }
+
+    // bool isEdit = widget.editTarget != null;
+    // _commentTextFieldController.text = isEdit ? widget.editTarget.content : null;
 
     // if (imageFileList.isNotEmpty) {
     //   widget.addCommentImage();
@@ -92,8 +112,8 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
     return SizedBox(
       height: imageFileList.isNotEmpty
-          ? 152 // 96 + 56
-          : 56,
+          ? imgSheetHeight + bottomSheetHeight
+          : bottomSheetHeight, // 56 .. 73 .. 90 .. 107
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: GuamColorFamily.grayscaleWhite,
@@ -151,7 +171,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (!isEdit) Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: IconButton(
                     iconSize: 24,
@@ -168,9 +188,12 @@ class _CommonTextFieldState extends State<CommonTextField> {
                 ),
                 Expanded(
                   child: TextField(
+                    keyboardType: TextInputType.multiline,
                     controller: _commentTextFieldController,
-                    maxLines: null,
+                    maxLines: 4,
+                    minLines: 1,
                     style: TextStyle(fontSize: 14),
+                    onChanged: (e) => heightOfBottomSheet(numberOfLines),
                     decoration: InputDecoration(
                       hintText: "댓글을 남겨주세요.",
                       hintStyle: TextStyle(fontSize: 14, color: GuamColorFamily.grayscaleGray5),
@@ -186,6 +209,11 @@ class _CommonTextFieldState extends State<CommonTextField> {
                 !sending
                     ? TextButton(
                       onPressed: () {},
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        minimumSize: Size(30, 26),
+                        alignment: Alignment.center,
+                      ),
                       child: Text(
                         '등록',
                         style: TextStyle(
