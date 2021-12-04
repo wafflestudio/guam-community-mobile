@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'profile_edit_label.dart';
-import '../../../commons/next.dart';
-import '../profile/profile_skillset.dart';
+import '../profile_edit_label.dart';
+import '../../../../commons/next.dart';
+import '../../profile/profile_skillset.dart';
 import 'profile_edit_skillset_detail.dart';
 
 class ProfileEditSkillSet extends StatelessWidget {

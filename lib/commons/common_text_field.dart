@@ -194,6 +194,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     maxLines: 4,
                     minLines: 1,
                     style: TextStyle(fontSize: 14),
+                    cursorColor: GuamColorFamily.purpleCore,
                     onChanged: (e) => heightOfBottomSheet(numberOfLines),
                     decoration: InputDecoration(
                       hintText: "댓글을 남겨주세요.",
