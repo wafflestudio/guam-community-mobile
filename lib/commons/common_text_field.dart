@@ -63,6 +63,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
     void heightOfBottomSheet(int numberOfLines){
       setState(() {
+        if (numberOfLines == 1) bottomSheetHeight = 56;
         if (numberOfLines == 2) bottomSheetHeight = 73;
         if (numberOfLines == 3) bottomSheetHeight = 90;
         if (numberOfLines == 4) bottomSheetHeight = 107;
@@ -210,7 +211,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     ? TextButton(
                       onPressed: () {},
                       style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        padding: EdgeInsets.only(right: 6),
                         minimumSize: Size(30, 26),
                         alignment: Alignment.center,
                       ),
