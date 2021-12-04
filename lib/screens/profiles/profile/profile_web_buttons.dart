@@ -4,6 +4,7 @@ import '../buttons/web_button.dart';
 class ProfileWebButtons extends StatelessWidget {
   final String githubId;
   final String blogUrl;
+  static const String githubUrl = 'https://github.com/';
 
   ProfileWebButtons({this.githubId, this.blogUrl});
 
@@ -15,7 +16,7 @@ class ProfileWebButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.,
         children: [
-          WebButton(githubId, 'assets/icons/github.svg'),
+          WebButton(githubUrl+githubId, 'assets/icons/github.svg'),
           WebButton(blogUrl, 'assets/icons/blog.svg'),
         ],
       ),

@@ -18,8 +18,8 @@ class ProfilesBody extends StatelessWidget {
     ),
     nickname: "bluesky",
     intro: "🦋 N년차 프로덕트 디자이너\n🐶 강아지 몽무와 동거 중\n✉️ abcd@abcd.com\n📷 @abcddesign",
-    githubId: "abcddesign111",
-    blogUrl: "tistory.abcddesign",
+    githubId: "gajagajago",
+    blogUrl: "https://blog.naver.com/witchyoli",
     skillSet: ["figma","photoshop","illustrator","adobe xd","primere pro","aftereffect","cinema4D", "zeplin", "sketch"],
   );
 
