@@ -53,7 +53,7 @@ class _PostCreationState extends State<PostCreation> {
           children: [
             Container(
               color: GuamColorFamily.grayscaleWhite,
-              padding: EdgeInsets.only(left: 24, right: 24),
+              padding: EdgeInsets.only(left: 24, top: 10, right: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -69,11 +69,17 @@ class _PostCreationState extends State<PostCreation> {
               thickness: 12,
               color: GuamColorFamily.purpleLight3,
             ),
-            Column(
-              children: [
-                PostCreationInterest(input),
-                PostCreationImage(input)
-              ],
+            Container(
+              color: GuamColorFamily.grayscaleWhite,
+              width: double.infinity,
+              padding: EdgeInsets.only(left: 24, top: 16, right: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PostCreationInterest(input),
+                  PostCreationImage(input)
+                ],
+              ),
             ),
           ],
         ),

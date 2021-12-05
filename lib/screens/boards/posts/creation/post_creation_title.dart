@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/styles/colors.dart';
 
 class PostCreationTitle extends StatefulWidget {
   final Map input;
@@ -10,22 +11,37 @@ class PostCreationTitle extends StatefulWidget {
 }
 
 class _PostCreationTitleState extends State<PostCreationTitle> {
-  String title;
+  final _titleTextFieldController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
   }
 
-  void setBoardType(){
+  void setTitle(){
     setState(() {
-      title = '안녕하세요. 반가워요';
+      widget.input['title'] = _titleTextFieldController.text;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.input);
-    return Container();
+    return TextField(
+      keyboardType: TextInputType.multiline,
+      controller: _titleTextFieldController,
+      onChanged: (e) => setTitle(),
+      maxLines: 1,
+      style: TextStyle(fontSize: 18),
+      decoration: InputDecoration(
+        hintText: "제목을 입력해주세요.",
+        hintStyle: TextStyle(fontSize: 18, color: GuamColorFamily.grayscaleGray5),
+        border: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        disabledBorder: InputBorder.none,
+        contentPadding: EdgeInsets.only(top: 10, bottom: 8),
+      ),
+    );
   }
 }

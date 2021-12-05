@@ -37,6 +37,7 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 14,
+                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
                 color: widget.input['boardType'] == ''
                     ? GuamColorFamily.grayscaleGray3
                     : GuamColorFamily.purpleCore,
@@ -77,7 +78,10 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
                     children: [
                       Text(
                         '게시판을 선택해주세요.',
-                        style: TextStyle(fontSize: 18, color: GuamColorFamily.grayscaleGray2),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: GuamColorFamily.grayscaleGray2,
+                        ),
                       ),
                       TextButton(
                         child: Text(

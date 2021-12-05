@@ -8,7 +8,7 @@ class CustomDivider extends StatelessWidget {
 
   CustomDivider({
     this.height = 1,
-    this.thickness=1,
+    this.thickness = 1,
     this.color,
   });
 
