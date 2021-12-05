@@ -72,7 +72,7 @@ class _PostCreationState extends State<PostCreation> {
             Container(
               color: GuamColorFamily.grayscaleWhite,
               width: double.infinity,
-              padding: EdgeInsets.only(left: 24, top: 16, right: 24),
+              padding: EdgeInsets.only(left: 24, top: 20, right: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

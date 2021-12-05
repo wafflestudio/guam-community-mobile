@@ -28,14 +28,15 @@ class _PostCreationImageState extends State<PostCreationImage> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.only(bottom: 10),
+          padding: EdgeInsets.only(top: 16, bottom: 10),
           child: Text(
-              '사진을 첨부해보세요.',
-              style: TextStyle(
-                fontSize: 14,
-                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                color: GuamColorFamily.grayscaleGray3,
-              )
+            '사진을 첨부해보세요.',
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 14,
+              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+              color: GuamColorFamily.grayscaleGray3,
+            )
           ),
         ),
       ],

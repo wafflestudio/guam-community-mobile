@@ -40,7 +40,6 @@ class _PostCreationTitleState extends State<PostCreationTitle> {
         enabledBorder: InputBorder.none,
         errorBorder: InputBorder.none,
         disabledBorder: InputBorder.none,
-        contentPadding: EdgeInsets.only(top: 10, bottom: 8),
       ),
     );
   }
