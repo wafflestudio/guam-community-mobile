@@ -31,14 +31,6 @@ class ClosableImageExpanded extends StatelessWidget {
         image: image ?? null,
         imagePath: imagePath ?? null,
       ),
-      bottomNavigationBar: Container(
-        color: Colors.black,
-        height: 20,
-      ),
-      bottomSheet: Container(
-        color: Colors.red,
-        height: 20,
-      ),
     );
   }
 }

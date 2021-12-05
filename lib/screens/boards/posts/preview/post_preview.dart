@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail.dart';
@@ -40,9 +41,9 @@ class PostPreview extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               PostPreviewBanner(post),
-              Divider(
-                thickness: 1,
-                color: GuamColorFamily.grayscaleGray7,
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: CustomDivider(color: GuamColorFamily.grayscaleGray7),
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 8.0),

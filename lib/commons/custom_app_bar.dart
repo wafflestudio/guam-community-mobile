@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/styles/colors.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String title;
@@ -14,8 +15,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    var textColor = Colors.black;
-    var iconColor = Colors.black;
+    var textColor = GuamColorFamily.grayscaleGray1;
+    var iconColor = GuamColorFamily.grayscaleGray1;
     return AppBar(
       centerTitle: true,
       elevation: 1,
@@ -30,7 +31,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       actions: trailing == null
           ? []
           : [Material(color: Colors.transparent, child: trailing)],
-      backgroundColor: backgroundColor ?? Colors.white,
+      backgroundColor: backgroundColor ?? GuamColorFamily.grayscaleWhite,
       iconTheme: IconThemeData(
         color: iconColor,
       ),
