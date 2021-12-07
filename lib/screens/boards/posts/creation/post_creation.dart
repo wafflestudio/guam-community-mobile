@@ -23,6 +23,18 @@ class _PostCreationState extends State<PostCreation> {
     'images': [],
   };
 
+  bool isBoardAnonymous = false;
+
+  void setBoardAnonymous(String boardType){
+    setState(() {
+      if (boardType == '익명게시판'){
+        isBoardAnonymous = true;
+      } else {
+        isBoardAnonymous = false;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +69,7 @@ class _PostCreationState extends State<PostCreation> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PostCreationBoard(input),
+                  PostCreationBoard(input, setBoardAnonymous),
                   PostCreationTitle(input),
                   CustomDivider(color: GuamColorFamily.grayscaleGray7),
                   PostCreationContent(input),
@@ -72,11 +84,11 @@ class _PostCreationState extends State<PostCreation> {
             Container(
               color: GuamColorFamily.grayscaleWhite,
               width: double.infinity,
-              padding: EdgeInsets.only(left: 24, top: 20, right: 24),
+              padding: EdgeInsets.only(left: 24, top: 20, right: 0, bottom: 42),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PostCreationInterest(input),
+                  PostCreationInterest(input, isBoardAnonymous),
                   PostCreationImage(input)
                 ],
               ),

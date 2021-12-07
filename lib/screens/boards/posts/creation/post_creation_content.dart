@@ -25,7 +25,7 @@ class _PostCreationContentState extends State<PostCreationContent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.5,
+      height: MediaQuery.of(context).size.height * 0.45,
       child: TextField(
         keyboardType: TextInputType.multiline,
         controller: _contentTextFieldController,

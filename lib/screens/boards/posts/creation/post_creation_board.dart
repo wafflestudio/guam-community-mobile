@@ -7,8 +7,9 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PostCreationBoard extends StatefulWidget {
   final Map input;
+  final Function setBoardAnonymous;
 
-  PostCreationBoard(this.input);
+  PostCreationBoard(this.input, this.setBoardAnonymous);
 
   @override
   _PostCreationBoardState createState() => _PostCreationBoardState();
@@ -21,7 +22,10 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
   }
 
   void setBoardType(String boardType){
-    setState(() => widget.input['boardType'] = boardType);
+    setState(() {
+      widget.input['boardType'] = boardType;
+      widget.setBoardAnonymous(boardType);
+    });
   }
 
   @override
