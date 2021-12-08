@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
+import 'creation/post_creation.dart';
+
 class PostButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,13 @@ class PostButton extends StatelessWidget {
               width: 30,
               height: 30,
             ),
-            onPressed: () {}
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => PostCreation()
+                )
+              );
+            }
           ),
         ),
       ),

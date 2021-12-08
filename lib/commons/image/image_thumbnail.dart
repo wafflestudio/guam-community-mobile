@@ -23,7 +23,7 @@ class ImageThumbnail extends StatelessWidget {
         height: height,
         width: width,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(8),
           child: image ?? FadeInImage(
             placeholder: MemoryImage(kTransparentImage),
             image: NetworkImage(HttpRequest().s3BaseAuthority + imagePath),
@@ -31,8 +31,7 @@ class ImageThumbnail extends StatelessWidget {
           ),
         ),
       ),
-      onTap: () => Navigator.push(
-        context,
+      onTap: () => Navigator.of(context, rootNavigator: true).push(
         MaterialPageRoute(
           builder: (_) => ClosableImageExpanded(
             image: image ?? null,
