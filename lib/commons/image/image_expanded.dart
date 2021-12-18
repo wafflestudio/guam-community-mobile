@@ -10,18 +10,21 @@ class ImageExpanded extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        // color: Colors.black,
-        // width: double.infinity,
-        // height: double.infinity,
-        child: InteractiveViewer(
-          child: image ?? FadeInImage(
-            placeholder: MemoryImage(kTransparentImage),
-            image: NetworkImage(imagePath), // 추후 storage 연결하면 바꿀 예정
-            // image: NetworkImage(HttpRequest().s3BaseAuthority + imagePath),
-            fit: BoxFit.fitWidth,
-          )
+    return Container(
+      padding: EdgeInsets.only(bottom: 72),
+      height: MediaQuery.of(context).size.height,
+      color: Colors.black,
+      child: Center(
+        child: Container(
+          width: double.infinity,
+          child: InteractiveViewer(
+            child: image ?? FadeInImage(
+              placeholder: MemoryImage(kTransparentImage),
+              image: NetworkImage(imagePath), // 추후 storage 연결하면 바꿀 예정
+              // image: NetworkImage(HttpRequest().s3BaseAuthority + imagePath),
+              fit: BoxFit.fitWidth,
+            )
+          ),
         ),
       ),
     );
