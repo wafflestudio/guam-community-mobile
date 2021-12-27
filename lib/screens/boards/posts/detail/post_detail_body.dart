@@ -48,22 +48,21 @@ class PostDetailBody extends StatelessWidget {
                 hiddenImgCnt: post.pictures.length - maxRenderImgCnt,
               ),
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => ChangeNotifierProvider.value(
-                          value: context.read<Posts>(), // necessary?
-                          child: ImageCarousel(
-                            pictures: [...this.post.pictures],
-                            initialPage: idx,
-                            showImageActions: true,
-                            // showImageActions: creatorId != null && context.read<Posts>().isMe(creatorId),
-                            // deleteFunc: threadId != null ? deleteThreadImage
-                            //     : commentId != null ? deleteCommentImage
-                            //     : null,
-                          ),
-                        )
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (_) => ChangeNotifierProvider.value(
+                      value: context.read<Posts>(), // necessary?
+                      child: ImageCarousel(
+                        pictures: [...this.post.pictures],
+                        initialPage: idx,
+                        showImageActions: true,
+                        // showImageActions: creatorId != null && context.read<Posts>().isMe(creatorId),
+                        // deleteFunc: threadId != null ? deleteThreadImage
+                        //     : commentId != null ? deleteCommentImage
+                        //     : null,
+                      ),
                     )
+                  )
                 );
               },
             ),
