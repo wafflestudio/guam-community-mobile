@@ -136,6 +136,7 @@ class _PostCreationImageState extends State<PostCreationImage> {
                       ),
                     )
                   : Container(),
+              Padding(padding: EdgeInsets.only(right: 14.87)),
             ],
           ),
         ),
