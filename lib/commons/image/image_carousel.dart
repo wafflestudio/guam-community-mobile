@@ -103,14 +103,15 @@ class ImageCarouselState extends State<ImageCarousel> {
       body: Stack(
         children: [
           CarouselSlider(
-              options: CarouselOptions(
-                  height: double.infinity,
-                  viewportFraction: 1,
-                  enableInfiniteScroll: false,
-                  initialPage: currPage,
-                  onPageChanged: (idx, _) => switchPage(idx)
-              ),
-              items: [...picturesState.map((e) => ImageExpanded(imagePath: e.urlPath))]
+            options: CarouselOptions(
+              height: double.infinity,
+              viewportFraction: 1,
+              enableInfiniteScroll: false,
+              scrollPhysics: ClampingScrollPhysics(),
+              initialPage: currPage,
+              onPageChanged: (idx, _) => switchPage(idx)
+            ),
+            items: [...picturesState.map((e) => ImageExpanded(imagePath: e.urlPath))]
           ),
           Center(
             child: Padding(

@@ -31,6 +31,7 @@ class _BoardsAppScaffoldState extends State<BoardsAppScaffold> {
     return DefaultTabController(
       length: 6,
       child: Scaffold(
+        backgroundColor: GuamColorFamily.purpleLight3,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(100),
           child: CustomAppBar(
@@ -55,6 +56,7 @@ class _BoardsAppScaffoldState extends State<BoardsAppScaffold> {
           ),
         ),
         body: TabBarView(
+          physics: BouncingScrollPhysics(),
           children: [
             BoardsFeed(),
             BoardsFeed(),
