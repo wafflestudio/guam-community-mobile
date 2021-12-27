@@ -19,7 +19,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     var iconColor = GuamColorFamily.grayscaleGray1;
     return AppBar(
       centerTitle: true,
-      elevation: 1,
+      elevation: 0.7,
       title: Text(
         title ?? "",
         style: TextStyle(color: textColor),
