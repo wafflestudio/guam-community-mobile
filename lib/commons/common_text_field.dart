@@ -151,10 +151,10 @@ class _CommonTextFieldState extends State<CommonTextField> {
                         ),
                       ),
                       Positioned(
-                        top: 4,
-                        right: 18,
+                        top: 2,
+                        right: 14,
                         child: IconButton(
-                          iconSize: 18,
+                          iconSize: 23,
                           padding: EdgeInsets.zero,
                           constraints: BoxConstraints(),
                           icon: SvgPicture.asset('assets/icons/cancel_filled.svg'),
