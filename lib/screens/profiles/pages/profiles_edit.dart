@@ -4,13 +4,13 @@ import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:guam_community_client/screens/profiles/buttons/profile_img_edit_button.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
-import '../../commons/custom_app_bar.dart';
-import '../../commons/common_text_button.dart';
-import 'profile/profile_img.dart';
+import '../../../commons/custom_app_bar.dart';
+import '../../../commons/common_text_button.dart';
+import '../profile/profile_img.dart';
 import 'package:guam_community_client/models/picture.dart';
-import 'edit/profile_edit_nickname.dart';
-import 'edit/profile_edit_intro.dart';
-import 'edit/profile_edit_optional.dart';
+import '../edit/profile_edit_nickname.dart';
+import '../edit/profile_edit_intro.dart';
+import '../edit/profile_edit_optional.dart';
 
 class ProfilesEdit extends StatelessWidget {
   final Profile dummy = Profile(

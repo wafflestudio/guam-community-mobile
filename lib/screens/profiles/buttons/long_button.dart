@@ -3,11 +3,11 @@ import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 
-class ProfileBottomButton extends StatelessWidget {
+class LongButton extends StatelessWidget {
   final String label;
   final Function onPressed;
 
-  ProfileBottomButton(this.label, this.onPressed);
+  LongButton({this.label, this.onPressed});
 
   @override
   Widget build(BuildContext context) {

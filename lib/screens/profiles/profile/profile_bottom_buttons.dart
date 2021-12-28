@@ -1,18 +1,44 @@
 import 'package:flutter/material.dart';
-import '../buttons/profile_bottom_button.dart';
+import '../buttons/long_button.dart';
+import '../pages/my_posts.dart';
+import '../pages/saved_posts.dart';
+import '../pages/settings.dart';
 
 class ProfileBottomButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 24),
-      child: Column(
+      child: Wrap(
+        runSpacing: 12,
         children: [
-          ProfileBottomButton('내가 쓴 글', () {}),
-          Padding(padding: EdgeInsets.only(bottom: 12)),
-          ProfileBottomButton('저장한 글', () {}),
-          Padding(padding: EdgeInsets.only(bottom: 12)),
-          ProfileBottomButton('계정 설정', () {}),
+          LongButton(
+            label: '내가 쓴 글',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MyPosts()
+              )
+            )
+          ),
+          LongButton(
+            label: '저장한 글',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => SavedPosts()
+              )
+            )
+          ),
+          LongButton(
+            label: '계정 설정',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => Settings()
+              )
+            )
+          ),
         ],
       ),
     );

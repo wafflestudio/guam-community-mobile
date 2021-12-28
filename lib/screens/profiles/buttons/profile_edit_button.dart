@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import '../profiles_edit.dart';
+import '../pages/profiles_edit.dart';
 
 class ProfileEditButton extends StatelessWidget {
   @override
