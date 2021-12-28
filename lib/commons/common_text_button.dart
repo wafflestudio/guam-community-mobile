@@ -28,6 +28,7 @@ class CommonTextButton extends StatelessWidget {
         alignment: Alignment.centerLeft,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
+      onPressed: onPressed,
     );
   }
 }
