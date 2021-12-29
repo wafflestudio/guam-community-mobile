@@ -28,6 +28,7 @@ class BottomNavigation extends StatelessWidget {
       currentIndex: currentTab.index,
       type: BottomNavigationBarType.fixed,
       selectedItemColor: GuamColorFamily.purpleCore,
+      backgroundColor: GuamColorFamily.grayscaleWhite,
       unselectedItemColor: GuamColorFamily.grayscaleGray4,
       onTap: (index) => onSelectTab(TabItem.values[index]),
     );

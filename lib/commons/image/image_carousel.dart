@@ -3,10 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/models/picture.dart';
 import 'package:guam_community_client/styles/colors.dart';
-// import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../custom_app_bar.dart';
 import 'image_expanded.dart';
-// import 'bottom_modal/bottom_modal_content.dart';
 import 'dart:math';
 import 'dart:io' show Platform;
 
@@ -102,15 +100,38 @@ class ImageCarouselState extends State<ImageCarousel> {
         //   },
         // ) : null,
       ),
-      body: CarouselSlider(
-          options: CarouselOptions(
+      body: Stack(
+        children: [
+          CarouselSlider(
+            options: CarouselOptions(
               height: double.infinity,
               viewportFraction: 1,
               enableInfiniteScroll: false,
+              scrollPhysics: ClampingScrollPhysics(),
               initialPage: currPage,
               onPageChanged: (idx, _) => switchPage(idx)
+            ),
+            items: [...picturesState.map((e) => ImageExpanded(imagePath: e.urlPath))]
           ),
-          items: [...picturesState.map((e) => ImageExpanded(imagePath: e.urlPath))]
+          Center(
+            child: Padding(
+              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.65),
+              child: Container(
+                width: 49,
+                height: 25,
+                decoration: BoxDecoration(
+                  color: GuamColorFamily.grayscaleGray3,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: EdgeInsets.only(left: 12, top: 5, right: 12, bottom: 2),
+                child: Text(
+                  '${currPage+1} / ${picturesState.length}',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

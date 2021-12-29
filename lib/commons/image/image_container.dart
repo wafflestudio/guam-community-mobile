@@ -30,8 +30,7 @@ class ImageThumbnail extends StatelessWidget {
           ),
         ),
       ),
-      onTap: () => Navigator.push(
-        context,
+      onTap: () => Navigator.of(context, rootNavigator: true).push(
         MaterialPageRoute(
           builder: (_) => ClosableImageExpanded(
             image: image ?? null,
