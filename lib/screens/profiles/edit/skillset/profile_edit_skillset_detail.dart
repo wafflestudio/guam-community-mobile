@@ -30,7 +30,10 @@ class ProfileEditSkillSetDetail extends StatelessWidget {
                   alignment: WrapAlignment.center,
                   spacing: 8,
                   runSpacing: 5,
-                  children: [...skillSet.map((skill) => ProfileSkillButton(skill))],
+                  children: [...skillSet.map((skill) => ProfileSkillButton(
+                    skill,
+                    deletable: true,
+                  ))],
                 )
               ],
             ),

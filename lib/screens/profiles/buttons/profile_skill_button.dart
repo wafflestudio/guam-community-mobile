@@ -15,7 +15,7 @@ class ProfileSkillButton extends StatelessWidget {
       labelStyle: TextStyle(
         fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
         fontSize: 12,
-        color: GuamColorFamily.grayscaleGray4,
+        color: deletable ? GuamColorFamily.grayscaleGray2 : GuamColorFamily.grayscaleGray4,
         height: 19.2/12,
       ),
       onDeleted: deletable ? () {} : null,
@@ -25,5 +25,4 @@ class ProfileSkillButton extends StatelessWidget {
       padding: EdgeInsets.all(4),
     );
   }
-
 }
