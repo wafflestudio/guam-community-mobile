@@ -9,7 +9,7 @@ class ProfileSkillSet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      alignment: WrapAlignment.center,
+      alignment: WrapAlignment.start,
       spacing: 8,
       runSpacing: 5,
       children: [...skillSet.map((skill) => ProfileSkillButton(skill))],

@@ -21,13 +21,12 @@ class ProfileEditSkillSetDetail extends StatelessWidget {
             width: double.infinity,
             padding: EdgeInsets.all(24),
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ProfileEditSkillSetLabel(skillSet.length),
                 ProfileEditSkillSetTextField(),
                 Wrap(
-                  alignment: WrapAlignment.center,
+                  // alignment: WrapAlignment.center,
                   spacing: 8,
                   runSpacing: 5,
                   children: [...skillSet.map((skill) => ProfileSkillButton(
