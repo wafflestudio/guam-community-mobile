@@ -11,9 +11,8 @@ import 'package:provider/provider.dart';
 
 class PostPreview extends StatelessWidget {
   final Post post;
-  final Posts postsProvider;
 
-  PostPreview(this.post, this.postsProvider);
+  PostPreview(this.post);
 
   @override
   Widget build(BuildContext context) {

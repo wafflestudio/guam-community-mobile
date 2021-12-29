@@ -11,7 +11,12 @@ class SavedPosts extends StatelessWidget {
           title: '저장한 글',
         ),
         body: SingleChildScrollView(
-          child: Column(),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            child: Column(
+              children: []
+            ),
+          ),
         )
     );
   }
