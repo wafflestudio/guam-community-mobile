@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/styles/colors.dart';
-import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class CommonTextButton extends StatelessWidget {
