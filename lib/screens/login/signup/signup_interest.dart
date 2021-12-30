@@ -64,7 +64,7 @@ class _SignupInterestState extends State<SignupInterest> {
   Widget _selectInterests(List<String> interestOptions, Size size) {
     return Container(
       width: size.width,
-      padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
+      padding: EdgeInsets.only(top: 80),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

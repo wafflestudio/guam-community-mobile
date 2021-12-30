@@ -26,16 +26,22 @@ class _InterestChoiceChipState extends State<InterestChoiceChip> {
 
     widget.interestOptions.forEach((interest) {
       choices.add(
-        Container(
-          width: double.infinity,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           child: ChoiceChip(
-            label: Text(
-              interest,
-              style: TextStyle(
-                fontSize: 16,
-                color: selectedInterests.contains(interest)
-                    ? GuamColorFamily.purpleCore
-                    : GuamColorFamily.grayscaleGray2,
+            label: Container(
+              width: double.infinity,
+              padding: EdgeInsets.zero,
+              alignment: Alignment.center,
+              constraints: BoxConstraints(maxHeight: 40),
+              child: Text(
+                interest,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: selectedInterests.contains(interest)
+                      ? GuamColorFamily.purpleCore
+                      : GuamColorFamily.grayscaleGray2,
+                ),
               ),
             ),
             selected: selectedInterests.contains(interest),
