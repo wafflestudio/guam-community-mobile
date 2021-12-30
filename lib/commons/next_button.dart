@@ -4,12 +4,10 @@ import 'package:guam_community_client/styles/colors.dart';
 class NextButton extends StatelessWidget {
   final String label;
   final Function onTap;
-  final bool btnEnabled;
 
   NextButton({
     @required this.label,
     @required this.onTap,
-    this.btnEnabled = false,
   });
 
   @override

@@ -11,21 +11,21 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   Map input = {'nickname': '', 'interest': []};
-  bool btnEnabled = false;
   int page = 1;
 
   void _nextButton() => setState(() {
-    if (input['nickname'] != '') {
+    if (input['nickname'] != '' && page < 2) {
       page++;
-      btnEnabled = true;
     }
   });
 
-  void _startButton() => setState(() {});
+  // signup 정보 Post API 완성 전까지는 임시 방편으로 page -- 처리
+  void _startButton() => setState(() {page--;});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -42,9 +42,7 @@ class _SignUpState extends State<SignUp> {
                 padding: EdgeInsets.only(bottom: 40),
                 child: NextButton(
                   label: page==1 ? '다음' : '시작',
-                  onTap: _nextButton,
-                  btnEnabled: btnEnabled,
-                ),
+                  onTap: page==1 ? _nextButton : _startButton),
               ),
             ],
           ),

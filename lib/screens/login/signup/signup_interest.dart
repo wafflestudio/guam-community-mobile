@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guam_community_client/screens/login/signup/interest_choice_chip.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
+
 
 class SignupInterest extends StatefulWidget {
   final Map input;
@@ -14,10 +16,15 @@ class SignupInterest extends StatefulWidget {
 }
 
 class _SignupInterestState extends State<SignupInterest> {
-  void _setInterest(String interest) => setState(() => widget.input['interest'] = interest);
+  final List<String> interestOptions = [
+    '🛠 개발', '📈 데이터분석', '🎨 디자인','📝 기획/마케팅', '🎁 기타',
+  ];
+  Map results = {};
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -49,7 +56,27 @@ class _SignupInterestState extends State<SignupInterest> {
             ),
           ),
         ),
+        _selectInterests(interestOptions, size)
       ],
+    );
+  }
+
+  Widget _selectInterests(List<String> interestOptions, Size size) {
+    return Container(
+      width: size.width,
+      padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InterestChoiceChip(
+            interestList: widget.input['interest'].cast<String>(), // convert List<dynamic> to List<String>
+            interestOptions: interestOptions,
+            onSelectionChanged: (selectedList) {
+              setState(() => widget.input['interest'] = selectedList);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

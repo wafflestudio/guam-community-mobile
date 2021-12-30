@@ -16,6 +16,18 @@ class SignupNickname extends StatefulWidget {
 class _SignupNicknameState extends State<SignupNickname> {
   final _nicknameTextFieldController = TextEditingController();
 
+  @override
+  void initState() {
+    _nicknameTextFieldController.text = widget.input['nickname'];
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _nicknameTextFieldController.dispose();
+    super.dispose();
+  }
+
   void _setNickname(String nickname) =>
       setState(() => widget.input['nickname'] = nickname);
 
