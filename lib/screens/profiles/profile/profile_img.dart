@@ -21,20 +21,21 @@ class ProfileImg extends StatelessWidget {
         color: profileImg != null ? Colors.transparent : Colors.grey,
       ),
       child: ClipOval(
-          child: profileImg.urlPath != null
-              ? InkWell(
-                child: FadeInImage(
-                  placeholder: MemoryImage(kTransparentImage),
-                  image: NetworkImage(profileImg.urlPath),
-                  fit: BoxFit.cover
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => ClosableImageExpanded(imagePath: profileImg.urlPath))
-                  );
-                }
-          ) : Image(image: SvgProvider('assets/icons/profile_image.svg'))
+        child: profileImg.urlPath != null
+            ? InkWell(
+              child: FadeInImage(
+                placeholder: MemoryImage(kTransparentImage),
+                image: NetworkImage(profileImg.urlPath),
+                fit: BoxFit.cover
+              ),
+              onTap: () {
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(builder: (_) => ClosableImageExpanded(
+                    imagePath: profileImg.urlPath),
+                  )
+                );
+              }
+        ) : Image(image: SvgProvider('assets/icons/profile_image.svg'))
       ),
     );
   }
