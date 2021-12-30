@@ -5,6 +5,7 @@ import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../../commons/common_img_nickname.dart';
 
 class PostInfo extends StatelessWidget {
   final Post post;
@@ -24,33 +25,9 @@ class PostInfo extends StatelessWidget {
     return Row(
       children: [
         if (showProfile)
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 12, bottom: 8, right: 8),
-                child: Container(
-                  height: 24,
-                  width: 24,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: post.profile.profileImageUrl != null
-                          ? NetworkImage(post.profile.profileImageUrl)
-                          : SvgProvider('assets/icons/profile_image.svg')
-                    ),
-                  ),
-                ),
-              ),
-              Text(
-                post.profile.nickname,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                  color: GuamColorFamily.grayscaleGray3,
-                ),
-              ),
-            ],
+          CommonImgNickname(
+            imgUrl: post.profile.profileImg != null ? post.profile.profileImg.urlPath : null,
+            nickname: post.profile.nickname,
           ),
         if (showProfile) Spacer(),
         Row(

@@ -12,7 +12,9 @@ class ProfilesApp extends StatelessWidget {
         title: '프로필',
         trailing: Message(),
       ),
-    body: ProfilesBody()
+      body: SingleChildScrollView(
+        child: ProfilesBody(),
+      )
     );
   }
 }

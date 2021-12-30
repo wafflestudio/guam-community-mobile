@@ -36,7 +36,7 @@ class PostList extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 10),
             child: Column(
               children: [
-                ...postsProvider.posts.map((post) => PostPreview(post, postsProvider))
+                ...postsProvider.posts.map((post) => PostPreview(post))
               ]
             ),
           )
