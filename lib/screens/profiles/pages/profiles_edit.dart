@@ -29,6 +29,7 @@ class ProfilesEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: GuamColorFamily.grayscaleWhite,
         appBar: CustomAppBar(
           leading: Back(),
           title: '프로필 수정',

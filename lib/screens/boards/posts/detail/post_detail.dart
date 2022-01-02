@@ -35,6 +35,7 @@ class _PostDetailState extends State<PostDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: GuamColorFamily.grayscaleWhite,
       appBar: CustomAppBar(
         leading: Back(),
         trailing: Padding(

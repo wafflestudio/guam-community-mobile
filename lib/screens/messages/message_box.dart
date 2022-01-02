@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'message_body.dart';
 
 class MessageBox extends StatelessWidget {
-  bool newMessage = true;
+  final bool newMessage = true;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class MessageBox extends StatelessWidget {
           : 'assets/icons/message_default.svg'
       ),
         onPressed: () {
-          Navigator.of(context).push(
+          Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
                   builder: (_) => MessageBody()
               )

@@ -9,6 +9,7 @@ class MessageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: GuamColorFamily.grayscaleWhite,
       appBar: CustomAppBar(
         title: '쪽지함',
         leading: Back(),
