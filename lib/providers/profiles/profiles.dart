@@ -48,6 +48,27 @@ List<Map<String, dynamic>> profiles = [
       'urlPath': 'https://t1.daumcdn.net/cfile/tistory/241F824757B095710E',
     },
   },
+  {
+    'id': 6,
+    'nickname': 'lilyiu_',
+    'profileImg': {
+      'id': 6,
+      'urlPath': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7RWrVJDrXh2R1M51soNq8EeqCL97QnQ6Ldw&usqp=CAU',
+    },
+  },
+  {
+    'id': 7,
+    'nickname': 'Guamno1',
+    'profileImg': {
+      'id': 7,
+      'urlPath': 'http://newsimg.hankookilbo.com/2019/09/23/201909231655358523_1.jpg',
+    },
+  },
+  {
+    'id': 8,
+    'nickname': 'lumograph97',
+    'profileImg': null,
+  },
 ];
 
 class MyProfile with ChangeNotifier {
