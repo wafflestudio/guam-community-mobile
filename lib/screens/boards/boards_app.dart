@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/boards/posts/post_button.dart';
-import 'package:guam_community_client/screens/messages/message.dart';
+import 'package:guam_community_client/screens/messages/message_box.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
 import '../../commons/custom_app_bar.dart';
@@ -36,7 +36,7 @@ class _BoardsAppScaffoldState extends State<BoardsAppScaffold> {
           preferredSize: Size.fromHeight(100),
           child: CustomAppBar(
             title: '홈',
-            trailing: Message(),
+            trailing: MessageBox(),
             bottom: TabBar(
               isScrollable: true,
               physics: BouncingScrollPhysics(),

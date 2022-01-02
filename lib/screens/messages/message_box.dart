@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Message extends StatelessWidget {
+import 'message_body.dart';
+
+class MessageBox extends StatelessWidget {
   bool newMessage = true;
 
   @override
@@ -12,7 +14,13 @@ class Message extends StatelessWidget {
           ? 'assets/icons/message_new.svg'
           : 'assets/icons/message_default.svg'
       ),
-      onPressed: () {}
+        onPressed: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (_) => MessageBody()
+              )
+          );
+        }
     );
   }
 }
