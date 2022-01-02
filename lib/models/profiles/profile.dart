@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
+import '../picture.dart';
 
 class Profile extends ChangeNotifier {
   final int id;
   final String nickname;
-  final String introduction;
-  final String profileImageUrl;
-  final String githubUrl;
+  final String intro;
+  final Picture profileImg;
+  final String githubId;
   final String blogUrl;
   final List<dynamic> skillSet;
-  final List<dynamic> interests;
   final List<Post> myPosts;
   final List<Post> scrappedPosts;
   final List<Comment> myComments;
@@ -19,21 +19,28 @@ class Profile extends ChangeNotifier {
   Profile({
     this.id,
     this.nickname,
-    this.introduction,
-    this.profileImageUrl,
-    this.githubUrl,
+    this.intro,
+    this.profileImg,
+    this.githubId,
     this.blogUrl,
     this.skillSet,
-    this.interests,
     this.myPosts,
     this.scrappedPosts,
     this.myComments,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
+    Picture profileImg;
     List<Post> myPosts;
     List<Post> scrappedPosts;
     List<Comment> myComments;
+
+    if (json["profileImg"] != null) {
+      profileImg = Picture.fromJson({
+        "id": json["profileImg"]["id"],
+        "urlPath": json["profileImg"]["urlPath"],
+      });
+    }
 
     if (json['myPosts'] != null) {
       myPosts = [...json['myPosts'].map((post) => Post.fromJson({
@@ -69,12 +76,11 @@ class Profile extends ChangeNotifier {
     return Profile(
       id: json['id'],
       nickname: json['nickname'],
-      introduction: json['introduction'],
-      profileImageUrl: json['profileImageUrl'],
-      githubUrl: json['githubUrl'],
+      intro: json['intro'],
+      profileImg: profileImg,
+      githubId: json['githubId'],
       blogUrl: json['blogUrl'],
       skillSet: json['skillSet'],
-      interests: json['interests'],
       myPosts: myPosts,
       scrappedPosts: scrappedPosts,
       myComments: myComments,
