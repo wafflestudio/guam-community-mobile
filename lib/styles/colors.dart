@@ -33,4 +33,6 @@ class GuamColorFamily {
   static HexColor orangeCore = HexColor('#F3B962');
 
   static HexColor redCore = HexColor('#F37462');
+
+  static HexColor FuchsiaCore = HexColor('#EF5DA8');
 }

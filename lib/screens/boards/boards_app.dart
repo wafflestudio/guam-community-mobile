@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/providers/messages/messages.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/boards/posts/post_button.dart';
@@ -14,6 +15,7 @@ class BoardsApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Posts(authToken: context.read<Authenticate>().authToken)),
+        ChangeNotifierProvider(create: (_) => Messages(authToken: context.read<Authenticate>().authToken)),
       ],
       child: BoardsAppScaffold(),
     );

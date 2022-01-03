@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/providers/messages/messages.dart';
 import 'package:guam_community_client/providers/profiles/profiles.dart';
 import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/messages/message_box.dart';
@@ -14,6 +15,7 @@ class ProfilesApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => MyProfile(authToken: context.read<Authenticate>().authToken)),
+        ChangeNotifierProvider(create: (_) => Messages(authToken: context.read<Authenticate>().authToken)),
       ],
       child: ProfilesAppScaffold(),
     );

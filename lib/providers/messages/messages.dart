@@ -9,9 +9,9 @@ class Messages with ChangeNotifier {
   List<Message> _messages;
   bool loading = false;
 
-  Messages({@required String authToken}) {
+  Messages({@required String authToken, int messageBoxNo}) {
     fetchMessageBoxes(authToken);
-    fetchMessages(authToken);
+    fetchMessages(authToken, messageBoxNo);
   }
 
   List<MessageBox> get messageBoxes => _messageBoxes;
@@ -25,12 +25,14 @@ class Messages with ChangeNotifier {
         {
           'id': 1,
           'otherProfile': profiles[6],
+          'isRead': false,
           'lastContent': '안녕하세요!',
           'createdAt': DateTime.now().subtract(const Duration(minutes: 8)),
         },
         {
           'id': 2,
           'otherProfile': profiles[5],
+          'isRead': true,
           'lastContent': '사용하시는 기술 스택 관련하여 질문이 있습니다!\n저도 플러터를 공부하고 싶은데 혹시 주로 공부하시는 교재나 강의가 있으신가요?',
           'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
         },
@@ -45,7 +47,7 @@ class Messages with ChangeNotifier {
     }
   }
 
-  Future fetchMessages(String authToken) async {
+  Future fetchMessages(String authToken, int messageBoxNo) async {
     try {
       loading = true;
 
