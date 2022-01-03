@@ -4,6 +4,7 @@ import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/models/messages/message_box.dart' as MessageBox;
 import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
+import 'package:guam_community_client/screens/messages/message_box_edit.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 
@@ -28,7 +29,12 @@ class MessageBody extends StatelessWidget {
             padding: EdgeInsets.zero,
             constraints: BoxConstraints(),
             icon: SvgPicture.asset('assets/icons/delete_outlined.svg'),
-            onPressed: () {},
+            onPressed: () => Navigator.of(context, rootNavigator: true).push(
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => MessageBoxEdit(messageBoxes, messages),
+                transitionDuration: Duration(seconds: 0),
+              )
+            ),
           )
         ),
       ),

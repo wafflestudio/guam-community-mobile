@@ -10,8 +10,9 @@ import 'message_detail.dart';
 class MessagePreview extends StatelessWidget {
   final MessageBox messageBox;
   final List<Message> messages;
+  final bool editable;
 
-  MessagePreview(this.messageBox, this.messages);
+  MessagePreview(this.messageBox, this.messages, {this.editable=false});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class MessagePreview extends StatelessWidget {
               ),
             ],
           ),
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: EdgeInsets.only(left: 12, top: 6, bottom: 6),
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
@@ -68,7 +69,7 @@ class MessagePreview extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.6,
+                  width: MediaQuery.of(context).size.width * 0.65,
                   padding: EdgeInsets.only(left: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,13 +101,33 @@ class MessagePreview extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                Text(
-                  (DateTime.now().minute - messageBox.createdAt.minute).toString() + "분 전",
-                  style: TextStyle(
-                    fontSize: 12,
-                    height: 1.6,
-                    fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                    color: GuamColorFamily.grayscaleGray4,
+                if (editable)
+                  TextButton(
+                    onPressed: (){},
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size(23, 20),
+                    ),
+                    child: Text(
+                      '삭제',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
+                        color: GuamColorFamily.redCore,
+                      ),
+                    ),
+                  ),
+                if (!editable)
+                Padding(
+                  padding: EdgeInsets.only(right: 10, top: 14, bottom: 15),
+                  child: Text(
+                    (DateTime.now().minute - messageBox.createdAt.minute).toString() + "분 전",
+                    style: TextStyle(
+                      fontSize: 12,
+                      height: 1.6,
+                      fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                      color: GuamColorFamily.grayscaleGray4,
+                    ),
                   ),
                 ),
               ],
