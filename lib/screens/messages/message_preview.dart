@@ -69,7 +69,7 @@ class MessagePreview extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.65,
+                  width: MediaQuery.of(context).size.width * 0.64,
                   padding: EdgeInsets.only(left: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
