@@ -5,6 +5,8 @@ import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/styles/colors.dart';
+import 'package:guam_community_client/styles/fonts.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'message_detail_body.dart';
 
@@ -42,7 +44,66 @@ class _MessageDetailState extends State<MessageDetail> {
             padding: EdgeInsets.zero,
             constraints: BoxConstraints(),
             icon: SvgPicture.asset('assets/icons/more.svg'),
-            onPressed: () {},
+            onPressed: () => showMaterialModalBottomSheet(
+              context: context,
+              useRootNavigator: true,
+              backgroundColor: GuamColorFamily.grayscaleWhite,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                )
+              ),
+              builder: (context) => SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(left: 24, top: 24, bottom: 21),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextButton(
+                        onPressed: (){},
+                        child: Container(
+                          child: Text(
+                            '쪽지 삭제하기',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: GuamColorFamily.grayscaleGray1,
+                              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                            ),
+                          ),
+                        )
+                      ),
+                      TextButton(
+                        onPressed: (){},
+                        child: Container(
+                          child: Text(
+                            '신고하기',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: GuamColorFamily.grayscaleGray1,
+                              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                            ),
+                          ),
+                        )
+                      ),
+                      TextButton(
+                        onPressed: (){},
+                        child: Container(
+                          child: Text(
+                            '차단하기',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: GuamColorFamily.grayscaleGray1,
+                              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                            ),
+                          ),
+                        )
+                      )
+                    ],
+                  ),
+                ),
+              )
+            )
           ),
         ),
       ),
