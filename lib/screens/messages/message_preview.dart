@@ -34,8 +34,11 @@ class MessagePreview extends StatelessWidget {
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => MessageDetail(messages))
-              );
+                MaterialPageRoute(builder: (_) => MessageDetail(
+                  messages,
+                  messageBox.otherProfile.nickname,
+                )
+              ));
             },
             child: Row(
               children: [
@@ -65,7 +68,7 @@ class MessagePreview extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.65,
+                  width: MediaQuery.of(context).size.width * 0.6,
                   padding: EdgeInsets.only(left: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

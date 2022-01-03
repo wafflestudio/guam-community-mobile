@@ -10,15 +10,15 @@ import 'message_detail_body.dart';
 
 class MessageDetail extends StatefulWidget {
   final List<Message> messages;
+  final String otherName;
 
-  MessageDetail(this.messages);
+  MessageDetail(this.messages, this.otherName);
 
   @override
   State<MessageDetail> createState() => _MessageDetailState();
 }
 
 class _MessageDetailState extends State<MessageDetail> {
-  final int maxRenderImgCnt = 4;
   bool commentImageExist = false;
 
   void addCommentImage() {
@@ -34,6 +34,7 @@ class _MessageDetailState extends State<MessageDetail> {
     return Scaffold(
       backgroundColor: GuamColorFamily.grayscaleWhite,
       appBar: CustomAppBar(
+        title: widget.otherName,
         leading: Back(),
         trailing: Padding(
           padding: EdgeInsets.only(right: 11),

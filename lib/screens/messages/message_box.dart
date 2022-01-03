@@ -21,10 +21,10 @@ class MessageBox extends StatelessWidget {
       onPressed: () {
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
-              builder: (_) => MessageBody(
-                  messagesProvider.messageBoxes,
-                  messagesProvider.messages,
-              )
+            builder: (_) => MessageBody(
+                messagesProvider.messageBoxes,
+                messagesProvider.messages,
+            )
           )
         );
       }
