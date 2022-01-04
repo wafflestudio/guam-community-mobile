@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => SignUp(),
-          '/main': (context) => App(),
+          // '/': (context) => SignUp(),
+          '/': (context) => App(),
         },
         theme: ThemeData(
           primaryColor: GuamColorFamily.purpleCore,
