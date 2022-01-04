@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/back.dart';
+import 'package:guam_community_client/commons/bottom_modal/bottom_modal_default.dart';
 import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/models/messages/message.dart';
@@ -60,45 +61,18 @@ class _MessageDetailState extends State<MessageDetail> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextButton(
+                      BottomModalDefault(
+                        text: '쪽지 삭제하기',
                         onPressed: (){},
-                        child: Container(
-                          child: Text(
-                            '쪽지 삭제하기',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: GuamColorFamily.grayscaleGray1,
-                              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                            ),
-                          ),
-                        )
                       ),
-                      TextButton(
+                      BottomModalDefault(
+                        text: '신고하기',
                         onPressed: (){},
-                        child: Container(
-                          child: Text(
-                            '신고하기',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: GuamColorFamily.grayscaleGray1,
-                              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                            ),
-                          ),
-                        )
                       ),
-                      TextButton(
+                      BottomModalDefault(
+                        text: '차단하기',
                         onPressed: (){},
-                        child: Container(
-                          child: Text(
-                            '차단하기',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: GuamColorFamily.grayscaleGray1,
-                              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                            ),
-                          ),
-                        )
-                      )
+                      ),
                     ],
                   ),
                 ),
