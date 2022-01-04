@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guam_community_client/commons/bottom_modal/bottom_modal_default.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class CommentBanner extends StatelessWidget {
   final Comment comment;
@@ -49,7 +51,40 @@ class CommentBanner extends StatelessWidget {
               'assets/icons/more.svg',
               color: GuamColorFamily.grayscaleGray5,
             ),
-            onPressed: () {},
+            onPressed: () => showMaterialModalBottomSheet(
+              context: context,
+              useRootNavigator: true,
+              backgroundColor: GuamColorFamily.grayscaleWhite,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                )
+              ),
+              builder: (context) => SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(left: 24, top: 24, bottom: 21),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (!comment.isAuthor)
+                        BottomModalDefault(
+                          text: '쪽지보내기',
+                          onPressed: (){},
+                        ),
+                      BottomModalDefault(
+                        text: comment.isAuthor ? '수정하기' : '신고하기',
+                        onPressed: (){},
+                      ),
+                      BottomModalDefault(
+                        text: comment.isAuthor ? '삭제하기' : '차단하기',
+                        onPressed: (){},
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            )
           ),
         ],
       ),
