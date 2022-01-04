@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/notification.dart' as Notification;
-import 'package:guam_community_client/screens/notifications/notifications_body.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 
@@ -21,12 +20,12 @@ class NotificationsPreview extends StatelessWidget {
             padding: EdgeInsets.only(left: 12, top: 4, bottom: 4),
             child: InkWell(
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => NotificationsBody(
+                // Navigator.of(context).push(
+                  // MaterialPageRoute(builder: (_) => NotificationsBody(
                     // messages,
                     // messageBox.otherProfile.nickname,
-                  ))
-                );
+                  // ))
+                // );
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
