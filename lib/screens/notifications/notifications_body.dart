@@ -13,26 +13,28 @@ class NotificationsBody extends StatelessWidget {
     return Container(
       color: GuamColorFamily.grayscaleWhite,
       padding: EdgeInsets.only(top: 18),
-      child: Column(
-        children: [
-          if (notifications.isEmpty)
-            Center(
-              child: Padding(
-                padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
-                child: Text(
-                  '새로운 알림이 없습니다.',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: GuamColorFamily.grayscaleGray4,
-                    fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            if (notifications.isEmpty)
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
+                  child: Text(
+                    '새로운 알림이 없습니다.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: GuamColorFamily.grayscaleGray4,
+                      fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                    ),
                   ),
                 ),
               ),
-            ),
-          if (notifications.isNotEmpty)
-            ...notifications.map((noti) => NotificationsPreview(noti)
-            )
-        ]
+            if (notifications.isNotEmpty)
+              ...notifications.map((noti) => NotificationsPreview(noti)
+              )
+          ]
+        ),
       ),
     );
   }
