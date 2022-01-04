@@ -87,6 +87,62 @@ class Messages with ChangeNotifier {
           'picture': null,
           'createdAt': DateTime.now().subtract(const Duration(minutes: 1)),
         },
+        {
+          'id': 3,
+          'profile': profiles[7],
+          'isMe': false,
+          'content': '답장',
+          'picture': null,
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
+        },
+        {
+          'id': 3,
+          'profile': profiles[7],
+          'isMe': false,
+          'content': '답장',
+          'picture': null,
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
+        },
+        {
+          'id': 3,
+          'profile': profiles[7],
+          'isMe': false,
+          'content': '답장',
+          'picture': null,
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
+        },
+        {
+          'id': 3,
+          'profile': profiles[7],
+          'isMe': false,
+          'content': '답장',
+          'picture': null,
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
+        },
+        {
+          'id': 3,
+          'profile': profiles[7],
+          'isMe': false,
+          'content': '답장',
+          'picture': null,
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
+        },{
+          'id': 3,
+          'profile': profiles[7],
+          'isMe': false,
+          'content': '답장',
+          'picture': null,
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
+        },
+        {
+          'id': 3,
+          'profile': profiles[7],
+          'isMe': false,
+          'content': '답장',
+          'picture': null,
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
+        },
+
       ];
       _messages = messages.map((e) => Message.fromJson(e)).toList();
 

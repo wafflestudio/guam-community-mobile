@@ -82,10 +82,13 @@ class _MessageDetailState extends State<MessageDetail> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ...widget.messages.map((msg) => MessageDetailBody(msg))
-          ]
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 70),
+          child: Column(
+            children: [
+              ...widget.messages.map((msg) => MessageDetailBody(msg))
+            ]
+          ),
         ),
       ),
       bottomSheet: Container(
