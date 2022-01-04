@@ -16,6 +16,7 @@ class Post extends ChangeNotifier {
   final int like;
   final int commentCnt;
   final int scrap;
+  final bool isAuthor;
   final bool isLiked;
   final bool isScrapped;
   final DateTime createdAt;
@@ -32,6 +33,7 @@ class Post extends ChangeNotifier {
     this.like,
     this.commentCnt,
     this.scrap,
+    this.isAuthor,
     this.isLiked,
     this.isScrapped,
     this.createdAt,
@@ -77,6 +79,7 @@ class Post extends ChangeNotifier {
       like: json['like'],
       commentCnt: json['commentCnt'],
       scrap: json['scrap'],
+      isAuthor: json['isAuthor'],
       isLiked: json['isLiked'],
       isScrapped: json['isScrapped'],
       createdAt: json['createdAt'],

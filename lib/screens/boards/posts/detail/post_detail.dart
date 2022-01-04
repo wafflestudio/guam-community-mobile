@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/back.dart';
+import 'package:guam_community_client/commons/bottom_modal/bottom_modal_default.dart';
 import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
@@ -10,6 +11,8 @@ import 'package:guam_community_client/screens/boards/posts/detail/post_detail_ba
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_body.dart';
 import 'package:guam_community_client/screens/boards/posts/post_info.dart';
 import 'package:guam_community_client/styles/colors.dart';
+import 'package:guam_community_client/styles/fonts.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PostDetail extends StatefulWidget {
   final Post post;
@@ -51,7 +54,40 @@ class _PostDetailState extends State<PostDetail> {
                 padding: EdgeInsets.zero,
                 constraints: BoxConstraints(),
                 icon: SvgPicture.asset('assets/icons/more.svg'),
-                onPressed: () {},
+                onPressed: () => showMaterialModalBottomSheet(
+                  context: context,
+                  useRootNavigator: true,
+                  backgroundColor: GuamColorFamily.grayscaleWhite,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    )
+                  ),
+                  builder: (context) => SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 24, top: 24, bottom: 21),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (!widget.post.isAuthor)
+                            BottomModalDefault(
+                              text: '쪽지 보내기',
+                              onPressed: (){},
+                            ),
+                          BottomModalDefault(
+                            text: widget.post.isAuthor ? '수정하기' : '신고하기',
+                            onPressed: (){},
+                          ),
+                          BottomModalDefault(
+                            text: widget.post.isAuthor ? '삭제하기' : '차단하기',
+                            onPressed: (){},
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                )
               ),
             ],
           ),
