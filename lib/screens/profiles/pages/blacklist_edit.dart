@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/back.dart';
+import 'package:guam_community_client/styles/colors.dart';
 import '../../../commons/custom_app_bar.dart';
 import '../../../commons/common_img_nickname.dart';
 import '../buttons/blacklist_remove_button.dart';
@@ -26,6 +27,7 @@ class BlackListEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: GuamColorFamily.grayscaleWhite,
         appBar: CustomAppBar(
           leading: Back(),
           title: '차단 목록 관리',

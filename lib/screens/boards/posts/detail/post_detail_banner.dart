@@ -71,7 +71,7 @@ class PostDetailBanner extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: post.profile.profileImg != null
+                    image: post.profile.profileImg.urlPath != null
                         ? NetworkImage(post.profile.profileImg.urlPath)
                         : SvgProvider('assets/icons/profile_image.svg'),
                   ),

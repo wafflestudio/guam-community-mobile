@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/commons/icon_text.dart';
-import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
+import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
+import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview.dart';
 
 import '../../../commons/sub_headings.dart';

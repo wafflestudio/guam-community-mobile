@@ -17,10 +17,10 @@ class TabNavigator extends StatelessWidget {
 
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context) {
     switch(tabItem){
-      case TabItem.home: return {TabNavigatorRoutes.root: (context) => BoardsApp()};
       case TabItem.search: return {TabNavigatorRoutes.root: (context) => SearchApp()};
       case TabItem.notification: return {TabNavigatorRoutes.root: (context) => NotificationsApp()};
       case TabItem.profile: return {TabNavigatorRoutes.root: (context) => ProfilesApp()};
+      default: return {TabNavigatorRoutes.root: (context) => BoardsApp()};
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/back.dart';
+import 'package:guam_community_client/styles/colors.dart';
 import '../../../commons/custom_app_bar.dart';
 import '../buttons/long_button.dart';
 import 'blacklist_edit.dart';
@@ -9,6 +10,7 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: GuamColorFamily.grayscaleWhite,
         appBar: CustomAppBar(
           leading: Back(),
           title: '계정 설정',
