@@ -62,7 +62,7 @@ class MessagePreview extends StatelessWidget {
                       Positioned(
                         top: 0,
                         child: CircleAvatar(
-                          backgroundColor: GuamColorFamily.FuchsiaCore,
+                          backgroundColor: GuamColorFamily.fuchsiaCore,
                           radius: 6,
                         )
                       ),
