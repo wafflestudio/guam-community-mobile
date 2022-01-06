@@ -11,12 +11,13 @@ import 'image/image_thumbnail.dart';
 import 'button_size_circular_progress_indicator.dart';
 
 class CommonTextField extends StatefulWidget {
+  final String sendButton;
   final Function onTap;
   final Function addCommentImage;
   final Function removeCommentImage;
   final dynamic editTarget;
 
-  CommonTextField({@required this.onTap, this.addCommentImage, this.removeCommentImage, this.editTarget});
+  CommonTextField({this.sendButton='등록', @required this.onTap, this.addCommentImage, this.removeCommentImage, this.editTarget});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();
@@ -217,7 +218,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                         alignment: Alignment.center,
                       ),
                       child: Text(
-                        '등록',
+                        widget.sendButton,
                         style: TextStyle(
                           color: GuamColorFamily.purpleCore,
                           fontSize: 16,

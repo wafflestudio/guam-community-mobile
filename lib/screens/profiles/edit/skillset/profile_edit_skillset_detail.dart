@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/screens/profiles/buttons/profile_skill_button.dart';
 import 'package:guam_community_client/screens/profiles/edit/skillset/profile_edit_skillset_label.dart';
 import 'package:guam_community_client/screens/profiles/edit/skillset/profile_edit_skillset_textfield.dart';
+import 'package:guam_community_client/styles/colors.dart';
 import '../../../../commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/back.dart';
 
@@ -12,6 +13,7 @@ class ProfileEditSkillSetDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: GuamColorFamily.grayscaleWhite,
         appBar: CustomAppBar(
           leading: Back(),
           title: '프로필 수정',

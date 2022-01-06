@@ -113,7 +113,6 @@ class _NotificationsAppScaffoldState extends State<NotificationsAppScaffold> {
           ),
         )
       ),
-
       body: NotificationsBody(),
     );
   }

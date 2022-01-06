@@ -38,6 +38,7 @@ class _PostCreationState extends State<PostCreation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: GuamColorFamily.grayscaleWhite,
       appBar: CustomAppBar(
         leading: Back(),
         trailing: Padding(

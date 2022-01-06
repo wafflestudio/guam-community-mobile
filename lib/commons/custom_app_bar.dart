@@ -27,6 +27,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       leading: leading != null
           ? Material(color: Colors.transparent, child: leading)
           : null,
+      automaticallyImplyLeading: false,
       bottom: bottom,
       actions: trailing == null
           ? []
