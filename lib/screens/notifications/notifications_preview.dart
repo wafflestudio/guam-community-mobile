@@ -49,7 +49,7 @@ class NotificationsPreview extends StatelessWidget {
                         Positioned(
                           top: 0,
                           child: CircleAvatar(
-                            backgroundColor: GuamColorFamily.FuschiaCore,
+                            backgroundColor: GuamColorFamily.fuchsiaCore,
                             radius: 6,
                           )
                         ),
