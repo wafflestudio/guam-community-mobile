@@ -39,7 +39,7 @@ class _NotificationsAppScaffoldState extends State<NotificationsAppScaffold> {
       appBar: CustomAppBar(
         title: '알림',
         trailing: Padding(
-          padding: EdgeInsets.only(right: 11),
+          padding: EdgeInsets.only(right: 14),
           child: IconButton(
             padding: EdgeInsets.zero,
             constraints: BoxConstraints(),

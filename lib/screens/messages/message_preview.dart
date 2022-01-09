@@ -34,12 +34,14 @@ class MessagePreview extends StatelessWidget {
           padding: EdgeInsets.only(left: 12, top: 6, bottom: 6),
           child: InkWell(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => MessageDetail(
-                  messages,
-                  messageBox.otherProfile.nickname,
-                )
-              ));
+              // 쪽지함 수정 페이지에서는 쪽지 클릭 후 이동 불가능
+              if (!editable)
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => MessageDetail(
+                    messages,
+                    messageBox.otherProfile.nickname,
+                  ))
+                );
             },
             child: Row(
               children: [

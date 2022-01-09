@@ -24,7 +24,7 @@ class MessageBody extends StatelessWidget {
         title: '쪽지함',
         leading: Back(),
         trailing: Padding(
-          padding: EdgeInsets.only(right: 11),
+          padding: EdgeInsets.only(right: 14),
           child: IconButton(
             padding: EdgeInsets.zero,
             constraints: BoxConstraints(),
