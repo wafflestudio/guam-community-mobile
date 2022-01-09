@@ -43,13 +43,13 @@ class MessageBoxEdit extends StatelessWidget {
         color: GuamColorFamily.grayscaleWhite,
         padding: EdgeInsets.only(top: 18),
         child: Column(
-            children: [
-              ...messageBoxes.map((messageBox) => MessagePreview(
-                messageBox,
-                messages,
-                editable: true,
-              ))
-            ]
+          children: [
+            ...messageBoxes.map((messageBox) => MessagePreview(
+              messageBox,
+              messages,
+              editable: true,
+            ))
+          ]
         ),
       ),
     );
