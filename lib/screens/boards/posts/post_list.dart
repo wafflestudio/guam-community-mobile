@@ -17,28 +17,24 @@ class PostList extends StatefulWidget {
 }
 
 class _PostListState extends State<PostList> {
-  List<String> interests = ['#개발', '#데이터분석', '#디자인', '#기획/마케팅', '#기타'];
   List<String> selectedInterests = [];
 
   void setInterests(String interest){
-    setState(() {
-      selectedInterests.contains(interest)
-          ? selectedInterests.remove(interest)
-          : selectedInterests.add(interest);
-    });
+    setState(() => selectedInterests.contains(interest)
+        ? selectedInterests.remove(interest)
+        : selectedInterests.add(interest)
+    );
   }
 
   @override
   void initState() {
-    selectedInterests = interests;
+    selectedInterests = ['#개발', '#데이터분석', '#디자인', '#기획/마케팅', '#기타'];
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final postsProvider = context.read<Posts>();
-
-    print(selectedInterests);
 
     return Container(
       decoration: BoxDecoration(color: GuamColorFamily.purpleLight3), // background color
@@ -58,6 +54,7 @@ class _PostListState extends State<PostList> {
                   onPressed: () => showMaterialModalBottomSheet(
                     context: context,
                     useRootNavigator: true,
+                    // 완료 버튼의 특수 기능을 담지 못하는 isDismissible은 비활성화시킴.
                     isDismissible: false,
                     backgroundColor: GuamColorFamily.grayscaleWhite,
                     shape: RoundedRectangleBorder(
@@ -120,7 +117,7 @@ class _PostListState extends State<PostList> {
                                     onPressed: (){
                                       Navigator.of(context).pop();
                                       if (selectedInterests.isEmpty){
-                                        myState(() => selectedInterests = interests);
+                                        myState(() => selectedInterests = ['#개발', '#데이터분석', '#디자인', '#기획/마케팅', '#기타']);
                                         // 전체 해제시키고 완료하면 전체 선택했을 때 결과로 보내주기
                                       }
                                     },
@@ -157,14 +154,11 @@ class _PostListState extends State<PostList> {
   Widget _interestType(BuildContext context, StateSetter myState, String interest) {
     return Builder(
       builder: (context) => InkWell(
-        onTap: () {
-          // setInterests(interest);
-          myState(() {
-            selectedInterests.contains(interest)
-                ? selectedInterests.remove(interest)
-                : selectedInterests.add(interest);
-          });
-          },
+        onTap: () =>
+          myState(() => selectedInterests.contains(interest)
+              ? selectedInterests.remove(interest)
+              : selectedInterests.add(interest)
+          ),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Row(
