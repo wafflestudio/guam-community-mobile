@@ -20,6 +20,7 @@ class GuamColorFamily {
   static HexColor grayscaleWhite = HexColor('#FFFFFF');
 
   static HexColor purpleCore = HexColor('#6951FF');
+  static HexColor purpleDark1 = HexColor('#5038E3');
   static HexColor purpleLight1 = HexColor('#9F8FFF');
   static HexColor purpleLight2 = HexColor('#E5E1FF');
   static HexColor purpleLight3 = HexColor('#F9F8FF');
@@ -35,4 +36,6 @@ class GuamColorFamily {
   static HexColor redCore = HexColor('#F37462');
 
   static HexColor fuchsiaCore = HexColor('#EF5DA8');
+
+  static HexColor kakaoYellow = HexColor('#FFCD00');
 }
