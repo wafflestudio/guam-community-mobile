@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               image: DecorationImage(
                 fit: BoxFit.fitWidth,
                 alignment: Alignment.bottomCenter,
-                image: AssetImage('assets/backgrounds/Union_02@2x.png')
+                image: AssetImage('assets/backgrounds/background_01_2x.png')
               )
             ),
           ),
@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               image: DecorationImage(
                 fit: BoxFit.fitWidth,
                 alignment: Alignment.bottomCenter,
-                image: AssetImage('assets/backgrounds/Union_01@2x.png')
+                image: AssetImage('assets/backgrounds/background_02_2x.png')
               )
             ),
             child: Stack(
