@@ -1,22 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
+import 'package:guam_community_client/styles/fonts.dart';
 
-
-// ScaleTransition(
-// scale: _setAnimation(begin, end),
-// child: Container(
-// width: width,
-// height: height,
-// decoration: BoxDecoration(
-// image: DecorationImage(
-// image: SvgProvider(
-// 'assets/backgrounds/splash/star_splash.svg',
-// color: color,
-// ),
-// ),
-// )
-// )
-// ),
 
 class SplashText extends StatefulWidget {
   @override
@@ -45,28 +30,29 @@ class _SplashTextState extends State<SplashText> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return ScaleTransition(
       scale: CurvedAnimation(
-          parent: _animationController,
-          curve: Interval(1/100, 1, curve: Curves.fastOutSlowIn)
+        parent: _animationController,
+        curve: Interval(1/100, 1, curve: Curves.fastOutSlowIn),
       ),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                'IT인들의 커뮤니티',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: GuamColorFamily.grayscaleWhite,
-                )
+              'IT인들의 커뮤니티',
+              style: TextStyle(
+                fontSize: 18,
+                color: GuamColorFamily.purpleLight3,
+              )
             ),
             Text(
-                'Guam',
-                style: TextStyle(
-                  fontSize: 56,
-                  fontFamily: "Poppins",
-                  fontWeight: FontWeight.w700,
-                  color: GuamColorFamily.purpleDark1,
-                )
+              'Guam',
+              style: TextStyle(
+                height: 1.3,
+                fontSize: 56,
+                fontWeight: FontWeight.w700,
+                fontFamily: GuamFontFamily.Poppins,
+                color: GuamColorFamily.purpleDark1,
+              )
             )
           ],
         ),

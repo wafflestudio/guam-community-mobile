@@ -72,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 _starSplash(
                   begin: 1/20, end: 1,
                   width: 32, height: 32,
-                  top: size.height*0.2, left: size.width*0.88,
+                  top: size.height*0.19, left: size.width*0.88,
                   color: GuamColorFamily.purpleCore,
                 ),
                 _starSplash(
@@ -84,19 +84,19 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 _starSplash(
                   begin: 1/2, end: 1,
                   width: 25, height: 25,
-                  top: size.height*0.45, left: size.width*0.78,
+                  top: size.height*0.50, left: size.width*0.76,
                   color: GuamColorFamily.purpleLight2,
                 ),
                 _starSplash(
                   begin: 1/2, end: 1,
                   width: 32, height: 32,
-                  top: size.height*0.56, left: size.width*0.16,
+                  top: size.height*0.57, left: size.width*0.16,
                   color: GuamColorFamily.purpleLight2,
                 ),
                 _starSplash(
                   begin: 1/30, end: 1,
                   width: 25, height: 25,
-                  top: size.height*0.66, left: size.width*0.57,
+                  top: size.height*0.68, left: size.width*0.57,
                   color: GuamColorFamily.purpleLight3,
                 ),
                 SplashText(),
