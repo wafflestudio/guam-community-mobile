@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/screens/app/splash/splash_screen.dart';
-import 'package:guam_community_client/screens/login/signup/signup.dart';
+import 'package:guam_community_client/screens/login/login_page.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
@@ -35,11 +35,11 @@ class MyApp extends StatelessWidget {
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              initialRoute: '/main',
+              initialRoute: '/signup',
               routes: {
-                // '/': (context) => SignUp(),
+                // 소셜로그인 TOKEN 가지고 있으면 /main 으로 Redirect
+                '/signup': (context) => LoginPage(),
                 '/main': (context) => App(),
-                // Navigator 함수의 pushReplacementNamed로 route 이동
               },
               theme: ThemeData(
                 primaryColor: GuamColorFamily.purpleCore,
