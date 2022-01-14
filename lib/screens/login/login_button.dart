@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/screens/app/app.dart';
 import 'package:guam_community_client/screens/login/signup/signup.dart';
@@ -32,7 +33,12 @@ class LoginButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(image: SvgProvider('assets/logos/$logo.svg')),
+              IconButton(
+                onPressed: null,
+                padding: EdgeInsets.only(right: 8),
+                constraints: BoxConstraints(),
+                icon: SvgPicture.asset('assets/logos/$logo.svg'),
+              ),
               Text(
                 platform,
                 style: TextStyle(
