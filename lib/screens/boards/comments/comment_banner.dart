@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_alert.dart';
 import 'package:guam_community_client/commons/bottom_modal/bottom_modal_default.dart';
-import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_choice.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import 'package:guam_community_client/screens/boards/posts/post_comment_report.dart';
@@ -78,7 +77,9 @@ class CommentBanner extends StatelessWidget {
                       if (comment.isAuthor)
                         BottomModalDefault(
                           text: '수정하기',
-                          onPressed: (){},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                         ),
                       if (comment.isAuthor)
                         BottomModalWithAlert(
