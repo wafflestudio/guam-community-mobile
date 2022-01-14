@@ -19,7 +19,7 @@ class CommentBody extends StatelessWidget {
           child: Text(
             comment.comment,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 13,
               height: 1.6,
               fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
               color: GuamColorFamily.grayscaleGray2,
