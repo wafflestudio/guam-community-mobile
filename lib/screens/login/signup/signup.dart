@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/next_button.dart';
+import 'package:guam_community_client/screens/app/app.dart';
 import 'package:guam_community_client/screens/login/signup/signup_interest.dart';
 import 'package:guam_community_client/screens/login/signup/signup_nickname.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -19,8 +20,13 @@ class _SignUpState extends State<SignUp> {
     }
   });
 
-  // signup 정보 Post API 완성 전까지는 임시 방편으로 page -- 처리
-  void _startButton() => setState(() {page--;});
+  // void _startButton() => setState(() {page--;});
+  void _startButton() {
+    Navigator.of(context).push(
+      // 닉네임 & 관심사 API 날리기
+      MaterialPageRoute(builder: (_) => App()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +48,8 @@ class _SignUpState extends State<SignUp> {
               Padding(
                 padding: EdgeInsets.only(bottom: 40),
                 child: NextButton(
-                  label: page==1 ? '다음' : '시작',
-                  onTap: page==1 ? _nextButton : _startButton),
+                    label: page==1 ? '다음' : '시작',
+                    onTap: page==1 ? _nextButton : _startButton),
               ),
             ],
           ),

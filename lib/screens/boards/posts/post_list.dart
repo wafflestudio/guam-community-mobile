@@ -37,7 +37,7 @@ class _PostListState extends State<PostList> {
     final postsProvider = context.read<Posts>();
 
     return Container(
-      decoration: BoxDecoration(color: GuamColorFamily.purpleLight3), // background color
+      decoration: BoxDecoration(color: GuamColorFamily.purpleLight3), // backgrounds color
       child: Column(
         children: [
           Padding(
