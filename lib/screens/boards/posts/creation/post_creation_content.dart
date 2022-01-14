@@ -15,6 +15,7 @@ class _PostCreationContentState extends State<PostCreationContent> {
 
   @override
   void initState() {
+    _contentTextFieldController.text = widget.input['content'];
     super.initState();
   }
 
@@ -30,8 +31,8 @@ class _PostCreationContentState extends State<PostCreationContent> {
         keyboardType: TextInputType.multiline,
         controller: _contentTextFieldController,
         onChanged: (e) => setContent(),
-        maxLines: 1,
-        style: TextStyle(fontSize: 14),
+        maxLines: null,
+        style: TextStyle(fontSize: 14, height: 1.6, color: GuamColorFamily.grayscaleGray2),
         decoration: InputDecoration(
           hintText: "내용을 입력해주세요.",
           hintStyle: TextStyle(fontSize: 14, color: GuamColorFamily.grayscaleGray5),

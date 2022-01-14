@@ -15,6 +15,7 @@ class _PostCreationTitleState extends State<PostCreationTitle> {
 
   @override
   void initState() {
+    _titleTextFieldController.text = widget.input['title'];
     super.initState();
   }
 

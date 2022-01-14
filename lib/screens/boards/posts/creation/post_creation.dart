@@ -13,8 +13,9 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PostCreation extends StatefulWidget {
   final bool isEdit;
+  final dynamic editTarget;
 
-  PostCreation({this.isEdit = false});
+  PostCreation({this.isEdit = false, this.editTarget});
 
   @override
   State<PostCreation> createState() => _PostCreationState();
@@ -31,9 +32,22 @@ class _PostCreationState extends State<PostCreation> {
 
   bool isBoardAnonymous = false;
 
-  void setBoardAnonymous(String boardType){
+  @override
+  void initState() {
+    if (widget.editTarget != null) {
+      input['title'] = widget.editTarget.title;
+      input['content'] = widget.editTarget.content;
+      input['boardType'] = widget.editTarget.boardType;
+      input['interest'] = widget.editTarget.interest;
+      // 이미지는 추후 S3 연동 후 기존 게시글 이미지 S3 주소 받아와서 처리할 예정
+      // input['images'] = widget.editTarget.images;
+    }
+    super.initState();
+  }
+
+  void setBoardAnonymous(String boardType) {
     setState(() {
-      if (boardType == '익명게시판'){
+      if (boardType == '익명게시판') {
         isBoardAnonymous = true;
       } else {
         isBoardAnonymous = false;

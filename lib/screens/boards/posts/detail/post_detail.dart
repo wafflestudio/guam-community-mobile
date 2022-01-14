@@ -85,7 +85,10 @@ class _PostDetailState extends State<PostDetail> {
                               text: '수정하기',
                               onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (_) => PostCreation(isEdit: true)
+                                  builder: (_) => PostCreation(
+                                    isEdit: true,
+                                    editTarget: widget.post, // 수정할 대상 (Post)
+                                  )
                                 ),
                               ),
                             ),
