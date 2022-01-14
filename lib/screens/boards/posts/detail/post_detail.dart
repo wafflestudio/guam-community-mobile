@@ -95,8 +95,8 @@ class _PostDetailState extends State<PostDetail> {
                           if (widget.post.isAuthor)
                             BottomModalWithAlert(
                               funcName: '삭제하기',
-                              title: '댓글을 삭제하시겠어요?',
-                              body: '삭제된 댓글은 복원할 수 없습니다.',
+                              title: '게시글을 삭제하시겠어요?',
+                              body: '삭제된 게시글은 복원할 수 없습니다.',
                               func: () {},
                             ),
                           if (!widget.post.isAuthor)
