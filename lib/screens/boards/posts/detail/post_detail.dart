@@ -8,6 +8,7 @@ import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/screens/boards/comments/comments.dart';
+import 'package:guam_community_client/screens/boards/posts/creation/post_creation.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_banner.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_body.dart';
 import 'package:guam_community_client/screens/boards/posts/post_info.dart';
@@ -82,7 +83,11 @@ class _PostDetailState extends State<PostDetail> {
                           if (widget.post.isAuthor)
                             BottomModalDefault(
                               text: '수정하기',
-                              onPressed: (){},
+                              onPressed: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => PostCreation(isEdit: true)
+                                ),
+                              ),
                             ),
                           if (widget.post.isAuthor)
                             BottomModalWithAlert(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/screens/boards/posts/creation/post_creation_board.dart';
@@ -12,6 +13,10 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PostCreation extends StatefulWidget {
+  final bool isEdit;
+
+  PostCreation({this.isEdit = false});
+
   @override
   State<PostCreation> createState() => _PostCreationState();
 }
@@ -48,74 +53,78 @@ class _PostCreationState extends State<PostCreation> {
           margin: EdgeInsets.zero,
           child: IconButton(
             icon: SvgPicture.asset('assets/icons/back.svg'),
-            onPressed: () =>
+            onPressed: () {
+              if (widget.isEdit) {
+                Navigator.pop(context);
+              } else {
                 showMaterialModalBottomSheet(
-              context: context,
-              useRootNavigator: true,
-              backgroundColor: GuamColorFamily.grayscaleWhite,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  )
-              ),
-              builder: (context) =>
-                  SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.only(left: 24, top: 24, right: 18, bottom: 14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  context: context,
+                  useRootNavigator: true,
+                  backgroundColor: GuamColorFamily.grayscaleWhite,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  builder: (context) => SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 24, top: 24, right: 18, bottom: 14),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '게시글 작성을 취소하시겠어요?',
-                            style: TextStyle(fontSize: 18, color: GuamColorFamily.grayscaleGray2),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '게시글 작성을 취소하시겠어요?',
+                                style: TextStyle(fontSize: 18, color: GuamColorFamily.grayscaleGray2),
+                              ),
+                              TextButton(
+                                child: Text(
+                                  '돌아가기',
+                                  style: TextStyle(fontSize: 16, color: GuamColorFamily.purpleCore,
+                                  ),
+                                ),
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: Size(30, 26),
+                                  alignment: Alignment.centerRight,
+                                ),
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                            ],
                           ),
-                          TextButton(
+                          CustomDivider(color: GuamColorFamily.grayscaleGray7),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20),
                             child: Text(
-                              '돌아가기',
-                              style: TextStyle(fontSize: 16, color: GuamColorFamily.purpleCore,
+                              '게시글은 임시저장되지 않습니다.',
+                              style: TextStyle(
+                                fontSize: 14,
+                                height: 1.6,
+                                color: GuamColorFamily.grayscaleGray2,
+                                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
                               ),
                             ),
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              minimumSize: Size(30, 26),
-                              alignment: Alignment.centerRight,
+                          ),
+                          Center(
+                            child: TextButton(
+                              onPressed: () => Navigator.of(context)
+                                .pushNamedAndRemoveUntil('/main', (route) => true),
+                              child: Text(
+                                '취소하기',
+                                style: TextStyle(fontSize: 16, color: GuamColorFamily.redCore),
+                              ),
                             ),
-                            onPressed: () => Navigator.of(context).pop(),
                           ),
                         ],
                       ),
-                      CustomDivider(color: GuamColorFamily.grayscaleGray7),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        child: Text(
-                          '게시글은 임시저장되지 않습니다.',
-                          style: TextStyle(
-                            fontSize: 14,
-                            height: 1.6,
-                            color: GuamColorFamily.grayscaleGray2,
-                            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: TextButton(
-                          onPressed: () => Navigator.of(context)
-                            .pushNamedAndRemoveUntil('/main', (route) => true),
-                          child: Text(
-                            '취소하기',
-                            style: TextStyle(fontSize: 16, color: GuamColorFamily.redCore),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
+                );
+              }
+            }
           ),
         ),
         trailing: Padding(
