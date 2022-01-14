@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              initialRoute: '/signup',
+              initialRoute: '/main',
               routes: {
                 // 소셜로그인 TOKEN 가지고 있으면 /main 으로 Redirect
                 '/signup': (context) => LoginPage(),

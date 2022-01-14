@@ -104,11 +104,11 @@ class _PostListState extends State<PostList> {
                                   padding: EdgeInsets.only(top: 10),
                                   child: Column(
                                     children: [
-                                      _interestType(context, myState, '#개발'),
-                                      _interestType(context, myState, '#데이터분석'),
-                                      _interestType(context, myState, '#디자인'),
-                                      _interestType(context, myState, '#기획/마케팅'),
-                                      _interestType(context, myState, '#기타'),
+                                      _interestType(myState, '#개발'),
+                                      _interestType(myState, '#데이터분석'),
+                                      _interestType(myState, '#디자인'),
+                                      _interestType(myState, '#기획/마케팅'),
+                                      _interestType(myState, '#기타'),
                                     ],
                                   ),
                                 ),
@@ -151,9 +151,9 @@ class _PostListState extends State<PostList> {
     );
   }
 
-  Widget _interestType(BuildContext context, StateSetter myState, String interest) {
+  Widget _interestType(StateSetter myState, String interest) {
     return Builder(
-      builder: (context) => InkWell(
+      builder: (_) => InkWell(
         onTap: () =>
           myState(() => selectedInterests.contains(interest)
               ? selectedInterests.remove(interest)
@@ -179,6 +179,7 @@ class _PostListState extends State<PostList> {
               ),
               if (selectedInterests.contains(interest))
                 IconButton(
+                  onPressed: null,
                   padding: EdgeInsets.only(right: 8),
                   constraints: BoxConstraints(),
                   icon: SvgPicture.asset('assets/icons/check.svg'),
