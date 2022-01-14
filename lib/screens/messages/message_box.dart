@@ -12,22 +12,25 @@ class MessageBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final messagesProvider = context.read<Messages>();
 
-    return IconButton(
-      icon: SvgPicture.asset(
-        newMessage
-          ? 'assets/icons/message_new.svg'
-          : 'assets/icons/message_default.svg'
-      ),
-      onPressed: () {
-        Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(
-            builder: (_) => MessageBody(
-                messagesProvider.messageBoxes,
-                messagesProvider.messages,
+    return Padding(
+      padding: EdgeInsets.only(right: 4),
+      child: IconButton(
+        icon: SvgPicture.asset(
+          newMessage
+            ? 'assets/icons/message_new.svg'
+            : 'assets/icons/message_default.svg'
+        ),
+        onPressed: () {
+          Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(
+              builder: (_) => MessageBody(
+                  messagesProvider.messageBoxes,
+                  messagesProvider.messages,
+              )
             )
-          )
-        );
-      }
+          );
+        }
+      ),
     );
   }
 }
