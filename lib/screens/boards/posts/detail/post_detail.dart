@@ -13,7 +13,6 @@ import 'package:guam_community_client/screens/boards/posts/detail/post_detail_ba
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_body.dart';
 import 'package:guam_community_client/screens/boards/posts/post_info.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import 'package:guam_community_client/styles/fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../post_comment_report.dart';
@@ -74,40 +73,36 @@ class _PostDetailState extends State<PostDetail> {
                       padding: EdgeInsets.only(left: 24, top: 24, bottom: 21),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (!widget.post.isAuthor)
-                            BottomModalDefault(
-                              text: '쪽지 보내기',
-                              onPressed: (){},
-                            ),
-                          if (widget.post.isAuthor)
-                            BottomModalDefault(
-                              text: '수정하기',
-                              onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => PostCreation(
-                                    isEdit: true,
-                                    editTarget: widget.post, // 수정할 대상 (Post)
-                                  )
-                                ),
+                        children: widget.post.isAuthor ? [
+                          BottomModalDefault(
+                            text: '수정하기',
+                            onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => PostCreation(
+                                  isEdit: true,
+                                  editTarget: widget.post, // 수정할 대상 (Post)
+                                )
                               ),
                             ),
-                          if (widget.post.isAuthor)
-                            BottomModalWithAlert(
-                              funcName: '삭제하기',
-                              title: '게시글을 삭제하시겠어요?',
-                              body: '삭제된 게시글은 복원할 수 없습니다.',
-                              func: () {},
-                            ),
-                          if (!widget.post.isAuthor)
-                            PostCommentReport(widget.post.profile),
-                          if (!widget.post.isAuthor)
-                            BottomModalWithAlert(
-                              funcName: '차단하기',
-                              title: '${widget.post.profile.nickname} 님을 차단하시겠어요?',
-                              body: '사용자를 차단하면, 해당 사용자의 게시글 및 댓글을 확인 할 수 없으며, 서로 쪽지를 주고 받을 수 없습니다.\n\n차단계정 관리는 프로필>계정 설정> 차단 목록 관리 탭에서 확인 가능합니다',
-                              func: () {},
-                            ),
+                          ),
+                          BottomModalWithAlert(
+                            funcName: '삭제하기',
+                            title: '게시글을 삭제하시겠어요?',
+                            body: '삭제된 게시글은 복원할 수 없습니다.',
+                            func: () {},
+                          ),
+                        ] : [
+                          BottomModalDefault(
+                            text: '쪽지 보내기',
+                            onPressed: (){},
+                          ),
+                          PostCommentReport(widget.post.profile),
+                          BottomModalWithAlert(
+                            funcName: '차단하기',
+                            title: '${widget.post.profile.nickname} 님을 차단하시겠어요?',
+                            body: '사용자를 차단하면, 해당 사용자의 게시글 및 댓글을 확인 할 수 없으며, 서로 쪽지를 주고 받을 수 없습니다.\n\n차단계정 관리는 프로필>계정 설정> 차단 목록 관리 탭에서 확인 가능합니다',
+                            func: () {},
+                          ),
                         ],
                       ),
                     ),
