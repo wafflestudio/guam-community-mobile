@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import '../../commons/common_text_button.dart';
 import 'package:guam_community_client/styles/fonts.dart';
+import '../../providers/posts/posts.dart';
 
 class SearchAppTextField extends StatefulWidget {
   @override
@@ -56,6 +57,7 @@ class _SearchAppTextFieldState extends State<SearchAppTextField> {
                 ),
                 onSubmitted: (query) {
                   print('Query: $query');
+
                   FocusScope.of(context).unfocus();
 
                 },
@@ -67,7 +69,7 @@ class _SearchAppTextFieldState extends State<SearchAppTextField> {
             fontSize: 14,
             fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
             textColor: GuamColorFamily.purpleCore,
-            onPressed: () => _controller.clear();
+            onPressed: () => _controller.clear()
           )
         ],
       ),
