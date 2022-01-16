@@ -4,14 +4,18 @@ import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
-import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview.dart';
 
 import '../../../commons/sub_headings.dart';
 
 class PostList extends StatefulWidget {
+  final List<Post> posts;
+
+  PostList(this.posts);
+
   @override
   State<PostList> createState() => _PostListState();
 }
@@ -34,8 +38,6 @@ class _PostListState extends State<PostList> {
 
   @override
   Widget build(BuildContext context) {
-    final postsProvider = context.read<Posts>();
-
     return Container(
       decoration: BoxDecoration(color: GuamColorFamily.purpleLight3), // backgrounds color
       child: Column(
@@ -141,9 +143,7 @@ class _PostListState extends State<PostList> {
           Padding(
             padding: EdgeInsets.only(bottom: 10),
             child: Column(
-              children: [
-                ...postsProvider.posts.map((post) => PostPreview(post))
-              ]
+              children: [...widget.posts.map((post) => PostPreview(post))]
             ),
           )
         ],
