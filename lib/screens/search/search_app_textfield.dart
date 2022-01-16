@@ -15,12 +15,6 @@ class SearchAppTextFieldState extends State<SearchAppTextField> {
   static final controller = TextEditingController();
 
   @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final searchProvider = context.read<Search>();
     return Container(
