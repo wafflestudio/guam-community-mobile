@@ -13,11 +13,10 @@ class SearchAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    var textColor = GuamColorFamily.grayscaleGray1;
     var iconColor = GuamColorFamily.grayscaleGray1;
 
     return AppBar(
-      elevation: 0.7,
+      elevation: 0,
       title: title,
       automaticallyImplyLeading: false,
       bottom: bottom,
