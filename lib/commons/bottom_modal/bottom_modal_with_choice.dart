@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import '../custom_divider.dart';
 
-class BottomModalWithChoice extends StatefulWidget {
-  final String func;
+class BottomModalWithChoice extends StatelessWidget {
   final String title;
   final String back;
   final String body;
-  final String selectedChoice;
-  final Function choiceFunc;
+  final String alert;
+  final String confirm;
+  final List<Widget> children;
 
-  BottomModalWithChoice({this.func, this.title, this.back, this.body, this.selectedChoice, this.choiceFunc});
+  BottomModalWithChoice({this.title, this.back, this.body, this.alert, this.confirm, this.children});
 
-  @override
-  State<BottomModalWithChoice> createState() => _BottomModalWithChoiceState();
-}
-
-class _BottomModalWithChoiceState extends State<BottomModalWithChoice> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -31,12 +25,12 @@ class _BottomModalWithChoiceState extends State<BottomModalWithChoice> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.title,
+                  title,
                   style: TextStyle(fontSize: 18, color: GuamColorFamily.grayscaleGray2),
                 ),
                 TextButton(
                   child: Text(
-                    widget.back,
+                    back,
                     style: TextStyle(fontSize: 16, color: GuamColorFamily.purpleCore),
                   ),
                   style: TextButton.styleFrom(
@@ -49,60 +43,53 @@ class _BottomModalWithChoiceState extends State<BottomModalWithChoice> {
               ],
             ),
             CustomDivider(color: GuamColorFamily.grayscaleGray7),
+            if (body != null)
+              Padding(
+                padding: EdgeInsets.only(top: 20, bottom: 10),
+                child: Text(
+                  body,
+                  style: TextStyle(fontSize: 14, height: 1.6, fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular),
+                ),
+              ),
             Container(
               padding: EdgeInsets.only(top: 10, bottom: 20),
               child: Column(
-                children: [
-                  _boardType('익명게시판'),
-                  _boardType('자유게시판'),
-                  _boardType('구인게시판'),
-                  _boardType('정보공유게시판'),
-                  _boardType('홍보게시판'),
-                ],
+                children: children,
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _boardType(String boardType) {
-    return Builder(
-        builder: (context) => InkWell(
-          onTap: () {
-            widget.choiceFunc(boardType);
-            Navigator.pop(context);
-          },
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  height: 20,
+            if (alert != null)
+              Padding(
+                padding: EdgeInsets.only(bottom: 10),
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: GuamColorFamily.grayscaleGray6),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                  ),
                   child: Text(
-                    boardType,
+                    alert,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
+                      height: 1.6,
+                      color: GuamColorFamily.grayscaleGray2,
                       fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                      color: boardType == widget.selectedChoice
-                          ? GuamColorFamily.purpleCore
-                          : GuamColorFamily.grayscaleGray3,
                     ),
                   ),
                 ),
-                if (boardType == widget.selectedChoice)
-                  IconButton(
-                    padding: EdgeInsets.only(right: 8),
-                    constraints: BoxConstraints(),
-                    icon: SvgPicture.asset('assets/icons/check.svg'),
-                    onPressed: null,
+              ),
+            if (confirm != null)
+              Center(
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    confirm,
+                    style: TextStyle(fontSize: 16, color: GuamColorFamily.redCore),
                   ),
-              ],
-            ),
-          ),
-        )
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
