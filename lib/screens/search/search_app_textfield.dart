@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../commons/common_text_button.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import '../../providers/search/search.dart';
+import '../../providers/user_auth/authenticate.dart';
 
 class SearchAppTextField extends StatefulWidget {
   @override
@@ -58,8 +59,10 @@ class _SearchAppTextFieldState extends State<SearchAppTextField> {
                   ),
                 ),
                 onSubmitted: (word) {
-                  print('Query: $word');
-                  // request axios
+                  searchProvider.searchPosts(
+                    authToken: context.read<Authenticate>().authToken,
+                    query: word
+                  );
                   searchProvider.saveHistory(word);
                   FocusScope.of(context).unfocus();
                 },
