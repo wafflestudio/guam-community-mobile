@@ -4,7 +4,6 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
 import 'search_app_bar.dart';
 import 'search_app_textfield.dart';
-import 'package:provider/provider.dart';
 import '../../providers/search/search.dart';
 
 class SearchApp extends StatelessWidget {
@@ -22,7 +21,7 @@ class SearchApp extends StatelessWidget {
 class SearchAppScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final searchProvider = context.read<Search>();
+    final searchProvider = context.watch<Search>();
 
     return Scaffold(
       backgroundColor: GuamColorFamily.grayscaleWhite,
@@ -32,8 +31,8 @@ class SearchAppScaffold extends StatelessWidget {
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(color: GuamColorFamily.purpleLight3),
-        child: searchProvider.searchHistory.isNotEmpty
-            ? SearchHistory(searchProvider.searchHistory)
+        child: searchProvider.history.isNotEmpty
+            ? SearchHistory([...searchProvider.history.reversed])
             : Container(),
       ),
     );

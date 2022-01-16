@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/commons/common_icon_button.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
+import 'package:provider/provider.dart';
+import '../../providers/search/search.dart';
 
 class SearchWord extends StatelessWidget {
   final String word;
@@ -30,6 +31,7 @@ class SearchWord extends StatelessWidget {
           iconSize: 22,
           iconColor: GuamColorFamily.grayscaleGray3,
           iconPath: 'assets/icons/cancel_outlined.svg',
+          onPressed: () => context.read<Search>().removeHistory(word),
         )
       ],
     );

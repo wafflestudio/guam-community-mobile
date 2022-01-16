@@ -1,19 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../profiles/profiles.dart';
 import '../../models/boards/post.dart';
 
 class Search with ChangeNotifier {
   List<Post> searchedPosts;
-  List<String> searchHistory = [
-    '갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸갸sisisi',
-    '냐냐',
-    '갸갸',
-    '갸갸',
-    '갸갸',
-  ];
+
+  List<String> history = [];  // Recently searched word is at the back
+  static const String searchHistoryKey = 'search-history';
+  static const int maxNHistory = 5;
+
+  Search() { getHistory(); }
 
   bool loading = false;
+
+  bool historyFull() => history.length >= maxNHistory;
+
+  Future getHistory() async {
+    await SharedPreferences.getInstance()
+        .then((storage) => history = storage.getStringList(searchHistoryKey) ?? []);
+  }
+
+  Future saveHistory(String word) async {
+    try {
+      if (word.trim() == '') return;
+      if (historyFull()) history.removeAt(0);
+
+      history.add(word);
+      await SharedPreferences.getInstance()
+          .then((storage) => storage.setStringList(searchHistoryKey, history));
+    } catch(e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future removeHistory(String word) async {
+    try {
+      history.remove(word);
+      await SharedPreferences.getInstance()
+          .then((storage) => storage.setStringList(searchHistoryKey, history));
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
 
   Future searchPosts(String authToken) async {
     try {
