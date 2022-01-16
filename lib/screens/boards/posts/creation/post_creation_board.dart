@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:guam_community_client/commons/custom_divider.dart';
+import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_choice.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -48,6 +48,7 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
               ),
             ),
             IconButton(
+              onPressed: null,
               padding: EdgeInsets.only(left: 4),
               constraints: BoxConstraints(),
               icon: SvgPicture.asset(
@@ -73,49 +74,20 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
             )
           ),
           builder: (context) => SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.only(left: 24, top: 18, right: 18),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '게시판을 선택해주세요.',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: GuamColorFamily.grayscaleGray2,
-                        ),
-                      ),
-                      TextButton(
-                        child: Text(
-                          '완료',
-                          style: TextStyle(fontSize: 16, color: GuamColorFamily.purpleCore),
-                        ),
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          minimumSize: Size(30, 26),
-                          alignment: Alignment.centerRight,
-                        ),
-                        onPressed: () => Navigator.pop(context)
-                      ),
-                    ],
-                  ),
-                  CustomDivider(color: GuamColorFamily.grayscaleGray7),
-                  Container(
-                    padding: EdgeInsets.only(top: 10, bottom: 20),
-                    child: Column(
-                      children: [
-                        _boardType('익명게시판'),
-                        _boardType('자유게시판'),
-                        _boardType('구인게시판'),
-                        _boardType('정보공유게시판'),
-                        _boardType('홍보게시판'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+            child: Column(
+              children: [
+                BottomModalWithChoice(
+                  title: '게시판을 선택해주세요.',
+                  back: '완료',
+                  children: [
+                    _boardType('익명게시판'),
+                    _boardType('자유게시판'),
+                    _boardType('구인게시판'),
+                    _boardType('정보공유게시판'),
+                    _boardType('홍보게시판')
+                  ],
+                ),
+              ],
             ),
           )
         )
@@ -145,19 +117,20 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
                     color: boardType == widget.input['boardType']
                         ? GuamColorFamily.purpleCore
                         : GuamColorFamily.grayscaleGray3,
-                  )
-                )
+                  ),
+                ),
               ),
               if (boardType == widget.input['boardType'])
                 IconButton(
                   padding: EdgeInsets.only(right: 8),
                   constraints: BoxConstraints(),
                   icon: SvgPicture.asset('assets/icons/check.svg'),
+                  onPressed: null,
                 ),
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }
