@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:guam_community_client/models/filter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../profiles/profiles.dart';
 import '../../models/boards/post.dart';
@@ -10,6 +11,17 @@ class Search with ChangeNotifier {
   List<String> history = [];  // Recently searched word is at the back
   static const String searchHistoryKey = 'search-history';
   static const int maxNHistory = 5;
+
+  static List<Filter> filters = [
+    Filter(
+      key: 'createdAt',
+      label: '최근순'
+    ),
+    Filter(
+      key: 'like',
+      label: '추천순',
+    ),
+  ];
 
   Search() { getHistory(); }
 
@@ -63,11 +75,11 @@ class Search with ChangeNotifier {
           'id': 1,
           'boardType': '자유게시판',
           'profile': profiles[0],
-          'title': '코딩 뭐부터 시작해야 하나요?',
+          'title': '-1',
           'content': '다른 일 하다가 프론트엔드 개발에 관심이 생겼는데 주변에 아는 현업자도 없고 뭐부터 해야할 지 감이 안오네요. 보통 어떤 것부터 시작하시나요?',
           'interest': '개발',
           'pictures': [],
-          'like': 31,
+          'like': 1,
           'comments': [
             {
               'id': 1,
@@ -75,7 +87,7 @@ class Search with ChangeNotifier {
               'isAuthor': false,
               'isLiked': true,
               'comment': '저도 궁금하네요 ㅎㅎ',
-              'like': 3,
+              'like': 2,
             },
             {
               'id': 2,
@@ -99,14 +111,14 @@ class Search with ChangeNotifier {
           'isAuthor': false,
           'isLiked': true,
           'isScrapped': true,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 1)),
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 2)),
         },
 
         {
           'id': 2,
           'boardType': '자유게시판',
           'profile': profiles[1],
-          'title': '네이버 코테 보신 분?',
+          'title': '-3',
           'content': '어제 네이버 코테 보신 분? 저 좀 잘 본 듯 ㅎㅎ',
           'interest': '데이터분석',
           'pictures': [
@@ -131,7 +143,7 @@ class Search with ChangeNotifier {
               'urlPath': 'https://t1.daumcdn.net/cfile/tistory/241F824757B095710E',
             }
           ],
-          'like': 87,
+          'like': 5,
           'comments': [
             {
               'id': 4,
@@ -170,7 +182,7 @@ class Search with ChangeNotifier {
           'id': 3,
           'boardType': '자유게시판',
           'profile': profiles[1],
-          'title': '네이버 코테 보신 분?',
+          'title': '3',
           'content': '어제 네이버 코테 보신 분? 저 좀 잘 본 듯 ㅎㅎ',
           'interest': '데이터분석',
           'pictures': [
@@ -195,7 +207,7 @@ class Search with ChangeNotifier {
               'urlPath': 'https://t1.daumcdn.net/cfile/tistory/241F824757B095710E',
             }
           ],
-          'like': 87,
+          'like': 2,
           'comments': [
             {
               'id': 4,
@@ -234,7 +246,7 @@ class Search with ChangeNotifier {
           'id': 4,
           'boardType': '자유게시판',
           'profile': profiles[1],
-          'title': '네이버 코테 보신 분?',
+          'title': '-4',
           'content': '어제 네이버 코테 보신 분? 저 좀 잘 본 듯 ㅎㅎ',
           'interest': '데이터분석',
           'pictures': [
@@ -259,7 +271,7 @@ class Search with ChangeNotifier {
               'urlPath': 'https://t1.daumcdn.net/cfile/tistory/241F824757B095710E',
             }
           ],
-          'like': 87,
+          'like': 90,
           'comments': [
             {
               'id': 4,
@@ -291,16 +303,23 @@ class Search with ChangeNotifier {
           'isAuthor': false,
           'isLiked': false,
           'isScrapped': true,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 4)),
         },
       ];
 
       searchedPosts = posts.map((e) => Post.fromJson(e)).toList();
+      // Default search with first filter 
+      sortSearchedPosts(filters[0]);
       loading = false;
     } catch (e) {
       print(e);
     } finally {
       notifyListeners();
     }
+  }
+
+  void sortSearchedPosts(Filter f) {
+    searchedPosts.sort((a, b) => b.toJson()[f.key].compareTo(a.toJson()[f.key]));
+    notifyListeners();
   }
 }

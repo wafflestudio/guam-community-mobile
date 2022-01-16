@@ -39,6 +39,17 @@ class Post extends ChangeNotifier {
     this.createdAt,
   });
 
+  /*
+  * Json Encoding for filter value comparison in search tab
+  * */
+  Map<String, dynamic> toJson() {
+    return {
+      'id': this.id,
+      'like': this.like,
+      'createdAt': this.createdAt,
+    };
+  }
+
   factory Post.fromJson(Map<String, dynamic> json) {
     Profile profile;
     List<Picture> pictures;

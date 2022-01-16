@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/screens/boards/posts/post_list.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview.dart';
+import 'package:guam_community_client/screens/search/search_feed.dart';
 import 'package:guam_community_client/screens/search/search_history.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +35,7 @@ class SearchAppScaffold extends StatelessWidget {
         decoration: BoxDecoration(color: GuamColorFamily.purpleLight3),
         child: searchProvider.searchedPosts.isEmpty
             ? SearchHistory([...searchProvider.history.reversed])
-            : SingleChildScrollView(child: Column(children: [...searchProvider.searchedPosts.map((p) => PostPreview(p))]),),
+            : SearchFeed(),
       ),
     );
   }
