@@ -45,6 +45,7 @@ class SearchWord extends StatelessWidget {
           iconSize: 22,
           iconColor: GuamColorFamily.grayscaleGray3,
           iconPath: 'assets/icons/cancel_outlined.svg',
+          paddingBtw: 0,
           onPressed: () => searchProvider.removeHistory(word),
         )
       ],

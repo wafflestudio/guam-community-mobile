@@ -38,34 +38,3 @@ class SearchFeed extends StatelessWidget {
     );
   }
 }
-
-// class SearchFeedState extends State<SearchFeed> {
-//   @override
-//   Widget build(BuildContext context) {
-//     final searchProvider = context.watch<Search>();
-//
-//     return SingleChildScrollView(
-//       child: Column(
-//         children: [
-//           Padding(
-//             padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
-//             child: Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 SubHeadings(
-//                   '검색결과 ${searchProvider.searchedPosts.length}건',
-//                   fontColor: GuamColorFamily.grayscaleGray1,
-//                   fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-//                   fontSize: 14,
-//                 )
-//               ],
-//             ),
-//           ),
-//           Column(
-//             children: [...searchProvider.searchedPosts.map((p) => PostPreview(p))],
-//           )
-//         ]
-//       ),
-//     );
-//   }
-// }
