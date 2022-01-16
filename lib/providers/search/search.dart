@@ -308,7 +308,7 @@ class Search with ChangeNotifier {
       ];
 
       searchedPosts = posts.map((e) => Post.fromJson(e)).toList();
-      // Default search with first filter 
+      // Default search with first filter
       sortSearchedPosts(filters[0]);
       loading = false;
     } catch (e) {

@@ -8,15 +8,15 @@ import '../../providers/user_auth/authenticate.dart';
 
 class SearchAppTextField extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _SearchAppTextFieldState();
+  State<StatefulWidget> createState() => SearchAppTextFieldState();
 }
 
-class _SearchAppTextFieldState extends State<SearchAppTextField> {
-  final _controller = TextEditingController();
+class SearchAppTextFieldState extends State<SearchAppTextField> {
+  static final controller = TextEditingController();
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -30,7 +30,7 @@ class _SearchAppTextFieldState extends State<SearchAppTextField> {
         children: [
           Expanded(
               child: TextField(
-                controller: _controller,
+                controller: controller,
                 autofocus: false,
                 keyboardType: TextInputType.multiline,
                 maxLines: 1,
@@ -74,7 +74,7 @@ class _SearchAppTextFieldState extends State<SearchAppTextField> {
             fontSize: 14,
             fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
             textColor: GuamColorFamily.purpleCore,
-            onPressed: () => _controller.clear()
+            onPressed: () => controller.clear()
           )
         ],
       ),
