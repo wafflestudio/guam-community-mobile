@@ -15,7 +15,7 @@ class CommentBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 32, top: 3, right: 12),
+          padding: EdgeInsets.only(left: 32, right: 12),
           child: Text(
             comment.comment,
             style: TextStyle(

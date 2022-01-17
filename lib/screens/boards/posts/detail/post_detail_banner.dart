@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/color_of_interest.dart';
-import 'package:guam_community_client/helpers/svg_provider.dart';
+import 'package:guam_community_client/commons/common_img_nickname.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
@@ -60,39 +60,17 @@ class PostDetailBanner extends StatelessWidget {
               style: TextStyle(fontSize: 18),
             )
         ),
-        Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 8, right: 8),
-              child: Container(
-                height: 24,
-                width: 24,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: post.profile.profileImg.urlPath != null
-                        ? NetworkImage(post.profile.profileImg.urlPath)
-                        : SvgProvider('assets/icons/profile_image.svg'),
-                  ),
-                ),
+        Padding(
+          padding: EdgeInsets.only(top: 8),
+          child: Row(
+            children: [
+              CommonImgNickname(
+                imgUrl: post.profile.profileImg != null ? post.profile.profileImg.urlPath : null,
+                nickname: post.profile.nickname,
+                nicknameColor: GuamColorFamily.grayscaleGray3,
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Text(
-                post.profile.nickname,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                  color: GuamColorFamily.grayscaleGray3,
-                ),
-              ),
-            ),
-            Spacer(),
-            Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Text(
+              Spacer(),
+              Text(
                 DateFormat('yyyy.MM.dd  HH:mm').format(post.createdAt),
                 style: TextStyle(
                   fontSize: 12,
@@ -100,8 +78,8 @@ class PostDetailBanner extends StatelessWidget {
                   color: GuamColorFamily.grayscaleGray5,
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ]
     );

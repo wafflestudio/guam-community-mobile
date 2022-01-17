@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
-import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../commons/common_img_nickname.dart';
 
@@ -11,12 +9,14 @@ class PostInfo extends StatelessWidget {
   final Post post;
   final double iconSize;
   final bool showProfile;
+  final bool profileClickable;
   final HexColor iconColor;
 
   PostInfo({
     this.post,
     this.iconSize = 20,
     this.showProfile = true,
+    this.profileClickable = true,
     this.iconColor,
   });
 
@@ -28,6 +28,8 @@ class PostInfo extends StatelessWidget {
           CommonImgNickname(
             imgUrl: post.profile.profileImg != null ? post.profile.profileImg.urlPath : null,
             nickname: post.profile.nickname,
+            profileClickable: profileClickable,
+            nicknameColor: GuamColorFamily.grayscaleGray2,
           ),
         if (showProfile) Spacer(),
         Row(

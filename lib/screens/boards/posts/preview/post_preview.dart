@@ -79,9 +79,13 @@ class PostPreview extends StatelessWidget {
                   color: GuamColorFamily.grayscaleGray3,
                 ),
               ),
-              PostInfo(
-                post: post,
-                iconColor: GuamColorFamily.grayscaleGray4,
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: PostInfo(
+                  post: post,
+                  profileClickable: false,
+                  iconColor: GuamColorFamily.grayscaleGray4,
+                ),
               )
             ],
           ),
