@@ -14,7 +14,7 @@ class CommonImgNickname extends StatelessWidget {
     return Row(
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 12, bottom: 8, right: 8),
+          padding: EdgeInsets.only(top: 12, bottom: 14, right: 8),
           child: Container(
             height: 24,
             width: 24,
@@ -34,7 +34,7 @@ class CommonImgNickname extends StatelessWidget {
           style: TextStyle(
             fontSize: 12,
             fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-            color: GuamColorFamily.grayscaleGray3,
+            color: GuamColorFamily.grayscaleGray2,
           ),
         ),
       ],

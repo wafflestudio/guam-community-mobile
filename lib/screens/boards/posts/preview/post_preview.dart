@@ -76,12 +76,12 @@ class PostPreview extends StatelessWidget {
                   height: 1.6,
                   fontSize: 12,
                   fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                  color: GuamColorFamily.grayscaleGray4,
+                  color: GuamColorFamily.grayscaleGray3,
                 ),
               ),
               PostInfo(
                 post: post,
-                iconColor: GuamColorFamily.grayscaleGray5,
+                iconColor: GuamColorFamily.grayscaleGray4,
               )
             ],
           ),
