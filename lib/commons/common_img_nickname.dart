@@ -14,7 +14,7 @@ class CommonImgNickname extends StatelessWidget {
     return Row(
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 12, bottom: 14, right: 8),
+          padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
           child: Container(
             height: 24,
             width: 24,
