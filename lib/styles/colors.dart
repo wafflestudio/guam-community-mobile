@@ -24,7 +24,6 @@ class GuamColorFamily {
   static HexColor purpleLight1 = HexColor('#9F8FFF');
   static HexColor purpleLight2 = HexColor('#E5E1FF');
   static HexColor purpleLight3 = HexColor('#F9F8FF');
-  static HexColor purpleDark1 = HexColor('#5038E3');
 
   static HexColor blueCore = HexColor('#5483F1');
 
