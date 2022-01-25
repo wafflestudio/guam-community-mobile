@@ -9,6 +9,7 @@ import 'package:guam_community_client/screens/boards/posts/post_info.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
+import '../../../../providers/home/home_provider.dart';
 
 class PostPreview extends StatelessWidget {
   final Post post;
@@ -17,6 +18,8 @@ class PostPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(context.read<HomeProvider>().idx);
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(

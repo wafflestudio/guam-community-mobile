@@ -12,7 +12,7 @@ class BottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final homeProvider = context.watch<HomeProvider>();
+    final homeProvider = context.read<HomeProvider>();
 
     return BottomNavigationBar(
       items: homeProvider.bottomNavItems.map((e) =>
@@ -30,7 +30,10 @@ class BottomNavigation extends StatelessWidget {
       selectedItemColor: GuamColorFamily.purpleCore,
       backgroundColor: GuamColorFamily.grayscaleWhite,
       unselectedItemColor: GuamColorFamily.grayscaleGray4,
-      onTap: (index) => onSelectTab(TabItem.values[index]),
+      onTap: (index) {
+        onSelectTab(TabItem.values[index]);
+        homeProvider.idx = index;
+      },
     );
   }
 }
