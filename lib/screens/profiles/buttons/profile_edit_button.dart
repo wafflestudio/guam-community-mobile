@@ -8,7 +8,7 @@ import '../pages/profiles_edit.dart';
 class ProfileEditButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final myProfile = context.read<MyProfile>().profile;
+    final myProfile = context.read<MyProfile>().myProfile;
 
     return IconText(
       iconSize: 18,

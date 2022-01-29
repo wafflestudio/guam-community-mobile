@@ -74,7 +74,7 @@ class PostPreview extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   height: 1.6,
-                  fontSize: 12,
+                  fontSize: 13,
                   fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
                   color: GuamColorFamily.grayscaleGray3,
                 ),

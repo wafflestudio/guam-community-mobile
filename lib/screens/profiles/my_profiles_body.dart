@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/providers/profiles/profiles.dart';
-import 'package:provider/provider.dart';
+import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_img.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_intro.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_nickname.dart';
@@ -9,11 +8,13 @@ import 'buttons/profile_edit_button.dart';
 import 'profile/profile_skillset.dart';
 import 'profile/profile_bottom_buttons.dart';
 
-class ProfilesBody extends StatelessWidget {
+class MyProfilesBody extends StatelessWidget {
+  final Profile myProfile;
+
+  MyProfilesBody(this.myProfile);
+
   @override
   Widget build(BuildContext context) {
-    final myProfile = context.read<MyProfile>().profile;
-
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(24, 40, 24, 24),
@@ -25,7 +26,7 @@ class ProfilesBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ProfileNickname(myProfile.nickname),
+              ProfileNickname(nickname: myProfile.nickname),
               ProfileEditButton(),
             ],
           ),

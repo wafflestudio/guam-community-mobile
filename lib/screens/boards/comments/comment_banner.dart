@@ -22,6 +22,7 @@ class CommentBanner extends StatelessWidget {
       child: Row(
         children: [
           CommonImgNickname(
+            userId: comment.profile.id,
             imgUrl: comment.profile.profileImg != null ? comment.profile.profileImg.urlPath : null,
             nickname: comment.profile.nickname,
             nicknameColor: GuamColorFamily.grayscaleGray3,
