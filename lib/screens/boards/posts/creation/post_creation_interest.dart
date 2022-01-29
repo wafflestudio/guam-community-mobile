@@ -36,7 +36,7 @@ class _PostCreationInterestState extends State<PostCreationInterest> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-                '태그를 선택해주세요.',
+                '카테고리를 선택해주세요.',
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 14,
