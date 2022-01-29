@@ -47,7 +47,7 @@ class _PostListState extends State<PostList> {
               children: [
                 SubHeadings("특별한 일이 있나요? ✨"),
                 IconText(
-                  text: "관심사 설정",
+                  text: "카테고리 설정",
                   iconPath: 'assets/icons/setting.svg',
                   iconColor: GuamColorFamily.purpleLight1,
                   textColor: GuamColorFamily.purpleLight1,
@@ -76,7 +76,7 @@ class _PostListState extends State<PostList> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      '관심사를 설정해주세요.',
+                                      '카테고리를 설정해주세요.',
                                       style: TextStyle(
                                         fontSize: 18,
                                         color: GuamColorFamily.grayscaleGray2,
