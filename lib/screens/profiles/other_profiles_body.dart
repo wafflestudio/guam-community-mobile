@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
+import 'package:guam_community_client/screens/profiles/buttons/message_send_button.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_img.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_intro.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_nickname.dart';
@@ -22,7 +23,12 @@ class OtherProfilesBody extends StatelessWidget {
           ProfileImg(profileImg: otherProfile.profileImg, height: 144, width: 144),
           ProfileNickname(nickname: otherProfile.nickname, isMine: false),
           ProfileIntro(otherProfile.intro),
-          ProfileWebButtons(githubId: otherProfile.githubId, blogUrl: otherProfile.blogUrl),
+          ProfileWebButtons(
+            githubId: otherProfile.githubId,
+            blogUrl: otherProfile.blogUrl,
+            isMine: false,
+          ),
+          MessageSendButton(otherProfile),
           ProfileSkillSet(otherProfile.skillSet),
         ],
       ),
