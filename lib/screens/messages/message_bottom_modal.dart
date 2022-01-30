@@ -13,28 +13,29 @@ class MessageBottomModal extends StatefulWidget {
 }
 
 class _MessageBottomModalState extends State<MessageBottomModal> {
+  final _messageTextFieldController = TextEditingController();
+
   Map input = {
     'content': '',
     'images': [],
   };
 
   @override
+  void initState() {
+    super.initState();
+    input['images'] = [];
+  }
+
+  @override
+  void dispose() {
+    input['images'].clear();
+    _messageTextFieldController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double maxImgSize = 80;
-    final _messageTextFieldController = TextEditingController();
-
-    @override
-    void initState() {
-      super.initState();
-      input['images'] = [];
-    }
-
-    @override
-    void dispose() {
-      input['images'].clear();
-      _messageTextFieldController.dispose();
-      super.dispose();
-    }
 
     Future<void> setImageFile(PickedFile val) async {
       setState(() {
@@ -58,6 +59,7 @@ class _MessageBottomModalState extends State<MessageBottomModal> {
             keyboardType: TextInputType.multiline,
             controller: _messageTextFieldController,
             maxLines: 4,
+            maxLength: 200,
             style: TextStyle(fontSize: 14, height: 1.6, color: GuamColorFamily.grayscaleGray2),
             decoration: InputDecoration(
               hintText: "내용을 입력해주세요.",
