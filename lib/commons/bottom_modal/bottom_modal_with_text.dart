@@ -44,9 +44,9 @@ class BottomModalWithText extends StatelessWidget {
               ),
             ],
           ),
-          Padding(padding: EdgeInsets.only(bottom: 24)),
+          Padding(padding: EdgeInsets.only(bottom: 14)),
           MessageBottomModal(),
-          Padding(padding: EdgeInsets.only(bottom: 24)),
+          Padding(padding: EdgeInsets.only(bottom: 14)),
           Center(
             child: TextButton(
               onPressed: () => func,

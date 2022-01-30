@@ -50,7 +50,8 @@ class _MessageBottomModalState extends State<MessageBottomModal> {
     return Container(
       decoration: BoxDecoration(
         color: GuamColorFamily.grayscaleGray7,
-        borderRadius: BorderRadius.circular(1),
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: GuamColorFamily.grayscaleGray6, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
