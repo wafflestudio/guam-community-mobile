@@ -28,6 +28,7 @@ class OtherProfilesBody extends StatelessWidget {
             blogUrl: otherProfile.blogUrl,
             isMine: false,
           ),
+          // 추후 MyProfile의 id랑 비교해서 본인임이 확인되면 프로필 탭으로 이동하도록 하겠습니다.
           MessageSendButton(otherProfile),
           ProfileSkillSet(otherProfile.skillSet),
         ],

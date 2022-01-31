@@ -53,32 +53,39 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: otherProfile,
-      builder: (context, snapshot) {
-        // FutureBuilder에서 받아오는 otherProfile이 존재 여부에 따라 위젯 변경
-        if (snapshot.hasData){
-          return Scaffold(
-            backgroundColor: GuamColorFamily.grayscaleWhite,
-            appBar: CustomAppBar(
-              title: snapshot.data.nickname,
-              leading: Back(),
-            ),
-            body: SingleChildScrollView(
-              child: OtherProfilesBody(snapshot.data),
-            ),
-          );
-        } else {
-          return Scaffold(
+    // 특정 userId를 받아 otherProfile 위젯 호출하는 경우.
+    if (widget.userId != null){
+      return FutureBuilder(
+        future: otherProfile,
+        builder: (context, AsyncSnapshot snapshot) {
+          // FutureBuilder에서 받아오는 otherProfile 존재 여부에 따라 위젯 변경
+          if (snapshot.hasData){
+            return Scaffold(
               backgroundColor: GuamColorFamily.grayscaleWhite,
               appBar: CustomAppBar(
-                title: '프로필',
-                trailing: MessageBox(),
+                title: snapshot.data.nickname,
+                leading: Back(),
               ),
-              body: SingleChildScrollView(child: MyProfilesBody(myProfile))
-          );
+              body: SingleChildScrollView(child: OtherProfilesBody(snapshot.data)),
+            );
+          } else if (snapshot.hasError) {
+            // 에러 메시지 띄워주기
+            return CircularProgressIndicator();
+          } else {
+            return CircularProgressIndicator();
+          }
         }
-      }
-    );
+      );
+    } else {
+      // 특정 유저 id를 받지 않아 프로필 탭으로 이동하는 경우
+      return Scaffold(
+        backgroundColor: GuamColorFamily.grayscaleWhite,
+        appBar: CustomAppBar(
+          title: '프로필',
+          trailing: MessageBox(),
+        ),
+        body: SingleChildScrollView(child: MyProfilesBody(myProfile)),
+      );
+    }
   }
 }

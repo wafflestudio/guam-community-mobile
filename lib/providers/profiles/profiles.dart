@@ -118,6 +118,8 @@ class MyProfile with ChangeNotifier {
   Profile get myProfile => _myProfile;
 
   Future fetchMyProfile(String authToken) async {
+    loading = true;
+
     try {
       Map<String, dynamic> myProfile = profiles[2];
       _myProfile = Profile.fromJson(myProfile);
@@ -143,6 +145,7 @@ class OtherProfile with ChangeNotifier {
     Profile user;
 
     try {
+      // API 붙일 때는 (idx - 1) 방식 대신 직접 userId를 넘길 예정.
       Map<String, dynamic> profile = profiles[userId-1];
       user = Profile.fromJson(profile);
 

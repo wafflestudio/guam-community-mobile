@@ -14,11 +14,13 @@ import 'boards_feed.dart';
 class BoardsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String authToken = context.read<Authenticate>().authToken;
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => MyProfile(authToken: context.read<Authenticate>().authToken)),
-        ChangeNotifierProvider(create: (_) => Posts(authToken: context.read<Authenticate>().authToken)),
-        ChangeNotifierProvider(create: (_) => Messages(authToken: context.read<Authenticate>().authToken)),
+        ChangeNotifierProvider(create: (_) => MyProfile(authToken: authToken)),
+        ChangeNotifierProvider(create: (_) => Posts(authToken: authToken)),
+        ChangeNotifierProvider(create: (_) => Messages(authToken: authToken)),
       ],
       child: BoardsAppScaffold(),
     );
