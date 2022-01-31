@@ -41,22 +41,22 @@ class ProfilesAppScaffold extends StatefulWidget {
 }
 
 class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
+  Profile myProfile;
   Future<Profile> otherProfile;
 
   @override
   void initState() {
     super.initState();
+    myProfile = context.read<MyProfile>().myProfile;
     otherProfile = context.read<OtherProfile>().getUserProfile(widget.userId);
   }
 
   @override
   Widget build(BuildContext context) {
-    final myProfile = context.read<MyProfile>().myProfile;
-
     return FutureBuilder(
       future: otherProfile,
-      builder: (_, snapshot) {
-        // FutureBuilder에서 받아오는 otherProfile이 null이면 내 프로필 탭
+      builder: (context, snapshot) {
+        // FutureBuilder에서 받아오는 otherProfile이 존재 여부에 따라 위젯 변경
         if (snapshot.hasData){
           return Scaffold(
             backgroundColor: GuamColorFamily.grayscaleWhite,

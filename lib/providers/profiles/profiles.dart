@@ -139,6 +139,7 @@ class OtherProfile with ChangeNotifier {
   }
 
   Future<Profile> getUserProfile(int userId) async {
+    loading = true;
     Profile user;
 
     try {
