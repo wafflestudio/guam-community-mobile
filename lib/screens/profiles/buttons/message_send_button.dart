@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_text.dart';
+import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_message.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -55,7 +55,7 @@ class MessageSendButton extends StatelessWidget {
           ),
           builder: (context) => Container(
             child: SingleChildScrollView(
-              child: BottomModalWithText(
+              child: BottomModalWithMessage(
                 funcName: '보내기',
                 title: '${otherProfile.nickname} 님에게 쪽지 보내기',
                 profile: otherProfile,

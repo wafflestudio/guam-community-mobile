@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_alert.dart';
 import 'package:guam_community_client/commons/bottom_modal/bottom_modal_default.dart';
-import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_text.dart';
+import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_message.dart';
 import 'package:guam_community_client/commons/common_img_nickname.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
@@ -10,7 +11,6 @@ import 'package:guam_community_client/providers/profiles/profiles.dart';
 import 'package:guam_community_client/screens/boards/posts/post_comment_report.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:provider/provider.dart';
 
 class CommentBanner extends StatefulWidget {
   final Comment comment;
@@ -93,7 +93,7 @@ class _CommentBannerState extends State<CommentBanner> {
                           ),
                           builder: (context) => Container(
                             child: SingleChildScrollView(
-                              child: BottomModalWithText(
+                              child: BottomModalWithMessage(
                                 funcName: '보내기',
                                 title: '${widget.comment.profile.nickname} 님에게 쪽지 보내기',
                                 profile: widget.comment.profile,

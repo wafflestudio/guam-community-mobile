@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
@@ -10,7 +11,6 @@ import 'package:guam_community_client/screens/boards/posts/preview/post_preview_
 import 'package:guam_community_client/screens/boards/posts/post_info.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
-import 'package:provider/provider.dart';
 
 class PostPreview extends StatelessWidget {
   final Post post;
@@ -100,7 +100,7 @@ class PostPreview extends StatelessWidget {
                   profileClickable: false,
                   iconColor: GuamColorFamily.grayscaleGray4,
                 ),
-              )
+              ),
             ],
           ),
         ),

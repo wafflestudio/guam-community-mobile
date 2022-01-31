@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/bottom_modal/bottom_modal_default.dart';
 import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_alert.dart';
-import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_text.dart';
+import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_message.dart';
 import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
@@ -17,7 +18,6 @@ import 'package:guam_community_client/screens/boards/posts/detail/post_detail_bo
 import 'package:guam_community_client/screens/boards/posts/post_info.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:provider/provider.dart';
 
 import '../post_comment_report.dart';
 
@@ -117,7 +117,7 @@ class _PostDetailState extends State<PostDetail> {
                               ),
                               builder: (context) => Container(
                                 child: SingleChildScrollView(
-                                  child: BottomModalWithText(
+                                  child: BottomModalWithMessage(
                                     funcName: '보내기',
                                     title: '${widget.post.profile.nickname} 님에게 쪽지 보내기',
                                     profile: widget.post.profile,
@@ -137,8 +137,8 @@ class _PostDetailState extends State<PostDetail> {
                         ],
                       ),
                     ),
-                  )
-                )
+                  ),
+                ),
               ),
             ],
           ),

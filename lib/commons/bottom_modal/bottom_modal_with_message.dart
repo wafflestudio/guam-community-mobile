@@ -3,13 +3,13 @@ import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:guam_community_client/screens/messages/message_bottom_modal.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
-class BottomModalWithText extends StatelessWidget {
+class BottomModalWithMessage extends StatelessWidget {
   final String funcName;
   final String title;
   final Profile profile;
   final Function func;
 
-  BottomModalWithText({this.funcName, this.title, this.profile, this.func});
+  BottomModalWithMessage({this.funcName, this.title, this.profile, this.func});
 
   @override
   Widget build(BuildContext context) {
