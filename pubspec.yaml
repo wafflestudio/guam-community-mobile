@@ -35,7 +35,7 @@ dependencies:
   dotted_border: ^2.0.0+1
   url_launcher: ^6.0.5
   flutter_secure_storage: ^5.0.2
-  shared_preferences: ^0.5.12+4
+  shared_preferences: ^2.0.12
 
   # Image
   flutter_svg: ^0.23.0+1
