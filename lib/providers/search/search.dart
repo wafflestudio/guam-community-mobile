@@ -116,10 +116,10 @@ class Search with ChangeNotifier {
 
         {
           'id': 2,
-          'boardType': '자유게시판',
+          'boardType': '익명게시판',
           'profile': profiles[1],
           'title': '-3',
-          'content': '어제 네이버 코테 보신 분? 저 좀 잘 본 듯 ㅎㅎ',
+          'content': '다른 일 하다가 프론트엔드 개발에 관심이 생겼는데 주변에 아는 현업자도 없고 뭐부터 해야할 지 감이 안오네요. 보통 어떤 것부터 시작하시나요?',
           'interest': '데이터분석',
           'pictures': [
             {
@@ -180,10 +180,10 @@ class Search with ChangeNotifier {
 
         {
           'id': 3,
-          'boardType': '자유게시판',
+          'boardType': '익명게시판',
           'profile': profiles[1],
           'title': '3',
-          'content': '어제 네이버 코테 보신 분? 저 좀 잘 본 듯 ㅎㅎ',
+          'content': '다른 일 하다가 프론트엔드 개발에 관심이 생겼는데 주변에 아는 현업자도 없고 뭐부터 해야할 지 감이 안오네요. 보통 어떤 것부터 시작하시나요?',
           'interest': '데이터분석',
           'pictures': [
             {
@@ -244,10 +244,10 @@ class Search with ChangeNotifier {
 
         {
           'id': 4,
-          'boardType': '자유게시판',
+          'boardType': '익명게시판',
           'profile': profiles[1],
           'title': '-4',
-          'content': '어제 네이버 코테 보신 분? 저 좀 잘 본 듯 ㅎㅎ',
+          'content': '다른 일 하다가 프론트엔드 개발에 관심이 생겼는데 주변에 아는 현업자도 없고 뭐부터 해야할 지 감이 안오네요. 보통 어떤 것부터 시작하시나요?',
           'interest': '데이터분석',
           'pictures': [
             {

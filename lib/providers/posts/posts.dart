@@ -63,7 +63,7 @@ class Posts with ChangeNotifier {
 
         {
           'id': 2,
-          'boardType': '자유게시판',
+          'boardType': '익명게시판',
           'profile': profiles[1],
           'title': '네이버 코테 보신 분?',
           'content': '어제 네이버 코테 보신 분? 저 좀 잘 본 듯 ㅎㅎ',

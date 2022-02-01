@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/screens/app/tab_item.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview_home_tab.dart';
-import 'package:guam_community_client/screens/boards/posts/preview/post_preview_interest.dart';
-import 'package:guam_community_client/screens/boards/posts/post_info.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview_search_tab.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/home/home_provider.dart';
 
@@ -33,6 +28,10 @@ class PostPreview extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
+                /**
+                 * TODO: ryu
+                 * Post provider is out of scope in search tab.
+                 */
                 builder: (_) => ChangeNotifierProvider.value(
                   value: context.read<Posts>(),
                   child: PostDetail(post),

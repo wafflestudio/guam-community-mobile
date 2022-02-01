@@ -4,14 +4,19 @@ import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview_interest.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import 'package:guam_community_client/styles/fonts.dart';
 
 import '../post_info.dart';
+import './post_preview_board_type.dart';
+import './post_preview_relative_time.dart';
+import './post_preview_content.dart';
+import './post_preview_title.dart';
 
 class PostPreviewHomeTab extends StatelessWidget {
   final Post post;
+  final bool isAnonymous;
 
-  PostPreviewHomeTab(this.post);
+  PostPreviewHomeTab(this.post):
+        this.isAnonymous = post.boardType == '익명게시판';
 
   @override
   Widget build(BuildContext context) {
@@ -20,24 +25,9 @@ class PostPreviewHomeTab extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(
-              post.boardType,
-              style: TextStyle(
-                fontSize: 12,
-                height: 19.2/12,
-                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                color: GuamColorFamily.grayscaleGray4,
-              ),
-            ),
+            this.isAnonymous ? PostPreviewBoardType(this.post.boardType) : PostPreviewInterest(post),
             Spacer(),
-            Text(
-              (DateTime.now().minute - post.createdAt.minute).toString() + "분 전",
-              style: TextStyle(
-                fontSize: 10,
-                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                color: GuamColorFamily.grayscaleGray4,
-              ),
-            )
+            PostPreviewRelativeTime(this.post.createdAt),
           ],
         ),
         Padding(
@@ -57,31 +47,12 @@ class PostPreviewHomeTab extends StatelessWidget {
                   height: 20,
                 ),
               ),
-            Text(
-              post.title,
-              style: TextStyle(fontSize: 14),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+            PostPreviewTitle(this.post.title),
           ],
         ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 4),
-          child: PostPreviewInterest(post),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 4),
-          child: Text(
-            post.content,
-            maxLines: 4,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              height: 20.8/13,
-              fontSize: 13,
-              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-              color: GuamColorFamily.grayscaleGray3,
-            ),
-          ),
+          child: PostPreviewContent(this.post.content),
         ),
         PostInfo(
           post: post,
