@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/commons/color_of_interest.dart';
+import 'package:guam_community_client/commons/color_of_category.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -18,30 +18,31 @@ class PostDetailBanner extends StatelessWidget {
       children: [
         Row(
           children: [
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                "#" + post.interest,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: colorOfInterest(post.interest),
+            if (post.category != '')
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  "#" + post.category,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: colorOfCategory(post.category),
+                  ),
+                ),
+                style: TextButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.only(top: 24),
+                  alignment: Alignment.centerLeft,
                 ),
               ),
-              style: TextButton.styleFrom(
-                minimumSize: Size.zero,
-                padding: EdgeInsets.only(top: 24),
-                alignment: Alignment.centerLeft,
-              ),
-            ),
             Padding(
-              padding: EdgeInsets.only(left: 8),
+              padding: EdgeInsets.only(left: post.category == '' ? 0 : 8),
               child: TextButton(
                 onPressed: () {},
                 child: Text(
                   post.boardType,
                   style: TextStyle(
                     fontSize: 12,
-                    color: colorOfInterest(post.interest),
+                    color: colorOfCategory(post.category).withOpacity(0.5),
                   ),
                 ),
                 style: TextButton.styleFrom(

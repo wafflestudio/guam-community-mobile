@@ -10,7 +10,7 @@ class Post extends ChangeNotifier {
   final String boardType;
   final String title;
   final String content;
-  final String interest;
+  final String category;
   final List<Picture> pictures;
   final List<Comment> comments;
   final int like;
@@ -27,7 +27,7 @@ class Post extends ChangeNotifier {
     this.boardType,
     this.title,
     this.content,
-    this.interest,
+    this.category,
     this.pictures,
     this.comments,
     this.like,
@@ -84,7 +84,7 @@ class Post extends ChangeNotifier {
       boardType: json['boardType'],
       title: json['title'],
       content: json['content'],
-      interest: json['interest'],
+      category: json['category'],
       pictures: pictures,
       comments: comments,
       like: json['like'],

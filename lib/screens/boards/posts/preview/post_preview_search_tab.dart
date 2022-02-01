@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
-import 'package:guam_community_client/screens/boards/posts/preview/post_preview_interest.dart';
+import 'package:guam_community_client/screens/boards/posts/preview/post_preview_category.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import 'package:guam_community_client/styles/fonts.dart';
 
 import '../post_info.dart';
 import './post_preview_board_type.dart';
@@ -44,7 +43,7 @@ class PostPreviewSearchTab extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 8),
           child: CustomDivider(color: GuamColorFamily.grayscaleGray7),
         ),
-        if (!this.isAnonymous) PostPreviewInterest(post),
+        if (!this.isAnonymous) PostPreviewCategory(post),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 4),
           child: PostPreviewContent(this.post.content),

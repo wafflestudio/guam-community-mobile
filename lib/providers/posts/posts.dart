@@ -24,7 +24,7 @@ class Posts with ChangeNotifier {
           'profile': profiles[0],
           'title': '코딩 뭐부터 시작해야 하나요?',
           'content': '다른 일 하다가 프론트엔드 개발에 관심이 생겼는데 주변에 아는 현업자도 없고 뭐부터 해야할 지 감이 안오네요. 보통 어떤 것부터 시작하시나요?',
-          'interest': '개발',
+          'category': '개발',
           'pictures': [],
           'like': 31,
           'comments': [
@@ -67,7 +67,7 @@ class Posts with ChangeNotifier {
           'profile': profiles[1],
           'title': '네이버 코테 보신 분?',
           'content': '어제 네이버 코테 보신 분? 저 좀 잘 본 듯 ㅎㅎ',
-          'interest': '데이터분석',
+          'category': '',
           'pictures': [
             {
               'id': 1,
@@ -130,7 +130,7 @@ class Posts with ChangeNotifier {
           'profile': profiles[2],
           'title': '맥북 사양 추천',
           'content': '맥북 사양 좀 추천해주세요. 주로 피그마, 일러스트정도 쓸 것 같습니당 ㅎㅎㅎ',
-          'interest': '디자인',
+          'category': '디자인',
           'pictures': [],
           'like': 10,
           'comments': [
@@ -164,7 +164,7 @@ class Posts with ChangeNotifier {
           'profile': profiles[3],
           'title': '설계할 때 무슨 툴 쓰시나요?',
           'content': '웹 서비스 설계 중인데 ppt 쓰다가 툴 바꿔보려고 합니다. 쓰시는 툴 중에 괜찮은 거 추천해주세요.',
-          'interest': '기획/마케팅',
+          'category': '기획/마케팅',
           'pictures': [],
           'like': 23,
           'comments': [],
@@ -181,7 +181,7 @@ class Posts with ChangeNotifier {
           'profile': profiles[4],
           'title': '망고보드 괜찮나요?',
           'content': '망고보드 쓰시는 분들 쓸만 한가요? 너무 비싸서 고민이네요',
-          'interest': '기타',
+          'category': '기타',
           'pictures': [],
           'like': 23,
           'comments': [],

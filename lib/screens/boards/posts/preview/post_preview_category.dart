@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/commons/color_of_interest.dart';
+import 'package:guam_community_client/commons/color_of_category.dart';
 import 'package:guam_community_client/models/boards/post.dart';
-import 'package:guam_community_client/styles/colors.dart';
-import 'package:guam_community_client/styles/fonts.dart';
 
-class PostPreviewInterest extends StatelessWidget {
+class PostPreviewCategory extends StatelessWidget {
   final Post post;
 
-  PostPreviewInterest(this.post);
+  PostPreviewCategory(this.post);
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +14,10 @@ class PostPreviewInterest extends StatelessWidget {
       child: TextButton(
         onPressed: () {},
         child: Text(
-          "#" + post.interest,
+          "#" + post.category,
           style: TextStyle(
             fontSize: 12,
-            color: colorOfInterest(post.interest),
+            color: colorOfCategory(post.category),
           ),
         ),
         style: TextButton.styleFrom(
