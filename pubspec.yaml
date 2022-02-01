@@ -23,7 +23,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_session: ^0.1.1
   http: ^0.13.1
   provider: ^5.0.0
   cupertino_icons: ^1.0.2
@@ -35,6 +34,7 @@ dependencies:
   bot_toast: ^4.0.1
   dotted_border: ^2.0.0+1
   url_launcher: ^6.0.5
+  flutter_secure_storage: ^5.0.2
 
   # Image
   flutter_svg: ^0.23.0+1
