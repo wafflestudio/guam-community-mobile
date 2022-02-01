@@ -5,7 +5,7 @@ import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/screens/boards/posts/creation/post_creation_board.dart';
 import 'package:guam_community_client/screens/boards/posts/creation/post_creation_content.dart';
 import 'package:guam_community_client/screens/boards/posts/creation/post_creation_image.dart';
-import 'package:guam_community_client/screens/boards/posts/creation/post_creation_interest.dart';
+import 'package:guam_community_client/screens/boards/posts/creation/post_creation_category.dart';
 import 'package:guam_community_client/screens/boards/posts/creation/post_creation_title.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';

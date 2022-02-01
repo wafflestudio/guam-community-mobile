@@ -57,13 +57,13 @@ class _PostCreationCategoryState extends State<PostCreationCategory> {
                   ],
                 ),
               ),
-            if (widget.input['interest'] != '')
+            if (widget.input['category'] != '')
               Padding(
                 padding: EdgeInsets.only(top: 8),
                 child: Row(
                   children: [
                     Text(
-                      "#" + widget.input['interest'],
+                      "#" + widget.input['category'],
                       style: TextStyle(
                           fontSize: 16, color: GuamColorFamily.blueCore),
                     ),
@@ -89,7 +89,7 @@ class _PostCreationCategoryState extends State<PostCreationCategory> {
     }
   }
 
-  Widget _categoryChip(String interest) {
+  Widget _categoryChip(String category) {
     return Padding(
       padding: EdgeInsets.only(right: 8),
       child: ChoiceChip(
@@ -97,9 +97,9 @@ class _PostCreationCategoryState extends State<PostCreationCategory> {
         pressElevation: 2,
         labelPadding: EdgeInsets.symmetric(horizontal: 4),
         backgroundColor: GuamColorFamily.purpleLight3,
-        onSelected: (e) => setCategory(interest),
+        onSelected: (e) => setCategory(category),
         label: Text(
-          "#" + interest,
+          "#" + category,
           style: TextStyle(
             fontSize: 14,
             color: GuamColorFamily.purpleLight1,

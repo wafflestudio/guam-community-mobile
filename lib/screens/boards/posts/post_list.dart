@@ -21,18 +21,18 @@ class PostList extends StatefulWidget {
 }
 
 class _PostListState extends State<PostList> {
-  List<String> selectedInterests = [];
+  List<String> selectedCategories = [];
 
-  void setInterests(String interest){
-    setState(() => selectedInterests.contains(interest)
-        ? selectedInterests.remove(interest)
-        : selectedInterests.add(interest)
+  void setCategory(String category){
+    setState(() => selectedCategories.contains(category)
+        ? selectedCategories.remove(category)
+        : selectedCategories.add(category)
     );
   }
 
   @override
   void initState() {
-    selectedInterests = ['#개발', '#데이터분석', '#디자인', '#기획/마케팅', '#기타'];
+    selectedCategories = ['#개발', '#데이터분석', '#디자인', '#기획/마케팅', '#기타'];
     super.initState();
   }
 
@@ -97,7 +97,7 @@ class _PostListState extends State<PostList> {
                                         minimumSize: Size(30, 26),
                                         alignment: Alignment.centerRight,
                                       ),
-                                      onPressed: () => myState(() => selectedInterests = [])
+                                      onPressed: () => myState(() => selectedCategories = [])
                                     ),
                                   ],
                                 ),
@@ -106,11 +106,11 @@ class _PostListState extends State<PostList> {
                                   padding: EdgeInsets.only(top: 10),
                                   child: Column(
                                     children: [
-                                      _interestType(myState, '#개발'),
-                                      _interestType(myState, '#데이터분석'),
-                                      _interestType(myState, '#디자인'),
-                                      _interestType(myState, '#기획/마케팅'),
-                                      _interestType(myState, '#기타'),
+                                      _categoryType(myState, '#개발'),
+                                      _categoryType(myState, '#데이터분석'),
+                                      _categoryType(myState, '#디자인'),
+                                      _categoryType(myState, '#기획/마케팅'),
+                                      _categoryType(myState, '#기타'),
                                     ],
                                   ),
                                 ),
@@ -118,8 +118,8 @@ class _PostListState extends State<PostList> {
                                   child: TextButton(
                                     onPressed: (){
                                       Navigator.of(context).pop();
-                                      if (selectedInterests.isEmpty){
-                                        myState(() => selectedInterests = ['#개발', '#데이터분석', '#디자인', '#기획/마케팅', '#기타']);
+                                      if (selectedCategories.isEmpty){
+                                        myState(() => selectedCategories = ['#개발', '#데이터분석', '#디자인', '#기획/마케팅', '#기타']);
                                         // 전체 해제시키고 완료하면 전체 선택했을 때 결과로 보내주기
                                       }
                                     },
@@ -151,13 +151,13 @@ class _PostListState extends State<PostList> {
     );
   }
 
-  Widget _interestType(StateSetter myState, String interest) {
+  Widget _categoryType(StateSetter myState, String category) {
     return Builder(
       builder: (_) => InkWell(
         onTap: () =>
-          myState(() => selectedInterests.contains(interest)
-              ? selectedInterests.remove(interest)
-              : selectedInterests.add(interest)
+          myState(() => selectedCategories.contains(category)
+              ? selectedCategories.remove(category)
+              : selectedCategories.add(category)
           ),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
@@ -167,17 +167,17 @@ class _PostListState extends State<PostList> {
               Container(
                 height: 26,
                 child: Text(
-                  interest,
+                  category,
                   style: TextStyle(
                     fontSize: 16,
                     fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                    color: selectedInterests.contains(interest)
+                    color: selectedCategories.contains(category)
                         ? GuamColorFamily.purpleCore
                         : GuamColorFamily.grayscaleGray3,
                   )
                 )
               ),
-              if (selectedInterests.contains(interest))
+              if (selectedCategories.contains(category))
                 IconButton(
                   onPressed: null,
                   padding: EdgeInsets.only(right: 8),
