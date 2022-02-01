@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_session/flutter_session.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../helpers/http_request.dart';
 
 class Authenticate with ChangeNotifier {
   var _authToken;
+  final storage = FlutterSecureStorage();
 
   Authenticate() {
     initAuthToken();
@@ -17,21 +18,22 @@ class Authenticate with ChangeNotifier {
   }
 
   void initAuthToken() async {
-    await FlutterSession()
-        .get('authentication_token')
+    await storage
+        .read(key: 'authentication_token')
         .then((value) => this.authToken = value)
-        .catchError((error) => print(error));
+        .catchError((error) {print(error);});
   }
 
   Future saveAuthToken(String authToken) async {
     this.authToken = authToken;
-    await FlutterSession().set('authentication_token', authToken);
+    await storage.write(key: 'authentication_token', value: authToken);
   }
 
   Future destroyAuthToken() async {
     this.authToken = null;
-    await FlutterSession().set('authentication_token', '');
+    await storage.delete(key: 'authentication_token');
   }
+
   /* 유저 로그인/회원가입 서버 개발 전 임시방편 코드
   Future signIn({Map<String, dynamic> params}) async {
     await HttpRequest()
