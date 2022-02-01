@@ -26,7 +26,7 @@ class _PostCreationState extends State<PostCreation> {
     'title': '',
     'content': '',
     'boardType': '',
-    'interest': '',
+    'category': '',
     'images': [],
   };
 
@@ -38,7 +38,7 @@ class _PostCreationState extends State<PostCreation> {
       input['title'] = widget.editTarget.title;
       input['content'] = widget.editTarget.content;
       input['boardType'] = widget.editTarget.boardType;
-      input['interest'] = widget.editTarget.interest;
+      input['category'] = widget.editTarget.category;
       // 이미지는 추후 S3 연동 후 기존 게시글 이미지 S3 주소 받아와서 처리할 예정
       // input['images'] = widget.editTarget.images;
     }
@@ -192,7 +192,7 @@ class _PostCreationState extends State<PostCreation> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PostCreationInterest(input, isBoardAnonymous),
+                  PostCreationCategory(input, isBoardAnonymous),
                   PostCreationImage(input)
                 ],
               ),
