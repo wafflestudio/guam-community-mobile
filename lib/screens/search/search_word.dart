@@ -42,7 +42,7 @@ class SearchWord extends StatelessWidget {
           ),
         ),
         IconText(
-          iconSize: 22,
+          iconSize: 18,
           iconColor: GuamColorFamily.grayscaleGray6,
           iconPath: 'assets/icons/cancel_filled.svg',
           paddingBtw: 0,
