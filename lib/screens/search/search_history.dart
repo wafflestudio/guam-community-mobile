@@ -12,14 +12,15 @@ class SearchHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: GuamColorFamily.grayscaleWhite,
       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
       child: Column(
         children: [
           SubHeadings(
             '최근 검색어',
-            fontSize: 16,
+            fontSize: 14,
             fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
-            fontColor: GuamColorFamily.purpleDark1,
+            fontColor: GuamColorFamily.grayscaleGray4,
           ),
           Padding(padding: EdgeInsets.only(bottom: 12)),
           Column(

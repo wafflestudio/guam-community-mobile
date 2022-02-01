@@ -43,8 +43,8 @@ class SearchWord extends StatelessWidget {
         ),
         IconText(
           iconSize: 22,
-          iconColor: GuamColorFamily.grayscaleGray3,
-          iconPath: 'assets/icons/cancel_outlined.svg',
+          iconColor: GuamColorFamily.grayscaleGray6,
+          iconPath: 'assets/icons/cancel_filled.svg',
           paddingBtw: 0,
           onPressed: () => searchProvider.removeHistory(word),
         )

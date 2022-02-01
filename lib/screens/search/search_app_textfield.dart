@@ -36,20 +36,24 @@ class SearchAppTextFieldState extends State<SearchAppTextField> {
                 ),
                 cursorColor: GuamColorFamily.purpleCore,
                 decoration: InputDecoration(
+                  hintText: "검색어를 입력해주세요.",
                   prefixIcon: Icon(
                     Icons.search_outlined,
-                    color: GuamColorFamily.grayscaleGray3,
-                    size: 16,
+                    color: GuamColorFamily.purpleCore,
+                    size: 20,
                   ),
                   contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                  filled: true,
-                  fillColor: GuamColorFamily.grayscaleGray6,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(
-                      width: 0,
-                      style: BorderStyle.none,
-                    ),
+                    borderSide: BorderSide(color: GuamColorFamily.purpleLight2),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: GuamColorFamily.purpleLight2),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: GuamColorFamily.purpleCore),
                   ),
                 ),
                 onSubmitted: (word) {
