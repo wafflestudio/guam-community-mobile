@@ -12,7 +12,7 @@ class PostPreviewCategory extends StatelessWidget {
     return SizedBox(
       height: 17,
       child: TextButton(
-        onPressed: () {},
+        onPressed: null,
         child: Text(
           "#" + post.category,
           style: TextStyle(

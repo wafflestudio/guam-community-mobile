@@ -20,7 +20,7 @@ class PostDetailBanner extends StatelessWidget {
           children: [
             if (post.category != '')
               TextButton(
-                onPressed: () {},
+                onPressed: null,
                 child: Text(
                   "#" + post.category,
                   style: TextStyle(
@@ -37,7 +37,7 @@ class PostDetailBanner extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: post.category == '' ? 0 : 8),
               child: TextButton(
-                onPressed: () {},
+                onPressed: null,
                 child: Text(
                   post.boardType,
                   style: TextStyle(
