@@ -58,6 +58,7 @@ class PostPreviewSearchTab extends StatelessWidget {
         PostInfo(
           post: post,
           iconColor: GuamColorFamily.grayscaleGray5,
+          profileClickable: false,
         )
       ],
     );

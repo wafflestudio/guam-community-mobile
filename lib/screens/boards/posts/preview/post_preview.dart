@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
+import 'package:guam_community_client/providers/profiles/profiles.dart';
+import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/app/tab_item.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview_home_tab.dart';
@@ -16,6 +18,8 @@ class PostPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String authToken = context.read<Authenticate>().authToken;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
@@ -29,14 +33,17 @@ class PostPreview extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 /**
-                 * TODO: ryu
-                 * Post provider is out of scope in search tab.
-                 */
-                builder: (_) => ChangeNotifierProvider.value(
-                  value: context.read<Posts>(),
+                * TODO: ryu
+                * Post provider is out of scope in search tab.
+                */
+                builder: (_) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(create: (_) => MyProfile(authToken: authToken)),
+                    ChangeNotifierProvider(create: (_) => Posts(authToken: authToken)),
+                  ],
                   child: PostDetail(post),
-                )
-              )
+                ),
+              ),
             );
           },
           child: TabItem.values[context.read<HomeProvider>().idx] == TabItem.search
