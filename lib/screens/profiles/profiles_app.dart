@@ -66,7 +66,10 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
                 title: snapshot.data.nickname,
                 leading: Back(),
               ),
-              body: SingleChildScrollView(child: OtherProfilesBody(snapshot.data)),
+              body: SingleChildScrollView(child: OtherProfilesBody(
+                profile: snapshot.data,
+                isMe: snapshot.data.id == myProfile.id,
+              )),
             );
           } else if (snapshot.hasError) {
             // 에러 메시지 띄워주기
