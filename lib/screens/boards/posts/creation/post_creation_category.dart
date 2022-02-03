@@ -3,28 +3,28 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 
-class PostCreationInterest extends StatefulWidget {
+class PostCreationCategory extends StatefulWidget {
   final Map input;
   final bool isBoardAnonymous;
 
-  PostCreationInterest(this.input, this.isBoardAnonymous);
+  PostCreationCategory(this.input, this.isBoardAnonymous);
 
   @override
-  _PostCreationInterestState createState() => _PostCreationInterestState();
+  _PostCreationCategoryState createState() => _PostCreationCategoryState();
 }
 
-class _PostCreationInterestState extends State<PostCreationInterest> {
+class _PostCreationCategoryState extends State<PostCreationCategory> {
   @override
   void initState() {
     super.initState();
   }
 
-  void setInterest(String interest){
-    setState(() => widget.input['interest'] = interest);
+  void setCategory(String category){
+    setState(() => widget.input['category'] = category);
   }
 
-  void initInterest(){
-    setState(() => widget.input['interest'] = '');
+  void initCategory(){
+    setState(() => widget.input['category'] = '');
   }
 
   @override
@@ -44,33 +44,33 @@ class _PostCreationInterestState extends State<PostCreationInterest> {
                   color: GuamColorFamily.grayscaleGray3,
                 )
             ),
-            if (widget.input['interest'] == '')
+            if (widget.input['category'] == '')
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _interestChip('개발'),
-                    _interestChip('데이터분석'),
-                    _interestChip('디자인'),
-                    _interestChip('기획/마케팅'),
-                    _interestChip('기타'),
+                    _categoryChip('개발'),
+                    _categoryChip('데이터분석'),
+                    _categoryChip('디자인'),
+                    _categoryChip('기획/마케팅'),
+                    _categoryChip('기타'),
                   ],
                 ),
               ),
-            if (widget.input['interest'] != '')
+            if (widget.input['category'] != '')
               Padding(
                 padding: EdgeInsets.only(top: 8),
                 child: Row(
                   children: [
                     Text(
-                      "#" + widget.input['interest'],
+                      "#" + widget.input['category'],
                       style: TextStyle(
                           fontSize: 16, color: GuamColorFamily.blueCore),
                     ),
                     IconButton(
                       padding: EdgeInsets.zero,
                       constraints: BoxConstraints(),
-                      onPressed: () => initInterest(),
+                      onPressed: () => initCategory(),
                       icon: SvgPicture.asset(
                         'assets/icons/cancel_outlined.svg',
                         color: GuamColorFamily.blueCore,
@@ -89,7 +89,7 @@ class _PostCreationInterestState extends State<PostCreationInterest> {
     }
   }
 
-  Widget _interestChip(String interest) {
+  Widget _categoryChip(String category) {
     return Padding(
       padding: EdgeInsets.only(right: 8),
       child: ChoiceChip(
@@ -97,9 +97,9 @@ class _PostCreationInterestState extends State<PostCreationInterest> {
         pressElevation: 2,
         labelPadding: EdgeInsets.symmetric(horizontal: 4),
         backgroundColor: GuamColorFamily.purpleLight3,
-        onSelected: (e) => setInterest(interest),
+        onSelected: (e) => setCategory(category),
         label: Text(
-          "#" + interest,
+          "#" + category,
           style: TextStyle(
             fontSize: 14,
             color: GuamColorFamily.purpleLight1,

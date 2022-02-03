@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
-import 'package:guam_community_client/screens/boards/posts/preview/post_preview_interest.dart';
+import 'package:guam_community_client/screens/boards/posts/preview/post_preview_category.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
 import '../post_info.dart';
@@ -25,7 +25,9 @@ class PostPreviewHomeTab extends StatelessWidget {
       children: [
         Row(
           children: [
-            this.isAnonymous ? PostPreviewBoardType(this.post.boardType) : PostPreviewInterest(post),
+            this.isAnonymous
+                ? PostPreviewBoardType(this.post.boardType)
+                : PostPreviewCategory(post),
             Spacer(),
             PostPreviewRelativeTime(this.post.createdAt),
           ],

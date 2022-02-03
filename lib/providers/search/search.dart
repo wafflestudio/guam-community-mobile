@@ -77,7 +77,7 @@ class Search with ChangeNotifier {
           'profile': profiles[0],
           'title': '-1',
           'content': '다른 일 하다가 프론트엔드 개발에 관심이 생겼는데 주변에 아는 현업자도 없고 뭐부터 해야할 지 감이 안오네요. 보통 어떤 것부터 시작하시나요?',
-          'interest': '개발',
+          'category': '개발',
           'pictures': [],
           'like': 1,
           'comments': [
@@ -120,7 +120,7 @@ class Search with ChangeNotifier {
           'profile': profiles[1],
           'title': '-3',
           'content': '다른 일 하다가 프론트엔드 개발에 관심이 생겼는데 주변에 아는 현업자도 없고 뭐부터 해야할 지 감이 안오네요. 보통 어떤 것부터 시작하시나요?',
-          'interest': '데이터분석',
+          'category': '데이터분석',
           'pictures': [
             {
               'id': 1,
@@ -184,7 +184,7 @@ class Search with ChangeNotifier {
           'profile': profiles[1],
           'title': '3',
           'content': '다른 일 하다가 프론트엔드 개발에 관심이 생겼는데 주변에 아는 현업자도 없고 뭐부터 해야할 지 감이 안오네요. 보통 어떤 것부터 시작하시나요?',
-          'interest': '데이터분석',
+          'category': '데이터분석',
           'pictures': [
             {
               'id': 1,
@@ -248,7 +248,7 @@ class Search with ChangeNotifier {
           'profile': profiles[1],
           'title': '-4',
           'content': '다른 일 하다가 프론트엔드 개발에 관심이 생겼는데 주변에 아는 현업자도 없고 뭐부터 해야할 지 감이 안오네요. 보통 어떤 것부터 시작하시나요?',
-          'interest': '데이터분석',
+          'category': '데이터분석',
           'pictures': [
             {
               'id': 1,

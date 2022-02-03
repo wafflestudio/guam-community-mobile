@@ -30,7 +30,7 @@ List<Map<String, dynamic>> profiles = [
     'githubId': 'gajagajago',
     'blogUrl': 'https://blog.naver.com/witchyoli',
     'skillSet': ['figma','photoshop','illustrator','adobe xd','primere pro','aftereffect','cinema4D', 'zeplin', 'sketch'],
-    'interests': ['개발', '디자인'],
+    'interests': ['Figma', '개발', '디자인'],
   },
   {
     'id': 4,
