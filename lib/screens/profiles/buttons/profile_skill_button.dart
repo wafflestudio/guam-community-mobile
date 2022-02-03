@@ -20,7 +20,7 @@ class ProfileSkillButton extends StatelessWidget {
       ),
       onDeleted: deletable ? () {} : null,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      backgroundColor: Colors.transparent,
+      backgroundColor: GuamColorFamily.grayscaleWhite,
       side: BorderSide(color: GuamColorFamily.grayscaleGray6),
       padding: EdgeInsets.all(4),
     );
