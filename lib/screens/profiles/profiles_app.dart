@@ -46,9 +46,12 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
 
   @override
   void initState() {
-    super.initState();
     myProfile = context.read<MyProfile>().myProfile;
-    otherProfile = context.read<OtherProfile>().getUserProfile(widget.userId);
+    otherProfile = Future.delayed(
+      Duration.zero,
+      () async => context.read<OtherProfile>().getUserProfile(widget.userId),
+    ); // OtherProfile 위젯 Build 전에 호출되는 에러 막기 위해 Future.delayed 처리
+    super.initState();
   }
 
   @override
@@ -57,7 +60,8 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
     if (widget.userId != null){
       return FutureBuilder(
         future: otherProfile,
-        builder: (context, AsyncSnapshot snapshot) {
+        builder: (_, AsyncSnapshot<Profile> snapshot) {
+          // initState();
           // FutureBuilder에서 받아오는 otherProfile 존재 여부에 따라 위젯 변경
           if (snapshot.hasData){
             return Scaffold(
@@ -73,6 +77,7 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
             );
           } else if (snapshot.hasError) {
             // 에러 메시지 띄워주기
+            print("error");
             return CircularProgressIndicator();
           } else {
             return CircularProgressIndicator();

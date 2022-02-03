@@ -146,6 +146,8 @@ class OtherProfile with ChangeNotifier {
 
     try {
       // API 붙일 때는 (idx - 1) 방식 대신 직접 userId를 넘길 예정.
+      if (userId == null) return null;
+
       Map<String, dynamic> profile = profiles[userId-1];
       user = Profile.fromJson(profile);
 
