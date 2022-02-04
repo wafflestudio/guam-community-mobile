@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
+import 'package:json_annotation/json_annotation.dart';
 import '../picture.dart';
 
+@JsonSerializable(explicitToJson: true) // nested Instance -> json
 class Profile extends ChangeNotifier {
   final int id;
   final String nickname;
@@ -86,4 +88,10 @@ class Profile extends ChangeNotifier {
       myComments: myComments,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'nickname': nickname,
+    'profileImg': profileImg.toJson(),
+  };
 }

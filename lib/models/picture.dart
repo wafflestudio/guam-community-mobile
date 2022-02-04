@@ -13,4 +13,6 @@ class Picture {
       urlPath: json['urlPath'],
     );
   }
+
+  Map<String, dynamic> toJson() => {'id': id, 'urlPath': urlPath};
 }
