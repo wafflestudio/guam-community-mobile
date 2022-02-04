@@ -7,6 +7,7 @@ import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
+import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:guam_community_client/screens/boards/comments/comments.dart';
 import 'package:guam_community_client/screens/boards/posts/creation/post_creation.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_banner.dart';
@@ -29,6 +30,7 @@ class PostDetail extends StatefulWidget {
 class _PostDetailState extends State<PostDetail> {
   final int maxRenderImgCnt = 4;
   bool commentImageExist = false;
+  List<Profile> mentionTarget = [];
 
   void addCommentImage() {
     setState(() => commentImageExist = true);
@@ -36,6 +38,19 @@ class _PostDetailState extends State<PostDetail> {
 
   void removeCommentImage() {
     setState(() => commentImageExist = false);
+  }
+
+  @override
+  void initState() {
+    mentionTarget = [widget.post.profile];
+    widget.post.comments.forEach((com) => mentionTarget.add(com.profile));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    mentionTarget.clear();
+    super.dispose();
   }
 
   @override
@@ -156,6 +171,7 @@ class _PostDetailState extends State<PostDetail> {
       bottomSheet: Container(
         color: Colors.black.withOpacity(0.3),
         child: CommonTextField(
+          mentionTarget: mentionTarget,
           onTap: null,
           addCommentImage: addCommentImage,
           removeCommentImage: removeCommentImage,

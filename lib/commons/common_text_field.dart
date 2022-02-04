@@ -1,11 +1,11 @@
 import 'dart:ui';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:io';
 import '../helpers/pick_image.dart';
 import 'image/image_thumbnail.dart';
 import 'button_size_circular_progress_indicator.dart';
@@ -16,8 +16,9 @@ class CommonTextField extends StatefulWidget {
   final Function addCommentImage;
   final Function removeCommentImage;
   final dynamic editTarget;
+  final List<Profile> mentionTarget;
 
-  CommonTextField({this.sendButton='등록', @required this.onTap, this.addCommentImage, this.removeCommentImage, this.editTarget});
+  CommonTextField({this.sendButton='등록', @required this.onTap, this.addCommentImage, this.removeCommentImage, this.editTarget, this.mentionTarget});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();
@@ -54,6 +55,10 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
   @override
   Widget build(BuildContext context) {
+
+    if (_commentTextFieldController.text.contains('@')) {
+      print(widget.mentionTarget);
+    }
 
     // count the number of TextField lines for controlling a bottom Sheet
     final span=TextSpan(text:_commentTextFieldController.text);
