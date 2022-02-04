@@ -7,8 +7,6 @@ import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
-import 'package:guam_community_client/models/profiles/profile.dart';
-import 'package:guam_community_client/models/boards/comment.dart';
 import 'package:guam_community_client/screens/boards/comments/comments.dart';
 import 'package:guam_community_client/screens/boards/posts/creation/post_creation.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_banner.dart';
@@ -31,7 +29,7 @@ class PostDetail extends StatefulWidget {
 class _PostDetailState extends State<PostDetail> {
   final int maxRenderImgCnt = 4;
   bool commentImageExist = false;
-  List<Map<String, dynamic>> mentionTarget = [];
+  List<Map<String, dynamic>> mentionList = [];
 
   void addCommentImage() {
     setState(() => commentImageExist = true);
@@ -44,21 +42,21 @@ class _PostDetailState extends State<PostDetail> {
   @override
   void initState() {
     var set = Set<Map<String, dynamic>>();
-    mentionTarget.add(widget.post.profile.toJson());
-    widget.post.comments.forEach((com) => mentionTarget.add(com.profile.toJson()));
-    for(var item in mentionTarget){
+    mentionList.add(widget.post.profile.toJson());
+    widget.post.comments.forEach((com) => mentionList.add(com.profile.toJson()));
+    for(var item in mentionList){
       if (set.any((e) => e['id'] == item['id'])) {
         continue;
       }
       set.add(item);
     }
-    mentionTarget = set.toList();
+    mentionList = set.toList();
     super.initState();
   }
 
   @override
   void dispose() {
-    mentionTarget.clear();
+    mentionList.clear();
     super.dispose();
   }
 
@@ -180,7 +178,7 @@ class _PostDetailState extends State<PostDetail> {
       bottomSheet: Container(
         color: Colors.black.withOpacity(0.3),
         child: CommonTextField(
-          mentionTarget: mentionTarget,
+          mentionList: mentionList,
           onTap: null,
           addCommentImage: addCommentImage,
           removeCommentImage: removeCommentImage,

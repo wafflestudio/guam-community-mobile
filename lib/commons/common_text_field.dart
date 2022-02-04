@@ -15,9 +15,9 @@ class CommonTextField extends StatefulWidget {
   final Function addCommentImage;
   final Function removeCommentImage;
   final dynamic editTarget;
-  final List<Map<String, dynamic>> mentionTarget;
+  final List<Map<String, dynamic>> mentionList;
 
-  CommonTextField({this.sendButton='등록', @required this.onTap, this.addCommentImage, this.removeCommentImage, this.editTarget, this.mentionTarget});
+  CommonTextField({this.sendButton='등록', @required this.onTap, this.addCommentImage, this.removeCommentImage, this.editTarget, this.mentionList});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();
@@ -30,8 +30,15 @@ class _CommonTextFieldState extends State<CommonTextField> {
   double mentionTargetHeight = 160;
   double bottomSheetHeight = 56;
   bool sending = false;
+  bool activeMention = false;
   List<PickedFile> imageFileList = [];
+  List<Set> mentionTarget = [];
 
+  @override
+  void initState() {
+    _commentTextFieldController.text = '';
+    super.initState();
+  }
   @override
   void dispose() {
     imageFileList.clear();
@@ -53,11 +60,59 @@ class _CommonTextFieldState extends State<CommonTextField> {
     setState(() => sending = !sending);
   }
 
+  void heightOfImageOrMention(bool activeMention, bool activeImage){
+    setState(() => activeMention
+        ? mentionTargetHeight = 160 : mentionTargetHeight = 0
+    );
+  }
+
+  /// 멘션 관련
+  void activateMention() {
+    String _text = _commentTextFieldController.text;
+
+    setState(() {
+      if (_text.length > 0) {
+        // 가장 마지막 글자가 @인 경우 Mention 활성화
+        _text.substring(_text.length - 1, _text.length) == '@'
+            ? activeMention = true
+            : activeMention = false;
+      } else {
+        // 텍스트 처음 값으로 @ 입력 후 해당 @를 지울 때 Mention 비활성화
+        activeMention = false;
+      }
+    });
+  }
+
+  /// 멘션 관련
+  void setMentionTarget(int id, String nickname) {
+    String _text = _commentTextFieldController.text;
+
+    setState(() {
+      activeMention = false;
+      mentionTarget.add({id, nickname});
+      mentionTarget = mentionTarget.toSet().toList();
+
+      // mention 리스트에서 프로필 선택 시 채팅창에 @nickname이 추가되므로,함
+      // @를 입력하여 시작한 경우 @가 중복되는 것을 막기 위한 로직
+      if (_text != null && _text.length > 0) {
+        if (_text.substring(_text.length - 1, _text.length) == '@'){
+          _text = _text.substring(0, _text.length - 1);
+        }
+      }
+      _commentTextFieldController.text = _text + '@$nickname';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // text cursor 맨 앞이 아닌 뒤로 보내주도록
+    _commentTextFieldController.selection = TextSelection.fromPosition(
+      TextPosition(offset: _commentTextFieldController.text.length),
+    );
+
     // count the number of TextField lines for controlling a bottom Sheet
-    final span=TextSpan(text:_commentTextFieldController.text);
-    final tp =TextPainter(text:span,maxLines: 1,textDirection: TextDirection.ltr);
+    final span = TextSpan(text:_commentTextFieldController.text);
+    final tp = TextPainter(text:span,maxLines: 1,textDirection: TextDirection.ltr);
     tp.layout(maxWidth: MediaQuery.of(context).size.width - (56 + 62));
     List<LineMetrics> lines = tp.computeLineMetrics();
     int numberOfLines = lines.length;
@@ -71,21 +126,20 @@ class _CommonTextFieldState extends State<CommonTextField> {
       });
     }
 
-    void heightOfImageOrMention(bool activeMention, bool activeImage){
-      setState(() {
-        if (activeMention){
-          mentionTargetHeight = 160;
-        } else {
-          mentionTargetHeight = 0;
-        }
-      });
-    }
-
-    // print(_commentTextFieldController.text.split(' ').contains('@'));
-
-    if (_commentTextFieldController.text.contains('@')) {
-      heightOfImageOrMention(true, imageFileList.isNotEmpty);
+    /// Mention 관련
+    if (widget.mentionList != null && _commentTextFieldController.text.contains('@')) {
+      if (_commentTextFieldController.text.substring(
+          _commentTextFieldController.text.length - 1,
+          _commentTextFieldController.text.length) == '@'
+      ) {
+        // 텍스트에 @가 존재하고 스페이스를 입력하지 않고, 멘션 리스트를 선택할 수 있는 경우
+        heightOfImageOrMention(true, imageFileList.isNotEmpty);
+      } else {
+        // 텍스트에 @가 존재하지만 스페이스 등을 통해 annotation 범위를 벗어나 멘션 리스트를 보이지 않게 하는 경우
+        heightOfImageOrMention(false, imageFileList.isNotEmpty);
+      }
     } else {
+      // 텍스트에 아예 @가 없는 경우 (초기 세팅)
       heightOfImageOrMention(false, imageFileList.isNotEmpty);
     }
 
@@ -193,8 +247,9 @@ class _CommonTextFieldState extends State<CommonTextField> {
                         ),
                       )
                     : Container(),
-                if (_commentTextFieldController.text.contains('@'))
-                  MentionField(widget.mentionTarget),
+                /// 멘션 관련
+                if (activeMention)
+                  MentionField(widget.mentionList, setMentionTarget),
               ],
             ),
             Row(
@@ -223,7 +278,12 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     minLines: 1,
                     style: TextStyle(fontSize: 14),
                     cursorColor: GuamColorFamily.purpleCore,
-                    onChanged: (e) => heightOfBottomSheet(numberOfLines),
+                    onChanged: (e) {
+                      heightOfBottomSheet(numberOfLines);
+                      /// 멘션 관련
+                      // 쪽지함에서는 멘션 기능 없음.
+                      if (widget.mentionList != null) activateMention();
+                    },
                     decoration: InputDecoration(
                       hintText: "댓글을 남겨주세요.",
                       hintStyle: TextStyle(fontSize: 14, color: GuamColorFamily.grayscaleGray5),
