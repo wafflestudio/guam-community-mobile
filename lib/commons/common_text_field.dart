@@ -2,10 +2,9 @@ import 'dart:ui';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:guam_community_client/models/profiles/profile.dart';
+import 'package:guam_community_client/commons/mention_list.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/foundation.dart';
 import '../helpers/pick_image.dart';
 import 'image/image_thumbnail.dart';
 import 'button_size_circular_progress_indicator.dart';
@@ -16,7 +15,7 @@ class CommonTextField extends StatefulWidget {
   final Function addCommentImage;
   final Function removeCommentImage;
   final dynamic editTarget;
-  final List<Profile> mentionTarget;
+  final List<Map<String, dynamic>> mentionTarget;
 
   CommonTextField({this.sendButton='등록', @required this.onTap, this.addCommentImage, this.removeCommentImage, this.editTarget, this.mentionTarget});
 
@@ -28,6 +27,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
   final _commentTextFieldController = TextEditingController();
   final double maxImgSize = 80;
   final double imgSheetHeight = 96;
+  double mentionTargetHeight = 160;
   double bottomSheetHeight = 56;
   bool sending = false;
   List<PickedFile> imageFileList = [];
@@ -55,11 +55,6 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
   @override
   Widget build(BuildContext context) {
-
-    if (_commentTextFieldController.text.contains('@')) {
-      print(widget.mentionTarget);
-    }
-
     // count the number of TextField lines for controlling a bottom Sheet
     final span=TextSpan(text:_commentTextFieldController.text);
     final tp =TextPainter(text:span,maxLines: 1,textDirection: TextDirection.ltr);
@@ -74,6 +69,24 @@ class _CommonTextFieldState extends State<CommonTextField> {
         if (numberOfLines == 3) bottomSheetHeight = 90;
         if (numberOfLines == 4) bottomSheetHeight = 107;
       });
+    }
+
+    void heightOfImageOrMention(bool activeMention, bool activeImage){
+      setState(() {
+        if (activeMention){
+          mentionTargetHeight = 160;
+        } else {
+          mentionTargetHeight = 0;
+        }
+      });
+    }
+
+    // print(_commentTextFieldController.text.split(' ').contains('@'));
+
+    if (_commentTextFieldController.text.contains('@')) {
+      heightOfImageOrMention(true, imageFileList.isNotEmpty);
+    } else {
+      heightOfImageOrMention(false, imageFileList.isNotEmpty);
     }
 
     // bool isEdit = widget.editTarget != null;
@@ -119,8 +132,11 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
     return SizedBox(
       height: imageFileList.isNotEmpty
-          ? imgSheetHeight + bottomSheetHeight
-          : bottomSheetHeight, // 56 .. 73 .. 90 .. 107
+          ? mentionTargetHeight > 0 //
+              ? bottomSheetHeight + mentionTargetHeight
+              : imgSheetHeight + bottomSheetHeight + mentionTargetHeight
+          : bottomSheetHeight + mentionTargetHeight,
+            // bottomSheetHeight : 56 .. 73 .. 90 .. 107
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: GuamColorFamily.grayscaleWhite,
@@ -134,47 +150,53 @@ class _CommonTextFieldState extends State<CommonTextField> {
         ),
         child: Column(
           children: [
-            imageFileList.isNotEmpty
-            ? Container(
-              color: GuamColorFamily.grayscaleGray1.withOpacity(0.4),
-              padding: EdgeInsets.only(left: 23, top: 8, bottom: 8),
-              constraints: BoxConstraints(maxHeight: maxImgSize + 15),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: imageFileList.length,
-                itemBuilder: (_, idx) =>
-                  Stack(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(right: 14.87),
-                        child: ImageThumbnail(
-                          width: maxImgSize,
-                          height: maxImgSize,
-                          image: Image(
-                            image: FileImage(File(imageFileList[idx].path)),
-                            fit: BoxFit.fill,
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                imageFileList.isNotEmpty
+                    ? Container(
+                        color: GuamColorFamily.grayscaleGray1.withOpacity(0.4),
+                        padding: EdgeInsets.only(left: 23, top: 8, bottom: 8),
+                        constraints: BoxConstraints(maxHeight: maxImgSize + 15),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: imageFileList.length,
+                          itemBuilder: (_, idx) => Stack(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(right: 14.87),
+                                child: ImageThumbnail(
+                                  width: maxImgSize,
+                                  height: maxImgSize,
+                                  image: Image(
+                                    image: FileImage(File(imageFileList[idx].path)),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 2,
+                                right: 14,
+                                child: IconButton(
+                                  iconSize: 23,
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  icon: SvgPicture.asset('assets/icons/cancel_filled.svg'),
+                                  onPressed: () {
+                                    deleteImageFile(idx);
+                                    if (imageFileList.isEmpty) widget.removeCommentImage();
+                                  },
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                      ),
-                      Positioned(
-                        top: 2,
-                        right: 14,
-                        child: IconButton(
-                          iconSize: 23,
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
-                          icon: SvgPicture.asset('assets/icons/cancel_filled.svg'),
-                          onPressed: () {
-                            deleteImageFile(idx);
-                            if (imageFileList.isEmpty) widget.removeCommentImage();
-                          },
-                        ),
                       )
-                    ],
-                  ),
-              ),
-            )
-            : Container(),
+                    : Container(),
+                if (_commentTextFieldController.text.contains('@'))
+                  MentionField(widget.mentionTarget),
+              ],
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
