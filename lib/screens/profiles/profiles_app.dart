@@ -53,8 +53,6 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    bool isMe = context.read<Authenticate>().isMe(widget.userId);
-
     // 특정 userId를 받아 otherProfile 위젯 호출하는 경우.
     if (widget.userId != null){
       return FutureBuilder(
@@ -68,10 +66,9 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
                 title: snapshot.data.nickname,
                 leading: Back(),
               ),
-              body: SingleChildScrollView(child: OtherProfilesBody(
-                profile: snapshot.data,
-                isMe: isMe,
-              )),
+              body: SingleChildScrollView(
+                child: OtherProfilesBody(profile: snapshot.data)
+              ),
             );
           } else if (snapshot.hasError) {
             // 에러 메시지 띄워주기

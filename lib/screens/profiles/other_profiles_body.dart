@@ -6,15 +6,19 @@ import 'package:guam_community_client/screens/profiles/profile/profile_intro.dar
 import 'package:guam_community_client/screens/profiles/profile/profile_nickname.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_skillset.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_web_buttons.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/user_auth/authenticate.dart';
 
 class OtherProfilesBody extends StatelessWidget {
   final Profile profile;
-  final bool isMe;
 
-  OtherProfilesBody({this.profile, this.isMe});
+  OtherProfilesBody({this.profile});
 
   @override
   Widget build(BuildContext context) {
+    bool isMe = context.read<Authenticate>().isMe(profile.id);
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(24, 40, 24, 24),
