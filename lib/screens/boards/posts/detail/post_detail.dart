@@ -7,6 +7,7 @@ import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
+import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/boards/comments/comments.dart';
 import 'package:guam_community_client/screens/boards/posts/creation/post_creation.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_banner.dart';
@@ -18,7 +19,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../commons/bottom_modal/bottom_modal_with_message.dart';
 import '../../../../models/profiles/profile.dart';
-import '../../../../providers/profiles/profiles.dart';
 import '../post_comment_report.dart';
 
 class PostDetail extends StatefulWidget {
@@ -38,7 +38,7 @@ class _PostDetailState extends State<PostDetail> {
   @override
   void initState() {
     super.initState();
-    myProfile = context.read<MyProfile>().myProfile;
+    myProfile = context.read<Authenticate>().me;
   }
 
   void addCommentImage() {

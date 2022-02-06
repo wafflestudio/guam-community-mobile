@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:guam_community_client/providers/messages/messages.dart';
-import 'package:guam_community_client/providers/profiles/profiles.dart';
 import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/messages/message_box.dart';
 import 'package:guam_community_client/screens/profiles/other_profiles_body.dart';
@@ -22,8 +21,6 @@ class ProfilesApp extends StatelessWidget {
     String authToken = context.read<Authenticate>().authToken;
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => MyProfile(authToken: authToken)),
-        ChangeNotifierProvider(create: (_) => OtherProfile(userId: userId)),
         ChangeNotifierProvider(create: (_) => Messages(authToken: authToken)),
       ],
       child: ProfilesAppScaffold(userId),
@@ -47,15 +44,17 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
   @override
   void initState() {
     super.initState();
-    myProfile = context.read<MyProfile>().myProfile;
+    myProfile = context.read<Authenticate>().me;
     otherProfile = Future.delayed(
       Duration.zero,
-      () async => context.read<OtherProfile>().getUserProfile(widget.userId),
+      () async => context.read<Authenticate>().getUserProfile(widget.userId),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    bool isMe = context.read<Authenticate>().isMe(widget.userId);
+
     // 특정 userId를 받아 otherProfile 위젯 호출하는 경우.
     if (widget.userId != null){
       return FutureBuilder(
@@ -71,7 +70,7 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
               ),
               body: SingleChildScrollView(child: OtherProfilesBody(
                 profile: snapshot.data,
-                isMine: snapshot.data.id == myProfile.id,
+                isMe: isMe,
               )),
             );
           } else if (snapshot.hasError) {

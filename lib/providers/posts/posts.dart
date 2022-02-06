@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import '../profiles/profiles.dart';
+import '../user_auth/profile_data.dart';
 import '../../models/boards/post.dart';
 
 class Posts with ChangeNotifier {

@@ -5,9 +5,9 @@ import 'package:guam_community_client/styles/fonts.dart';
 
 class ProfileNickname extends StatelessWidget {
   final String nickname;
-  final bool isMine;
+  final bool isMe;
 
-  ProfileNickname({this.nickname, this.isMine = true});
+  ProfileNickname({this.nickname, this.isMe = true});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class ProfileNickname extends StatelessWidget {
         ),
       ),
       // left 26 of icon text width to align nickname at center
-      padding: EdgeInsets.fromLTRB((isMine ? 26+8 : 8).toDouble(), 16, 8, 16),
+      padding: EdgeInsets.fromLTRB((isMe ? 26+8 : 8).toDouble(), 16, 8, 16),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_ale
 import 'package:guam_community_client/commons/bottom_modal/bottom_modal_default.dart';
 import 'package:guam_community_client/commons/common_img_nickname.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
+import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/boards/posts/post_comment_report.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -11,7 +12,6 @@ import 'package:provider/provider.dart';
 
 import '../../../commons/bottom_modal/bottom_modal_with_message.dart';
 import '../../../models/profiles/profile.dart';
-import '../../../providers/profiles/profiles.dart';
 
 class CommentBanner extends StatefulWidget {
   final Comment comment;
@@ -28,7 +28,7 @@ class _CommentBannerState extends State<CommentBanner> {
   @override
   void initState() {
     super.initState();
-    myProfile = context.read<MyProfile>().myProfile;
+    myProfile = context.read<Authenticate>().me;
   }
 
   @override

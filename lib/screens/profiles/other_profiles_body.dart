@@ -9,9 +9,9 @@ import 'package:guam_community_client/screens/profiles/profile/profile_web_butto
 
 class OtherProfilesBody extends StatelessWidget {
   final Profile profile;
-  final bool isMine;
+  final bool isMe;
 
-  const OtherProfilesBody({this.profile, this.isMine});
+  OtherProfilesBody({this.profile, this.isMe});
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +22,15 @@ class OtherProfilesBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ProfileImg(profileImg: profile.profileImg, height: 144, width: 144),
-          ProfileNickname(nickname: profile.nickname, isMine: isMine),
+          ProfileNickname(nickname: profile.nickname, isMe: isMe),
           ProfileIntro(profile.intro),
           ProfileWebButtons(
             githubId: profile.githubId,
             blogUrl: profile.blogUrl,
-            isMine: isMine,
+            isMe: isMe,
           ),
           // 추후 MyProfile의 id랑 비교해서 본인임이 확인되면 프로필 탭으로 이동하도록 하겠습니다.
-          if (!isMine) MessageSendButton(profile),
+          if (!isMe) MessageSendButton(profile),
           ProfileSkillSet(profile.skillSet),
         ],
       ),
