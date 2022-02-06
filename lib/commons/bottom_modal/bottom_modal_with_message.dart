@@ -49,7 +49,7 @@ class BottomModalWithMessage extends StatelessWidget {
           Padding(padding: EdgeInsets.only(bottom: 14)),
           Center(
             child: TextButton(
-              onPressed: () => func,
+              onPressed: func,
               child: Text(
                 funcName,
                 style: TextStyle(fontSize: 16, color: GuamColorFamily.purpleCore),
