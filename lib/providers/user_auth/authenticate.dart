@@ -1,21 +1,27 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../../helpers/http_request.dart';
+import 'package:guam_community_client/models/profiles/profile.dart';
+import './profile_data.dart' as profile;
 
 class Authenticate with ChangeNotifier {
   var _authToken;
   final storage = FlutterSecureStorage();
 
-  Authenticate() {
-    initAuthToken();
-  }
+  Profile me;
+  bool loading = false;
 
   get authToken => _authToken;
   set authToken(token) {
     _authToken = token;
     notifyListeners();
   }
+
+  Authenticate() {
+    initAuthToken();
+    getMyProfile(authToken);
+  }
+
+  bool isMe(int userId) => me.id == userId;
 
   void initAuthToken() async {
     await storage
@@ -76,4 +82,40 @@ class Authenticate with ChangeNotifier {
   //   await Future.delayed(const Duration(milliseconds: 100), () => '')
   //       .then((response) => saveAuthToken(response));
   // }
+
+  Future getMyProfile(String authToken) async {
+    loading = true;
+
+    try {
+      Map<String, dynamic> jsonData = profile.profiles[2];
+      me = Profile.fromJson(jsonData);
+
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future<Profile> getUserProfile(int userId) async {
+    loading = true;
+    Profile user;
+
+    try {
+      if (userId == null) return null;
+      // API 붙일 때는 (idx - 1) 방식 대신 직접 userId를 넘길 예정.
+      Map<String, dynamic> jsonData = profile.profiles[userId-1];
+      user = Profile.fromJson(jsonData);
+
+      loading = false;
+
+      return user;
+    } catch (e) {
+      print(e);
+      return  null;
+    } finally {
+      notifyListeners();
+    }
+  }
 }

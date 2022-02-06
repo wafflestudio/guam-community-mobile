@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/models/messages/message_box.dart';
-import '../profiles/profiles.dart';
+import '../user_auth/profile_data.dart';
 
 class Messages with ChangeNotifier {
   List<MessageBox> _messageBoxes;

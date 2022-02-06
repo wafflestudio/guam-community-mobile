@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/providers/profiles/profiles.dart';
+import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:provider/provider.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -8,7 +8,7 @@ import '../pages/profiles_edit.dart';
 class ProfileEditButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final myProfile = context.read<MyProfile>().profile;
+    final myProfile = context.read<Authenticate>().me;
 
     return IconText(
       iconSize: 18,

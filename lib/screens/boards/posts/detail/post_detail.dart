@@ -7,6 +7,7 @@ import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
+import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/boards/comments/comments.dart';
 import 'package:guam_community_client/screens/boards/posts/creation/post_creation.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_banner.dart';
@@ -14,7 +15,10 @@ import 'package:guam_community_client/screens/boards/posts/detail/post_detail_bo
 import 'package:guam_community_client/screens/boards/posts/post_info.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../commons/bottom_modal/bottom_modal_with_message.dart';
+import '../../../../models/profiles/profile.dart';
 import '../post_comment_report.dart';
 
 class PostDetail extends StatefulWidget {
@@ -29,6 +33,13 @@ class PostDetail extends StatefulWidget {
 class _PostDetailState extends State<PostDetail> {
   final int maxRenderImgCnt = 4;
   bool commentImageExist = false;
+  Profile myProfile;
+
+  @override
+  void initState() {
+    super.initState();
+    myProfile = context.read<Authenticate>().me;
+  }
 
   void addCommentImage() {
     setState(() => commentImageExist = true);
@@ -73,7 +84,7 @@ class _PostDetailState extends State<PostDetail> {
                       padding: EdgeInsets.only(left: 24, top: 24, bottom: 21),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: widget.post.isAuthor ? [
+                        children: widget.post.profile.id == myProfile.id ? [
                           BottomModalDefault(
                             text: '수정하기',
                             onPressed: () => Navigator.of(context).push(
@@ -94,7 +105,26 @@ class _PostDetailState extends State<PostDetail> {
                         ] : [
                           BottomModalDefault(
                             text: '쪽지 보내기',
-                            onPressed: (){},
+                            onPressed: () => showMaterialModalBottomSheet(
+                              context: context,
+                              useRootNavigator: true,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                ),
+                              ),
+                              builder: (context) => Container(
+                                child: SingleChildScrollView(
+                                  child: BottomModalWithMessage(
+                                    funcName: '보내기',
+                                    title: '${widget.post.profile.nickname} 님에게 쪽지 보내기',
+                                    profile: widget.post.profile,
+                                    func: null,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                           PostCommentReport(widget.post.profile),
                           BottomModalWithAlert(
