@@ -2,7 +2,7 @@
 
 ![Dart](https://img.shields.io/badge/Dart-2.16.0-brightgreen.svg)
 ![Flutter](https://img.shields.io/badge/flutter-2.10.0-blue.svg)
-![Provider](https://img.shields.io/badge/flutter-5.0.0-yellowgreen.svg)
+![Provider](https://img.shields.io/badge/provider-5.0.0-yellowgreen.svg)
 
 
 - **We Connect Developers**
