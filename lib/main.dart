@@ -6,6 +6,8 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_auth/authenticate.dart';
 import 'screens/app/app.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() {
   runApp(MyApp());
