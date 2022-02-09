@@ -10,11 +10,11 @@ class Auth extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProvider = context.read<Authenticate>();
 
-    // TODO: check firebase user exist 
-    return true ? LoginPage() : ChangeNotifierProvider(
-      create: (_) => HomeProvider(),
-      child: App(),
-    );
+    return authProvider.userSignedIn()
+        ? ChangeNotifierProvider(
+            create: (_) => HomeProvider(),
+            child: App(),
+          )
+        : LoginPage();
   }
 }
-
