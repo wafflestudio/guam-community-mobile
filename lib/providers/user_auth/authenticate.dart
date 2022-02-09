@@ -24,7 +24,36 @@ class Authenticate with ChangeNotifier {
   bool isMe(int userId) => me.id == userId;
 
   Future kakaoSignIn(String kakaoAccessToken) async {
-    print(kakaoAccessToken);
+    print('kakao token: ' + kakaoAccessToken);
+    try {
+      await HttpRequest().get(
+        authority: HttpRequest().immigrationAuthority,
+        path: "/api/v1/auth/token",
+        queryParams: {"kakaoToken": kakaoAccessToken},
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          final customToken = jsonDecode(response.body);
+          print('35: firebase token: $customToken');
+          await auth.signInWithCustomToken(customToken);
+          await getMyProfile();
+          // TODO: show toast after impl. toast
+          // showToast(success: true, msg: "카카오 로그인 되었습니다.");
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          // TODO: show toast after impl. toast
+          // showToast(success: false, msg: err);
+        }
+      });
+    } on FirebaseAuthException {
+      // TODO: show toast after impl. toast
+      // showToast(success: false, msg: "Firebase Auth 에 문제가 발생했습니다.");
+    } catch (e) {
+      // TODO: show toast after impl. toast
+      // showToast(success: false, msg: e.message);
+    } finally {
+      notifyListeners();
+    }
   }
 
   Future<String> getFirebaseIdToken() async {
@@ -49,12 +78,13 @@ class Authenticate with ChangeNotifier {
       if (authToken.isNotEmpty) {
         await HttpRequest()
           .get(
-            path: "/user/me",
+            path: "/users/me",
             authToken: authToken,
         ).then((response) async {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+            print('86: Me: $jsonData');
             me = Profile.fromJson(jsonData);
             // TODO: set fcm token when impl. push notification
             // setMyFcmToken();
