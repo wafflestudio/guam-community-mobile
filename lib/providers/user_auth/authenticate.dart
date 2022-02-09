@@ -14,7 +14,7 @@ class Authenticate with ChangeNotifier {
   bool isMe(int userId) => me.id == userId;
 
   Future kakaoSignIn(String kakaoAccessToken) async {
-
+    print(kakaoAccessToken);
   }
 
   Future<Profile> getUserProfile(int userId) async {

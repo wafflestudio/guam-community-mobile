@@ -1,8 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/styles/colors.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'package:provider/provider.dart';
+import '../login/login_button.dart';
 
 class KakaoLogin extends StatefulWidget {
   @override
@@ -84,15 +85,11 @@ class KakaoLoginState extends State<KakaoLogin> {
 
   @override
   Widget build(BuildContext context) {
-  return InkWell(
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.5,
-        height: MediaQuery.of(context).size.height * 0.07,
-        child: Image(
-          image: AssetImage("assets/buttons/kakao_login_large_narrow.png"),
-        ),
-      ),
-      onTap: () => _isKakaoTalkInstalled ? _loginWithTalk() : _loginWithKakao(),
+    return LoginButton(
+      'kakao_logo',
+      '카카오톡으로 시작하기',
+      GuamColorFamily.kakaoYellow,
+      () => _isKakaoTalkInstalled ? _loginWithTalk() : _loginWithKakao()
     );
   }
 }
