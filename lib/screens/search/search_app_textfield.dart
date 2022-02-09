@@ -64,7 +64,6 @@ class SearchAppTextFieldState extends State<SearchAppTextField> {
                 ),
                 onSubmitted: (word) {
                   searchProvider.searchPosts(
-                    authToken: context.read<Authenticate>().authToken,
                     query: word
                   );
                   searchProvider.saveHistory(word);

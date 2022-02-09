@@ -14,8 +14,8 @@ class BoardsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Posts(authToken: context.read<Authenticate>().authToken)),
-        ChangeNotifierProvider(create: (_) => Messages(authToken: context.read<Authenticate>().authToken)),
+        ChangeNotifierProvider(create: (_) => Posts()),
+        ChangeNotifierProvider(create: (_) => Messages()),
       ],
       child: BoardsAppScaffold(),
     );

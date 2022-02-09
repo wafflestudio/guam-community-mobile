@@ -16,9 +16,7 @@ class NotificationsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Notifications(
-          authToken: context.read<Authenticate>().authToken),
-        ),
+        ChangeNotifierProvider(create: (_) => Notifications()),
       ],
       child: NotificationsAppScaffold(),
     );

@@ -33,7 +33,6 @@ class SearchWord extends StatelessWidget {
             ),
             onTap: () {
               searchProvider.searchPosts(
-                authToken: context.read<Authenticate>().authToken,
                 query: word,
               );
               SearchAppTextFieldState.controller.text = word;

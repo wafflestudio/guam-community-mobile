@@ -18,10 +18,9 @@ class ProfilesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String authToken = context.read<Authenticate>().authToken;
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Messages(authToken: authToken)),
+        ChangeNotifierProvider(create: (_) => Messages()),
       ],
       child: ProfilesAppScaffold(userId),
     );

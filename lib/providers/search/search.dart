@@ -61,7 +61,7 @@ class Search with ChangeNotifier {
     }
   }
 
-  Future searchPosts({@required String authToken, @required String query}) async {
+  Future searchPosts({@required String query}) async {
     try {
       if (query == null || query.trim() == '') {
         searchedPosts.clear();
