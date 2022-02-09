@@ -101,12 +101,19 @@ class Authenticate with ChangeNotifier {
   }
 
   Future<Profile> getUserProfile(int userId) async {
-    // TODO: impl 
+    // TODO: impl
     return me;
   }
 
   void toggleLoading() {
     loading = !loading;
+    notifyListeners();
+  }
+
+  Future<void> signOut() async {
+    await auth.signOut();
+    // TODO: show toast after impl. toast
+    // showToast(success: true, msg: "로그아웃 되었습니다.");
     notifyListeners();
   }
 }
