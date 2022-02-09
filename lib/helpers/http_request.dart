@@ -6,13 +6,18 @@ import 'package:path/path.dart' as p;
 import '../mixins/toast.dart';
 
 class HttpRequest with Toast {
+  // TODO: Remove immigrationAuthority & @isHttps param after immigrationAuthority is merged to gateway
+
   final String gatewayAuthority = "guam.jon-snow-korea.com";
   final String immigrationAuthority = "guam-immigration.jon-snow-korea.com";
   final String s3BaseAuthority = "https://guam.s3.ap-northeast-2.amazonaws.com/";
 
-  Future get({String authority, String path, dynamic queryParams, String authToken}) async {
+  Future get({bool isHttps = true, String authority, String path, dynamic queryParams, String authToken}) async {
     try {
-      final uri = Uri.https(authority ?? gatewayAuthority, path, queryParams);
+      final uri = isHttps
+          ? Uri.https(authority ?? gatewayAuthority, path, queryParams)
+          : Uri.http(authority ?? gatewayAuthority, path, queryParams);
+
       final response = await http.get(
         uri,
         headers: {'Content-Type': "application/json", 'Authorization': 'Bearer $authToken'},
@@ -26,9 +31,11 @@ class HttpRequest with Toast {
     }
   }
 
-  Future post({String authority, String path, String authToken, dynamic queryParams, dynamic body}) async {
+  Future post({bool isHttps = true, String authority, String path, String authToken, dynamic queryParams, dynamic body}) async {
     try {
-      final uri = Uri.https(authority ?? gatewayAuthority, path, queryParams);
+      final uri = isHttps
+          ? Uri.https(authority ?? gatewayAuthority, path, queryParams)
+          : Uri.http(authority ?? gatewayAuthority, path, queryParams);
 
       final response = await http.post(
         uri,
@@ -44,9 +51,11 @@ class HttpRequest with Toast {
     }
   }
 
-  Future postMultipart({String authority, String path, String authToken, Map<String, dynamic> fields, List<File> files}) async {
+  Future postMultipart({bool isHttps = true, String authority, String path, String authToken, Map<String, dynamic> fields, List<File> files}) async {
     try {
-      final uri = Uri.https(authority ?? gatewayAuthority, path);
+      final uri = isHttps
+          ? Uri.https(authority ?? gatewayAuthority, path)
+          : Uri.http(authority ?? gatewayAuthority, path);
 
       http.MultipartRequest request = http.MultipartRequest("POST", uri);
       request.headers['Authorization'] = 'Bearer $authToken';
@@ -73,9 +82,11 @@ class HttpRequest with Toast {
     }
   }
 
-  Future put({String authority, String path, String authToken, dynamic body}) async {
+  Future put({bool isHttps = true, String authority, String path, String authToken, dynamic body}) async {
     try {
-      final uri = Uri.https(authority ?? gatewayAuthority, path);
+      final uri = isHttps
+          ? Uri.https(authority ?? gatewayAuthority, path)
+          : Uri.http(authority ?? gatewayAuthority, path);
 
       final response = await http.put(
         uri,
