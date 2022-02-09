@@ -8,7 +8,7 @@ import '../../providers/user_auth/authenticate.dart';
 class Auth extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final authProvider = context.read<Authenticate>();
+    final authProvider = context.watch<Authenticate>();
 
     return authProvider.userSignedIn()
         ? ChangeNotifierProvider(
