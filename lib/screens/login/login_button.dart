@@ -19,9 +19,7 @@ class LoginButton extends StatelessWidget {
         // onTap: () => Navigator.of(context).push(
         //   MaterialPageRoute(builder: (_) => SignUp()),
         // ),
-        onTap: () => {
-          onTap()
-        },
+        onTap: onTap,
         child: Container(
           alignment: Alignment.center,
           height: 56,
