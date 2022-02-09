@@ -10,6 +10,7 @@ class Auth extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
 
+    // TODO: Use isProfileSet as determine factor, and add another logic for redirecting to signup pages
     return authProvider.userSignedIn()
         ? ChangeNotifierProvider(
             create: (_) => HomeProvider(),
