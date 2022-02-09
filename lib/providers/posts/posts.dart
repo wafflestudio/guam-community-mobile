@@ -7,13 +7,13 @@ class Posts with ChangeNotifier {
   List<Post> _posts;
   bool loading = false;
 
-  Posts({@required String authToken}) {
-    fetchPosts(authToken);
+  Posts() {
+    fetchPosts();
   }
 
   List<Post> get posts => _posts;
 
-  Future fetchPosts(String authToken) async {
+  Future fetchPosts() async {
     try {
       loading = true;
 

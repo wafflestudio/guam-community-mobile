@@ -17,8 +17,6 @@ class PostPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String authToken = context.read<Authenticate>().authToken;
-
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
@@ -37,7 +35,7 @@ class PostPreview extends StatelessWidget {
                 */
                 builder: (_) => MultiProvider(
                   providers: [
-                    ChangeNotifierProvider(create: (_) => Posts(authToken: authToken)),
+                    ChangeNotifierProvider(create: (_) => Posts()),
                   ],
                   child: PostDetail(post),
                 ),

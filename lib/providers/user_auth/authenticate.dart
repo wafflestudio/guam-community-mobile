@@ -1,96 +1,98 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
-import './profile_data.dart' as profile;
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../helpers/http_request.dart';
+import '../../helpers/decode_ko.dart';
+import 'dart:convert';
 
 class Authenticate with ChangeNotifier {
-  var _authToken;
-  final storage = FlutterSecureStorage();
+  final _kakaoClientId = "367d8cf339e2ba59376ba647c7135dd2";
+  final _kakaoJavascriptClientId = "2edf60d1ebf23061d200cfe4a68a235a";
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+  get kakaoClientId => _kakaoClientId;
+  get kakaoJavascriptClientId => _kakaoJavascriptClientId;
 
   Profile me;
   bool loading = false;
 
-  get authToken => _authToken;
-  set authToken(token) {
-    _authToken = token;
-    notifyListeners();
-  }
-
   Authenticate() {
-    initAuthToken();
-    getMyProfile(authToken);
+    getMyProfile();
   }
 
+  bool userSignedIn() => auth.currentUser != null && me != null; // 로그인 된 유저 존재 여부
   bool isMe(int userId) => me.id == userId;
 
-  void initAuthToken() async {
-    await storage
-        .read(key: 'authentication_token')
-        .then((value) => this.authToken = value)
-        .catchError((error) {print(error);});
-  }
-
-  Future saveAuthToken(String authToken) async {
-    this.authToken = authToken;
-    await storage.write(key: 'authentication_token', value: authToken);
-  }
-
-  Future destroyAuthToken() async {
-    this.authToken = null;
-    await storage.delete(key: 'authentication_token');
-  }
-
-  /* 유저 로그인/회원가입 서버 개발 전 임시방편 코드
-  Future signIn({Map<String, dynamic> params}) async {
-    await HttpRequest()
-        .post(partialUrl: "sign_in", body: params)
-        .then((response) => saveAuthToken(json.decode(response.body)['authentication_token']));
-  }
-  */
-  //유저 로그인/회원가입 서버 개발 전 임시방편 코드
-  Future signIn({Map<String, dynamic> params}) async {
-    List<dynamic> tempUsers = [
-      { "email": "gajagajago@naver.com", "password": "1234" },
-      { "email": "khko", "password": "123456" },
-    ];
-    print(params);
-
-    var valid = tempUsers.any((e) => e['email'] == params['email'] && e['password'] == params['password']);
-
-    if (valid) {
-      await Future.delayed(const Duration(milliseconds: 100), () => 'temp_auth_blah_blah')
-          .then((response) => saveAuthToken(response));
-    } else {
-      throw Exception('No valid user');
+  Future kakaoSignIn(String kakaoAccessToken) async {
+    try {
+      await HttpRequest().get(
+        isHttps: false, // TODO: remove after immigration heads to gateway
+        authority: HttpRequest().immigrationAuthority,
+        path: "/api/v1/auth/token",
+        queryParams: {"kakaoToken": kakaoAccessToken},
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          final customToken = jsonDecode(response.body)['customToken'];
+          await auth.signInWithCustomToken(customToken);
+          await getMyProfile();
+          // TODO: show toast after impl. toast
+          // showToast(success: true, msg: "카카오 로그인 되었습니다.");
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          // TODO: show toast after impl. toast
+          // showToast(success: false, msg: err);
+        }
+      });
+    } on FirebaseAuthException {
+      // TODO: show toast after impl. toast
+      // showToast(success: false, msg: "Firebase Auth 에 문제가 발생했습니다.");
+    } catch (e) {
+      // TODO: show toast after impl. toast
+      // showToast(success: false, msg: e.message);
     }
   }
 
-  // Future signUp({Map<String, dynamic> params}) async {
-  //   await HttpRequest()
-  //       .post(partialUrl: "sign_up", body: params)
-  //       .then((response) => saveAuthToken(json.decode(response.body)['authentication_token']));
-  // }
-  /*
-  Future signOut({String authToken}) async {
-    await HttpRequest()
-        .delete(partialUrl: "sign_out", authToken: authToken)
-        .then((response) => response);
-  }
-  */
-  // 유저 로그인/회원가입 서버 개발 전 임시방편 코드
-  // Future signOut({String authToken}) async {
-  //   await Future.delayed(const Duration(milliseconds: 100), () => '')
-  //       .then((response) => saveAuthToken(response));
-  // }
-
-  Future getMyProfile(String authToken) async {
-    loading = true;
+  Future<String> getFirebaseIdToken() async {
+    String idToken;
 
     try {
-      Map<String, dynamic> jsonData = profile.profiles[2];
-      me = Profile.fromJson(jsonData);
+      User user = auth.currentUser;
+      idToken = await user.getIdToken();
+    } on NoSuchMethodError {
+      throw new Exception("로그인이 필요합니다.");
+    } catch (e) {
+      throw new Exception(e);
+    }
 
-      loading = false;
+    return idToken;
+  }
+
+  Future getMyProfile() async {
+    try {
+      String authToken = await getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+          .get(
+            path: "community/api/v1/users/me",
+            authToken: authToken,
+        ).then((response) async {
+          print(response.statusCode);
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            me = Profile.fromJson(jsonData);
+            // TODO: set fcm token when impl. push notification
+            // setMyFcmToken();
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            // TODO: show toast after impl. toast
+            // showToast(success: false, msg: err);
+          }
+        });
+      }
     } catch (e) {
       print(e);
     } finally {
@@ -99,23 +101,19 @@ class Authenticate with ChangeNotifier {
   }
 
   Future<Profile> getUserProfile(int userId) async {
-    loading = true;
-    Profile user;
+    // TODO: impl
+    return me;
+  }
 
-    try {
-      if (userId == null) return null;
-      // API 붙일 때는 (idx - 1) 방식 대신 직접 userId를 넘길 예정.
-      Map<String, dynamic> jsonData = profile.profiles[userId-1];
-      user = Profile.fromJson(jsonData);
+  void toggleLoading() {
+    loading = !loading;
+    notifyListeners();
+  }
 
-      loading = false;
-
-      return user;
-    } catch (e) {
-      print(e);
-      return  null;
-    } finally {
-      notifyListeners();
-    }
+  Future<void> signOut() async {
+    await auth.signOut();
+    // TODO: show toast after impl. toast
+    // showToast(success: true, msg: "로그아웃 되었습니다.");
+    notifyListeners();
   }
 }
