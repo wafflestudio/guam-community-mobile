@@ -9,7 +9,17 @@ import 'screens/app/app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  // Returns an instance of the WidgetsBinding, creating and initializing it if necessary.
+  // WidgetsBinding provides interaction w/ Flutter Engine.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Use platform channels to call native code to initialize Firebase.
+  // Thus, 'async' main() and placed next to ensureInitialized()
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(MyApp());
 }
 
