@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wafflestudio.guam.guam_community_client">
+    package="com.wafflestudio.guam">
    <application
-        android:label="guam_community_client"
+        android:label="guam"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
