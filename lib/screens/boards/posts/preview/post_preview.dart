@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
-import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/app/tab_item.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview_home_tab.dart';

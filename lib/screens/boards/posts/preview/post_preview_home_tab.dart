@@ -27,7 +27,9 @@ class PostPreviewHomeTab extends StatelessWidget {
           children: [
             this.isAnonymous
                 ? PostPreviewBoardType(this.post.boardType)
-                : PostPreviewCategory(post),
+                : post.category != null
+                  ? PostPreviewCategory(post)
+                  : Container(),
             Spacer(),
             PostPreviewRelativeTime(DateTime.parse(this.post.createdAt)),
           ],
@@ -38,7 +40,7 @@ class PostPreviewHomeTab extends StatelessWidget {
         ),
         Row(
           children: [
-            if (post.pictures.length > 0)
+            if (post.isImageIncluded)
               IconButton(
                 padding: EdgeInsets.only(right: 4),
                 constraints: BoxConstraints(),
