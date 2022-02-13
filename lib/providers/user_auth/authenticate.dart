@@ -78,7 +78,6 @@ class Authenticate with ChangeNotifier {
             path: "community/api/v1/users/me",
             authToken: authToken,
         ).then((response) async {
-          print(response.statusCode);
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8);

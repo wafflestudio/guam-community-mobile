@@ -58,13 +58,20 @@ class Post extends ChangeNotifier {
     List<Picture> pictures;
     List<Comment> comments;
 
-    // 추후 user와 profile 단어 괴리 맞추기
+    /**
+     * Server에서 profile 대신 user라는 이름으로 주고 있는데,
+     * 클라를 다 user로 고치든 서버에서 profile로 받아오든 할 것.
+   **/
     if (json['user'] != null) {
       profile = Profile.fromJson(json['user']);
     }
 
     if (json['categories'] != null) {
-      category = Category.Category.fromJson(json['categories']);
+     /**
+      * Server에서 불필요하게 categories라는 복수의 category json을 담을 수 있는
+      * nested Json 형태로 주고 있는데, 단일 category로 달라고 해야함. 그 후에 [0] 없애기
+     **/
+      category = Category.Category.fromJson(json['categories'][0]);
     }
 
     if (json['pictures'] != null) {
@@ -89,6 +96,10 @@ class Post extends ChangeNotifier {
     return Post(
       id: json['id'],
       profile: profile,
+      /**
+       * Server에서 boardType 대신 boardId로 주고 있어 함수(transferBoardType)를 통해
+       * int -> str 번역하고 있는데, 추후 str (ex. 익명게시판)으로 받아오면 해당 함수 없애기
+       **/
       boardType: transferBoardType(json['boardId']),
       title: json['title'],
       content: json['content'],

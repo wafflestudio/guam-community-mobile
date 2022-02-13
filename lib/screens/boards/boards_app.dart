@@ -60,12 +60,12 @@ class _BoardsAppScaffoldState extends State<BoardsAppScaffold> {
         body: TabBarView(
           physics: BouncingScrollPhysics(),
           children: [
-            BoardsFeed(),
-            BoardsFeed(),
-            BoardsFeed(),
-            BoardsFeed(),
-            BoardsFeed(),
-            BoardsFeed(),
+            BoardsFeed(boardId: 0), // boardId 없으면 피드 게시판 (Server 구현)
+            BoardsFeed(boardId: 1),
+            BoardsFeed(boardId: 2),
+            BoardsFeed(boardId: 3),
+            BoardsFeed(boardId: 4),
+            BoardsFeed(boardId: 5),
           ],
         ),
         floatingActionButton: PostButton()
