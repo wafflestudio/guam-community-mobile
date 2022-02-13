@@ -119,23 +119,33 @@ class _PostDetailState extends State<PostDetail> {
                     Padding(
                       padding: EdgeInsets.only(top: 14, bottom: 8),
                       child: PostInfo(
-                        post: widget.post,
+                        post: _post,
                         iconSize: 24,
                         showProfile: false,
                         iconColor: GuamColorFamily.grayscaleGray4,
                       ),
                     ),
                     CustomDivider(color: GuamColorFamily.grayscaleGray7),
-                    if (widget.post.comments != null)
-                      Column(
+                    _post.comments.isNotEmpty
+                    /// comment만 불러오는 API 완성되면, FutureBuilder 여기서 쓰일 예정
+                      ? Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(
                             children: [
-                              ...widget.post.comments.map((comment) => Comments(comment: comment))
+                              ..._post.comments.map((comment) => Comments(comment: comment))
                             ]
                           ),
                         ],
+                      )
+                      : Padding(
+                        padding: EdgeInsets.only(top: 24),
+                        child: Center(
+                          child: Text(
+                            "작성된 댓글이 없습니다.",
+                            style: TextStyle(fontSize: 13, color: GuamColorFamily.grayscaleGray5),
+                          ),
+                        ),
                       ),
                   ],
                 ),
@@ -153,11 +163,8 @@ class _PostDetailState extends State<PostDetail> {
           );
         } else if (snapshot.hasError) {
           // 에러 메시지 띄워주기
-          print("error");
           return Center(child: CircularProgressIndicator());
         } else {
-          print(snapshot);
-          print("idon know");
           return Center(child: CircularProgressIndicator());
         }
       }

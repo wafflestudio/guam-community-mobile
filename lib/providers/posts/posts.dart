@@ -59,6 +59,7 @@ class Posts with ChangeNotifier {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
           final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+          // print(jsonData);
           post = Post.fromJson(jsonData);
         } else {
           final jsonUtf8 = decodeKo(response);

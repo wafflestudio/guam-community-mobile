@@ -84,12 +84,13 @@ class Post extends ChangeNotifier {
     if (json['comments'] != null) {
       comments = [...json['comments'].map((comment) => Comment.fromJson({
         'id': comment['id'],
-        'profile': comment['profile'],
-        'comment': comment['comment'],
+        'user': comment['user'],
+        'content': comment['content'],
         'pictures': comment['pictures'],
-        'isAuthor': comment['isAuthor'],
+        'imagePaths': json['imagePaths'],
         'isLiked': comment['isLiked'],
-        'like': comment['like'],
+        'likeCount': comment['likeCount'],
+        'createdAt': json['createdAt'],
       }))];
     }
 
