@@ -39,11 +39,11 @@ class PostInfo extends StatelessWidget {
               IconText(
                 iconSize: iconSize,
                 text: post.likeCount.toString(),
-                iconPath: post.isLiked
+                iconPath: post.isLiked ?? false  /// 서버 수정 후 ?? false 삭제
                     ? 'assets/icons/like_filled.svg'
                     : 'assets/icons/like_outlined.svg',
                 onPressed: (){},
-                iconColor: post.isLiked
+                iconColor: post.isLiked ?? false  /// 서버 수정 후 ?? false 삭제
                     ? GuamColorFamily.redCore
                     : iconColor,
                 textColor: iconColor,
@@ -58,11 +58,11 @@ class PostInfo extends StatelessWidget {
               IconText(
                 iconSize: iconSize,
                 text: post.scrapCount.toString(),
-                iconPath: post.isScrapped
+                iconPath: post.isScrapped ?? false  /// 서버 수정 후 ?? false 삭제
                     ? 'assets/icons/scrap_filled.svg'
                     : 'assets/icons/scrap_outlined.svg',
                 onPressed: (){},
-                iconColor: post.isScrapped
+                iconColor: post.isScrapped ?? false  /// 서버 수정 후 ?? false 삭제
                     ? GuamColorFamily.purpleCore
                     : iconColor,
                 textColor: iconColor,
