@@ -14,6 +14,7 @@ class Post extends ChangeNotifier {
   final String content;
   final Category.Category category; // ex) 데이터분석, 개발, 디자인
   final List<Picture> pictures;
+  final List<dynamic> imagePaths; // 서버 수정 전까지 쓰이는 임시방편 속성
   final List<Comment> comments;
   final int likeCount;
   final int commentCount;
@@ -31,6 +32,7 @@ class Post extends ChangeNotifier {
     this.content,
     this.category,
     this.pictures,
+    this.imagePaths,
     this.comments,
     this.likeCount,
     this.commentCount,
@@ -41,9 +43,7 @@ class Post extends ChangeNotifier {
     this.createdAt,
   });
 
-  /*
-  * Json Encoding for filter value comparison in search tab
-  * */
+  /// Json Encoding for filter value comparison in search tab
   Map<String, dynamic> toJson() {
     return {
       'id': this.id,
@@ -61,7 +61,7 @@ class Post extends ChangeNotifier {
     /**
      * Server에서 profile 대신 user라는 이름으로 주고 있는데,
      * 클라를 다 user로 고치든 서버에서 profile로 받아오든 할 것.
-   **/
+    **/
     if (json['user'] != null) {
       profile = Profile.fromJson(json['user']);
     }
@@ -105,6 +105,7 @@ class Post extends ChangeNotifier {
       content: json['content'],
       category: category,
       pictures: pictures,
+      imagePaths: json['imagePaths'],
       comments: comments,
       likeCount: json['likeCount'],
       commentCount: json['commentCount'],

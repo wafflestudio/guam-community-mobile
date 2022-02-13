@@ -46,4 +46,32 @@ class Posts with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<Post> getPost(int postId) async {
+    Post post;
+    loading = true;
+
+    try {
+      await HttpRequest()
+          .get(
+          path: "community/api/v1/posts/$postId",
+      ).then((response) {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+          post = Post.fromJson(jsonData);
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          // showToast(success: false, msg: err);
+        }
+      });
+    } catch (e) {
+      print(e);
+    } finally {
+      loading = false;
+      notifyListeners();
+    }
+    return post;
+  }
 }
