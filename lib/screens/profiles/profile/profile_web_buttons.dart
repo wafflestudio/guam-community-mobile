@@ -17,8 +17,10 @@ class ProfileWebButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.,
         children: [
-          WebButton(githubUrl+githubId, 'assets/icons/github.svg'),
-          WebButton(blogUrl, 'assets/icons/blog.svg'),
+          if (githubId != "")
+            WebButton(githubUrl+githubId, 'assets/icons/github.svg'),
+          if (blogUrl != "")
+            WebButton(blogUrl, 'assets/icons/blog.svg'),
         ],
       ),
     );

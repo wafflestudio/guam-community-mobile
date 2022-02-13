@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:guam_community_client/commons/functions_category_boardType.dart';
+import 'package:guam_community_client/models/boards/category.dart' as Category;
 import 'package:guam_community_client/models/boards/comment.dart';
 import 'package:guam_community_client/models/picture.dart';
 import '../profiles/profile.dart';
 
 class Post extends ChangeNotifier {
   final int id;
+  final String boardType; // ex) 익명, 홍보, 정보공유 게시판
   final Profile profile;
-  final String boardType;
   final String title;
   final String content;
-  final String category;
+  final Category.Category category; // ex) 데이터분석, 개발, 디자인
   final List<Picture> pictures;
   final List<Comment> comments;
-  final int like;
-  final int commentCnt;
-  final int scrap;
-  final bool isAuthor;
+  final int likeCount;
+  final int commentCount;
+  final int scrapCount;
+  final bool isImageIncluded;
   final bool isLiked;
   final bool isScrapped;
-  final DateTime createdAt;
+  final String createdAt;
 
   Post({
     this.id,
@@ -30,10 +32,10 @@ class Post extends ChangeNotifier {
     this.category,
     this.pictures,
     this.comments,
-    this.like,
-    this.commentCnt,
-    this.scrap,
-    this.isAuthor,
+    this.likeCount,
+    this.commentCount,
+    this.scrapCount,
+    this.isImageIncluded,
     this.isLiked,
     this.isScrapped,
     this.createdAt,
@@ -45,18 +47,24 @@ class Post extends ChangeNotifier {
   Map<String, dynamic> toJson() {
     return {
       'id': this.id,
-      'like': this.like,
+      'like': this.likeCount,
       'createdAt': this.createdAt,
     };
   }
 
   factory Post.fromJson(Map<String, dynamic> json) {
     Profile profile;
+    Category.Category category;
     List<Picture> pictures;
     List<Comment> comments;
 
-    if (json['profile'] != null) {
-      profile = Profile.fromJson(json['profile']);
+    // 추후 user와 profile 단어 괴리 맞추기
+    if (json['user'] != null) {
+      profile = Profile.fromJson(json['user']);
+    }
+
+    if (json['categories'] != null) {
+      category = Category.Category.fromJson(json['categories']);
     }
 
     if (json['pictures'] != null) {
@@ -81,16 +89,16 @@ class Post extends ChangeNotifier {
     return Post(
       id: json['id'],
       profile: profile,
-      boardType: json['boardType'],
+      boardType: transferBoardType(json['boardId']),
       title: json['title'],
       content: json['content'],
-      category: json['category'],
+      category: category,
       pictures: pictures,
       comments: comments,
-      like: json['like'],
-      commentCnt: json['commentCnt'],
-      scrap: json['scrap'],
-      isAuthor: json['isAuthor'],
+      likeCount: json['likeCount'],
+      commentCount: json['commentCount'],
+      scrapCount: json['scrapCount'],
+      isImageIncluded: json['isImageIncluded'],
       isLiked: json['isLiked'],
       isScrapped: json['isScrapped'],
       createdAt: json['createdAt'],

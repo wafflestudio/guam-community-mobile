@@ -38,7 +38,7 @@ class PostInfo extends StatelessWidget {
             children: [
               IconText(
                 iconSize: iconSize,
-                text: post.like.toString(),
+                text: post.likeCount.toString(),
                 iconPath: post.isLiked
                     ? 'assets/icons/like_filled.svg'
                     : 'assets/icons/like_outlined.svg',
@@ -50,14 +50,14 @@ class PostInfo extends StatelessWidget {
               ),
               IconText(
                 iconSize: iconSize,
-                text: post.commentCnt.toString(),
+                text: post.commentCount.toString(),
                 iconPath: 'assets/icons/comment.svg',
                 iconColor: iconColor,
                 textColor: iconColor,
               ),
               IconText(
                 iconSize: iconSize,
-                text: post.scrap.toString(),
+                text: post.scrapCount.toString(),
                 iconPath: post.isScrapped
                     ? 'assets/icons/scrap_filled.svg'
                     : 'assets/icons/scrap_outlined.svg',

@@ -21,7 +21,7 @@ class ProfileImg extends StatelessWidget {
         color: profileImg != null ? Colors.transparent : Colors.grey,
       ),
       child: ClipOval(
-        child: profileImg.urlPath != null
+        child: profileImg != null
             ? InkWell(
               child: FadeInImage(
                 placeholder: MemoryImage(kTransparentImage),

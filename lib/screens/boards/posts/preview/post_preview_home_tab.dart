@@ -29,7 +29,7 @@ class PostPreviewHomeTab extends StatelessWidget {
                 ? PostPreviewBoardType(this.post.boardType)
                 : PostPreviewCategory(post),
             Spacer(),
-            PostPreviewRelativeTime(this.post.createdAt),
+            PostPreviewRelativeTime(DateTime.parse(this.post.createdAt)),
           ],
         ),
         Padding(

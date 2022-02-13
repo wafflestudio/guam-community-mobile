@@ -52,7 +52,7 @@ class PostPreviewSearchTab extends StatelessWidget {
           children: [
             PostPreviewBoardType(this.post.boardType),
             Spacer(),
-            PostPreviewRelativeTime(this.post.createdAt),
+            PostPreviewRelativeTime(DateTime.parse(this.post.createdAt)),
           ],
         ),
         PostInfo(

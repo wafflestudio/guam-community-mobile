@@ -58,7 +58,7 @@ class Posts with ChangeNotifier {
           'isAuthor': false,
           'isLiked': true,
           'isScrapped': true,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 1)),
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 1)).toString(),
         },
 
         {
@@ -122,7 +122,7 @@ class Posts with ChangeNotifier {
           'isAuthor': false,
           'isLiked': false,
           'isScrapped': true,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)).toString(),
         },
         {
           'id': 3,
@@ -156,7 +156,7 @@ class Posts with ChangeNotifier {
           'isAuthor': true,
           'isLiked': true,
           'isScrapped': false,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 5)),
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 5)).toString(),
         },
         {
           'id': 4,
@@ -173,7 +173,7 @@ class Posts with ChangeNotifier {
           'isAuthor': false,
           'isLiked': false,
           'isScrapped': true,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 6)),
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 6)).toString(),
         },
         {
           'id': 5,
@@ -190,7 +190,7 @@ class Posts with ChangeNotifier {
           'isAuthor': false,
           'isLiked': true,
           'isScrapped': true,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 7)),
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 7)).toString(),
         },
       ];
 

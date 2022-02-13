@@ -11,7 +11,7 @@ class Profile extends ChangeNotifier {
   final Picture profileImg;
   final String githubId;
   final String blogUrl;
-  final List<dynamic> skillSet;
+  final List<dynamic> interests;
   final List<Post> myPosts;
   final List<Post> scrappedPosts;
   final List<Comment> myComments;
@@ -23,7 +23,7 @@ class Profile extends ChangeNotifier {
     this.profileImg,
     this.githubId,
     this.blogUrl,
-    this.skillSet,
+    this.interests,
     this.myPosts,
     this.scrappedPosts,
     this.myComments,
@@ -80,7 +80,7 @@ class Profile extends ChangeNotifier {
       profileImg: profileImg,
       githubId: json['githubId'],
       blogUrl: json['blogUrl'],
-      skillSet: json['skillSet'],
+      interests: json['interests'],
       myPosts: myPosts,
       scrappedPosts: scrappedPosts,
       myComments: myComments,
