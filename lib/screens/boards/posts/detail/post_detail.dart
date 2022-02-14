@@ -27,6 +27,8 @@ class PostDetail extends StatefulWidget {
 class _PostDetailState extends State<PostDetail> {
   final int maxRenderImgCnt = 4;
   bool commentImageExist = false;
+  /// comment만 불러오는 API 완성되면, FutureBuilder는
+  /// 저 밑에 comment map 하는 부분에 쓰일 예정... 따라서 'Post post'로 바뀜
   Future<Post> post;
 
   @override
