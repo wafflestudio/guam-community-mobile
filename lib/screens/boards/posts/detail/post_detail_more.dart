@@ -1,35 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../commons/bottom_modal/bottom_modal_default.dart';
 import '../../../../commons/bottom_modal/bottom_modal_with_alert.dart';
 import '../../../../commons/bottom_modal/bottom_modal_with_message.dart';
 import '../../../../models/boards/post.dart';
+import '../../../../models/profiles/profile.dart';
+import '../../../../providers/user_auth/authenticate.dart';
 import '../creation/post_creation.dart';
 import '../post_comment_report.dart';
 
 class PostDetailMore extends StatelessWidget {
   final Post post;
-  final bool isMe;
 
-  PostDetailMore({this.post, this.isMe});
+  PostDetailMore(this.post);
 
   @override
   Widget build(BuildContext context) {
+    Profile myProfile = context.read<Authenticate>().me;
+
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(left: 24, top: 24, bottom: 21),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: isMe ? [
+          children: post.profile.id == myProfile.id ? [
             BottomModalDefault(
               text: '수정하기',
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                    builder: (_) => PostCreation(
-                      isEdit: true,
-                      editTarget: post, // 수정할 대상 (Post)
-                    )
+                  builder: (_) => PostCreation(
+                    isEdit: true,
+                    editTarget: post, // 수정할 대상 (Post)
+                  ),
                 ),
               ),
             ),

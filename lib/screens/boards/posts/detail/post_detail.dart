@@ -6,7 +6,6 @@ import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
-import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/boards/comments/comments.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_banner.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_body.dart';
@@ -15,8 +14,6 @@ import 'package:guam_community_client/screens/boards/posts/post_info.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../models/profiles/profile.dart';
 
 class PostDetail extends StatefulWidget {
   final Post post;
@@ -30,13 +27,11 @@ class PostDetail extends StatefulWidget {
 class _PostDetailState extends State<PostDetail> {
   final int maxRenderImgCnt = 4;
   bool commentImageExist = false;
-  Profile myProfile;
   Future<Post> post;
 
   @override
   void initState() {
     super.initState();
-    myProfile = context.read<Authenticate>().me;
     /// 서버 변경 후에는 post 부분은 parent에서 가져다 쓰고,
     /// comment 부분만 따로 API 넣을 예정. (해당 API 제작 요청 상태)
     post = Future.delayed(
@@ -83,16 +78,13 @@ class _PostDetailState extends State<PostDetail> {
                       onPressed: () => showMaterialModalBottomSheet(
                         context: context,
                         useRootNavigator: true,
+                        builder: (context) => PostDetailMore(_post),
                         backgroundColor: GuamColorFamily.grayscaleWhite,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
-                          )
-                        ),
-                        builder: (context) => PostDetailMore(
-                          post: _post,
-                          isMe: _post.profile.id == myProfile.id,
+                          ),
                         ),
                       ),
                     ),
