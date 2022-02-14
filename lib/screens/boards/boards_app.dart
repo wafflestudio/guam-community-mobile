@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/providers/messages/messages.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/providers/user_auth/authenticate.dart';
+import 'package:guam_community_client/screens/boards/boards_type.dart';
 import 'package:guam_community_client/screens/boards/posts/post_button.dart';
 import 'package:guam_community_client/screens/messages/message_box.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
 import '../../commons/custom_app_bar.dart';
 import 'boards_feed.dart';
+import 'boards_type.dart';
 
 class BoardsApp extends StatelessWidget {
   @override
@@ -60,12 +62,7 @@ class _BoardsAppScaffoldState extends State<BoardsAppScaffold> {
         body: TabBarView(
           physics: BouncingScrollPhysics(),
           children: [
-            BoardsFeed(boardId: 0), // boardId 없으면 피드 게시판 (Server 구현)
-            BoardsFeed(boardId: 1),
-            BoardsFeed(boardId: 2),
-            BoardsFeed(boardId: 3),
-            BoardsFeed(boardId: 4),
-            BoardsFeed(boardId: 5),
+            ...boardsList.map((board) => BoardsFeed(boardId: board['id']))
           ],
         ),
         floatingActionButton: PostButton()
