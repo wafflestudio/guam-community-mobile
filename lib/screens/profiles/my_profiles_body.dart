@@ -7,33 +7,34 @@ import 'package:guam_community_client/screens/profiles/profile/profile_intro.dar
 import 'package:guam_community_client/screens/profiles/profile/profile_nickname.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_skillset.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_web_buttons.dart';
-
+import 'package:provider/provider.dart';
+import '../../providers/user_auth/authenticate.dart';
 
 class MyProfilesBody extends StatelessWidget {
-  final Profile myProfile;
-
-  MyProfilesBody(this.myProfile);
+  MyProfilesBody();
 
   @override
   Widget build(BuildContext context) {
+    final Profile me = context.read<Authenticate>().me;
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(24, 40, 24, 24),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ProfileImg(profileImg: myProfile.profileImg, height: 144, width: 144),
+          ProfileImg(profileImg: me.profileImg, height: 144, width: 144),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ProfileNickname(nickname: myProfile.nickname),
+              ProfileNickname(nickname: me.nickname),
               ProfileEditButton(),
             ],
           ),
-          ProfileIntro(myProfile.intro ?? ""),
-          ProfileWebButtons(githubId: myProfile.githubId ?? "", blogUrl: myProfile.blogUrl ?? ""),
-          ProfileSkillSet(myProfile.interests),
+          ProfileIntro(me.intro),
+          ProfileWebButtons(githubId: me.githubId, blogUrl: me.blogUrl),
+          ProfileSkillSet(me.skillSet),
           ProfileBottomButtons(),
         ],
       ),

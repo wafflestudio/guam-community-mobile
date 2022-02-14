@@ -35,10 +35,10 @@ class Profile extends ChangeNotifier {
     List<Post> scrappedPosts;
     List<Comment> myComments;
 
-    if (json["profileImg"] != null) {
+    if (json["profileImage"] != null) {
       profileImg = Picture.fromJson({
-        "id": json["profileImg"]["id"],
-        "urlPath": json["profileImg"]["urlPath"],
+        "id": json["profileImage"]["id"],
+        "urlPath": json["profileImage"]["urlPath"],
       });
     }
 
@@ -76,7 +76,7 @@ class Profile extends ChangeNotifier {
     return Profile(
       id: json['id'],
       nickname: json['nickname'],
-      intro: json['intro'],
+      intro: json['introduction'],
       profileImg: profileImg,
       githubId: json['githubId'],
       blogUrl: json['blogUrl'],
