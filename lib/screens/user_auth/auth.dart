@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/screens/login/signup/signup.dart';
 import 'package:provider/provider.dart';
 import '../../providers/home/home_provider.dart';
 import '../app/app.dart';
@@ -10,12 +11,13 @@ class Auth extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
 
-    // TODO: Use isProfileSet as determine factor, and add another logic for redirecting to signup pages
     return authProvider.userSignedIn()
-        ? ChangeNotifierProvider(
+        ? !authProvider.profileExists()
+          ? ChangeNotifierProvider(
             create: (_) => HomeProvider(),
-            child: App(),
+            child: App()
           )
+          : SignUp()
         : LoginPage();
   }
 }

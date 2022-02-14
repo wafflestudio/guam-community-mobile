@@ -20,12 +20,8 @@ class _SignUpState extends State<SignUp> {
     }
   });
 
-  // void _startButton() => setState(() {page--;});
   void _startButton() {
-    Navigator.of(context).push(
-      // 닉네임 & 관심사 API 날리기
-      MaterialPageRoute(builder: (_) => App()),
-    );
+    // TODO: post 2 apis 1 ) set user profile 2) set user interest
   }
 
   @override
