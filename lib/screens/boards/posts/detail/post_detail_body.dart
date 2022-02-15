@@ -32,20 +32,20 @@ class PostDetailBody extends StatelessWidget {
             ),
           )
         ),
-        if (post.pictures.isNotEmpty)
+        if (post.imagePaths.isNotEmpty)
           GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: min(post.pictures.length, maxRenderImgCnt),
+              crossAxisCount: min(post.imagePaths.length, maxRenderImgCnt),
               crossAxisSpacing: 10,
               childAspectRatio: 1,
             ),
             shrinkWrap: true,
-            itemCount: min(post.pictures.length, maxRenderImgCnt),
+            itemCount: min(post.imagePaths.length, maxRenderImgCnt),
             itemBuilder: (_, idx) => InkWell(
               child: PostImage(
-                picture: post.pictures[idx],
-                blur: post.pictures.length > maxRenderImgCnt && idx == maxRenderImgCnt - 1,
-                hiddenImgCnt: post.pictures.length - maxRenderImgCnt,
+                picture: post.imagePaths[idx],
+                blur: post.imagePaths.length > maxRenderImgCnt && idx == maxRenderImgCnt - 1,
+                hiddenImgCnt: post.imagePaths.length - maxRenderImgCnt,
               ),
               onTap: () {
                 Navigator.of(context, rootNavigator: true).push(
@@ -53,7 +53,7 @@ class PostDetailBody extends StatelessWidget {
                     builder: (_) => ChangeNotifierProvider.value(
                       value: context.read<Posts>(), // necessary?
                       child: ImageCarousel(
-                        pictures: [...this.post.pictures],
+                        pictures: [...this.post.imagePaths],
                         initialPage: idx,
                         showImageActions: true,
                         // showImageActions: creatorId != null && context.read<Posts>().isMe(creatorId),

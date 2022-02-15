@@ -18,14 +18,14 @@ class PostDetailBanner extends StatelessWidget {
       children: [
         Row(
           children: [
-            if (post.category != '')
+            if (post.category != null)
               TextButton(
                 onPressed: null,
                 child: Text(
-                  "#" + post.category,
+                  "#" + post.category.title,
                   style: TextStyle(
                     fontSize: 16,
-                    color: colorOfCategory(post.category),
+                    color: colorOfCategory(post.category.title),
                   ),
                 ),
                 style: TextButton.styleFrom(
@@ -35,14 +35,14 @@ class PostDetailBanner extends StatelessWidget {
                 ),
               ),
             Padding(
-              padding: EdgeInsets.only(left: post.category == '' ? 0 : 8),
+              padding: EdgeInsets.only(left: post.category == null ? 0 : 8),
               child: TextButton(
                 onPressed: null,
                 child: Text(
                   post.boardType,
                   style: TextStyle(
                     fontSize: 12,
-                    color: colorOfCategory(post.category).withOpacity(0.5),
+                    color: colorOfCategory(post.category.title).withOpacity(0.5),
                   ),
                 ),
                 style: TextButton.styleFrom(
@@ -73,7 +73,7 @@ class PostDetailBanner extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                DateFormat('yyyy.MM.dd  HH:mm').format(post.createdAt),
+                DateFormat('yyyy.MM.dd  HH:mm').format(DateTime.parse(post.createdAt)),
                 style: TextStyle(
                   fontSize: 12,
                   fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,

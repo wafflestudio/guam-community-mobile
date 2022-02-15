@@ -9,7 +9,7 @@ import 'dart:math';
 import 'dart:io' show Platform;
 
 class ImageCarousel extends StatefulWidget {
-  final List<Picture> pictures;
+  final List<dynamic> pictures; /// 서버 수정 후 List<Picture> 로...
   final int initialPage;
 
   // Actions for trailing
@@ -24,7 +24,7 @@ class ImageCarousel extends StatefulWidget {
 }
 
 class ImageCarouselState extends State<ImageCarousel> {
-  List<Picture> picturesState;
+  List<dynamic> picturesState; /// 서버 수정 후 List<Picture> 로...
   int currPage;
 
   @override
@@ -111,7 +111,8 @@ class ImageCarouselState extends State<ImageCarousel> {
               initialPage: currPage,
               onPageChanged: (idx, _) => switchPage(idx)
             ),
-            items: [...picturesState.map((e) => ImageExpanded(imagePath: e.urlPath))]
+            /// 서버 수정 후 e가 아니라 e.urlPath 로...
+            items: [...picturesState.map((e) => ImageExpanded(imagePath: e))]
           ),
           Center(
             child: Padding(

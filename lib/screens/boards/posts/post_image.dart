@@ -4,7 +4,7 @@ import 'package:guam_community_client/models/picture.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
 class PostImage extends StatelessWidget {
-  final Picture picture;
+  final String picture; /// 추후 String -> Picture model로...
   final bool blur;
   final int hiddenImgCnt;
 
@@ -20,7 +20,7 @@ class PostImage extends StatelessWidget {
           child: IgnorePointer(
             ignoring: true,
             child: ImageThumbnail(
-              imagePath: picture.urlPath,
+              imagePath: picture, /// 추후 picture.urlPath 로...
               height: 100,
               width: 100,
             ),

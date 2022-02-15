@@ -25,7 +25,7 @@ class PostPreviewSearchTab extends StatelessWidget {
       children: [
         Row(
           children: [
-            if (post.pictures.length > 0)
+            if (post.isImageIncluded)
               IconButton(
                 padding: EdgeInsets.only(right: 4),
                 constraints: BoxConstraints(),
@@ -43,7 +43,7 @@ class PostPreviewSearchTab extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 8),
           child: CustomDivider(color: GuamColorFamily.grayscaleGray7),
         ),
-        if (!this.isAnonymous) PostPreviewCategory(post),
+        if (!this.isAnonymous && post.category != null) PostPreviewCategory(post),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 4),
           child: PostPreviewContent(this.post.content),
@@ -52,7 +52,7 @@ class PostPreviewSearchTab extends StatelessWidget {
           children: [
             PostPreviewBoardType(this.post.boardType),
             Spacer(),
-            PostPreviewRelativeTime(this.post.createdAt),
+            PostPreviewRelativeTime(DateTime.parse(this.post.createdAt)),
           ],
         ),
         PostInfo(
