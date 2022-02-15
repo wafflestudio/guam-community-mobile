@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/screens/profiles/buttons/profile_skill_button.dart';
-import 'package:guam_community_client/screens/profiles/edit/skillset/profile_edit_skillset_label.dart';
-import 'package:guam_community_client/screens/profiles/edit/skillset/profile_edit_skillset_textfield.dart';
+import 'package:guam_community_client/screens/profiles/buttons/profile_interest_button.dart';
+import './profile_edit_interests_label.dart';
+import './profile_edit_interests_textfield.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import '../../../../commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/back.dart';
+import '../../../../models/profiles/interest.dart';
 
-class ProfileEditSkillSetDetail extends StatelessWidget {
-  final List<dynamic> skillSet = ["figma","photoshop","illustrator","adobe xd",
-    "primere pro","aftereffect","cinema4D", "zeplin", "sketch"];
+class ProfileEditInterestsDetail extends StatelessWidget {
+  final List<Interest> dummyInterests = [
+    new Interest(name: 'figma'),
+    new Interest(name: 'photoshop'),
+    new Interest(name: 'illustrator'),
+    new Interest(name: 'adobe xd'),
+    new Interest(name: 'primere pro'),
+    new Interest(name: 'aftereffect'),
+    new Interest(name: 'cinema4D'),
+    new Interest(name: 'zeplin'),
+    new Interest(name: 'sketch'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +35,14 @@ class ProfileEditSkillSetDetail extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ProfileEditSkillSetLabel(skillSet.length),
-                ProfileEditSkillSetTextField(),
+                ProfileEditInterestsLabel(dummyInterests.length),
+                ProfileEditInterestsTextField(),
                 Wrap(
                   // alignment: WrapAlignment.center,
                   spacing: 8,
                   runSpacing: 5,
-                  children: [...skillSet.map((skill) => ProfileSkillButton(
-                    skill,
+                  children: [...dummyInterests.map((i) => ProfileInterestButton(
+                    i,
                     deletable: true,
                   ))],
                 )

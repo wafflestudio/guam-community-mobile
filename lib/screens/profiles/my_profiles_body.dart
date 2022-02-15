@@ -5,7 +5,7 @@ import 'package:guam_community_client/screens/profiles/profile/profile_bottom_bu
 import 'package:guam_community_client/screens/profiles/profile/profile_img.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_intro.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_nickname.dart';
-import 'package:guam_community_client/screens/profiles/profile/profile_skillset.dart';
+import 'package:guam_community_client/screens/profiles/profile/profile_interests.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_web_buttons.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_auth/authenticate.dart';
@@ -34,7 +34,7 @@ class MyProfilesBody extends StatelessWidget {
           ),
           ProfileIntro(me.intro),
           ProfileWebButtons(githubId: me.githubId, blogUrl: me.blogUrl),
-          ProfileSkillSet(me.skillSet),
+          ProfileInterests(me.interests),
           ProfileBottomButtons(),
         ],
       ),
