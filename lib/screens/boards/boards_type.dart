@@ -9,6 +9,7 @@ const Map<BoardsType, String> boardsType = {
   BoardsType.advertisement: '홍보',
 };
 
+// TODO: Server로부터 fetchBoardId 받아오면 바뀔 예정
 List<Map<String, dynamic>> boardsList = [
   {'id': 0, 'name': BoardsType.feed},
   {'id': 1, 'name': BoardsType.anonymous},
