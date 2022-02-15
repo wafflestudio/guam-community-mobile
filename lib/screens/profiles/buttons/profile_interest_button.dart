@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
+import '../../../models/profiles/interest.dart';
 
-class ProfileSkillButton extends StatelessWidget {
-  final String skill;
+class ProfileInterestButton extends StatelessWidget {
+  final Interest interest;
   final bool deletable;
 
-  ProfileSkillButton(this.skill, {this.deletable = false});
+  ProfileInterestButton(this.interest, {this.deletable = false});
 
   @override
   Widget build(BuildContext context) {
     return Chip(
-      label: Text(skill),
+      label: Text(interest.name),
       labelStyle: TextStyle(
         fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
         fontSize: 12,

@@ -4,7 +4,7 @@ import 'package:guam_community_client/screens/profiles/buttons/message_send_butt
 import 'package:guam_community_client/screens/profiles/profile/profile_img.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_intro.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_nickname.dart';
-import 'package:guam_community_client/screens/profiles/profile/profile_skillset.dart';
+import 'package:guam_community_client/screens/profiles/profile/profile_interests.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_web_buttons.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +35,7 @@ class OtherProfilesBody extends StatelessWidget {
           ),
           // 추후 MyProfile의 id랑 비교해서 본인임이 확인되면 프로필 탭으로 이동하도록 하겠습니다.
           if (!isMe) MessageSendButton(profile),
-          ProfileSkillSet(profile.interests),
+          ProfileInterests(profile.interests),
         ],
       ),
     );

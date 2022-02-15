@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 
-class ProfileEditSkillSetLabel extends StatelessWidget {
-  final int nSkillSet;
+class ProfileEditInterestsLabel extends StatelessWidget {
+  final int nInterests;
 
-  ProfileEditSkillSetLabel(this.nSkillSet);
+  ProfileEditInterestsLabel(this.nInterests);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class ProfileEditSkillSetLabel extends StatelessWidget {
         textBaseline: TextBaseline.alphabetic,
         children: [
           Text(
-            '내 기술 스택',
+            '내 관심사',
             style: TextStyle(
               fontSize: 16,
               height: 25.6/16,
@@ -26,7 +26,7 @@ class ProfileEditSkillSetLabel extends StatelessWidget {
           ),
           Padding(padding: EdgeInsets.only(right: 4)),
           Text(
-            '$nSkillSet',
+            '$nInterests',
             style: TextStyle(
               fontSize: 12,
               height: 19.2/12,

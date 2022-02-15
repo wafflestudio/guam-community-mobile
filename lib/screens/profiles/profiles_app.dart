@@ -85,7 +85,7 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
           title: '프로필',
           trailing: MessageBox(),
         ),
-        body: SingleChildScrollView(child: MyProfilesBody(myProfile)),
+        body: SingleChildScrollView(child: MyProfilesBody()),
       );
     }
   }

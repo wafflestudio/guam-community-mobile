@@ -1,17 +1,15 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
-
 import '../../../../commons/button_size_circular_progress_indicator.dart';
 
-class ProfileEditSkillSetTextField extends StatefulWidget {
+class ProfileEditInterestsTextField extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => ProfileEditSkillSetTextFieldState();
+  State<StatefulWidget> createState() => ProfileEditInterestsTextFieldState();
 }
 
-class ProfileEditSkillSetTextFieldState extends State<ProfileEditSkillSetTextField> {
+class ProfileEditInterestsTextFieldState extends State<ProfileEditInterestsTextField> {
   bool sending = false;
 
   void toggleSending() {
@@ -36,7 +34,7 @@ class ProfileEditSkillSetTextFieldState extends State<ProfileEditSkillSetTextFie
             ),
             cursorColor: GuamColorFamily.purpleCore,
             decoration: InputDecoration(
-              hintText: "스택을 입력해주세요",
+              hintText: "관심사를 입력해주세요",
               hintStyle: TextStyle(fontSize: 14, color: GuamColorFamily.grayscaleGray5),
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
