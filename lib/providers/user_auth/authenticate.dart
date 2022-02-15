@@ -101,6 +101,48 @@ class Authenticate with ChangeNotifier {
     }
   }
 
+  Future setProfile({Map<String, dynamic> body, dynamic files}) async {
+    bool res = false;
+
+    try {
+      toggleLoading();
+      String authToken = await getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+          .patch(
+            path: "community/api/v1/users/${me.id}",
+            body: body,
+            authToken: authToken)
+          .then((response) async {
+            if (response.statusCode == 200) {
+              // TODO: delete this line after server response add profileSet property
+              await getMyProfile();
+              // TODO: uncomment below lines
+              // final jsonUtf8 = decodeKo(response);
+              // final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+              // print(jsonData);
+              // me = Profile.fromJson(jsonData);
+              // print("${me.profileSet}, ${me.nickname}");
+              // // showToast(success: true, msg: "프로필을 생성하였습니다.");
+              // res = true;
+          } else {
+              final jsonUtf8 = decodeKo(response);
+              final String err = json.decode(jsonUtf8)["message"];
+              // TODO: show toast after impl. toast
+              // showToast(success: false, msg: err);
+            }
+          });
+        }
+    } catch (e) {
+      print(e);
+    } finally {
+      toggleLoading();
+    }
+
+    return res;
+  }
+
   Future<Profile> getUserProfile(int userId) async {
     // TODO: impl
     return me;

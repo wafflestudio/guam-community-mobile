@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/next_button.dart';
 import 'package:guam_community_client/screens/login/signup/signup_nickname.dart';
 import 'package:guam_community_client/styles/colors.dart';
+import 'package:provider/provider.dart';
+import '../../../providers/user_auth/authenticate.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -9,13 +11,9 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  Map input = {};
+  Map<String, dynamic> input = {};
   int pageIdx = 0;
 
-  void signUp() {
-    print(input);
-    // TODO: post 2 apis 1 ) set user profile 2) set user interest
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +22,10 @@ class _SignUpState extends State<SignUp> {
     ];
 
     Size size = MediaQuery.of(context).size;
+
+    Future signUp() async {
+      await context.read<Authenticate>().setProfile(body: input);
+    }
 
     return Scaffold(
       backgroundColor: GuamColorFamily.grayscaleWhite,

@@ -12,7 +12,7 @@ class Auth extends StatelessWidget {
     final authProvider = context.watch<Authenticate>();
 
     return authProvider.userSignedIn()
-        ? !authProvider.profileExists()
+        ? authProvider.profileExists()
           ? ChangeNotifierProvider(
             create: (_) => HomeProvider(),
             child: App()
