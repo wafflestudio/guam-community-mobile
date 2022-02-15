@@ -7,9 +7,8 @@ import 'package:guam_community_client/styles/fonts.dart';
 
 class SignupInterest extends StatefulWidget {
   final Map input;
-  final Function startButton;
 
-  SignupInterest(this.input, this.startButton);
+  SignupInterest(this.input);
 
   @override
   State<SignupInterest> createState() => _SignupInterestState();

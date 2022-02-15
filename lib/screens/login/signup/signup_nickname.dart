@@ -5,9 +5,8 @@ import 'package:guam_community_client/styles/fonts.dart';
 
 class SignupNickname extends StatefulWidget {
   final Map input;
-  final Function nextButton;
 
-  SignupNickname(this.input, this.nextButton);
+  SignupNickname(this.input);
 
   @override
   State<SignupNickname> createState() => _SignupNicknameState();
@@ -33,7 +32,6 @@ class _SignupNicknameState extends State<SignupNickname> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

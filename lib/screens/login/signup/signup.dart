@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/next_button.dart';
-import 'package:guam_community_client/screens/app/app.dart';
-import 'package:guam_community_client/screens/login/signup/signup_interest.dart';
 import 'package:guam_community_client/screens/login/signup/signup_nickname.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
@@ -11,21 +9,20 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  Map input = {'nickname': '', 'interest': []};
-  int page = 1;
+  Map input = {};
+  int pageIdx = 0;
 
-  void _nextButton() => setState(() {
-    if (input['nickname'] != '' && page < 2) {
-      page++;
-    }
-  });
-
-  void _startButton() {
+  void signUp() {
+    print(input);
     // TODO: post 2 apis 1 ) set user profile 2) set user interest
   }
 
   @override
   Widget build(BuildContext context) {
+    List pages = [
+      SignupNickname(input)
+    ];
+
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -39,13 +36,13 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (page==1) SignupNickname(input, _nextButton),
-              if (page==2) SignupInterest(input, _startButton),
+              pages[pageIdx],
               Padding(
                 padding: EdgeInsets.only(bottom: 40),
                 child: NextButton(
-                    label: page==1 ? '다음' : '시작',
-                    onTap: page==1 ? _nextButton : _startButton),
+                  label: pageIdx < pages.length - 1 ? '다음' : '시작',
+                  onTap: pageIdx < pages.length - 1 ? pageIdx++ : signUp
+                ),
               ),
             ],
           ),
