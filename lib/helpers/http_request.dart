@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io' show File, HttpHeaders;
+import 'dart:io' show File;
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as p;
@@ -82,13 +82,13 @@ class HttpRequest with Toast {
     }
   }
 
-  Future put({bool isHttps = true, String authority, String path, String authToken, dynamic body}) async {
+  Future patch({bool isHttps = true, String authority, String path, String authToken, dynamic body}) async {
     try {
       final uri = isHttps
           ? Uri.https(authority ?? gatewayAuthority, path)
           : Uri.http(authority ?? gatewayAuthority, path);
 
-      final response = await http.put(
+      final response = await http.patch(
         uri,
         headers: {'Content-Type': "application/json", 'Authorization': 'Bearer $authToken'},
         body: jsonEncode(body),
