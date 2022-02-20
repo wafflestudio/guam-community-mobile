@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:guam_community_client/screens/app/splash/splash_screen.dart';
 import 'package:guam_community_client/screens/login/login_page.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -33,17 +34,19 @@ class MyApp extends StatelessWidget {
             providers: [
               ChangeNotifierProvider<Authenticate>(create: (_) => Authenticate()),
             ],
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              initialRoute: '/main',
-              routes: {
-                // 소셜로그인 TOKEN 가지고 있으면 /main 으로 Redirect
-                '/signup': (context) => LoginPage(),
-                '/main': (context) => App(),
-              },
-              theme: ThemeData(
-                primaryColor: GuamColorFamily.purpleCore,
-                fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
+            child: Portal(
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                initialRoute: '/main',
+                routes: {
+                  // 소셜로그인 TOKEN 가지고 있으면 /main 으로 Redirect
+                  '/signup': (context) => LoginPage(),
+                  '/main': (context) => App(),
+                },
+                theme: ThemeData(
+                  primaryColor: GuamColorFamily.purpleCore,
+                  fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
+                ),
               ),
             )
           );

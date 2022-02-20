@@ -89,9 +89,10 @@ class Profile extends ChangeNotifier {
     );
   }
 
+  /// flutter_mentions needs to have data as follows:
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'nickname': nickname,
-    'profileImg': profileImg.toJson(),
+    'id': id.toString(),
+    'display': nickname,
+    'photo': profileImg.toJson()['urlPath'],
   };
 }

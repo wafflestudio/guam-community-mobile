@@ -1,11 +1,11 @@
-import 'dart:ui';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:guam_community_client/commons/mention_list.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import '../helpers/pick_image.dart';
+import 'common_img_nickname.dart';
 import 'image/image_thumbnail.dart';
 import 'button_size_circular_progress_indicator.dart';
 
@@ -34,11 +34,14 @@ class _CommonTextFieldState extends State<CommonTextField> {
   List<PickedFile> imageFileList = [];
   List<Set> mentionTarget = [];
 
+  GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
+
   @override
   void initState() {
     _commentTextFieldController.text = '';
     super.initState();
   }
+
   @override
   void dispose() {
     imageFileList.clear();
@@ -60,137 +63,12 @@ class _CommonTextFieldState extends State<CommonTextField> {
     setState(() => sending = !sending);
   }
 
-  void heightOfImageOrMention(bool activeMention, bool activeImage){
-    setState(() => activeMention
-        ? mentionTargetHeight = 160 : mentionTargetHeight = 0
-    );
-  }
-
-  /// 멘션 관련
-  void activateMention() {
-    String _text = _commentTextFieldController.text;
-
-    setState(() {
-      if (_text.length > 0) {
-        // 가장 마지막 글자가 @인 경우 Mention 활성화
-        _text.substring(_text.length - 1, _text.length) == '@'
-            ? activeMention = true
-            : activeMention = false;
-      } else {
-        // 텍스트 처음 값으로 @ 입력 후 해당 @를 지울 때 Mention 비활성화
-        activeMention = false;
-      }
-    });
-  }
-
-  /// 멘션 관련
-  void setMentionTarget(int id, String nickname) {
-    String _text = _commentTextFieldController.text;
-
-    setState(() {
-      activeMention = false;
-      mentionTarget.add({id, nickname});
-      mentionTarget = mentionTarget.toSet().toList();
-
-      // mention 리스트에서 프로필 선택 시 채팅창에 @nickname이 추가되므로,함
-      // @를 입력하여 시작한 경우 @가 중복되는 것을 막기 위한 로직
-      if (_text != null && _text.length > 0) {
-        if (_text.substring(_text.length - 1, _text.length) == '@'){
-          _text = _text.substring(0, _text.length - 1);
-        }
-      }
-      _commentTextFieldController.text = _text + '@$nickname';
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // text cursor 맨 앞이 아닌 뒤로 보내주도록
-    _commentTextFieldController.selection = TextSelection.fromPosition(
-      TextPosition(offset: _commentTextFieldController.text.length),
-    );
-
-    // count the number of TextField lines for controlling a bottom Sheet
-    final span = TextSpan(text:_commentTextFieldController.text);
-    final tp = TextPainter(text:span,maxLines: 1,textDirection: TextDirection.ltr);
-    tp.layout(maxWidth: MediaQuery.of(context).size.width - (56 + 62));
-    List<LineMetrics> lines = tp.computeLineMetrics();
-    int numberOfLines = lines.length;
-
-    void heightOfBottomSheet(int numberOfLines){
-      setState(() {
-        if (numberOfLines == 1) bottomSheetHeight = 56;
-        if (numberOfLines == 2) bottomSheetHeight = 73;
-        if (numberOfLines == 3) bottomSheetHeight = 90;
-        if (numberOfLines == 4) bottomSheetHeight = 107;
-      });
-    }
-
-    /// Mention 관련
-    if (widget.mentionList != null && _commentTextFieldController.text.contains('@')) {
-      if (_commentTextFieldController.text.substring(
-          _commentTextFieldController.text.length - 1,
-          _commentTextFieldController.text.length) == '@'
-      ) {
-        // 텍스트에 @가 존재하고 스페이스를 입력하지 않고, 멘션 리스트를 선택할 수 있는 경우
-        heightOfImageOrMention(true, imageFileList.isNotEmpty);
-      } else {
-        // 텍스트에 @가 존재하지만 스페이스 등을 통해 annotation 범위를 벗어나 멘션 리스트를 보이지 않게 하는 경우
-        heightOfImageOrMention(false, imageFileList.isNotEmpty);
-      }
-    } else {
-      // 텍스트에 아예 @가 없는 경우 (초기 세팅)
-      heightOfImageOrMention(false, imageFileList.isNotEmpty);
-    }
-
-    // bool isEdit = widget.editTarget != null;
-    // _commentTextFieldController.text = isEdit ? widget.editTarget.content : null;
-
-    // if (imageFileList.isNotEmpty) {
-    //   widget.addCommentImage();
-    // } else {
-    //   widget.removeCommentImage();
-    // }
-    // Future<void> send() async {
-    //   toggleSending();
-    //
-    //   try {
-    //     if (isEdit) {
-    //       await widget.onTap(
-    //         id: widget.editTarget.id,
-    //         fields: {"content": _commentTextFieldController.text},
-    //       ).then((successful) {
-    //         if (successful) {
-    //           _commentTextFieldController.clear();
-    //           FocusScope.of(context).unfocus();
-    //         }
-    //       });
-    //     } else {
-    //       await widget.onTap(
-    //         files: [...imageFileList.map((e) => File(e.path))],
-    //         fields: {"content": _commentTextFieldController.text},
-    //       ).then((successful) {
-    //         if (successful) {
-    //           imageFileList.clear();
-    //           _commentTextFieldController.clear();
-    //           FocusScope.of(context).unfocus();
-    //         }
-    //       });
-    //     }
-    //   } catch (e) {
-    //     print(e);
-    //   } finally {
-    //     toggleSending();
-    //   }
-    // }
-
     return SizedBox(
       height: imageFileList.isNotEmpty
-          ? mentionTargetHeight > 0 //
-              ? bottomSheetHeight + mentionTargetHeight
-              : imgSheetHeight + bottomSheetHeight + mentionTargetHeight
-          : bottomSheetHeight + mentionTargetHeight,
-            // bottomSheetHeight : 56 .. 73 .. 90 .. 107
+          ? imgSheetHeight + bottomSheetHeight
+          : bottomSheetHeight, // 56 .. 73 .. 90 .. 107
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: GuamColorFamily.grayscaleWhite,
@@ -247,9 +125,6 @@ class _CommonTextFieldState extends State<CommonTextField> {
                         ),
                       )
                     : Container(),
-                /// 멘션 관련
-                if (activeMention)
-                  MentionField(widget.mentionList, setMentionTarget),
               ],
             ),
             Row(
@@ -271,19 +146,11 @@ class _CommonTextFieldState extends State<CommonTextField> {
                   ),
                 ),
                 Expanded(
-                  child: TextField(
-                    keyboardType: TextInputType.multiline,
-                    controller: _commentTextFieldController,
-                    maxLines: 4,
-                    minLines: 1,
+                  child: FlutterMentions(
+                    key: key,
+                    suggestionPosition: SuggestionPosition.Top,
                     style: TextStyle(fontSize: 14),
                     cursorColor: GuamColorFamily.purpleCore,
-                    onChanged: (e) {
-                      heightOfBottomSheet(numberOfLines);
-                      /// 멘션 관련
-                      // 쪽지함에서는 멘션 기능 없음.
-                      if (widget.mentionList != null) activateMention();
-                    },
                     decoration: InputDecoration(
                       hintText: "댓글을 남겨주세요.",
                       hintStyle: TextStyle(fontSize: 14, color: GuamColorFamily.grayscaleGray5),
@@ -292,13 +159,29 @@ class _CommonTextFieldState extends State<CommonTextField> {
                       enabledBorder: InputBorder.none,
                       errorBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
-                      contentPadding: EdgeInsets.only(top: 18, bottom: 20),
+                      contentPadding: EdgeInsets.only(top: 18, bottom: 18),
                     ),
+                    mentions: [
+                      Mention(
+                        trigger: "@",
+                        style: TextStyle(color: GuamColorFamily.purpleLight1),
+                        data: widget.mentionList,
+                        suggestionBuilder: (data) => Container(
+                          color: GuamColorFamily.purpleLight3,
+                          child: CommonImgNickname(
+                            imgUrl: data['photo'] != null ? data['photo'] : null,
+                            nickname: data['display'],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 !sending
                     ? TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        print(key.currentState.controller.markupText);
+                      },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.only(right: 6),
                         minimumSize: Size(30, 26),
