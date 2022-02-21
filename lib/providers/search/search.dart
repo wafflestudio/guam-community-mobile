@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/filter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../profiles/profiles.dart';
+import '../user_auth/profile_data.dart';
 import '../../models/boards/post.dart';
 
 class Search with ChangeNotifier {
@@ -61,7 +61,7 @@ class Search with ChangeNotifier {
     }
   }
 
-  Future searchPosts({@required String authToken, @required String query}) async {
+  Future searchPosts({@required String query}) async {
     try {
       if (query == null || query.trim() == '') {
         searchedPosts.clear();

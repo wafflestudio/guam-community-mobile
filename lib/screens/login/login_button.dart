@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:guam_community_client/helpers/svg_provider.dart';
-import 'package:guam_community_client/screens/app/app.dart';
-import 'package:guam_community_client/screens/login/signup/signup.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -10,17 +7,19 @@ class LoginButton extends StatelessWidget {
   final String logo;
   final String platform;
   final HexColor color;
+  final Function onTap;
 
-  LoginButton(this.logo, this.platform, this.color);
+  LoginButton(this.logo, this.platform, this.color, this.onTap);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: 16),
       child: InkWell(
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => SignUp()),
-        ),
+        // onTap: () => Navigator.of(context).push(
+        //   MaterialPageRoute(builder: (_) => SignUp()),
+        // ),
+        onTap: onTap,
         child: Container(
           alignment: Alignment.center,
           height: 56,

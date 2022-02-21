@@ -4,7 +4,6 @@ import 'package:guam_community_client/styles/colors.dart';
 import '../../../commons/custom_app_bar.dart';
 import '../buttons/long_button.dart';
 import 'blacklist_edit.dart';
-import 'interests_edit.dart';
 
 class Settings extends StatelessWidget {
   @override
@@ -27,15 +26,6 @@ class Settings extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (_) => BlackListEdit()
-                    )
-                  )
-                ),
-                LongButton(
-                  label: '관심사 관리',
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => InterestsEdit()
                     )
                   )
                 ),

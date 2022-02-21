@@ -14,10 +14,10 @@ class PostPreviewCategory extends StatelessWidget {
       child: TextButton(
         onPressed: null,
         child: Text(
-          "#" + post.category,
+          "#" + post.category.title,
           style: TextStyle(
             fontSize: 12,
-            color: colorOfCategory(post.category),
+            color: colorOfCategory(post.category.title),
           ),
         ),
         style: TextButton.styleFrom(

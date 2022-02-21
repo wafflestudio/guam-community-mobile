@@ -10,7 +10,7 @@ class ProfileIntro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      intro,
+      intro ?? '',
       textAlign: TextAlign.center,
       style: TextStyle(
           fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,

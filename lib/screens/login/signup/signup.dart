@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/next_button.dart';
-import 'package:guam_community_client/screens/app/app.dart';
-import 'package:guam_community_client/screens/login/signup/signup_interest.dart';
 import 'package:guam_community_client/screens/login/signup/signup_nickname.dart';
 import 'package:guam_community_client/styles/colors.dart';
+import 'package:provider/provider.dart';
+import '../../../providers/user_auth/authenticate.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -11,26 +11,21 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  Map input = {'nickname': '', 'interest': []};
-  int page = 1;
+  Map<String, dynamic> input = {};
+  int pageIdx = 0;
 
-  void _nextButton() => setState(() {
-    if (input['nickname'] != '' && page < 2) {
-      page++;
-    }
-  });
-
-  // void _startButton() => setState(() {page--;});
-  void _startButton() {
-    Navigator.of(context).push(
-      // 닉네임 & 관심사 API 날리기
-      MaterialPageRoute(builder: (_) => App()),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
+    List pages = [
+      SignupNickname(input)
+    ];
+
     Size size = MediaQuery.of(context).size;
+
+    Future signUp() async {
+      await context.read<Authenticate>().setProfile(body: input);
+    }
 
     return Scaffold(
       backgroundColor: GuamColorFamily.grayscaleWhite,
@@ -43,13 +38,13 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (page==1) SignupNickname(input, _nextButton),
-              if (page==2) SignupInterest(input, _startButton),
+              pages[pageIdx],
               Padding(
                 padding: EdgeInsets.only(bottom: 40),
                 child: NextButton(
-                    label: page==1 ? '다음' : '시작',
-                    onTap: page==1 ? _nextButton : _startButton),
+                  label: pageIdx < pages.length - 1 ? '다음' : '시작',
+                  onTap: pageIdx < pages.length - 1 ? pageIdx++ : signUp
+                ),
               ),
             ],
           ),

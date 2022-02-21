@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/providers/profiles/profiles.dart';
-import 'package:provider/provider.dart';
+import 'package:guam_community_client/models/profiles/profile.dart';
+import 'package:guam_community_client/screens/profiles/buttons/profile_edit_button.dart';
+import 'package:guam_community_client/screens/profiles/profile/profile_bottom_buttons.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_img.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_intro.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_nickname.dart';
+import 'package:guam_community_client/screens/profiles/profile/profile_interests.dart';
 import 'package:guam_community_client/screens/profiles/profile/profile_web_buttons.dart';
-import 'buttons/profile_edit_button.dart';
-import 'profile/profile_skillset.dart';
-import 'profile/profile_bottom_buttons.dart';
+import 'package:provider/provider.dart';
+import '../../providers/user_auth/authenticate.dart';
 
-class ProfilesBody extends StatelessWidget {
+class MyProfilesBody extends StatelessWidget {
+  MyProfilesBody();
+
   @override
   Widget build(BuildContext context) {
-    final myProfile = context.read<MyProfile>().profile;
+    final Profile me = context.read<Authenticate>().me;
 
     return Container(
       width: double.infinity,
@@ -20,18 +23,18 @@ class ProfilesBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ProfileImg(profileImg: myProfile.profileImg, height: 144, width: 144),
+          ProfileImg(profileImg: me.profileImg, height: 144, width: 144),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ProfileNickname(myProfile.nickname),
+              ProfileNickname(nickname: me.nickname),
               ProfileEditButton(),
             ],
           ),
-          ProfileIntro(myProfile.intro),
-          ProfileWebButtons(githubId: myProfile.githubId, blogUrl: myProfile.blogUrl),
-          ProfileSkillSet(myProfile.skillSet),
+          ProfileIntro(me.intro),
+          ProfileWebButtons(githubId: me.githubId, blogUrl: me.blogUrl),
+          ProfileInterests(me.interests),
           ProfileBottomButtons(),
         ],
       ),

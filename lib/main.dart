@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:guam_community_client/screens/app/splash/splash_screen.dart';
-import 'package:guam_community_client/screens/login/login_page.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_auth/authenticate.dart';
-import 'screens/app/app.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import './screens/user_auth/auth.dart';
 
-void main() {
+void main() async {
+  // Returns an instance of the WidgetsBinding, creating and initializing it if necessary.
+  // WidgetsBinding provides interaction w/ Flutter Engine.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Use platform channels to call native code to initialize Firebase.
+  // Thus, 'async' main() and placed next to ensureInitialized()
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(MyApp());
 }
 
@@ -37,18 +48,16 @@ class MyApp extends StatelessWidget {
             child: Portal(
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,
-                initialRoute: '/main',
+                initialRoute: '/',
                 routes: {
-                  // 소셜로그인 TOKEN 가지고 있으면 /main 으로 Redirect
-                  '/signup': (context) => LoginPage(),
-                  '/main': (context) => App(),
+                  '/': (context) => Auth(),
                 },
                 theme: ThemeData(
                   primaryColor: GuamColorFamily.purpleCore,
                   fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
                 ),
               ),
-            )
+            ),
           );
         }
       },

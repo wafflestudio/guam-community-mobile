@@ -6,21 +6,21 @@ import 'package:guam_community_client/models/profiles/profile.dart';
 class Comment extends ChangeNotifier {
   final int id;
   final Profile profile;
-  final String comment;
-  final bool isAuthor;
+  final String content;
   final bool isLiked;
   final List<Picture> pictures;
-  final int like;
-  final DateTime createdAt;
+  final List<dynamic> imagePaths; /// 임시 방편 (추후 pictures 활용 예정)
+  final int likeCount;
+  final String createdAt;
 
   Comment({
-    @required this.id,
-    @required this.profile,
-    @required this.comment,
-    this.isAuthor,
+    this.id,
+    this.profile,
+    this.content,
     this.isLiked,
     this.pictures,
-    this.like,
+    this.imagePaths,
+    this.likeCount,
     this.createdAt,
   });
 
@@ -28,8 +28,8 @@ class Comment extends ChangeNotifier {
     Profile profile;
     List<Picture> pictures;
 
-    if (json['profile'] != null) {
-      profile = Profile.fromJson(json['profile']);
+    if (json['user'] != null) {
+      profile = Profile.fromJson(json['user']);
     }
 
     if (json['pictures'] != null) {
@@ -38,14 +38,15 @@ class Comment extends ChangeNotifier {
         'urlPath': picture['urlPath'],
       }))];
     }
+
     return Comment(
       id: json['id'],
       profile: profile,
-      comment: json['comment'],
-      isAuthor: json['isAuthor'],
+      content: json['content'],
       isLiked: json['isLiked'],
       pictures: pictures,
-      like: json['like'],
+      imagePaths: json['imagePaths'],
+      likeCount: json['likeCount'],
       createdAt: json['createdAt'],
     );
   }

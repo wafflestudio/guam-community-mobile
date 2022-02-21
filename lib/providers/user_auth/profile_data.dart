@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import '../../models/profiles/profile.dart';
-
 List<Map<String, dynamic>> profiles = [
   {
     'id': 1,
@@ -10,6 +6,11 @@ List<Map<String, dynamic>> profiles = [
       'id': 1,
       'urlPath': 'http://img.danawa.com/prod_img/500000/030/472/img/4472030_1.jpg?shrink=330:330&_v=20160923121953',
     },
+    'intro': '통계 전공 개발자\nCloud Architect at SK hynix\n📷 @abcddesign',
+    'githubId': 'yeonghyeonKO',
+    'blogUrl': 'https://newstellar.tistory.com',
+    'skillSet': ['Flutter','Django','PyTorch','Azure','Kubernetes'],
+    'interests': ['개발', '데이터분석'],
   },
   {
     'id': 2,
@@ -18,6 +19,11 @@ List<Map<String, dynamic>> profiles = [
       'id': 2,
       'urlPath': 'https://cdn.speconomy.com/news/photo/201705/20170514_1_bodyimg_82397.png',
     },
+    'intro': 'Deprecated',
+    'githubId': '',
+    'blogUrl': '',
+    'skillSet': ['SpringBoot', 'GraphQL'],
+    'interests': ['개발'],
   },
   {
     'id': 3,
@@ -30,7 +36,7 @@ List<Map<String, dynamic>> profiles = [
     'githubId': 'gajagajago',
     'blogUrl': 'https://blog.naver.com/witchyoli',
     'skillSet': ['figma','photoshop','illustrator','adobe xd','primere pro','aftereffect','cinema4D', 'zeplin', 'sketch'],
-    'interests': ['Figma', '개발', '디자인'],
+    'interests': ['개발', '디자인'],
   },
   {
     'id': 4,
@@ -39,6 +45,11 @@ List<Map<String, dynamic>> profiles = [
       'id': 4,
       'urlPath': 'https://t1.daumcdn.net/cfile/tistory/99A97E4C5D25E9C226',
     },
+    'intro': 'Deprecated',
+    'githubId': '',
+    'blogUrl': '',
+    'skillSet': ['SpringBoot', 'GraphQL'],
+    'interests': ['개발'],
   },
   {
     'id': 5,
@@ -47,6 +58,11 @@ List<Map<String, dynamic>> profiles = [
       'id': 5,
       'urlPath': 'https://t1.daumcdn.net/cfile/tistory/241F824757B095710E',
     },
+    'intro': 'Deprecated',
+    'githubId': '',
+    'blogUrl': '',
+    'skillSet': ['SpringBoot', 'GraphQL'],
+    'interests': ['개발'],
   },
   {
     'id': 6,
@@ -55,6 +71,11 @@ List<Map<String, dynamic>> profiles = [
       'id': 6,
       'urlPath': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7RWrVJDrXh2R1M51soNq8EeqCL97QnQ6Ldw&usqp=CAU',
     },
+    'intro': 'Deprecated',
+    'githubId': '',
+    'blogUrl': '',
+    'skillSet': ['SpringBoot', 'GraphQL'],
+    'interests': ['개발'],
   },
   {
     'id': 7,
@@ -63,34 +84,20 @@ List<Map<String, dynamic>> profiles = [
       'id': 7,
       'urlPath': 'http://newsimg.hankookilbo.com/2019/09/23/201909231655358523_1.jpg',
     },
+    'intro': 'Deprecated',
+    'githubId': '',
+    'blogUrl': '',
+    'skillSet': ['SpringBoot', 'GraphQL'],
+    'interests': ['개발'],
   },
   {
     'id': 8,
     'nickname': 'lumograph97',
     'profileImg': null,
+    'intro': 'Deprecated',
+    'githubId': '',
+    'blogUrl': '',
+    'skillSet': ['SpringBoot', 'GraphQL'],
+    'interests': ['개발'],
   },
 ];
-
-class MyProfile with ChangeNotifier {
-  Profile _profile;
-  bool loading = false;
-
-  MyProfile({@required String authToken}) {
-    fetchMyProfile(authToken);
-  }
-
-  Profile get profile => _profile;
-
-  Future fetchMyProfile(String authToken) async {
-    try {
-      Map<String, dynamic> myProfile = profiles[2];
-      _profile = Profile.fromJson(myProfile);
-
-      loading = false;
-    } catch (e) {
-      print(e);
-    } finally {
-      notifyListeners();
-    }
-  }
-}

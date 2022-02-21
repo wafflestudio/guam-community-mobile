@@ -4,6 +4,7 @@ import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../picture.dart';
+import './interest.dart';
 
 @JsonSerializable(explicitToJson: true) // nested Instance -> json
 class Profile extends ChangeNotifier {
@@ -13,7 +14,10 @@ class Profile extends ChangeNotifier {
   final Picture profileImg;
   final String githubId;
   final String blogUrl;
-  final List<dynamic> skillSet;
+  final bool profileSet;
+  final List<Interest> interests;
+
+  // TODO: Remove from Profile attributes. Directly request at the view.
   final List<Post> myPosts;
   final List<Post> scrappedPosts;
   final List<Comment> myComments;
@@ -25,22 +29,28 @@ class Profile extends ChangeNotifier {
     this.profileImg,
     this.githubId,
     this.blogUrl,
-    this.skillSet,
+    this.profileSet,
+    this.interests,
     this.myPosts,
     this.scrappedPosts,
     this.myComments,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
+    List<Interest> interests;
     Picture profileImg;
     List<Post> myPosts;
     List<Post> scrappedPosts;
     List<Comment> myComments;
 
-    if (json["profileImg"] != null) {
+    if (json["interests"] != null) {
+      interests = [...json['interests'].map((i) => Interest(name: i['name']))];
+    }
+
+    if (json["profileImage"] != null) {
       profileImg = Picture.fromJson({
-        "id": json["profileImg"]["id"],
-        "urlPath": json["profileImg"]["urlPath"],
+        "id": json["profileImage"]["id"],
+        "urlPath": json["profileImage"]["urlPath"],
       });
     }
 
@@ -78,11 +88,12 @@ class Profile extends ChangeNotifier {
     return Profile(
       id: json['id'],
       nickname: json['nickname'],
-      intro: json['intro'],
+      intro: json['introduction'],
       profileImg: profileImg,
       githubId: json['githubId'],
       blogUrl: json['blogUrl'],
-      skillSet: json['skillSet'],
+      profileSet: json['profileSet'],
+      interests: interests,
       myPosts: myPosts,
       scrappedPosts: scrappedPosts,
       myComments: myComments,

@@ -41,6 +41,7 @@ class BlackListEdit extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CommonImgNickname(
+                    userId: e['id'],
                     imgUrl: e['profileImageUrl'],
                     nickname: e['nickname'],
                   ),

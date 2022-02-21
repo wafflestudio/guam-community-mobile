@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/models/messages/message_box.dart';
-import '../profiles/profiles.dart';
+import '../user_auth/profile_data.dart';
 
 class Messages with ChangeNotifier {
   List<MessageBox> _messageBoxes;
   List<Message> _messages;
   bool loading = false;
 
-  Messages({@required String authToken, int messageBoxNo}) {
-    fetchMessageBoxes(authToken);
-    fetchMessages(authToken, messageBoxNo);
+  Messages({int messageBoxNo}) {
+    fetchMessageBoxes();
+    fetchMessages(messageBoxNo);
   }
 
   List<MessageBox> get messageBoxes => _messageBoxes;
   List<Message> get messages => _messages;
 
-  Future fetchMessageBoxes(String authToken) async {
+  Future fetchMessageBoxes() async {
     try {
       loading = true;
 
@@ -47,7 +47,7 @@ class Messages with ChangeNotifier {
     }
   }
 
-  Future fetchMessages(String authToken, int messageBoxNo) async {
+  Future fetchMessages(int messageBoxNo) async {
     try {
       loading = true;
 

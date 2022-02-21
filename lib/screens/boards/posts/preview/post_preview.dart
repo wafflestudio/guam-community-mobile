@@ -29,14 +29,16 @@ class PostPreview extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 /**
-                 * TODO: ryu
-                 * Post provider is out of scope in search tab.
-                 */
-                builder: (_) => ChangeNotifierProvider.value(
-                  value: context.read<Posts>(),
+                * TODO: ryu
+                * Post provider is out of scope in search tab.
+                */
+                builder: (_) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(create: (_) => Posts()),
+                  ],
                   child: PostDetail(post),
-                )
-              )
+                ),
+              ),
             );
           },
           child: TabItem.values[context.read<HomeProvider>().idx] == TabItem.search

@@ -1,4 +1,4 @@
-package com.wafflestudio.guam.guam_community_client
+package com.wafflestudio.guam
 
 import io.flutter.embedding.android.FlutterActivity
 
