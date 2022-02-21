@@ -32,9 +32,11 @@ class _CommonTextFieldState extends State<CommonTextField> {
   bool sending = false;
   bool activeMention = false;
   List<PickedFile> imageFileList = [];
-  List<Set> mentionTarget = [];
+  List<int> mentionTargetIds = [];
+  RegExp mentionRegexp = new RegExp(r"@\[__(.*?)__\]"); /// mention할 Id를 마크다운에서 추출하는 정규식
 
   GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
+
 
   @override
   void initState() {
@@ -166,11 +168,14 @@ class _CommonTextFieldState extends State<CommonTextField> {
                         trigger: "@",
                         style: TextStyle(color: GuamColorFamily.purpleLight1),
                         data: widget.mentionList,
-                        suggestionBuilder: (data) => Container(
-                          color: GuamColorFamily.purpleLight3,
-                          child: CommonImgNickname(
-                            imgUrl: data['photo'] != null ? data['photo'] : null,
-                            nickname: data['display'],
+                        suggestionBuilder: (data) => SingleChildScrollView(
+                          child: Container(
+                            padding: EdgeInsets.only(left: 10),
+                            color: GuamColorFamily.purpleLight3,
+                            child: CommonImgNickname(
+                              imgUrl: data['photo'] != null ? data['photo'] : null,
+                              nickname: data['display'],
+                            ),
                           ),
                         ),
                       ),
@@ -180,7 +185,20 @@ class _CommonTextFieldState extends State<CommonTextField> {
                 !sending
                     ? TextButton(
                       onPressed: () {
-                        print(key.currentState.controller.markupText);
+                        Iterable<RegExpMatch> matches = mentionRegexp
+                            .allMatches(key.currentState.controller.markupText);
+                        if (matches.length > 0) {
+                          matches.forEach((match) {
+                            int mentionId = int.parse(match.group(1));
+                            if (!mentionTargetIds.contains(mentionId))
+                              mentionTargetIds.add(mentionId);
+                          });
+                        }
+                        // TODO: POST /api/v1/posts/{postId}/comments 붙일 때 print문 삭제할 예정.
+                        /// mentionTargetIds를 request에 담아 같이 보낼 예정.
+                        print(mentionTargetIds);
+                        key.currentState.controller.clear();
+                        mentionTargetIds.clear();
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.only(right: 6),
