@@ -35,13 +35,29 @@ class _PostDetailState extends State<PostDetail> {
 
   @override
   void initState() {
-    super.initState();
+    var set = Set<Map<String, dynamic>>();
+    print(widget.post.profile.id);
+    print(widget.post.profile.toJson());
+
+    mentionList.add(widget.post.profile.toJson());
+    if (widget.post.comments != null)
+      widget.post.comments.forEach((com) => mentionList.add(com.profile.toJson()));
+    for(var item in mentionList){
+      if (set.any((e) => e['id'] == item['id'])) {
+        continue;
+      }
+      set.add(item);
+    }
+    mentionList = set.toList();
+
     /// 서버 변경 후에는 post 부분은 parent에서 가져다 쓰고,
     /// comment 부분만 따로 API 넣을 예정. (해당 API 제작 요청 상태)
     post = Future.delayed(
       Duration.zero,
           () async => context.read<Posts>().getPost(widget.post.id),
     );
+
+    super.initState();
   }
 
   void addCommentImage() {
@@ -50,21 +66,6 @@ class _PostDetailState extends State<PostDetail> {
 
   void removeCommentImage() {
     setState(() => commentImageExist = false);
-  }
-
-  @override
-  void initState() {
-    var set = Set<Map<String, dynamic>>();
-    mentionList.add(widget.post.profile.toJson());
-    widget.post.comments.forEach((com) => mentionList.add(com.profile.toJson()));
-    for(var item in mentionList){
-      if (set.any((e) => e['id'] == item['id'])) {
-        continue;
-      }
-      set.add(item);
-    }
-    mentionList = set.toList();
-    super.initState();
   }
 
   @override
@@ -171,7 +172,7 @@ class _PostDetailState extends State<PostDetail> {
             bottomSheet: Container(
               color: Colors.black.withOpacity(0.3),
               child: CommonTextField(
-                onTap: null,          
+                onTap: null,
                 mentionList: mentionList,
                 addCommentImage: addCommentImage,
                 removeCommentImage: removeCommentImage,

@@ -104,6 +104,8 @@ class Profile extends ChangeNotifier {
   Map<String, dynamic> toJson() => {
     'id': id.toString(),
     'display': nickname,
-    'photo': profileImg.toJson()['urlPath'],
+    'photo': profileImg != null
+        ? profileImg.toJson()['urlPath']
+        : null,
   };
 }

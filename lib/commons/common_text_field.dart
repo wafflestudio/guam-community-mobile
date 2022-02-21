@@ -173,8 +173,9 @@ class _CommonTextFieldState extends State<CommonTextField> {
                             padding: EdgeInsets.only(left: 10),
                             color: GuamColorFamily.purpleLight3,
                             child: CommonImgNickname(
-                              imgUrl: data['photo'] != null ? data['photo'] : null,
+                              profileClickable: false,
                               nickname: data['display'],
+                              imgUrl: data['photo'] ?? null,
                             ),
                           ),
                         ),
