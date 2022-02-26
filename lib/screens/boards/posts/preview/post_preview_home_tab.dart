@@ -40,7 +40,7 @@ class PostPreviewHomeTab extends StatelessWidget {
         ),
         Row(
           children: [
-            if (post.isImageIncluded)
+            if (post.imagePaths.isNotEmpty)
               IconButton(
                 padding: EdgeInsets.only(right: 4),
                 constraints: BoxConstraints(),

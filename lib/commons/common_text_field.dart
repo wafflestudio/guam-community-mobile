@@ -1,12 +1,11 @@
-import 'dart:ui';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/foundation.dart';
-import 'dart:io';
 import '../helpers/pick_image.dart';
+import 'common_img_nickname.dart';
 import 'image/image_thumbnail.dart';
 import 'button_size_circular_progress_indicator.dart';
 
@@ -16,8 +15,9 @@ class CommonTextField extends StatefulWidget {
   final Function addCommentImage;
   final Function removeCommentImage;
   final dynamic editTarget;
+  final List<Map<String, dynamic>> mentionList;
 
-  CommonTextField({this.sendButton='등록', @required this.onTap, this.addCommentImage, this.removeCommentImage, this.editTarget});
+  CommonTextField({this.sendButton='등록', @required this.onTap, this.addCommentImage, this.removeCommentImage, this.editTarget, this.mentionList});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();
@@ -27,9 +27,22 @@ class _CommonTextFieldState extends State<CommonTextField> {
   final _commentTextFieldController = TextEditingController();
   final double maxImgSize = 80;
   final double imgSheetHeight = 96;
+  double mentionTargetHeight = 160;
   double bottomSheetHeight = 56;
   bool sending = false;
+  bool activeMention = false;
   List<PickedFile> imageFileList = [];
+  List<int> mentionTargetIds = [];
+  RegExp mentionRegexp = new RegExp(r"@\[__(.*?)__\]"); /// mention할 Id를 마크다운에서 추출하는 정규식
+
+  GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
+
+
+  @override
+  void initState() {
+    _commentTextFieldController.text = '';
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -54,64 +67,6 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
   @override
   Widget build(BuildContext context) {
-
-    // count the number of TextField lines for controlling a bottom Sheet
-    final span=TextSpan(text:_commentTextFieldController.text);
-    final tp =TextPainter(text:span,maxLines: 1,textDirection: TextDirection.ltr);
-    tp.layout(maxWidth: MediaQuery.of(context).size.width - (56 + 62));
-    List<LineMetrics> lines = tp.computeLineMetrics();
-    int numberOfLines = lines.length;
-
-    void heightOfBottomSheet(int numberOfLines){
-      setState(() {
-        if (numberOfLines == 1) bottomSheetHeight = 56;
-        if (numberOfLines == 2) bottomSheetHeight = 73;
-        if (numberOfLines == 3) bottomSheetHeight = 90;
-        if (numberOfLines == 4) bottomSheetHeight = 107;
-      });
-    }
-
-    // bool isEdit = widget.editTarget != null;
-    // _commentTextFieldController.text = isEdit ? widget.editTarget.content : null;
-
-    // if (imageFileList.isNotEmpty) {
-    //   widget.addCommentImage();
-    // } else {
-    //   widget.removeCommentImage();
-    // }
-    // Future<void> send() async {
-    //   toggleSending();
-    //
-    //   try {
-    //     if (isEdit) {
-    //       await widget.onTap(
-    //         id: widget.editTarget.id,
-    //         fields: {"content": _commentTextFieldController.text},
-    //       ).then((successful) {
-    //         if (successful) {
-    //           _commentTextFieldController.clear();
-    //           FocusScope.of(context).unfocus();
-    //         }
-    //       });
-    //     } else {
-    //       await widget.onTap(
-    //         files: [...imageFileList.map((e) => File(e.path))],
-    //         fields: {"content": _commentTextFieldController.text},
-    //       ).then((successful) {
-    //         if (successful) {
-    //           imageFileList.clear();
-    //           _commentTextFieldController.clear();
-    //           FocusScope.of(context).unfocus();
-    //         }
-    //       });
-    //     }
-    //   } catch (e) {
-    //     print(e);
-    //   } finally {
-    //     toggleSending();
-    //   }
-    // }
-
     return SizedBox(
       height: imageFileList.isNotEmpty
           ? imgSheetHeight + bottomSheetHeight
@@ -129,47 +84,51 @@ class _CommonTextFieldState extends State<CommonTextField> {
         ),
         child: Column(
           children: [
-            imageFileList.isNotEmpty
-            ? Container(
-              color: GuamColorFamily.grayscaleGray1.withOpacity(0.4),
-              padding: EdgeInsets.only(left: 23, top: 8, bottom: 8),
-              constraints: BoxConstraints(maxHeight: maxImgSize + 15),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: imageFileList.length,
-                itemBuilder: (_, idx) =>
-                  Stack(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(right: 14.87),
-                        child: ImageThumbnail(
-                          width: maxImgSize,
-                          height: maxImgSize,
-                          image: Image(
-                            image: FileImage(File(imageFileList[idx].path)),
-                            fit: BoxFit.fill,
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                imageFileList.isNotEmpty
+                    ? Container(
+                        color: GuamColorFamily.grayscaleGray1.withOpacity(0.4),
+                        padding: EdgeInsets.only(left: 23, top: 8, bottom: 8),
+                        constraints: BoxConstraints(maxHeight: maxImgSize + 15),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: imageFileList.length,
+                          itemBuilder: (_, idx) => Stack(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(right: 14.87),
+                                child: ImageThumbnail(
+                                  width: maxImgSize,
+                                  height: maxImgSize,
+                                  image: Image(
+                                    image: FileImage(File(imageFileList[idx].path)),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 2,
+                                right: 14,
+                                child: IconButton(
+                                  iconSize: 23,
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  icon: SvgPicture.asset('assets/icons/cancel_filled.svg'),
+                                  onPressed: () {
+                                    deleteImageFile(idx);
+                                    if (imageFileList.isEmpty) widget.removeCommentImage();
+                                  },
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                      ),
-                      Positioned(
-                        top: 2,
-                        right: 14,
-                        child: IconButton(
-                          iconSize: 23,
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
-                          icon: SvgPicture.asset('assets/icons/cancel_filled.svg'),
-                          onPressed: () {
-                            deleteImageFile(idx);
-                            if (imageFileList.isEmpty) widget.removeCommentImage();
-                          },
-                        ),
                       )
-                    ],
-                  ),
-              ),
-            )
-            : Container(),
+                    : Container(),
+              ],
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -189,14 +148,11 @@ class _CommonTextFieldState extends State<CommonTextField> {
                   ),
                 ),
                 Expanded(
-                  child: TextField(
-                    keyboardType: TextInputType.multiline,
-                    controller: _commentTextFieldController,
-                    maxLines: 4,
-                    minLines: 1,
+                  child: FlutterMentions(
+                    key: key,
+                    suggestionPosition: SuggestionPosition.Top,
                     style: TextStyle(fontSize: 14),
                     cursorColor: GuamColorFamily.purpleCore,
-                    onChanged: (e) => heightOfBottomSheet(numberOfLines),
                     decoration: InputDecoration(
                       hintText: "댓글을 남겨주세요.",
                       hintStyle: TextStyle(fontSize: 14, color: GuamColorFamily.grayscaleGray5),
@@ -205,13 +161,46 @@ class _CommonTextFieldState extends State<CommonTextField> {
                       enabledBorder: InputBorder.none,
                       errorBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
-                      contentPadding: EdgeInsets.only(top: 18, bottom: 20),
+                      contentPadding: EdgeInsets.only(top: 18, bottom: 18),
                     ),
+                    mentions: [
+                      Mention(
+                        trigger: "@",
+                        style: TextStyle(color: GuamColorFamily.purpleLight1),
+                        data: widget.mentionList,
+                        suggestionBuilder: (data) => SingleChildScrollView(
+                          child: Container(
+                            padding: EdgeInsets.only(left: 10),
+                            color: GuamColorFamily.purpleLight3,
+                            child: CommonImgNickname(
+                              profileClickable: false,
+                              nickname: data['display'],
+                              imgUrl: data['photo'] ?? null,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 !sending
                     ? TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Iterable<RegExpMatch> matches = mentionRegexp
+                            .allMatches(key.currentState.controller.markupText);
+                        if (matches.length > 0) {
+                          matches.forEach((match) {
+                            int mentionId = int.parse(match.group(1));
+                            if (!mentionTargetIds.contains(mentionId))
+                              mentionTargetIds.add(mentionId);
+                          });
+                        }
+                        // TODO: POST /api/v1/posts/{postId}/comments 붙일 때 print문 삭제할 예정.
+                        /// mentionTargetIds를 request에 담아 같이 보낼 예정.
+                        print(mentionTargetIds);
+                        key.currentState.controller.clear();
+                        mentionTargetIds.clear();
+                      },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.only(right: 6),
                         minimumSize: Size(30, 26),

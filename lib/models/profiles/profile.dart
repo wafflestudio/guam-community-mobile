@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
+import 'package:json_annotation/json_annotation.dart';
 import '../picture.dart';
 import './interest.dart';
 
@@ -9,6 +10,7 @@ class Profile extends ChangeNotifier {
   final int id;
   final String nickname;
   final String intro;
+  final String email;
   final Picture profileImg;
   final String githubId;
   final String blogUrl;
@@ -24,6 +26,7 @@ class Profile extends ChangeNotifier {
     this.id,
     this.nickname,
     this.intro,
+    this.email,
     this.profileImg,
     this.githubId,
     this.blogUrl,
@@ -87,6 +90,7 @@ class Profile extends ChangeNotifier {
       id: json['id'],
       nickname: json['nickname'],
       intro: json['introduction'],
+      email: json['email'],
       profileImg: profileImg,
       githubId: json['githubId'],
       blogUrl: json['blogUrl'],
@@ -97,4 +101,13 @@ class Profile extends ChangeNotifier {
       myComments: myComments,
     );
   }
+
+  /// flutter_mentions needs to have data as follows:
+  Map<String, dynamic> toJson() => {
+    'id': id.toString(),
+    'display': nickname,
+    'photo': profileImg != null
+        ? profileImg.urlPath
+        : null,
+  };
 }

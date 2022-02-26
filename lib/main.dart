@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:guam_community_client/screens/app/splash/splash_screen.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
                 primaryColor: GuamColorFamily.purpleCore,
                 fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
               ),
-            )
+            ),
           );
         }
       },

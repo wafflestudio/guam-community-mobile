@@ -25,7 +25,7 @@ class PostPreviewSearchTab extends StatelessWidget {
       children: [
         Row(
           children: [
-            if (post.isImageIncluded)
+            if (post.imagePaths.isNotEmpty)
               IconButton(
                 padding: EdgeInsets.only(right: 4),
                 constraints: BoxConstraints(),
