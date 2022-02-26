@@ -45,17 +45,15 @@ class MyApp extends StatelessWidget {
             providers: [
               ChangeNotifierProvider<Authenticate>(create: (_) => Authenticate()),
             ],
-            child: Portal(
-              child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                initialRoute: '/',
-                routes: {
-                  '/': (context) => Auth(),
-                },
-                theme: ThemeData(
-                  primaryColor: GuamColorFamily.purpleCore,
-                  fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
-                ),
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              initialRoute: '/',
+              routes: {
+                '/': (context) => Auth(),
+              },
+              theme: ThemeData(
+                primaryColor: GuamColorFamily.purpleCore,
+                fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
               ),
             ),
           );

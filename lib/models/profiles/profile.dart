@@ -6,11 +6,11 @@ import 'package:json_annotation/json_annotation.dart';
 import '../picture.dart';
 import './interest.dart';
 
-@JsonSerializable(explicitToJson: true) // nested Instance -> json
 class Profile extends ChangeNotifier {
   final int id;
   final String nickname;
   final String intro;
+  final String email;
   final Picture profileImg;
   final String githubId;
   final String blogUrl;
@@ -26,6 +26,7 @@ class Profile extends ChangeNotifier {
     this.id,
     this.nickname,
     this.intro,
+    this.email,
     this.profileImg,
     this.githubId,
     this.blogUrl,
@@ -89,6 +90,7 @@ class Profile extends ChangeNotifier {
       id: json['id'],
       nickname: json['nickname'],
       intro: json['introduction'],
+      email: json['email'],
       profileImg: profileImg,
       githubId: json['githubId'],
       blogUrl: json['blogUrl'],
@@ -105,7 +107,7 @@ class Profile extends ChangeNotifier {
     'id': id.toString(),
     'display': nickname,
     'photo': profileImg != null
-        ? profileImg.toJson()['urlPath']
+        ? profileImg.urlPath
         : null,
   };
 }

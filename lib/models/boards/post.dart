@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/commons/functions_category_boardType.dart';
 import 'package:guam_community_client/models/boards/category.dart' as Category;
 import 'package:guam_community_client/models/boards/comment.dart';
-import 'package:guam_community_client/models/picture.dart';
 import '../profiles/profile.dart';
 
 class Post extends ChangeNotifier {
@@ -13,7 +12,6 @@ class Post extends ChangeNotifier {
   final String title;
   final String content;
   final Category.Category category; // ex) 데이터분석, 개발, 디자인
-  final List<Picture> pictures;
   final List<dynamic> imagePaths; // 서버 수정 전까지 쓰이는 임시방편 속성
   final List<Comment> comments;
   final int likeCount;
@@ -30,7 +28,6 @@ class Post extends ChangeNotifier {
     this.title,
     this.content,
     this.category,
-    this.pictures,
     this.imagePaths,
     this.comments,
     this.likeCount,
@@ -53,7 +50,6 @@ class Post extends ChangeNotifier {
   factory Post.fromJson(Map<String, dynamic> json) {
     Profile profile;
     Category.Category category;
-    List<Picture> pictures;
     List<Comment> comments;
 
     /**
@@ -72,19 +68,11 @@ class Post extends ChangeNotifier {
       category = Category.Category.fromJson(json['categories'][0]);
     }
 
-    if (json['pictures'] != null) {
-      pictures = [...json['pictures'].map((picture) => Picture.fromJson({
-        'id': picture['id'],
-        'urlPath': picture['urlPath'],
-      }))];
-    }
-
     if (json['comments'] != null) {
       comments = [...json['comments'].map((comment) => Comment.fromJson({
         'id': comment['id'],
         'user': comment['user'],
         'content': comment['content'],
-        'pictures': comment['pictures'],
         'imagePaths': json['imagePaths'],
         'isLiked': comment['isLiked'],
         'likeCount': comment['likeCount'],
@@ -103,7 +91,6 @@ class Post extends ChangeNotifier {
       title: json['title'],
       content: json['content'],
       category: category,
-      pictures: pictures,
       imagePaths: json['imagePaths'],
       comments: comments,
       likeCount: json['likeCount'],
