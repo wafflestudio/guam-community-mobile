@@ -2,20 +2,26 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:guam_community_client/models/boards/comment.dart';
 import '../../helpers/decode_ko.dart';
 import '../../helpers/http_request.dart';
 import '../../models/boards/post.dart';
+import '../user_auth/authenticate.dart';
 
 class Posts with ChangeNotifier {
+  Authenticate _authProvider;
   List<Post> _posts;
+  List<Comment> _comments;
   int boardId = 0; // default : 피드게시판
   bool loading = false;
 
-  Posts() {
+  Posts(Authenticate authProvider) {
+    _authProvider = authProvider;
     fetchPosts(boardId);
   }
 
   List<Post> get posts => _posts;
+  List<Comment> get comments => _comments;
 
   Future fetchPosts(int boardId) async {
     try {
@@ -24,6 +30,7 @@ class Posts with ChangeNotifier {
           .get(
         path: "community/api/v1/posts",
         queryParams: {"boardId": boardId.toString()},
+        authToken: await _authProvider.getFirebaseIdToken(),
       ).then((response) async {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
@@ -73,5 +80,37 @@ class Posts with ChangeNotifier {
       notifyListeners();
     }
     return post;
+  }
+
+  Future fetchComments(int postId) async {
+    List<Comment> comments;
+    try {
+      loading = true;
+      await HttpRequest()
+          .get(
+        path: "community/api/v1/posts/$postId/comments",
+        authToken: await _authProvider.getFirebaseIdToken(),
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+          comments = jsonList.map((e) => Comment.fromJson(e)).toList();
+          loading = false;
+          // TODO: set fcm token when impl. push notification
+          // setMyFcmToken();
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          // TODO: show toast after impl. toast
+          // showToast(success: false, msg: err);
+        }
+      });
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return comments;
   }
 }
