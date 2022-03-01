@@ -14,9 +14,11 @@ import 'boards_type.dart';
 class BoardsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.watch<Authenticate>();
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Posts()),
+        ChangeNotifierProvider(create: (_) => Posts(authProvider)),
         ChangeNotifierProvider(create: (_) => Messages()),
       ],
       child: BoardsAppScaffold(),
