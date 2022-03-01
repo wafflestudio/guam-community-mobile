@@ -8,6 +8,7 @@ import 'package:guam_community_client/screens/boards/posts/preview/post_preview_
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/home/home_provider.dart';
+import '../../../../providers/user_auth/authenticate.dart';
 
 class PostPreview extends StatelessWidget {
   final Post post;
@@ -16,6 +17,8 @@ class PostPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.watch<Authenticate>();
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
@@ -34,7 +37,7 @@ class PostPreview extends StatelessWidget {
                 */
                 builder: (_) => MultiProvider(
                   providers: [
-                    ChangeNotifierProvider(create: (_) => Posts()),
+                    ChangeNotifierProvider(create: (_) => Posts(authProvider)),
                   ],
                   child: PostDetail(post),
                 ),
