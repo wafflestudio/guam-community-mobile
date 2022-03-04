@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/helpers/http_request.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'closable_image_expanded.dart';
 
@@ -25,7 +26,7 @@ class ImageThumbnail extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           child: image ?? FadeInImage(
             placeholder: MemoryImage(kTransparentImage),
-            image: NetworkImage(imagePath),
+            image: NetworkImage(HttpRequest().s3BaseAuthority + imagePath),
             fit: BoxFit.cover,
           ),
         ),
