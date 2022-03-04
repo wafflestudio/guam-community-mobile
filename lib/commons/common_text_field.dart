@@ -195,10 +195,8 @@ class _CommonTextFieldState extends State<CommonTextField> {
                               mentionTargetIds.add(mentionId);
                           });
                         }
-                        // TODO: POST /api/v1/posts/{postId}/comments 붙일 때 print문 삭제할 예정.
                         /// mentionTargetIds를 request에 담아 같이 보낼 예정.
-                        print(mentionTargetIds);
-                        key.currentState.controller.clear();
+                        // key.currentState.controller.clear();
                         mentionTargetIds.clear();
                       },
                       style: TextButton.styleFrom(
