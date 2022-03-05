@@ -32,20 +32,13 @@ class _PostDetailState extends State<PostDetail> {
   final int maxRenderImgCnt = 4;
   bool commentImageExist = false;
   List<Map<String, dynamic>> mentionList = [];
-  List<Map<String, dynamic>> mentionList1 = [];
+  Set<int> mentionListId = {};
   List<Map<String, dynamic>> result = [];
 
   @override
   void initState() {
-    /// 게시글 작성자 프로필 추가 후 댓글 작성자 가운데 중복인 걸러내기 (Mention 위젯 입력 type은 Map<String, dynamic>)
     mentionList = [widget.post.profile.toJson()];
-    if (widget.post.comments != null)
-      widget.post.comments.forEach((e) => mentionList.add(e.profile.toJson()));
-    final jsonList = mentionList.map((e) => jsonEncode(e)).toList();
-    final uniqueJsonList = jsonList.toSet().toList();
-    mentionList = uniqueJsonList
-        .map((e) => jsonDecode(e) as Map<String, dynamic>).toList();
-
+    mentionListId = {widget.post.profile.id};
     super.initState();
   }
 
@@ -134,6 +127,15 @@ class _PostDetailState extends State<PostDetail> {
                     builder: (_, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         if (snapshot.data.isNotEmpty) {
+                          // 댓글에서 중복을 허용하지 않도록 멘션 가능한 프로필 추출
+                          Future.delayed(
+                            Duration.zero,
+                            () => setState(() => snapshot.data.forEach((e) {
+                              if (!mentionListId.contains(e.profile.id))
+                                mentionList.add(e.profile.toJson());
+                              mentionListId.add(e.profile.id);
+                            }))
+                          );
                           return Column(
                             children: [
                               ...snapshot.data.map(
@@ -155,6 +157,7 @@ class _PostDetailState extends State<PostDetail> {
                         /// TODO: 에러 메시지 띄워주기
                         return Center(child: CircularProgressIndicator());
                       } else {
+                        /// API 통신 중...
                         return Center(child: CircularProgressIndicator());
                       }
                     }

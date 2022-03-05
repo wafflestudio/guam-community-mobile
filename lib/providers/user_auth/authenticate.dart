@@ -66,7 +66,6 @@ class Authenticate with ChangeNotifier {
     } catch (e) {
       throw new Exception(e);
     }
-
     return idToken;
   }
 
