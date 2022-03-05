@@ -116,7 +116,7 @@ class _PostDetailState extends State<PostDetail> {
                   padding: EdgeInsets.only(top: 8, bottom: 20),
                   child: CustomDivider(color: GuamColorFamily.grayscaleGray7),
                 ),
-                // PostDetailBody(widget.post),
+                PostDetailBody(widget.post),
                 Padding(
                   padding: EdgeInsets.only(top: 14, bottom: 8),
                   child: PostInfo(

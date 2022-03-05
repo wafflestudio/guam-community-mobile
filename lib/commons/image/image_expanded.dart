@@ -20,8 +20,7 @@ class ImageExpanded extends StatelessWidget{
           child: InteractiveViewer(
             child: image ?? FadeInImage(
               placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(imagePath), // 추후 storage 연결하면 바꿀 예정
-              // image: NetworkImage(HttpRequest().s3BaseAuthority + imagePath),
+              image: NetworkImage(HttpRequest().s3BaseAuthority + imagePath),
               fit: BoxFit.fitWidth,
             )
           ),
