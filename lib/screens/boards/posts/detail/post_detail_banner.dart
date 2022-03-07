@@ -67,7 +67,7 @@ class PostDetailBanner extends StatelessWidget {
             children: [
               CommonImgNickname(
                 userId: post.profile.id,
-                imgUrl: post.profile.profileImg != null ? post.profile.profileImg.urlPath : null,
+                imgUrl: post.profile.profileImg ?? null,
                 nickname: post.profile.nickname,
                 nicknameColor: GuamColorFamily.grayscaleGray3,
               ),

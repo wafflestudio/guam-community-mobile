@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/helpers/http_request.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/screens/profiles/profiles_app.dart';
 import 'package:guam_community_client/styles/fonts.dart';
@@ -31,7 +32,7 @@ class CommonImgNickname extends StatelessWidget {
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: imgUrl != null
-                    ? NetworkImage(imgUrl)
+                    ? NetworkImage(HttpRequest().s3BaseAuthority + imgUrl)
                     : SvgProvider('assets/icons/profile_image.svg')
               ),
             ),
@@ -39,7 +40,7 @@ class CommonImgNickname extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 8),
             child: Text(
-              nickname,
+              nickname ?? "",
               style: TextStyle(
                 fontSize: 12,
                 fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
