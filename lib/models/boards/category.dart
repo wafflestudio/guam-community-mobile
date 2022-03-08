@@ -11,7 +11,7 @@ class Category {
     return Category(
       postId: json['postId'],
       tagId: json['tagId'],
-      title: transferCategory(json['title']), // 추후에 함수 지우기
+      title: json['title'],
     );
   }
 }

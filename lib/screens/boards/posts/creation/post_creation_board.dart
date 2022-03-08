@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_choice.dart';
+import 'package:guam_community_client/commons/functions_category_boardType.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -26,6 +27,7 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
   void setBoardType(String boardType){
     setState(() {
       widget.input['boardType'] = boardType;
+      widget.input['boardId'] = transferBoardType(boardType).toString();
       widget.setBoardAnonymous(boardType);
     });
   }
@@ -39,7 +41,7 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
             Text(
               widget.input['boardType'] == ''
                   ? '게시판을 선택해주세요.'
-                  : widget.input['boardType'],
+                  : widget.input['boardType'] + '게시판',
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 14,
@@ -82,9 +84,10 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
                   title: '게시판을 선택해주세요.',
                   back: '완료',
                   children: [
-                    ...boardsList.map((board) => _boardType(
-                        boardsType[board['name']] + '게시판'
-                    ))
+                    // 피드 게시판 제외하기 위해 0번째 항목('피드') 제외시킴
+                    ...boardsList.sublist(1)
+                        .map((board) => _boardType(boardsType[board['name']])
+                    )
                   ],
                 ),
               ],
@@ -110,7 +113,7 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
               Container(
                 height: 20,
                 child: Text(
-                  boardType,
+                  boardType + '게시판',
                   style: TextStyle(
                     fontSize: 16,
                     fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
