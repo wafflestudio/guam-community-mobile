@@ -15,6 +15,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../commons/functions_category_boardType.dart';
+import '../../../../models/boards/post.dart';
 import '../../../../providers/posts/posts.dart';
 
 class PostCreation extends StatefulWidget {
@@ -30,7 +31,6 @@ class PostCreation extends StatefulWidget {
 class _PostCreationState extends State<PostCreation> {
   Map input = {};
   bool isBoardAnonymous = false;
-  bool isNewPost = true;
   bool requesting = false;
 
   void toggleRequest() {
@@ -46,7 +46,9 @@ class _PostCreationState extends State<PostCreation> {
       'tagId': input['tagId'],
     };
     try {
-      if (isNewPost) {
+      if (widget.isEdit) {
+        /// TODO: Server에서 게시글 수정 API 만들어주면 수정할 것.
+      } else {
         return await context.read<Posts>().createPost(
           fields: fields,
           files: files,
@@ -67,14 +69,16 @@ class _PostCreationState extends State<PostCreation> {
 
   @override
   void initState() {
+    Post editPost = widget.editTarget;
     if (widget.editTarget != null) {
       input = {
-        'title': widget.editTarget.title,
-        'content': widget.editTarget.content,
-        'boardType': widget.editTarget.boardType,
-        'boardId': transferBoardType(widget.editTarget.boardType),
-        'category': widget.editTarget.category,
-        'tagId': transferCategory(widget.editTarget.category),
+        'title': editPost.title,
+        'content': editPost.content,
+        'boardType': editPost.boardType,
+        'boardId': transferBoardType(editPost.boardType),
+        'category': editPost.category.title,
+        'tagId': editPost.category.tagId,
+        'images': editPost.imagePaths,
         /// TODO: 이미지는 기존 게시글 이미지 S3 주소 받아와서 처리할 예정
       };
     } else {
@@ -170,7 +174,7 @@ class _PostCreationState extends State<PostCreation> {
                               Navigator.pop(context);
                             } else {
                               Navigator.of(context).pushNamedAndRemoveUntil(
-                                '/main', (route) => true
+                                '/', (route) => false
                               );
                             }
                           },
@@ -203,13 +207,13 @@ class _PostCreationState extends State<PostCreation> {
               alignment: Alignment.center,
             ),
             child: Text(
-              '등록',
+              widget.isEdit ? '수정' : '등록',
               style: TextStyle(
                 color: GuamColorFamily.purpleCore,
                 fontSize: 16,
               ),
             ),
-          )
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -242,7 +246,7 @@ class _PostCreationState extends State<PostCreation> {
                 children: [
                   // if (!isBoardAnonymous)
                   PostCreationCategory(input),
-                  PostCreationImage(input)
+                  if (!widget.isEdit) PostCreationImage(input)
                 ],
               ),
             ),
