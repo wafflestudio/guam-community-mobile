@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guam_community_client/screens/boards/category_type.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 
@@ -52,11 +53,7 @@ class _PostCreationCategoryState extends State<PostCreationCategory> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  _categoryChip('개발'),
-                  _categoryChip('데이터분석'),
-                  _categoryChip('디자인'),
-                  _categoryChip('기획/마케팅'),
-                  _categoryChip('기타'),
+                  ...categoryList.map((c) => _categoryChip(categoryType[c['name']])),
                 ],
               ),
             ),
