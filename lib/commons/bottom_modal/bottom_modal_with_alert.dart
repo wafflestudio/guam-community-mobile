@@ -66,7 +66,7 @@ class BottomModalWithAlert extends StatelessWidget {
                 ),
                 Center(
                   child: TextButton(
-                    onPressed: () => func,
+                    onPressed: func,
                     child: Text(
                       funcName,
                       style: TextStyle(fontSize: 16, color: GuamColorFamily.redCore),

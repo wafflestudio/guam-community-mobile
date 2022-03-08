@@ -80,7 +80,10 @@ class _PostDetailState extends State<PostDetail> {
                   onPressed: () => showMaterialModalBottomSheet(
                     context: context,
                     useRootNavigator: true,
-                    builder: (context) => PostDetailMore(widget.post),
+                    builder: (_) => ChangeNotifierProvider.value(
+                      value: context.read<Posts>(),
+                      child: PostDetailMore(widget.post)
+                    ),
                     backgroundColor: GuamColorFamily.grayscaleWhite,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(

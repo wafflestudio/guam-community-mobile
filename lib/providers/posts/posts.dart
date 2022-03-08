@@ -124,6 +124,41 @@ class Posts with ChangeNotifier {
     return post;
   }
 
+  Future<bool> deletePost(int postId) async {
+    bool successful = false;
+    loading = true;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .delete(
+          path: "community/api/v1/posts/$postId",
+          authToken: authToken,
+        ).then((response) {
+          print(response.statusCode);
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            successful = true;
+            print(jsonData);
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            // showToast(success: false, msg: err);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      loading = false;
+      notifyListeners();
+    }
+    return successful;
+  }
+
   Future fetchComments(int postId) async {
     List<Comment> comments;
     try {

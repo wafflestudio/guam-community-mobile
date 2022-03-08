@@ -7,6 +7,7 @@ import '../../../../commons/bottom_modal/bottom_modal_with_alert.dart';
 import '../../../../commons/bottom_modal/bottom_modal_with_message.dart';
 import '../../../../models/boards/post.dart';
 import '../../../../models/profiles/profile.dart';
+import '../../../../providers/posts/posts.dart';
 import '../../../../providers/user_auth/authenticate.dart';
 import '../creation/post_creation.dart';
 import '../post_comment_report.dart';
@@ -41,7 +42,16 @@ class PostDetailMore extends StatelessWidget {
               funcName: '삭제하기',
               title: '게시글을 삭제하시겠어요?',
               body: '삭제된 게시글은 복원할 수 없습니다.',
-              func: () {},
+              func: () async {
+                await context.read<Posts>().deletePost(post.id)
+                    .then((successful) {
+                  if (successful) {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/', (route) => true
+                    );
+                  }
+                });
+              },
             ),
           ] : [
             BottomModalDefault(
