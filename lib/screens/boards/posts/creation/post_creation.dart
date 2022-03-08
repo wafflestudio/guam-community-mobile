@@ -38,6 +38,7 @@ class _PostCreationState extends State<PostCreation> {
   }
 
   Future createOrUpdatePost({List<File> files}) async {
+    bool successful = false;
     toggleRequest();
     Map<String, dynamic> fields = {
       'title': input['title'],
@@ -56,7 +57,7 @@ class _PostCreationState extends State<PostCreation> {
           if (successful) {
             context.read<Posts>().fetchPosts(0);
             Navigator.pop(context);
-            return successful;
+            successful = true;
           }
         });
       }
@@ -65,6 +66,7 @@ class _PostCreationState extends State<PostCreation> {
     } finally {
       toggleRequest();
     }
+    return successful;
   }
 
   @override

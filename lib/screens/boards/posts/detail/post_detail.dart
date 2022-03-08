@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,7 +5,6 @@ import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
-import 'package:guam_community_client/models/boards/comment.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/screens/boards/comments/comments.dart';
@@ -18,6 +15,8 @@ import 'package:guam_community_client/screens/boards/posts/post_info.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../models/boards/comment.dart';
 
 class PostDetail extends StatefulWidget {
   final Post post;
@@ -34,11 +33,13 @@ class _PostDetailState extends State<PostDetail> {
   List<Map<String, dynamic>> mentionList = [];
   Set<int> mentionListId = {};
   List<Map<String, dynamic>> result = [];
+  Future comments;
 
   @override
   void initState() {
     mentionList = [widget.post.profile.toJson()];
     mentionListId = {widget.post.profile.id};
+    comments = context.read<Posts>().fetchComments(widget.post.id);
     super.initState();
   }
 
@@ -126,18 +127,21 @@ class _PostDetailState extends State<PostDetail> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: FutureBuilder(
-                    future: context.read<Posts>().fetchComments(widget.post.id),
+                    /// FutureBuilder의 future에 명시하는 비동기 함수가 반복해서 실행되는
+                    /// 문제를 해결하고자 initState에서 정의시킨다.
+                    future: comments,
                     builder: (_, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         if (snapshot.data.isNotEmpty) {
-                          // 댓글에서 중복을 허용하지 않도록 멘션 가능한 프로필 추출
                           Future.delayed(
-                            Duration.zero,
-                            () => setState(() => snapshot.data.forEach((e) {
-                              if (!mentionListId.contains(e.profile.id))
-                                mentionList.add(e.profile.toJson());
-                              mentionListId.add(e.profile.id);
-                            }))
+                            Duration.zero, () {
+                              if (this.mounted)
+                                setState(() => snapshot.data.forEach((e) {
+                                  if (!mentionListId.contains(e.profile.id))
+                                    mentionList.add(e.profile.toJson());
+                                  mentionListId.add(e.profile.id);
+                                }));
+                            }
                           );
                           return Column(
                             children: [
