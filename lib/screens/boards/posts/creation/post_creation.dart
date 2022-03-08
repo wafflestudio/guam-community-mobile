@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
@@ -10,6 +12,10 @@ import 'package:guam_community_client/screens/boards/posts/creation/post_creatio
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../commons/functions_category_boardType.dart';
+import '../../../../providers/posts/posts.dart';
 
 class PostCreation extends StatefulWidget {
   final bool isEdit;
@@ -22,37 +28,74 @@ class PostCreation extends StatefulWidget {
 }
 
 class _PostCreationState extends State<PostCreation> {
-  Map input = {
-    'title': '',
-    'content': '',
-    'boardType': '',
-    'category': '',
-    'images': [],
-  };
-
+  Map input = {};
   bool isBoardAnonymous = false;
+  bool isNewPost = true;
+  bool requesting = false;
+
+  void toggleRequest() {
+    setState(() => requesting = !requesting);
+  }
+
+  Future createOrUpdatePost({List<File> files}) async {
+    toggleRequest();
+    Map<String, dynamic> fields = {
+      'title': input['title'],
+      'content': input['content'],
+      'boardId': input['boardId'],
+      'tagId': input['tagId'],
+    };
+    try {
+      if (isNewPost) {
+        return await context.read<Posts>().createPost(
+          fields: fields,
+          files: files,
+        ).then((successful) {
+          if (successful) {
+            context.read<Posts>().fetchPosts(0);
+            Navigator.pop(context);
+            return successful;
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      toggleRequest();
+    }
+  }
 
   @override
   void initState() {
     if (widget.editTarget != null) {
-      input['title'] = widget.editTarget.title;
-      input['content'] = widget.editTarget.content;
-      input['boardType'] = widget.editTarget.boardType;
-      input['category'] = widget.editTarget.category;
-      // 이미지는 추후 S3 연동 후 기존 게시글 이미지 S3 주소 받아와서 처리할 예정
-      // input['images'] = widget.editTarget.images;
+      input = {
+        'title': widget.editTarget.title,
+        'content': widget.editTarget.content,
+        'boardType': widget.editTarget.boardType,
+        'boardId': transferBoardType(widget.editTarget.boardType),
+        'category': widget.editTarget.category,
+        'tagId': transferCategory(widget.editTarget.category),
+        /// TODO: 이미지는 기존 게시글 이미지 S3 주소 받아와서 처리할 예정
+      };
+    } else {
+      input = {
+        'title': '',
+        'content': '',
+        'boardId': '',
+        'boardType': '',
+        'tagId': '',
+        'category': '',
+        'images': [],
+      };
     }
     super.initState();
   }
 
   void setBoardAnonymous(String boardType) {
-    setState(() {
-      if (boardType == '익명게시판') {
-        isBoardAnonymous = true;
-      } else {
-        isBoardAnonymous = false;
-      }
-    });
+    setState(() => boardType == '익명'
+        ? isBoardAnonymous = true
+        : isBoardAnonymous = false
+    );
   }
 
   @override
@@ -147,9 +190,14 @@ class _PostCreationState extends State<PostCreation> {
         trailing: Padding(
           padding: EdgeInsets.only(right: 11),
           child: TextButton(
-            onPressed: () {
-              print(input);
-            },
+            onPressed: !requesting
+                ? () async {
+              await createOrUpdatePost(
+                  files: (input['images'] != [])
+                      ? [...input['images'].map((e) => File(e.path))]
+                      : []
+              );
+            } : null,
             style: TextButton.styleFrom(
               minimumSize: Size(30, 26),
               alignment: Alignment.center,
@@ -192,7 +240,8 @@ class _PostCreationState extends State<PostCreation> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PostCreationCategory(input, isBoardAnonymous),
+                  // if (!isBoardAnonymous)
+                  PostCreationCategory(input),
                   PostCreationImage(input)
                 ],
               ),

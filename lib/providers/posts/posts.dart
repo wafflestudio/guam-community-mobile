@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import '../../helpers/decode_ko.dart';
@@ -25,7 +26,6 @@ class Posts with ChangeNotifier {
 
   Future fetchPosts(int boardId) async {
     loading = true;
-
     try {
       await HttpRequest()
           .get(
@@ -72,15 +72,16 @@ class Posts with ChangeNotifier {
         ).then((response) async {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
-            final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
-            _posts = jsonList.map((e) => Post.fromJson(e)).toList();
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            print(jsonData);
             successful = true;
             loading = false;
             // TODO: set fcm token when impl. push notification
             // setMyFcmToken();
           } else {
             final jsonUtf8 = decodeKo(response);
-            final String err = json.decode(jsonUtf8)["message"];
+            print(jsonUtf8);
+            // final String err = json.decode(jsonUtf8)["error"];
             // TODO: show toast after impl. toast
             // showToast(success: false, msg: err);
           }
