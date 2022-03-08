@@ -5,6 +5,8 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import '../../boards_type.dart';
+
 class PostCreationBoard extends StatefulWidget {
   final Map input;
   final Function setBoardAnonymous;
@@ -80,11 +82,9 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
                   title: '게시판을 선택해주세요.',
                   back: '완료',
                   children: [
-                    _boardType('익명게시판'),
-                    _boardType('자유게시판'),
-                    _boardType('구인게시판'),
-                    _boardType('정보공유게시판'),
-                    _boardType('홍보게시판')
+                    ...boardsList.map((board) => _boardType(
+                        boardsType[board['name']] + '게시판'
+                    ))
                   ],
                 ),
               ],
