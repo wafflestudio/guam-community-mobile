@@ -55,7 +55,7 @@ class MessagePreview extends StatelessWidget {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: messageBox.otherProfile.profileImg != null
-                              ? NetworkImage(messageBox.otherProfile.profileImg.urlPath)
+                              ? NetworkImage(messageBox.otherProfile.profileImg)
                               : SvgProvider('assets/icons/profile_image.svg')
                         ),
                       ),

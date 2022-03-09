@@ -72,7 +72,6 @@ class Authenticate with ChangeNotifier {
   Future getMyProfile() async {
     try {
       String authToken = await getFirebaseIdToken();
-
       if (authToken.isNotEmpty) {
         await HttpRequest()
           .get(
@@ -118,11 +117,10 @@ class Authenticate with ChangeNotifier {
               // TODO: delete this line after server response add profileSet property
               await getMyProfile();
               // TODO: uncomment below lines
-              // final jsonUtf8 = decodeKo(response);
-              // final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
-              // print(jsonData);
-              // me = Profile.fromJson(jsonData);
-              // print("${me.profileSet}, ${me.nickname}");
+              final jsonUtf8 = decodeKo(response);
+              final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+              me = Profile.fromJson(jsonData);
+              print("${me.profileSet}, ${me.nickname}");
               // // showToast(success: true, msg: "프로필을 생성하였습니다.");
               // res = true;
           } else {

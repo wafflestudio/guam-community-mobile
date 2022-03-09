@@ -5,10 +5,10 @@ Future<PickedFile> pickImage({@required type}) async {
   final ImagePicker picker = ImagePicker();
   switch (type) {
     case 'gallery':
-      return await picker.getImage(source: ImageSource.gallery);
+      return await picker.getImage(source: ImageSource.gallery, imageQuality: 30);
       break;
     case 'camera':
-      return await picker.getImage(source: ImageSource.camera);
+      return await picker.getImage(source: ImageSource.camera, imageQuality: 30);
       break;
     default:
       print("We can pick images from either gallery or camera.");

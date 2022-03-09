@@ -64,7 +64,7 @@ class HttpRequest with Toast {
       if (files != null)
         files.forEach((e) async {
           final multipartFile = http.MultipartFile(
-              "imageFiles",
+              "images",
               e.readAsBytes().asStream(),
               e.lengthSync(),
               filename: e.path.split("/").last,
@@ -72,8 +72,8 @@ class HttpRequest with Toast {
           );
           request.files.add(multipartFile);
         });
-      final response = await request.send();
-
+      http.Response response = await http.Response.fromStream(await request.send());
+      print("Result: ${response.statusCode}");
       return response;
     } catch (e) {
       print("Error on POST Multipart request: $e");

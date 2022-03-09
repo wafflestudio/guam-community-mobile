@@ -39,7 +39,7 @@ class PostDetailBanner extends StatelessWidget {
               child: TextButton(
                 onPressed: null,
                 child: Text(
-                  post.boardType,
+                  post.boardType + '게시판',
                   style: TextStyle(
                     fontSize: 12,
                     color: colorOfCategory(post.category.title).withOpacity(0.5),
@@ -67,7 +67,7 @@ class PostDetailBanner extends StatelessWidget {
             children: [
               CommonImgNickname(
                 userId: post.profile.id,
-                imgUrl: post.profile.profileImg != null ? post.profile.profileImg.urlPath : null,
+                imgUrl: post.profile.profileImg ?? null,
                 nickname: post.profile.nickname,
                 nicknameColor: GuamColorFamily.grayscaleGray3,
               ),

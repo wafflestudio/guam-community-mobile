@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/styles/colors.dart';
+import 'package:provider/provider.dart';
 
+import '../../../providers/posts/posts.dart';
 import 'creation/post_creation.dart';
 
 class PostButton extends StatelessWidget {
@@ -22,9 +24,13 @@ class PostButton extends StatelessWidget {
               height: 30,
             ),
             onPressed: () {
-              Navigator.of(context).push(
+              Navigator.push(
+                context,
                 MaterialPageRoute(
-                  builder: (_) => PostCreation()
+                  builder: (_) => ChangeNotifierProvider.value(
+                    value: context.read<Posts>(),
+                    child: PostCreation(),
+                  )
                 )
               );
             }

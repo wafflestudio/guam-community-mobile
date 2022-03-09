@@ -40,7 +40,7 @@ class NotificationsPreview extends StatelessWidget {
                           image: DecorationImage(
                               fit: BoxFit.cover,
                               image: notification.otherProfile.profileImg != null
-                                  ? NetworkImage(notification.otherProfile.profileImg.urlPath)
+                                  ? NetworkImage(notification.otherProfile.profileImg)
                                   : SvgProvider('assets/icons/profile_image.svg')
                           ),
                         ),

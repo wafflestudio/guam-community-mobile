@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/image/closable_image_expanded.dart';
+import 'package:guam_community_client/helpers/http_request.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/picture.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProfileImg extends StatelessWidget {
-  final Picture profileImg;
+  final String profileImg;
   final double height;
   final double width;
 
@@ -21,17 +22,17 @@ class ProfileImg extends StatelessWidget {
         color: profileImg != null ? Colors.transparent : Colors.grey,
       ),
       child: ClipOval(
-        child: profileImg != null && profileImg.urlPath != null
+        child: profileImg != null
             ? InkWell(
               child: FadeInImage(
                 placeholder: MemoryImage(kTransparentImage),
-                image: NetworkImage(profileImg.urlPath),
+                image: NetworkImage(HttpRequest().s3BaseAuthority + profileImg),
                 fit: BoxFit.cover
               ),
               onTap: () {
                 Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(builder: (_) => ClosableImageExpanded(
-                    imagePath: profileImg.urlPath),
+                    imagePath: profileImg),
                   )
                 );
               }

@@ -51,12 +51,9 @@ class _BoardsAppScaffoldState extends State<BoardsAppScaffold> {
               indicatorColor: GuamColorFamily.grayscaleGray1,
               indicatorWeight: 2,
               tabs: [
-                Tab(child: Text('피드')),
-                Tab(child: Text('익명')),
-                Tab(child: Text('자유')),
-                Tab(child: Text('구인')),
-                Tab(child: Text('정보공유')),
-                Tab(child: Text('홍보')),
+                ...boardsList.map((board) => Tab(
+                    child: Text(boardsType[board['name']])
+                ))
               ],
             ),
           ),

@@ -2,9 +2,8 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 // dummy data의 boardType이 enum으로 잘 담겨져 오면 지울 함수
-transferBoardType(int boardId) {
+transferBoardId(int boardId) {
   String boardType;
-
   switch (boardId) {
     case 1: boardType = '익명'; break;
     case 2: boardType = '자유'; break;
@@ -16,16 +15,28 @@ transferBoardType(int boardId) {
   return boardType;
 }
 
-// dummy data의 Category가 enum으로 잘 담겨져 오면 지울 함수
-transferCategory(String engCategory) {
-  String korCategory;
-
-  switch (engCategory) {
-    case 'Data Science': korCategory = '데이터분석'; break;
-    case 'Programming': korCategory = '개발'; break;
-    default: korCategory = engCategory; break;
+transferBoardType(String boardType) {
+  int boardId;
+  switch (boardType) {
+    case '익명': boardId = 1; break;
+    case '자유': boardId = 2; break;
+    case '구인': boardId = 3; break;
+    case '정보공유': boardId = 4; break;
+    case '홍보': boardId = 5; break;
   }
-  return korCategory;
+  return boardId;
+}
+
+transferCategory(String category) {
+  int categoryId;
+  switch (category) {
+    case '개발': categoryId = 1; break;
+    case '데이터분석': categoryId = 2; break;
+    case '디자인': categoryId = 3; break;
+    case '기획/마케팅': categoryId = 4; break;
+    case '기타': categoryId = 5; break;
+  }
+  return categoryId;
 }
 
 colorOfCategory(String category) {

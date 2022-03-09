@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import '../../helpers/decode_ko.dart';
@@ -24,8 +25,8 @@ class Posts with ChangeNotifier {
   List<Comment> get comments => _comments;
 
   Future fetchPosts(int boardId) async {
+    loading = true;
     try {
-      loading = true;
       await HttpRequest()
           .get(
         path: "community/api/v1/posts",
@@ -54,6 +55,47 @@ class Posts with ChangeNotifier {
     }
   }
 
+  Future<bool> createPost({Map<String, dynamic> fields, dynamic files}) async {
+    bool successful = false;
+    loading = true;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .postMultipart(
+          path: "/community/api/v1/posts",
+          authToken: authToken,
+          fields: fields,
+          files: files,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            print(jsonData);
+            successful = true;
+            loading = false;
+            // TODO: set fcm token when impl. push notification
+            // setMyFcmToken();
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            print(jsonUtf8);
+            // final String err = json.decode(jsonUtf8)["error"];
+            // TODO: show toast after impl. toast
+            // showToast(success: false, msg: err);
+          }
+        });
+        loading = false;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return successful;
+  }
+
   Future<Post> getPost(int postId) async {
     Post post;
     loading = true;
@@ -61,7 +103,7 @@ class Posts with ChangeNotifier {
     try {
       await HttpRequest()
           .get(
-          path: "community/api/v1/posts/$postId",
+        path: "community/api/v1/posts/$postId",
       ).then((response) {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
@@ -80,6 +122,41 @@ class Posts with ChangeNotifier {
       notifyListeners();
     }
     return post;
+  }
+
+  Future<bool> deletePost(int postId) async {
+    bool successful = false;
+    loading = true;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .delete(
+          path: "community/api/v1/posts/$postId",
+          authToken: authToken,
+        ).then((response) {
+          print(response.statusCode);
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            successful = true;
+            print(jsonData);
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            // showToast(success: false, msg: err);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      loading = false;
+      notifyListeners();
+    }
+    return successful;
   }
 
   Future fetchComments(int postId) async {

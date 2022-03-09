@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
-import 'package:json_annotation/json_annotation.dart';
-import '../picture.dart';
 import './interest.dart';
 
 class Profile extends ChangeNotifier {
@@ -11,7 +9,7 @@ class Profile extends ChangeNotifier {
   final String nickname;
   final String intro;
   final String email;
-  final Picture profileImg;
+  final String profileImg;
   final String githubId;
   final String blogUrl;
   final bool profileSet;
@@ -39,20 +37,12 @@ class Profile extends ChangeNotifier {
 
   factory Profile.fromJson(Map<String, dynamic> json) {
     List<Interest> interests;
-    Picture profileImg;
     List<Post> myPosts;
     List<Post> scrappedPosts;
     List<Comment> myComments;
 
     if (json["interests"] != null) {
       interests = [...json['interests'].map((i) => Interest(name: i['name']))];
-    }
-
-    if (json["profileImage"] != null) {
-      profileImg = Picture.fromJson({
-        "id": json["profileImage"]["id"],
-        "urlPath": json["profileImage"]["urlPath"],
-      });
     }
 
     if (json['myPosts'] != null) {
@@ -91,7 +81,7 @@ class Profile extends ChangeNotifier {
       nickname: json['nickname'],
       intro: json['introduction'],
       email: json['email'],
-      profileImg: profileImg,
+      profileImg: json['profileImage'],
       githubId: json['githubId'],
       blogUrl: json['blogUrl'],
       profileSet: json['profileSet'],
@@ -106,8 +96,6 @@ class Profile extends ChangeNotifier {
   Map<String, dynamic> toJson() => {
     'id': id.toString(),
     'display': nickname,
-    'photo': profileImg != null
-        ? profileImg.urlPath
-        : null,
+    'photo': profileImg ?? null
   };
 }

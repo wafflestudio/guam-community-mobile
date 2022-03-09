@@ -84,10 +84,10 @@ class Post extends ChangeNotifier {
       id: json['id'],
       profile: profile,
       /**
-       * Server에서 boardType 대신 boardId로 주고 있어 함수(transferBoardType)를 통해
+       * Server에서 boardType 대신 boardId로 주고 있어 함수(transferBoardId)를 통해
        * int -> str 번역하고 있는데, 추후 str (ex. 익명게시판)으로 받아오면 해당 함수 없애기
        **/
-      boardType: transferBoardType(json['boardId']),
+      boardType: transferBoardId(json['boardId']),
       title: json['title'],
       content: json['content'],
       category: category,

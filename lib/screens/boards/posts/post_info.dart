@@ -28,7 +28,7 @@ class PostInfo extends StatelessWidget {
         children: [
           if (showProfile)
             CommonImgNickname(
-              imgUrl: post.profile.profileImg != null ? post.profile.profileImg.urlPath : null,
+              imgUrl: post.profile.profileImg,
               nickname: post.profile.nickname,
               profileClickable: profileClickable,
               nicknameColor: GuamColorFamily.grayscaleGray2,
