@@ -31,15 +31,9 @@ class PostCreation extends StatefulWidget {
 class _PostCreationState extends State<PostCreation> {
   Map input = {};
   bool isBoardAnonymous = false;
-  bool requesting = false;
-
-  void toggleRequest() {
-    setState(() => requesting = !requesting);
-  }
 
   Future createOrUpdatePost({List<File> files}) async {
     bool successful = false;
-    toggleRequest();
     Map<String, dynamic> fields = {
       'title': input['title'],
       'content': input['content'],
@@ -63,8 +57,6 @@ class _PostCreationState extends State<PostCreation> {
       }
     } catch (e) {
       print(e);
-    } finally {
-      toggleRequest();
     }
     return successful;
   }
@@ -196,14 +188,13 @@ class _PostCreationState extends State<PostCreation> {
         trailing: Padding(
           padding: EdgeInsets.only(right: 11),
           child: TextButton(
-            onPressed: !requesting
-                ? () async {
+            onPressed: () async {
               await createOrUpdatePost(
                   files: (input['images'] != [])
                       ? [...input['images'].map((e) => File(e.path))]
                       : []
               );
-            } : null,
+            },
             style: TextButton.styleFrom(
               minimumSize: Size(30, 26),
               alignment: Alignment.center,

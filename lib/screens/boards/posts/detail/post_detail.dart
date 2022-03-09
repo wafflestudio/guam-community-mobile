@@ -16,8 +16,6 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../models/boards/comment.dart';
-
 class PostDetail extends StatefulWidget {
   final Post post;
 
