@@ -13,10 +13,26 @@ import '../edit/profile_edit_nickname.dart';
 import '../edit/profile_edit_intro.dart';
 import '../edit/profile_edit_optional.dart';
 
-class ProfilesEdit extends StatelessWidget {
+class ProfilesEdit extends StatefulWidget {
   final Profile profile;
 
   ProfilesEdit(this.profile);
+
+  @override
+  State<ProfilesEdit> createState() => _ProfilesEditState();
+}
+
+class _ProfilesEditState extends State<ProfilesEdit> {
+  Map<String, dynamic> input = {};
+
+  @override
+  void initState() {
+    input['nickname'] = widget.profile.nickname;
+    input['introduction'] = widget.profile.intro;
+    input['githubId'] = widget.profile.githubId;
+    input['blogUrl'] = widget.profile.blogUrl;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,11 +129,11 @@ class ProfilesEdit extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ProfileImg(profileImg: profile.profileImg, height: 96, width: 96),
+              ProfileImg(profileImg: widget.profile.profileImg, height: 96, width: 96),
               ProfileImgEditButton(),
-              ProfileEditNickname(profile.nickname),
-              ProfileEditIntro(profile.intro),
-              ProfileEditOptional(profile),
+              ProfileEditNickname(input['nickname']),
+              ProfileEditIntro(input['introduction']),
+              ProfileEditOptional(input),
             ],
           ),
         ),

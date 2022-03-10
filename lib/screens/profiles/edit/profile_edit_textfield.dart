@@ -9,8 +9,9 @@ import '../../../providers/user_auth/authenticate.dart';
 class ProfileEditTextField extends StatefulWidget {
   final String input;
   final int maxLength;
+  final bool isBlogUrl;
 
-  ProfileEditTextField({this.input, this.maxLength});
+  ProfileEditTextField({this.input, this.maxLength, this.isBlogUrl=false});
 
   @override
   State<ProfileEditTextField> createState() => _ProfileEditTextFieldState();
@@ -65,6 +66,14 @@ class _ProfileEditTextFieldState extends State<ProfileEditTextField> {
           disabledBorder: InputBorder.none,
           isDense: true,
           contentPadding: EdgeInsets.only(bottom: 8),
+          hintText: widget.isBlogUrl
+            ? 'https://guam.com'
+            : '',
+          hintStyle: TextStyle(
+            color: GuamColorFamily.grayscaleGray4,
+            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+            fontSize: 13,
+          ),
         ),
       )
     );

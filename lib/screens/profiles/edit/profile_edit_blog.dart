@@ -15,7 +15,7 @@ class ProfileEditBlog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ProfileEditLabel('블로그'),
-          ProfileEditTextField(input: blogUrl)
+          ProfileEditTextField(input: blogUrl, isBlogUrl: true)
         ],
       ),
     );

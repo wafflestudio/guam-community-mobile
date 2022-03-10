@@ -8,17 +8,9 @@ import 'package:guam_community_client/commons/back.dart';
 import '../../../../models/profiles/interest.dart';
 
 class ProfileEditInterestsDetail extends StatelessWidget {
-  final List<Interest> dummyInterests = [
-    new Interest(name: 'figma'),
-    new Interest(name: 'photoshop'),
-    new Interest(name: 'illustrator'),
-    new Interest(name: 'adobe xd'),
-    new Interest(name: 'primere pro'),
-    new Interest(name: 'aftereffect'),
-    new Interest(name: 'cinema4D'),
-    new Interest(name: 'zeplin'),
-    new Interest(name: 'sketch'),
-  ];
+  final List<Interest> interests;
+
+  ProfileEditInterestsDetail(this.interests);
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +27,13 @@ class ProfileEditInterestsDetail extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ProfileEditInterestsLabel(dummyInterests.length),
+                ProfileEditInterestsLabel(interests.length),
                 ProfileEditInterestsTextField(),
                 Wrap(
                   // alignment: WrapAlignment.center,
                   spacing: 8,
                   runSpacing: 5,
-                  children: [...dummyInterests.map((i) => ProfileInterestButton(
+                  children: [...interests.map((i) => ProfileInterestButton(
                     i,
                     deletable: true,
                   ))],
