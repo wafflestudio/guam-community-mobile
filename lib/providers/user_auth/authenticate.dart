@@ -14,6 +14,7 @@ class Authenticate with ChangeNotifier {
   get kakaoJavascriptClientId => _kakaoJavascriptClientId;
 
   Profile me;
+  Profile user;
   bool loading = false;
 
   Authenticate() {
@@ -141,8 +142,34 @@ class Authenticate with ChangeNotifier {
   }
 
   Future<Profile> getUserProfile(int userId) async {
-    // TODO: impl
-    return me;
+    try {
+      String authToken = await getFirebaseIdToken();
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .get(
+          path: "community/api/v1/users/$userId",
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            user = Profile.fromJson(jsonData);
+            // TODO: set fcm token when impl. push notification
+            // setMyFcmToken();
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            // TODO: show toast after impl. toast
+            // showToast(success: false, msg: err);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return user;
   }
 
   void toggleLoading() {
