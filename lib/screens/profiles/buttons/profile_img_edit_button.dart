@@ -24,11 +24,13 @@ class ProfileImgEditButton extends StatelessWidget {
               )
             ),
             context: context,
+            useRootNavigator: true,
             builder: (_) => ProfileEditImgModal()
           );
         } else {
         showCupertinoModalBottomSheet(
             context: context,
+            useRootNavigator: true,
             builder: (_) => ProfileEditImgModal()
           );
         }

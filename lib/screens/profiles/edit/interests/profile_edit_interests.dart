@@ -6,6 +6,7 @@ import 'profile_edit_interests_detail.dart';
 import '../../../../models/profiles/interest.dart';
 
 class ProfileEditInterests extends StatelessWidget {
+  final List<Interest> interests;
   final List<Interest> dummyInterests = [
     new Interest(name: 'figma'),
     new Interest(name: 'photoshop'),
@@ -17,6 +18,8 @@ class ProfileEditInterests extends StatelessWidget {
     new Interest(name: 'zeplin'),
     new Interest(name: 'sketch'),
   ];
+
+  ProfileEditInterests(this.interests);
 
   @override
   Widget build(BuildContext context) {

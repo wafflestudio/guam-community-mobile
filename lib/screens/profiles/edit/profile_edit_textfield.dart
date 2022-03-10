@@ -1,18 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
+import 'package:provider/provider.dart';
 
-class ProfileEditTextField extends StatelessWidget {
-  final int maxLength;  // Give value only when needed
+import '../../../models/profiles/profile.dart';
+import '../../../providers/user_auth/authenticate.dart';
 
-  ProfileEditTextField({this.maxLength});
+class ProfileEditTextField extends StatefulWidget {
+  final String input;
+  final int maxLength;
+
+  ProfileEditTextField({this.input, this.maxLength});
+
+  @override
+  State<ProfileEditTextField> createState() => _ProfileEditTextFieldState();
+}
+
+class _ProfileEditTextFieldState extends State<ProfileEditTextField> {
+  final _textFieldController = TextEditingController();
+
+  @override
+  void initState() {
+    _textFieldController.text = widget.input;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _textFieldController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final Profile me = context.read<Authenticate>().me;
+
     return Expanded(
       child: TextField(
-        maxLength: maxLength,
-        maxLines: null,
+        maxLength: widget.maxLength,
+        controller: _textFieldController,
         style: TextStyle(
           fontSize: 14,
           fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
