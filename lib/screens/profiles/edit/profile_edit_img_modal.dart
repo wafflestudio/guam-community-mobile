@@ -3,7 +3,13 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:guam_community_client/commons/common_text_button.dart';
 
+import '../../../helpers/pick_image.dart';
+
 class ProfileEditImgModal extends StatelessWidget {
+  final Function setImageFile;
+
+  const ProfileEditImgModal(this.setImageFile);
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -25,7 +31,9 @@ class ProfileEditImgModal extends StatelessWidget {
                 fontSize: 16,
                 fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
                 textColor: GuamColorFamily.grayscaleGray1,
-                onPressed: () {},
+                onPressed: () => pickImage(type: 'gallery').then((img) {
+                  setImageFile(img);
+                }),
               ),
               Padding(padding: EdgeInsets.only(bottom: 20)),
               CommonTextButton(

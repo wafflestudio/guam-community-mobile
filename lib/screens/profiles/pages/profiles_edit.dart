@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:guam_community_client/screens/profiles/buttons/profile_img_edit_button.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import '../../../commons/custom_app_bar.dart';
@@ -27,6 +30,7 @@ class ProfilesEdit extends StatefulWidget {
 class _ProfilesEditState extends State<ProfilesEdit> {
   bool sending = false;
   Map<String, dynamic> input = {};
+  List<dynamic> profileImage = [];
 
   @override
   void initState() {
@@ -45,12 +49,21 @@ class _ProfilesEditState extends State<ProfilesEdit> {
     setState(() => input[_key] = _value);
   }
 
+  Future<void> setImageFile(PickedFile val) async {
+    setState(() {
+      if (profileImage.isNotEmpty) profileImage.clear();
+      if (val != null) profileImage.add(val);
+    });
+  }
+
   Future setProfile() async {
     toggleSending();
 
     try {
-      return await context.read<Authenticate>().setProfile(fields: input)
-        .then((successful) {
+      return await context.read<Authenticate>().setProfile(
+        fields: input,
+        files: profileImage.isNotEmpty ? [File(profileImage[0].path)] : <File>[],
+      ).then((successful) {
         if (successful) {
           toggleSending();
           Navigator.maybePop(context);
@@ -159,8 +172,8 @@ class _ProfilesEditState extends State<ProfilesEdit> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ProfileImg(profileImg: widget.profile.profileImg, height: 96, width: 96),
-              ProfileImgEditButton(),
+              ProfileImg(newImage: profileImage, profileImg: widget.profile.profileImg, height: 96, width: 96),
+              ProfileImgEditButton(setImageFile),
               ProfileEditNickname(input['nickname'], setInput),
               ProfileEditIntro(input['introduction'], setInput),
               ProfileEditOptional(input, setInput),
