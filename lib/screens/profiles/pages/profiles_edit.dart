@@ -31,6 +31,7 @@ class _ProfilesEditState extends State<ProfilesEdit> {
   bool sending = false;
   Map<String, dynamic> input = {};
   List<dynamic> profileImage = [];
+  String profileImg;
 
   @override
   void initState() {
@@ -38,6 +39,7 @@ class _ProfilesEditState extends State<ProfilesEdit> {
     input['introduction'] = widget.profile.intro;
     input['githubId'] = widget.profile.githubId;
     input['blogUrl'] = widget.profile.blogUrl;
+    profileImg = widget.profile.profileImg;
     super.initState();
   }
 
@@ -53,6 +55,13 @@ class _ProfilesEditState extends State<ProfilesEdit> {
     setState(() {
       if (profileImage.isNotEmpty) profileImage.clear();
       if (val != null) profileImage.add(val);
+    });
+  }
+
+  Future<void> resetImageFile() async {
+    setState(() {
+      profileImg = null;
+      if (profileImage.isNotEmpty) profileImage.clear();
     });
   }
 
@@ -172,8 +181,8 @@ class _ProfilesEditState extends State<ProfilesEdit> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ProfileImg(newImage: profileImage, profileImg: widget.profile.profileImg, height: 96, width: 96),
-              ProfileImgEditButton(setImageFile),
+              ProfileImg(newImage: profileImage, profileImg: profileImg, height: 96, width: 96),
+              ProfileImgEditButton(setImageFile, resetImageFile),
               ProfileEditNickname(input['nickname'], setInput),
               ProfileEditIntro(input['introduction'], setInput),
               ProfileEditOptional(input, setInput),

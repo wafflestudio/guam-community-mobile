@@ -32,9 +32,8 @@ class _ProfileImgState extends State<ProfileImg> {
       ),
       child: ClipOval(
         child: widget.profileImg == null
-            ? widget.newImage == null
-                ? Image(image: SvgProvider('assets/icons/profile_image.svg'))
-                : Container(
+            ? widget.newImage != null && widget.newImage.isNotEmpty
+                ? Container( /// 프사 설정 안 된 상태에서 사진첩에서 사진 불러옴.
                     child: ImageThumbnail(
                       width: widget.width,
                       height: widget.height,
@@ -43,9 +42,14 @@ class _ProfileImgState extends State<ProfileImg> {
                         fit: BoxFit.fill,
                       ),
                     ),
+                  )
+                : Image( /// 프사가 아예 없거나 기본 사진으로 설정 버튼 누름.
+                    image: SvgProvider('assets/icons/profile_image.svg'),
+                    width: widget.width,
+                    height: widget.height,
                   )
             : widget.newImage != null && widget.newImage.isNotEmpty
-                ? Container(
+                ? Container( /// 프사 설정된 상태에서 사진첩에서 사진 불러옴.
                     child: ImageThumbnail(
                       width: widget.width,
                       height: widget.height,
@@ -55,7 +59,7 @@ class _ProfileImgState extends State<ProfileImg> {
                       ),
                     ),
                   )
-                : InkWell(
+                : InkWell( /// 프사 설정된 상태에서 아무 작업도 안 함.
                     child: FadeInImage(
                       placeholder: MemoryImage(kTransparentImage),
                       image: NetworkImage(HttpRequest().s3BaseAuthority + widget.profileImg),
@@ -65,8 +69,8 @@ class _ProfileImgState extends State<ProfileImg> {
                       setState(() {});
                       Navigator.of(context, rootNavigator: true).push(
                         MaterialPageRoute(builder: (_) => ClosableImageExpanded(
-                            imagePath: widget.profileImg),
-                        ),
+                          imagePath: widget.profileImg,
+                        )),
                       );
                     }
                   )
