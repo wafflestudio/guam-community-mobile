@@ -172,6 +172,40 @@ class Authenticate with ChangeNotifier {
     return user;
   }
 
+  Future<bool> setInterest({Map<String, dynamic> body}) async {
+    bool successful = false;
+
+    try {
+      toggleLoading();
+      String authToken = await getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .post(
+            path: "community/api/v1/users/${me.id}/interest",
+            body: body,
+            authToken: authToken)
+            .then((response) async {
+          if (response.statusCode == 200) {
+            await getMyProfile();
+            successful = true;
+            // // showToast(success: true, msg: "프로필을 생성하였습니다.");
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            // TODO: show toast after impl. toast
+            // showToast(success: false, msg: err);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      toggleLoading();
+    }
+    return successful;
+  }
+
   void toggleLoading() {
     loading = !loading;
     notifyListeners();

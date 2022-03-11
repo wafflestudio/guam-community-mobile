@@ -7,10 +7,27 @@ import '../../../../commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/back.dart';
 import '../../../../models/profiles/interest.dart';
 
-class ProfileEditInterestsDetail extends StatelessWidget {
+class ProfileEditInterestsDetail extends StatefulWidget {
   final List<Interest> interests;
 
   ProfileEditInterestsDetail(this.interests);
+
+  @override
+  State<ProfileEditInterestsDetail> createState() => _ProfileEditInterestsDetailState();
+}
+
+class _ProfileEditInterestsDetailState extends State<ProfileEditInterestsDetail> {
+  List<Interest> _interests;
+
+  @override
+  void initState() {
+    _interests = widget.interests;
+    super.initState();
+  }
+
+  void addInterest(String interest) {
+    setState(() => _interests.add(Interest(name: interest)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +44,13 @@ class ProfileEditInterestsDetail extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ProfileEditInterestsLabel(interests.length),
-                ProfileEditInterestsTextField(),
+                ProfileEditInterestsLabel(_interests.length),
+                ProfileEditInterestsTextField(addInterest),
                 Wrap(
                   // alignment: WrapAlignment.center,
                   spacing: 8,
                   runSpacing: 5,
-                  children: [...interests.map((i) => ProfileInterestButton(
+                  children: [..._interests.map((i) => ProfileInterestButton(
                     i,
                     deletable: true,
                   ))],

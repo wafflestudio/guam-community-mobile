@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../../models/profiles/profile.dart';
 import '../../../../providers/user_auth/authenticate.dart';
 import '../profile_edit_label.dart';
 import '../../../../commons/next.dart';
