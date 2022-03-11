@@ -4,8 +4,9 @@ import 'profile_edit_textfield.dart';
 
 class ProfileEditGithub extends StatelessWidget {
   final String githubId;
+  final Function setInput;
 
-  ProfileEditGithub(this.githubId);
+  ProfileEditGithub(this.githubId, this.setInput);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class ProfileEditGithub extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ProfileEditLabel('github ID'),
-          ProfileEditTextField(input: githubId)
+          ProfileEditTextField(input: githubId, func: setInput, funcKey: 'githubId')
         ],
       ),
     );

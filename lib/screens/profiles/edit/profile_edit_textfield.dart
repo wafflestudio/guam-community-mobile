@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
-import 'package:provider/provider.dart';
-
-import '../../../models/profiles/profile.dart';
-import '../../../providers/user_auth/authenticate.dart';
 
 class ProfileEditTextField extends StatefulWidget {
   final String input;
   final int maxLength;
   final bool isBlogUrl;
+  final Function func;
+  final String funcKey;
 
-  ProfileEditTextField({this.input, this.maxLength, this.isBlogUrl=false});
+  ProfileEditTextField({this.input, this.maxLength, this.isBlogUrl=false, this.func, this.funcKey});
 
   @override
   State<ProfileEditTextField> createState() => _ProfileEditTextFieldState();
@@ -34,12 +32,11 @@ class _ProfileEditTextFieldState extends State<ProfileEditTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final Profile me = context.read<Authenticate>().me;
-
     return Expanded(
       child: TextField(
         maxLength: widget.maxLength,
         controller: _textFieldController,
+        onChanged: (e) => widget.func(widget.funcKey, _textFieldController.text),
         style: TextStyle(
           fontSize: 14,
           fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,

@@ -5,9 +5,11 @@ import 'package:guam_community_client/screens/profiles/buttons/profile_img_edit_
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 import '../../../commons/custom_app_bar.dart';
 import '../../../commons/common_text_button.dart';
 import '../../../commons/custom_divider.dart';
+import '../../../providers/user_auth/authenticate.dart';
 import '../profile/profile_img.dart';
 import '../edit/profile_edit_nickname.dart';
 import '../edit/profile_edit_intro.dart';
@@ -23,6 +25,7 @@ class ProfilesEdit extends StatefulWidget {
 }
 
 class _ProfilesEditState extends State<ProfilesEdit> {
+  bool sending = false;
   Map<String, dynamic> input = {};
 
   @override
@@ -32,6 +35,33 @@ class _ProfilesEditState extends State<ProfilesEdit> {
     input['githubId'] = widget.profile.githubId;
     input['blogUrl'] = widget.profile.blogUrl;
     super.initState();
+  }
+
+  void toggleSending() {
+    setState(() => sending = !sending);
+  }
+
+  void setInput(String _key, String _value) {
+    setState(() => input[_key] = _value);
+  }
+
+  Future setProfile() async {
+    toggleSending();
+
+    try {
+      return await context.read<Authenticate>().setProfile(fields: input)
+        .then((successful) {
+        if (successful) {
+          toggleSending();
+          Navigator.maybePop(context);
+        } else {
+          toggleSending();
+          print("Error!");
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -118,7 +148,7 @@ class _ProfilesEditState extends State<ProfilesEdit> {
             fontSize: 16,
             fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
             textColor: GuamColorFamily.purpleCore,
-            onPressed: () {},
+            onPressed: () async => await setProfile(),
           ),
         ),
       ),
@@ -131,9 +161,9 @@ class _ProfilesEditState extends State<ProfilesEdit> {
             children: [
               ProfileImg(profileImg: widget.profile.profileImg, height: 96, width: 96),
               ProfileImgEditButton(),
-              ProfileEditNickname(input['nickname']),
-              ProfileEditIntro(input['introduction']),
-              ProfileEditOptional(input),
+              ProfileEditNickname(input['nickname'], setInput),
+              ProfileEditIntro(input['introduction'], setInput),
+              ProfileEditOptional(input, setInput),
             ],
           ),
         ),

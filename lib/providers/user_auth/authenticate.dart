@@ -100,8 +100,8 @@ class Authenticate with ChangeNotifier {
     }
   }
 
-  Future setProfile({Map<String, dynamic> body, dynamic files}) async {
-    bool res = false;
+  Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
+    bool successful = false;
 
     try {
       toggleLoading();
@@ -109,21 +109,20 @@ class Authenticate with ChangeNotifier {
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
-          .patch(
+          .patchMultipart(
             path: "community/api/v1/users/${me.id}",
-            body: body,
+            fields: fields,
+            files: files,
             authToken: authToken)
           .then((response) async {
             if (response.statusCode == 200) {
-              // TODO: delete this line after server response add profileSet property
               await getMyProfile();
-              // TODO: uncomment below lines
               final jsonUtf8 = decodeKo(response);
               final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+              jsonData["profileSet"] = true;
               me = Profile.fromJson(jsonData);
-              print("${me.profileSet}, ${me.nickname}");
               // // showToast(success: true, msg: "프로필을 생성하였습니다.");
-              // res = true;
+              successful = true;
           } else {
               final jsonUtf8 = decodeKo(response);
               final String err = json.decode(jsonUtf8)["message"];
@@ -137,8 +136,7 @@ class Authenticate with ChangeNotifier {
     } finally {
       toggleLoading();
     }
-
-    return res;
+    return successful;
   }
 
   Future<Profile> getUserProfile(int userId) async {

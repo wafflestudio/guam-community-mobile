@@ -73,7 +73,6 @@ class HttpRequest with Toast {
           request.files.add(multipartFile);
         });
       http.Response response = await http.Response.fromStream(await request.send());
-      print("Result: ${response.statusCode}");
       return response;
     } catch (e) {
       print("Error on POST Multipart request: $e");
@@ -97,6 +96,36 @@ class HttpRequest with Toast {
       return response;
     } catch (e) {
       print("Error on PUT request: $e");
+      // TODO: impl toast
+      // showToast(success: false);
+    }
+  }
+
+  Future patchMultipart({bool isHttps = true, String authority, String path, String authToken, Map<String, dynamic> fields, List<File> files}) async {
+    try {
+      final uri = isHttps
+          ? Uri.https(authority ?? gatewayAuthority, path)
+          : Uri.http(authority ?? gatewayAuthority, path);
+
+      http.MultipartRequest request = http.MultipartRequest("PATCH", uri);
+      request.headers['Authorization'] = 'Bearer $authToken';
+      fields.entries.forEach((e) => request.fields[e.key] = e.value);
+
+      if (files != null)
+        files.forEach((e) async {
+          final multipartFile = http.MultipartFile(
+              "profileImage",
+              e.readAsBytes().asStream(),
+              e.lengthSync(),
+              filename: e.path.split("/").last,
+              contentType: MediaType("image", "${p.extension(e.path)}")
+          );
+          request.files.add(multipartFile);
+        });
+      http.Response response = await http.Response.fromStream(await request.send());
+      return response;
+    } catch (e) {
+      print("Error on PATCH Multipart request: $e");
       // TODO: impl toast
       // showToast(success: false);
     }

@@ -4,8 +4,9 @@ import 'profile_edit_textfield.dart';
 
 class ProfileEditNickname extends StatelessWidget {
   final String nickname;
+  final Function setInput;
 
-  ProfileEditNickname(this.nickname);
+  ProfileEditNickname(this.nickname, this.setInput);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class ProfileEditNickname extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ProfileEditLabel('이름'),
-          ProfileEditTextField(input: nickname, maxLength: 10)
+          ProfileEditTextField(input: nickname, maxLength: 10, func: setInput, funcKey: 'nickname')
         ],
       ),
     );

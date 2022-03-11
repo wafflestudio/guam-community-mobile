@@ -31,7 +31,6 @@ class ProfileEditInterestsTextFieldState extends State<ProfileEditInterestsTextF
       ).then((successful) {
         if (successful) {
           toggleSending();
-          successful = true;
           widget.addInterest(_interestFieldController.text);
         } else {
           toggleSending();

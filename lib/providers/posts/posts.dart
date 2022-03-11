@@ -33,7 +33,6 @@ class Posts with ChangeNotifier {
         queryParams: {"boardId": boardId.toString()},
         authToken: await _authProvider.getFirebaseIdToken(),
       ).then((response) async {
-        // print(await _authProvider.getFirebaseIdToken());
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
