@@ -187,7 +187,41 @@ class Authenticate with ChangeNotifier {
           if (response.statusCode == 200) {
             await getMyProfile();
             successful = true;
-            // // showToast(success: true, msg: "프로필을 생성하였습니다.");
+            // showToast(success: true, msg: "관심사를 등록했습니다.");
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            // TODO: show toast after impl. toast
+            // showToast(success: false, msg: err);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      toggleLoading();
+    }
+    return successful;
+  }
+
+  Future<bool> deleteInterest({dynamic queryParams}) async {
+    bool successful = false;
+
+    try {
+      toggleLoading();
+      String authToken = await getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .delete(
+            path: "community/api/v1/users/${me.id}/interest",
+            queryParams: queryParams,
+            authToken: authToken)
+            .then((response) async {
+          if (response.statusCode == 200) {
+            await getMyProfile();
+            successful = true;
+            // showToast(success: true, msg: "해당 관심사를 삭제했습니다.");
           } else {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];

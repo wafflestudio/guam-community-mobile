@@ -131,9 +131,12 @@ class HttpRequest with Toast {
     }
   }
 
-  Future delete({String authority, String path, String authToken}) async {
+  Future delete({bool isHttps = true, String authority, String path, dynamic queryParams, String authToken}) async {
     try {
-      final uri = Uri.https(authority ?? gatewayAuthority, path);
+      final uri = isHttps
+          ? Uri.https(authority ?? gatewayAuthority, path, queryParams)
+          : Uri.http(authority ?? gatewayAuthority, path, queryParams);
+
       final response = await http.delete(
         uri,
         headers: {'Content-Type': "application/json", 'Authorization': 'Bearer $authToken'},

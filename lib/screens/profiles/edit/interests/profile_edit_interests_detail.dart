@@ -29,36 +29,42 @@ class _ProfileEditInterestsDetailState extends State<ProfileEditInterestsDetail>
     setState(() => _interests.add(Interest(name: interest)));
   }
 
+  void removeInterest(String interest) {
+    setState(() => _interests.removeAt(
+      _interests.indexWhere((e) => e.name == interest))
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: GuamColorFamily.grayscaleWhite,
-        appBar: CustomAppBar(
-          leading: Back(),
-          title: '프로필 수정',
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ProfileEditInterestsLabel(_interests.length),
-                ProfileEditInterestsTextField(addInterest),
-                Wrap(
-                  // alignment: WrapAlignment.center,
-                  spacing: 8,
-                  runSpacing: 5,
-                  children: [..._interests.map((i) => ProfileInterestButton(
-                    i,
-                    deletable: true,
-                  ))],
-                )
-              ],
-            ),
+      backgroundColor: GuamColorFamily.grayscaleWhite,
+      appBar: CustomAppBar(
+        leading: Back(),
+        title: '프로필 수정',
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ProfileEditInterestsLabel(_interests.length),
+              ProfileEditInterestsTextField(addInterest),
+              Wrap(
+                spacing: 8,
+                runSpacing: 5,
+                children: [..._interests.map((i) => ProfileInterestButton(
+                  i,
+                  deletable: true,
+                  removeInterest: removeInterest,
+                ))],
+              ),
+            ],
           ),
-        )
+        ),
+      ),
     );
   }
 }
