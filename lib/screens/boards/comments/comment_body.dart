@@ -3,6 +3,7 @@ import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
+import 'package:jiffy/jiffy.dart';
 
 class CommentBody extends StatelessWidget {
   final Comment comment;
@@ -11,6 +12,8 @@ class CommentBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Jiffy.locale('ko');
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,18 +31,33 @@ class CommentBody extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(left: 32, top: 4, bottom: 8),
-          child: IconText(
-            iconSize: 18,
-            fontSize: 10,
-            text: comment.likeCount.toString(),
-            iconPath: comment.isLiked ?? false  /// 서버 수정 후 ?? false 삭제
-                ? 'assets/icons/like_filled.svg'
-                : 'assets/icons/like_outlined.svg',
-            onPressed: (){},
-            iconColor: comment.isLiked ?? false  /// 서버 수정 후 ?? false 삭제
-                ? GuamColorFamily.redCore
-                : GuamColorFamily.grayscaleGray5,
-            textColor: GuamColorFamily.grayscaleGray5,
+          child: Row(
+            children: [
+              IconText(
+                iconSize: 18,
+                fontSize: 10,
+                text: comment.likeCount.toString(),
+                iconPath: comment.isLiked ?? false  /// 서버 수정 후 ?? false 삭제
+                    ? 'assets/icons/like_filled.svg'
+                    : 'assets/icons/like_outlined.svg',
+                onPressed: (){},
+                iconColor: comment.isLiked ?? false  /// 서버 수정 후 ?? false 삭제
+                    ? GuamColorFamily.redCore
+                    : GuamColorFamily.grayscaleGray5,
+                textColor: GuamColorFamily.grayscaleGray5,
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Text(
+                  Jiffy(comment.createdAt).fromNow(),
+                  style: TextStyle(
+                    fontSize: 9,
+                    fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                    color: GuamColorFamily.grayscaleGray4,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],
