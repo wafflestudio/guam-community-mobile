@@ -143,8 +143,10 @@ class _PostDetailState extends State<PostDetail> {
                           );
                           return Column(
                             children: [
-                              ...snapshot.data.map(
-                                      (comment) => Comments(comment: comment))
+                              ...snapshot.data.map((comment) => Comments(
+                                comment: comment,
+                                isAuthor: widget.post.profile.id == comment.profile.id,
+                              ))
                             ]
                           );
                         } else {
