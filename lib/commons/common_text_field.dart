@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import '../helpers/pick_image.dart';
@@ -169,14 +171,23 @@ class _CommonTextFieldState extends State<CommonTextField> {
                         style: TextStyle(color: GuamColorFamily.purpleLight1),
                         data: widget.mentionList,
                         suggestionBuilder: (data) => SingleChildScrollView(
-                          child: Container(
-                            padding: EdgeInsets.only(left: 10),
-                            color: GuamColorFamily.purpleLight3,
-                            child: CommonImgNickname(
-                              profileClickable: false,
-                              nickname: data['display'],
-                              imgUrl: data['photo'] ?? null,
-                            ),
+                          dragStartBehavior: DragStartBehavior.start,
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 53,
+                                padding: EdgeInsets.only(left: 10),
+                                color: GuamColorFamily.purpleLight3,
+                                child: CommonImgNickname(
+                                  fontSize: 13,
+                                  imageSize: 41,
+                                  profileClickable: false,
+                                  nickname: data['display'],
+                                  imgUrl: data['photo'] ?? null,
+                                ),
+                              ),
+                              CustomDivider(thickness: 0.5),
+                            ],
                           ),
                         ),
                       ),

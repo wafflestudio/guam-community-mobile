@@ -7,12 +7,14 @@ import 'package:hexcolor/hexcolor.dart';
 
 class CommonImgNickname extends StatelessWidget {
   final int userId;
+  final double fontSize;
+  final double imageSize;
   final String imgUrl;
   final String nickname;
   final HexColor nicknameColor;
   final bool profileClickable;
 
-  CommonImgNickname({this.userId, this.imgUrl, this.nickname, this.nicknameColor, this.profileClickable=true});
+  CommonImgNickname({this.userId, this.fontSize=12, this.imageSize=24, this.imgUrl, this.nickname, this.nicknameColor, this.profileClickable=true});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +27,8 @@ class CommonImgNickname extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            height: 24,
-            width: 24,
+            height: imageSize,
+            width: imageSize,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
@@ -42,7 +44,7 @@ class CommonImgNickname extends StatelessWidget {
             child: Text(
               nickname ?? "",
               style: TextStyle(
-                fontSize: 12,
+                fontSize: fontSize,
                 fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
                 color: nicknameColor,
               ),
