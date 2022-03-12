@@ -4,6 +4,7 @@ import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/notification.dart' as Notification;
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
+import 'package:jiffy/jiffy.dart';
 
 class NotificationsPreview extends StatelessWidget {
   final Notification.Notification notification;
@@ -12,6 +13,9 @@ class NotificationsPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Render DateTime using 'Jiffy' library
+    Jiffy.locale('ko');
+
     return Column(
       children: [
         Padding(
@@ -91,7 +95,7 @@ class NotificationsPreview extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(top: 4),
                           child: Text(
-                            (DateTime.now().minute - notification.createdAt.minute).toString() + "분 전",
+                            Jiffy(notification.createdAt).fromNow(),
                             style: TextStyle(
                               fontSize: 12,
                               height: 1.6,

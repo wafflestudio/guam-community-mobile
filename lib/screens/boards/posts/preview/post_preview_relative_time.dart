@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
+import 'package:jiffy/jiffy.dart';
 
 class PostPreviewRelativeTime extends StatelessWidget {
   final DateTime t;
@@ -9,12 +10,11 @@ class PostPreviewRelativeTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /**
-     * TODO: format relative using dayjs (or moment js)
-     * s / m / h / d / mth/ y
-     */
+    /// Render DateTime using 'Jiffy' library
+    Jiffy.locale('ko');
+
     return Text(
-      (DateTime.now().minute - t.minute).toString() + "분 전",
+      Jiffy(t).fromNow(),
       style: TextStyle(
       fontSize: 10,
       fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,

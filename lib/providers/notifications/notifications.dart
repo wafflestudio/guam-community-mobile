@@ -32,7 +32,7 @@ class Notifications with ChangeNotifier {
               'urlPath': "https://w.namu.la/s/40de86374ddd74756b31d4694a7434ee9398baa51fa5ae72d28f2eeeafdadf0c475c55c58e29a684920e0d6a42602b339f8aaf6d19764b04405a0f8bee7f598d2922db9475579419aac4635d0a71fdb8a4b2343cb550e6ed93e13c1a05cede75",
             },
           },
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 7)),
+          'createdAt': DateTime.now().subtract(const Duration(minutes: 0)),
         },
         {
           'id': 2,
@@ -66,7 +66,7 @@ class Notifications with ChangeNotifier {
               'urlPath': 'https://cdn.speconomy.com/news/photo/201705/20170514_1_bodyimg_82397.png',
             },
           },
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 2)),
+          'createdAt': DateTime.now().subtract(const Duration(days: 20)),
         },
         {
           'id': 4,
@@ -83,7 +83,7 @@ class Notifications with ChangeNotifier {
               'urlPath': 'https://t1.daumcdn.net/cfile/tistory/99A97E4C5D25E9C226',
             },
           },
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 2)),
+          'createdAt': DateTime.now().subtract(const Duration(days: 200)),
         },
       ];
 
