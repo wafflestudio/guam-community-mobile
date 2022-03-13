@@ -13,9 +13,6 @@ class NotificationsPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// Render DateTime using 'Jiffy' library
-    Jiffy.locale('ko');
-
     return Column(
       children: [
         Padding(

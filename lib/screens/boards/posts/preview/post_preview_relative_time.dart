@@ -10,9 +10,6 @@ class PostPreviewRelativeTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// Render DateTime using 'Jiffy' library
-    Jiffy.locale('ko');
-
     return Text(
       Jiffy(t).fromNow(),
       style: TextStyle(
