@@ -4,6 +4,7 @@ import 'package:guam_community_client/screens/app/tab_item.dart';
 import 'package:guam_community_client/screens/notifications/notifications_app.dart';
 import 'package:guam_community_client/screens/profiles/profiles_app.dart';
 import 'package:guam_community_client/screens/search/search_app.dart';
+import 'package:jiffy/jiffy.dart';
 
 class TabNavigatorRoutes {
   static const String root = '/';
@@ -26,6 +27,8 @@ class TabNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// The locale affects dateTime of every children to be translated into Korean.
+    Jiffy.locale('ko');
     final routeBuilders = _routeBuilders(context);
     return Navigator(
       key: navigatorKey,
