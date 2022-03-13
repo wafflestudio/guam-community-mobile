@@ -17,6 +17,9 @@ class MessagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Render DateTime using 'Jiffy' library
+    Jiffy.locale('ko');
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       child: Card(
