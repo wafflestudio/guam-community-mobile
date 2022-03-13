@@ -12,8 +12,6 @@ class CommentBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Jiffy.locale('ko');
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

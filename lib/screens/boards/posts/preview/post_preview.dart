@@ -6,6 +6,7 @@ import 'package:guam_community_client/screens/boards/posts/detail/post_detail.da
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview_home_tab.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview_search_tab.dart';
 import 'package:guam_community_client/styles/colors.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/home/home_provider.dart';
 import '../../../../providers/user_auth/authenticate.dart';
