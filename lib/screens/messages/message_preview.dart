@@ -4,6 +4,7 @@ import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/models/messages/message_box.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
+import 'package:jiffy/jiffy.dart';
 
 import 'message_detail.dart';
 
@@ -16,6 +17,9 @@ class MessagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Render DateTime using 'Jiffy' library
+    Jiffy.locale('ko');
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       child: Card(
@@ -123,7 +127,7 @@ class MessagePreview extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 10, top: 14, bottom: 15),
                   child: Text(
-                    (DateTime.now().minute - messageBox.createdAt.minute).toString() + "분 전",
+                    Jiffy(messageBox.createdAt).fromNow(),
                     style: TextStyle(
                       fontSize: 12,
                       height: 1.6,
