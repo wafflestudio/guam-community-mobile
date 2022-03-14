@@ -67,17 +67,15 @@ class _ProfilesEditState extends State<ProfilesEdit> {
 
   Future setProfile() async {
     toggleSending();
-
     try {
-      return await context.read<Authenticate>().setProfile(
+      await context.read<Authenticate>().setProfile(
         fields: input,
         files: profileImage.isNotEmpty ? [File(profileImage[0].path)] : <File>[],
       ).then((successful) {
+        toggleSending();
         if (successful) {
-          toggleSending();
           Navigator.maybePop(context);
         } else {
-          toggleSending();
           print("Error!");
         }
       });
@@ -117,6 +115,7 @@ class _ProfilesEditState extends State<ProfilesEdit> {
                           style: TextStyle(fontSize: 18, color: GuamColorFamily.grayscaleGray2),
                         ),
                         TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
                           child: Text(
                             '돌아가기',
                             style: TextStyle(fontSize: 16, color: GuamColorFamily.purpleCore,
@@ -127,7 +126,6 @@ class _ProfilesEditState extends State<ProfilesEdit> {
                             minimumSize: Size(30, 26),
                             alignment: Alignment.centerRight,
                           ),
-                          onPressed: () => Navigator.of(context).pop(),
                         ),
                       ],
                     ),

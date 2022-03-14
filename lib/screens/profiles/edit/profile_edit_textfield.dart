@@ -6,8 +6,8 @@ class ProfileEditTextField extends StatefulWidget {
   final String input;
   final int maxLength;
   final bool isBlogUrl;
-  final Function func;
-  final String funcKey;
+  final Function func; /// request body 에 쓰일 setInput 함수
+  final String funcKey; /// nickname, introduction, blogUrl 이 위 func 에 사용되는 argument
 
   ProfileEditTextField({this.input, this.maxLength, this.isBlogUrl=false, this.func, this.funcKey});
 

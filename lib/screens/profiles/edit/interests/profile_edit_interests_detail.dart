@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:guam_community_client/screens/profiles/buttons/profile_interest_button.dart';
 import './profile_edit_interests_label.dart';
 import './profile_edit_interests_textfield.dart';
@@ -29,9 +30,8 @@ class _ProfileEditInterestsDetailState extends State<ProfileEditInterestsDetail>
     setState(() => _interests.add(Interest(name: interest)));
   }
 
-  void removeInterest(String interest) {
-    setState(() => _interests.removeAt(
-      _interests.indexWhere((e) => e.name == interest))
+  removeInterest(int idx) {
+    setState(() => _interests.removeAt(idx)
     );
   }
 
@@ -55,8 +55,9 @@ class _ProfileEditInterestsDetailState extends State<ProfileEditInterestsDetail>
               Wrap(
                 spacing: 8,
                 runSpacing: 5,
-                children: [..._interests.map((i) => ProfileInterestButton(
+                children: [..._interests.mapIndexed((idx, i) => ProfileInterestButton(
                   i,
+                  index: idx,
                   deletable: true,
                   removeInterest: removeInterest,
                 ))],

@@ -117,10 +117,6 @@ class Authenticate with ChangeNotifier {
           .then((response) async {
             if (response.statusCode == 200) {
               await getMyProfile();
-              final jsonUtf8 = decodeKo(response);
-              final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
-              jsonData["profileSet"] = true;
-              me = Profile.fromJson(jsonData);
               // // showToast(success: true, msg: "프로필을 생성하였습니다.");
               successful = true;
           } else {

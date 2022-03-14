@@ -24,16 +24,14 @@ class ProfileEditInterestsTextFieldState extends State<ProfileEditInterestsTextF
 
   Future createInterest() async {
     toggleSending();
-
     try {
-      return await context.read<Authenticate>().setInterest(
+      await context.read<Authenticate>().setInterest(
         body: {"name": _interestFieldController.text},
       ).then((successful) {
+        toggleSending();
         if (successful) {
-          toggleSending();
           widget.addInterest(_interestFieldController.text);
         } else {
-          toggleSending();
           print("Error!");
         }
       });
@@ -73,7 +71,7 @@ class ProfileEditInterestsTextFieldState extends State<ProfileEditInterestsTextF
             ),
           ),
           !sending ? TextButton(
-            onPressed: () async => await createInterest(),
+            onPressed: () => createInterest(),
             style: TextButton.styleFrom(
               padding: EdgeInsets.only(right: 6),
               minimumSize: Size(30, 26),
@@ -89,14 +87,11 @@ class ProfileEditInterestsTextFieldState extends State<ProfileEditInterestsTextF
           ) : ButtonSizeCircularProgressIndicator()
         ],
       ),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: GuamColorFamily.grayscaleGray6,
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(5)
-      ),
       margin: EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: GuamColorFamily.grayscaleGray6, width: 1),
+      ),
     );
   }
 }

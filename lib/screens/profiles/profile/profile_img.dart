@@ -66,7 +66,6 @@ class _ProfileImgState extends State<ProfileImg> {
                       fit: BoxFit.cover,
                     ),
                     onTap: () {
-                      setState(() {});
                       Navigator.of(context, rootNavigator: true).push(
                         MaterialPageRoute(builder: (_) => ClosableImageExpanded(
                           imagePath: widget.profileImg,
