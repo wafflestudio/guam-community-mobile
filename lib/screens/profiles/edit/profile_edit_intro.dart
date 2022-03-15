@@ -3,6 +3,11 @@ import 'profile_edit_label.dart';
 import 'profile_edit_textfield.dart';
 
 class ProfileEditIntro extends StatelessWidget {
+  final String intro;
+  final Function setInput;
+
+  ProfileEditIntro(this.intro, this.setInput);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,7 +20,7 @@ class ProfileEditIntro extends StatelessWidget {
           Padding(padding: EdgeInsets.only(bottom: 16)),
           Row(  // Essential to fit in the whole space
             children: [
-              ProfileEditTextField(maxLength: 150)
+              ProfileEditTextField(input: intro, maxLength: 150, func: setInput, funcKey: 'introduction')
             ],
           )
         ],

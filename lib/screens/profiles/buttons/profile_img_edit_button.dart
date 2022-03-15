@@ -7,6 +7,11 @@ import 'dart:io' show Platform;
 import '../edit/profile_edit_img_modal.dart';
 
 class ProfileImgEditButton extends StatelessWidget {
+  final Function setImageFile;
+  final Function resetImageFile;
+
+  ProfileImgEditButton(this.setImageFile, this.resetImageFile);
+
   @override
   Widget build(BuildContext context) {
     return CommonTextButton(
@@ -24,12 +29,14 @@ class ProfileImgEditButton extends StatelessWidget {
               )
             ),
             context: context,
-            builder: (_) => ProfileEditImgModal()
+            useRootNavigator: true,
+            builder: (_) => ProfileEditImgModal(setImageFile, resetImageFile)
           );
         } else {
         showCupertinoModalBottomSheet(
             context: context,
-            builder: (_) => ProfileEditImgModal()
+            useRootNavigator: true,
+            builder: (_) => ProfileEditImgModal(setImageFile, resetImageFile)
           );
         }
       },

@@ -1,19 +1,44 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../../commons/button_size_circular_progress_indicator.dart';
+import '../../../../providers/user_auth/authenticate.dart';
 
 class ProfileEditInterestsTextField extends StatefulWidget {
+  final void Function(String interest) addInterest;
+
+  ProfileEditInterestsTextField(this.addInterest);
+
   @override
   State<StatefulWidget> createState() => ProfileEditInterestsTextFieldState();
 }
 
 class ProfileEditInterestsTextFieldState extends State<ProfileEditInterestsTextField> {
   bool sending = false;
+  final _interestFieldController = TextEditingController();
 
   void toggleSending() {
     setState(() => sending = !sending);
+  }
+
+  Future createInterest() async {
+    toggleSending();
+    try {
+      await context.read<Authenticate>().setInterest(
+        body: {"name": _interestFieldController.text},
+      ).then((successful) {
+        toggleSending();
+        if (successful) {
+          widget.addInterest(_interestFieldController.text);
+          _interestFieldController.clear();
+        } else {
+          print("Error!");
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -24,29 +49,30 @@ class ProfileEditInterestsTextFieldState extends State<ProfileEditInterestsTextF
         children: [
           Expanded(
             child: TextField(
-            keyboardType: TextInputType.multiline,
-            maxLines: 1,
-            style: TextStyle(
-              fontSize: 14,
-              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-              color: GuamColorFamily.grayscaleGray1,
-              height: 22.4/14
-            ),
-            cursorColor: GuamColorFamily.purpleCore,
-            decoration: InputDecoration(
-              hintText: "관심사를 입력해주세요",
-              hintStyle: TextStyle(fontSize: 14, color: GuamColorFamily.grayscaleGray5),
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-            ),
+              maxLines: 1,
+              keyboardType: TextInputType.text,
+              controller: _interestFieldController,
+              cursorColor: GuamColorFamily.purpleCore,
+              style: TextStyle(
+                fontSize: 14,
+                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                color: GuamColorFamily.grayscaleGray1,
+                height: 22.4/14
+              ),
+              decoration: InputDecoration(
+                hintText: "관심사를 입력해주세요",
+                hintStyle: TextStyle(fontSize: 14, color: GuamColorFamily.grayscaleGray5),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+              ),
             ),
           ),
           !sending ? TextButton(
-            onPressed: () {},
+            onPressed: () => createInterest(),
             style: TextButton.styleFrom(
               padding: EdgeInsets.only(right: 6),
               minimumSize: Size(30, 26),
@@ -62,14 +88,11 @@ class ProfileEditInterestsTextFieldState extends State<ProfileEditInterestsTextF
           ) : ButtonSizeCircularProgressIndicator()
         ],
       ),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: GuamColorFamily.grayscaleGray6,
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(5)
-      ),
       margin: EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: GuamColorFamily.grayscaleGray6, width: 1),
+      ),
     );
   }
 }

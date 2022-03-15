@@ -5,9 +5,9 @@ import 'package:guam_community_client/styles/fonts.dart';
 
 class ProfileNickname extends StatelessWidget {
   final String nickname;
-  final bool isMe;
+  final bool editable;
 
-  ProfileNickname({this.nickname, this.isMe = true});
+  ProfileNickname({this.nickname, this.editable = true});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,8 @@ class ProfileNickname extends StatelessWidget {
         ),
       ),
       // left 26 of icon text width to align nickname at center
-      padding: EdgeInsets.fromLTRB((isMe ? 26+8 : 8).toDouble(), 16, 8, 16),
+      // 수정 가능한 경우는 edit icon 때문에 padding 조절함.
+      padding: EdgeInsets.fromLTRB((editable ? 26+8 : 8).toDouble(), 16, 8, 16),
     );
   }
 }

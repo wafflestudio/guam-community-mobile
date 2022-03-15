@@ -14,6 +14,7 @@ class Authenticate with ChangeNotifier {
   get kakaoJavascriptClientId => _kakaoJavascriptClientId;
 
   Profile me;
+  Profile user;
   bool loading = false;
 
   Authenticate() {
@@ -99,8 +100,8 @@ class Authenticate with ChangeNotifier {
     }
   }
 
-  Future setProfile({Map<String, dynamic> body, dynamic files}) async {
-    bool res = false;
+  Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
+    bool successful = false;
 
     try {
       toggleLoading();
@@ -108,21 +109,16 @@ class Authenticate with ChangeNotifier {
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
-          .patch(
+          .patchMultipart(
             path: "community/api/v1/users/${me.id}",
-            body: body,
+            fields: fields,
+            files: files,
             authToken: authToken)
           .then((response) async {
             if (response.statusCode == 200) {
-              // TODO: delete this line after server response add profileSet property
               await getMyProfile();
-              // TODO: uncomment below lines
-              final jsonUtf8 = decodeKo(response);
-              final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
-              me = Profile.fromJson(jsonData);
-              print("${me.profileSet}, ${me.nickname}");
               // // showToast(success: true, msg: "프로필을 생성하였습니다.");
-              // res = true;
+              successful = true;
           } else {
               final jsonUtf8 = decodeKo(response);
               final String err = json.decode(jsonUtf8)["message"];
@@ -136,13 +132,106 @@ class Authenticate with ChangeNotifier {
     } finally {
       toggleLoading();
     }
-
-    return res;
+    return successful;
   }
 
   Future<Profile> getUserProfile(int userId) async {
-    // TODO: impl
-    return me;
+    try {
+      String authToken = await getFirebaseIdToken();
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .get(
+          path: "community/api/v1/users/$userId",
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            user = Profile.fromJson(jsonData);
+            // TODO: set fcm token when impl. push notification
+            // setMyFcmToken();
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            // TODO: show toast after impl. toast
+            // showToast(success: false, msg: err);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return user;
+  }
+
+  Future<bool> setInterest({Map<String, dynamic> body}) async {
+    bool successful = false;
+
+    try {
+      toggleLoading();
+      String authToken = await getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .post(
+            path: "community/api/v1/users/${me.id}/interest",
+            body: body,
+            authToken: authToken)
+            .then((response) async {
+          if (response.statusCode == 200) {
+            await getMyProfile();
+            successful = true;
+            // showToast(success: true, msg: "관심사를 등록했습니다.");
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            // TODO: show toast after impl. toast
+            // showToast(success: false, msg: err);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      toggleLoading();
+    }
+    return successful;
+  }
+
+  Future<bool> deleteInterest({dynamic queryParams}) async {
+    bool successful = false;
+
+    try {
+      toggleLoading();
+      String authToken = await getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .delete(
+            path: "community/api/v1/users/${me.id}/interest",
+            queryParams: queryParams,
+            authToken: authToken)
+            .then((response) async {
+          if (response.statusCode == 200) {
+            await getMyProfile();
+            successful = true;
+            // showToast(success: true, msg: "해당 관심사를 삭제했습니다.");
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            // TODO: show toast after impl. toast
+            // showToast(success: false, msg: err);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      toggleLoading();
+    }
+    return successful;
   }
 
   void toggleLoading() {

@@ -7,6 +7,11 @@ import 'profile_edit_blog.dart';
 import 'interests/profile_edit_interests.dart';
 
 class ProfileEditOptional extends StatelessWidget {
+  final Map<String, dynamic> input;
+  final Function setInput;
+
+  ProfileEditOptional(this.input, this.setInput);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,9 +22,9 @@ class ProfileEditOptional extends StatelessWidget {
           textColor: GuamColorFamily.purpleCore,
         ),
         Padding(padding: EdgeInsets.only(bottom: 8)),
-        ProfileEditGithub(),
-        ProfileEditBlog(),
-        ProfileEditInterests()
+        ProfileEditGithub(input['githubId'], setInput),
+        ProfileEditBlog(input['blogUrl'], setInput),
+        ProfileEditInterests(),
       ],
     );
   }

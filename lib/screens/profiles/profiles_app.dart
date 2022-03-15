@@ -37,13 +37,11 @@ class ProfilesAppScaffold extends StatefulWidget {
 }
 
 class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
-  Profile myProfile;
   Future<Profile> otherProfile;
 
   @override
   void initState() {
     super.initState();
-    myProfile = context.read<Authenticate>().me;
     otherProfile = Future.delayed(
       Duration.zero,
       () async => context.read<Authenticate>().getUserProfile(widget.userId),
@@ -73,7 +71,14 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
             // 에러 메시지 띄워주기
             return CircularProgressIndicator();
           } else {
-            return CircularProgressIndicator();
+            return Container(
+              color: GuamColorFamily.grayscaleWhite,
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: GuamColorFamily.purpleCore,
+                ),
+              ),
+            );
           }
         }
       );
