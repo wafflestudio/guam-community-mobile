@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/common_text_button.dart';
-import 'package:guam_community_client/commons/sub_headings.dart';
-import 'package:guam_community_client/screens/boards/posts/preview/post_preview.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';

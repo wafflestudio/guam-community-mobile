@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
 import '../../commons/common_text_button.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import '../../providers/search/search.dart';
-import '../../providers/user_auth/authenticate.dart';
 
 class SearchAppTextField extends StatefulWidget {
+  final bool showHistory;
+  final Function showSearchHistory;
+
+  SearchAppTextField(this.showHistory, this.showSearchHistory);
+
   @override
   State<StatefulWidget> createState() => SearchAppTextFieldState();
 }
 
 class SearchAppTextFieldState extends State<SearchAppTextField> {
   static final controller = TextEditingController();
+  bool isTextEmpty = true;
+
+  @override
+  void initState() {
+    controller.text = '';
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -20,65 +32,97 @@ class SearchAppTextFieldState extends State<SearchAppTextField> {
     super.dispose();
   }
 
+  void checkTextEmpty(e) {
+    setState(() => e == ''
+        ? isTextEmpty = true
+        : isTextEmpty = false || widget.showHistory
+      // 키워드가 있는데 히스토리 창에서는 x키 및 취소키 보여줌.
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final searchProvider = context.read<Search>();
+
     return Container(
       height: 40,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-              child: TextField(
-                controller: controller,
-                autofocus: false,
-                keyboardType: TextInputType.multiline,
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                  color: GuamColorFamily.grayscaleGray1,
-                  height: 22/14,
+            child: TextField(
+              maxLines: 1,
+              autofocus: false,
+              controller: controller,
+              keyboardType: TextInputType.multiline,
+              textInputAction: TextInputAction.search,
+              cursorColor: GuamColorFamily.purpleCore,
+              style: TextStyle(
+                fontSize: 14,
+                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                color: GuamColorFamily.grayscaleGray1,
+                height: 22/14,
+              ),
+              decoration: InputDecoration(
+                hintText: "검색어를 입력해주세요.",
+                prefixIcon: Icon(
+                  Icons.search_outlined,
+                  color: GuamColorFamily.purpleCore,
+                  size: 20,
                 ),
-                cursorColor: GuamColorFamily.purpleCore,
-                decoration: InputDecoration(
-                  hintText: "검색어를 입력해주세요.",
-                  prefixIcon: Icon(
-                    Icons.search_outlined,
-                    color: GuamColorFamily.purpleCore,
-                    size: 20,
-                  ),
-                  contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: GuamColorFamily.purpleLight2),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: GuamColorFamily.purpleLight2),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: GuamColorFamily.purpleCore),
-                  ),
+                suffixIcon: !isTextEmpty && controller.text != ''
+                    ? IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
+                        onPressed: () => controller.clear(),
+                        icon: SvgPicture.asset(
+                          'assets/icons/cancel_filled_x_transparent.svg',
+                          color: GuamColorFamily.grayscaleGray6,
+                          width: 18,
+                          height: 18,
+                        ),
+                      )
+                    : null,
+                contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: GuamColorFamily.purpleLight2),
                 ),
-                onSubmitted: (word) {
-                  searchProvider.searchPosts(
-                    query: word
-                  );
-                  searchProvider.saveHistory(word);
-                  FocusScope.of(context).unfocus();
-                },
-              )
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: GuamColorFamily.purpleLight2),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: GuamColorFamily.purpleCore),
+                ),
+              ),
+              onChanged: (e) => checkTextEmpty(e),
+              onSubmitted: (word) {
+                searchProvider.searchPosts(
+                  query: word,
+                  context: context,
+                );
+                widget.showSearchHistory(false); // 검색 시 히스토리 안보여줌.
+                setState(() => isTextEmpty = false); // 검색 시 x키 및 취소키 보여줌.
+                searchProvider.saveHistory(word);
+                FocusScope.of(context).unfocus();
+              },
+            ),
           ),
           Padding(padding: EdgeInsets.only(right: 4)),
-          CommonTextButton(
-            text: '취소',
-            fontSize: 14,
-            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-            textColor: GuamColorFamily.purpleCore,
-            onPressed: () => controller.clear()
-          )
+          if (!isTextEmpty || searchProvider.searchedPosts.isNotEmpty)
+            CommonTextButton(
+                text: '취소',
+                fontSize: 14,
+                textColor: GuamColorFamily.purpleCore,
+                onPressed: () {
+                  widget.showSearchHistory(true); // 취소하면 history 보여줌.
+                  setState(() => isTextEmpty = true); // 취소하면 x키 및 취소키 사라짐.
+                  FocusScope.of(context).unfocus();
+                  controller.clear();
+                }
+            ),
         ],
       ),
     );

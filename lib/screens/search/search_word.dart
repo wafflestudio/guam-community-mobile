@@ -9,8 +9,9 @@ import '../../providers/user_auth/authenticate.dart';
 
 class SearchWord extends StatelessWidget {
   final String word;
+  final Function(dynamic bool) showSearchHistory;
 
-  SearchWord(this.word);
+  SearchWord(this.word, this.showSearchHistory);
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,7 @@ class SearchWord extends StatelessWidget {
               searchProvider.searchPosts(
                 query: word,
               );
+              showSearchHistory(false);
               SearchAppTextFieldState.controller.text = word;
               searchProvider.saveHistory(word);
             },
