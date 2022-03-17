@@ -17,6 +17,7 @@ class GuamColorFamily {
   static HexColor grayscaleGray5 = HexColor('#C5C5C5');
   static HexColor grayscaleGray6 = HexColor('#E1E1E1');
   static HexColor grayscaleGray7 = HexColor('#F2F2F2');
+  static HexColor grayscaleGray8 = HexColor('#FDFDFD');
   static HexColor grayscaleWhite = HexColor('#FFFFFF');
 
   static HexColor purpleCore = HexColor('#6951FF');
