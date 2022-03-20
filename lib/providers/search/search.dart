@@ -82,6 +82,7 @@ class Search with ChangeNotifier {
       await HttpRequest()
           .get(
         path: "community/api/v1/posts",
+        queryParams: {"keyword": query},
         authToken: await _authProvider.getFirebaseIdToken(),
       ).then((response) async {
         if (response.statusCode == 200) {
