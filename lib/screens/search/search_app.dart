@@ -28,7 +28,7 @@ class SearchAppScaffold extends StatefulWidget {
 }
 
 class _SearchAppScaffoldState extends State<SearchAppScaffold> {
-  bool showHistory = false;
+  bool showHistory = true;
 
   void showSearchHistory(bool) {
     setState(() => showHistory = bool);
@@ -39,18 +39,25 @@ class _SearchAppScaffoldState extends State<SearchAppScaffold> {
     final searchProvider = context.watch<Search>();
 
     return Scaffold(
-      backgroundColor: GuamColorFamily.grayscaleWhite,
+      backgroundColor: GuamColorFamily.purpleLight3,
       appBar: SearchAppBar(
         title: SearchAppTextField(showHistory, showSearchHistory),
       ),
       body: Container(
           width: double.infinity,
-          child: searchProvider.searchedPosts.isEmpty || showHistory
-              ? SearchHistory(
-                  searchList: [...searchProvider.history.reversed],
-                  showSearchHistory: showSearchHistory,
-                )
-              : SearchFeed()
+          child: searchProvider.searchedPosts.isEmpty
+              ? showHistory
+                ? SearchHistory(
+                    searchList: [...searchProvider.history.reversed],
+                      showSearchHistory: showSearchHistory,
+                    )
+                : Center(child: Text('검색 결과가 없습니다.', style: TextStyle(fontSize: 16)))
+              : showHistory
+                ? SearchHistory(
+                    searchList: [...searchProvider.history.reversed],
+                    showSearchHistory: showSearchHistory,
+                  )
+                : SearchFeed()
       ),
     );
   }
