@@ -25,7 +25,8 @@ class CommentBanner extends StatelessWidget {
             nickname: comment.profile.nickname,
             nicknameColor: GuamColorFamily.grayscaleGray3,
           ),
-          if (isAuthor)
+          if (isAuthor && comment.profile.id != 0) 
+            /// 익명게시판의 경우 id가 모두 0인 것을 이용해 익명게시글 내 댓글에서 '작성자' 표시는 항상 안보이게 만듦.
             Container(
               margin: EdgeInsets.only(left: 4),
               padding: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
