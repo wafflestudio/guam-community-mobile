@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:provider/provider.dart';
 
 import '../../../commons/bottom_modal/bottom_modal_default.dart';
 import '../../../commons/bottom_modal/bottom_modal_with_alert.dart';
 import '../../../commons/bottom_modal/bottom_modal_with_message.dart';
-import '../../../models/profiles/profile.dart';
-import '../../../providers/user_auth/authenticate.dart';
 import '../posts/post_comment_report.dart';
 
 class CommentMore extends StatelessWidget {
@@ -17,14 +14,12 @@ class CommentMore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Profile myProfile = context.read<Authenticate>().me;
-
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(left: 24, top: 24, bottom: 21),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: comment.profile.id == myProfile.id ? [
+          children: comment.isMine ? [
             BottomModalDefault(
               text: '수정하기',
               onPressed: () {

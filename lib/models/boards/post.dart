@@ -17,6 +17,7 @@ class Post extends ChangeNotifier {
   final int likeCount;
   final int commentCount;
   final int scrapCount;
+  final bool isMine;
   final bool isLiked;
   final bool isScrapped;
   final String createdAt;
@@ -33,6 +34,7 @@ class Post extends ChangeNotifier {
     this.likeCount,
     this.commentCount,
     this.scrapCount,
+    this.isMine,
     this.isLiked,
     this.isScrapped,
     this.createdAt,
@@ -96,6 +98,7 @@ class Post extends ChangeNotifier {
       likeCount: json['likeCount'],
       commentCount: json['commentCount'],
       scrapCount: json['scrapCount'],
+      isMine: json['isMine'],
       isLiked: json['isLiked'],
       isScrapped: json['isScrapped'],
       createdAt: json['createdAt'],
