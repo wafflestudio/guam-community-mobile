@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/screens/boards/posts/preview/post_preview.dart';
 import 'package:guam_community_client/screens/search/search_feed.dart';
 import 'package:guam_community_client/screens/search/search_history.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
+import '../../providers/user_auth/authenticate.dart';
 import 'search_app_bar.dart';
 import 'search_app_textfield.dart';
 import '../../providers/search/search.dart';
@@ -11,31 +11,53 @@ import '../../providers/search/search.dart';
 class SearchApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.read<Authenticate>();
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Search()),
+        ChangeNotifierProvider(create: (_) => Search(authProvider)),
       ],
       child: SearchAppScaffold(),
     );
   }
 }
 
-class SearchAppScaffold extends StatelessWidget {
+class SearchAppScaffold extends StatefulWidget {
+  @override
+  State<SearchAppScaffold> createState() => _SearchAppScaffoldState();
+}
+
+class _SearchAppScaffoldState extends State<SearchAppScaffold> {
+  bool showHistory = true;
+
+  void showSearchHistory(bool) {
+    setState(() => showHistory = bool);
+  }
+
   @override
   Widget build(BuildContext context) {
     final searchProvider = context.watch<Search>();
 
     return Scaffold(
-      backgroundColor: GuamColorFamily.grayscaleWhite,
+      backgroundColor: GuamColorFamily.purpleLight3,
       appBar: SearchAppBar(
-        title: SearchAppTextField(),
+        title: SearchAppTextField(showHistory, showSearchHistory),
       ),
       body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(color: GuamColorFamily.purpleLight3),
-        child: searchProvider.searchedPosts.isEmpty
-            ? SearchHistory([...searchProvider.history.reversed])
-            : SearchFeed(),
+          width: double.infinity,
+          child: searchProvider.searchedPosts.isEmpty
+              ? showHistory
+                ? SearchHistory(
+                    searchList: [...searchProvider.history.reversed],
+                      showSearchHistory: showSearchHistory,
+                    )
+                : Center(child: Text('검색 결과가 없습니다.', style: TextStyle(fontSize: 16)))
+              : showHistory
+                ? SearchHistory(
+                    searchList: [...searchProvider.history.reversed],
+                    showSearchHistory: showSearchHistory,
+                  )
+                : SearchFeed()
       ),
     );
   }

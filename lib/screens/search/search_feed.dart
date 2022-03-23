@@ -13,27 +13,30 @@ class SearchFeed extends StatelessWidget {
     final searchProvider = context.watch<Search>();
 
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SubHeadings(
-                  '검색결과 ${searchProvider.searchedPosts.length}건',
-                  fontColor: GuamColorFamily.grayscaleGray1,
-                  fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                  fontSize: 14,
-                ),
-                SearchFilter(),
-              ],
+      child: Container(
+        color: GuamColorFamily.purpleLight3,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SubHeadings(
+                    '검색결과 ${searchProvider.searchedPosts.length}건',
+                    fontColor: GuamColorFamily.grayscaleGray1,
+                    fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                    fontSize: 14,
+                  ),
+                  SearchFilter(),
+                ],
+              ),
             ),
-          ),
-          Column(
-            children: [...searchProvider.searchedPosts.map((p) => PostPreview(p))],
-          )
-        ]
+            Column(
+              children: [...searchProvider.searchedPosts.map((p) => PostPreview(p))],
+            )
+          ],
+        ),
       ),
     );
   }
