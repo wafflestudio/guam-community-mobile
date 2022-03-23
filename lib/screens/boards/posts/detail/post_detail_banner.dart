@@ -67,8 +67,9 @@ class PostDetailBanner extends StatelessWidget {
             children: [
               CommonImgNickname(
                 userId: post.profile.id,
-                imgUrl: post.profile.profileImg ?? null,
                 nickname: post.profile.nickname,
+                profileClickable: post.profile.id != 0, // 익명 프로필은 프로필 열람 불가
+                imgUrl: post.profile.profileImg ?? null,
                 nicknameColor: GuamColorFamily.grayscaleGray3,
               ),
               Spacer(),
