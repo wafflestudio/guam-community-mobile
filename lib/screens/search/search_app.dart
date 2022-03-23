@@ -11,7 +11,7 @@ import '../../providers/search/search.dart';
 class SearchApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Authenticate authProvider = context.watch<Authenticate>();
+    Authenticate authProvider = context.read<Authenticate>();
 
     return MultiProvider(
       providers: [
