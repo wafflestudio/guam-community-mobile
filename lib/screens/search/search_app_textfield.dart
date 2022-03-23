@@ -18,31 +18,11 @@ class SearchAppTextField extends StatefulWidget {
 
 class SearchAppTextFieldState extends State<SearchAppTextField> {
   static final controller = TextEditingController();
-  bool isTextEmpty = true;
-
-  @override
-  void initState() {
-    controller.text = '';
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  void checkTextEmpty(e) {
-    setState(() => e == ''
-        ? isTextEmpty = true
-        : isTextEmpty = false || widget.showHistory
-      // 키워드가 있는데 히스토리 창에서는 x키 및 취소키 보여줌.
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     final searchProvider = context.read<Search>();
+    bool isTextEmpty = controller.text == '';
 
     return Container(
       height: 40,
@@ -70,7 +50,7 @@ class SearchAppTextFieldState extends State<SearchAppTextField> {
                   color: GuamColorFamily.purpleCore,
                   size: 20,
                 ),
-                suffixIcon: !isTextEmpty && controller.text != ''
+                suffixIcon: !isTextEmpty
                     ? IconButton(
                         padding: EdgeInsets.zero,
                         constraints: BoxConstraints(),
@@ -97,31 +77,26 @@ class SearchAppTextFieldState extends State<SearchAppTextField> {
                   borderSide: BorderSide(color: GuamColorFamily.purpleCore),
                 ),
               ),
-              onChanged: (e) => checkTextEmpty(e),
               onSubmitted: (word) {
-                searchProvider.searchPosts(
-                  query: word,
-                  context: context,
-                );
+                searchProvider.searchPosts(query: word, context: context);
                 widget.showSearchHistory(false); // 검색 시 히스토리 안보여줌.
-                setState(() => isTextEmpty = false); // 검색 시 x키 및 취소키 보여줌.
                 searchProvider.saveHistory(word);
                 FocusScope.of(context).unfocus();
               },
             ),
           ),
           Padding(padding: EdgeInsets.only(right: 4)),
+          // '취소' 키 누르면 'x'키 및 '취소' 키 사라짐.
           if (!isTextEmpty || searchProvider.searchedPosts.isNotEmpty)
             CommonTextButton(
-                text: '취소',
-                fontSize: 14,
-                textColor: GuamColorFamily.purpleCore,
-                onPressed: () {
-                  widget.showSearchHistory(true); // 취소하면 history 보여줌.
-                  setState(() => isTextEmpty = true); // 취소하면 x키 및 취소키 사라짐.
-                  FocusScope.of(context).unfocus();
-                  controller.clear();
-                }
+              text: '취소',
+              fontSize: 14,
+              textColor: GuamColorFamily.purpleCore,
+              onPressed: () {
+                widget.showSearchHistory(true); // 취소하면 history 보여줌.
+                FocusScope.of(context).unfocus();
+                controller.clear();
+              }
             ),
         ],
       ),

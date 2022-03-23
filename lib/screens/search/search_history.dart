@@ -7,7 +7,7 @@ import 'package:guam_community_client/styles/fonts.dart';
 
 class SearchHistory extends StatelessWidget {
   final List<String> searchList;
-  final Function(dynamic bool) showSearchHistory;
+  final Function showSearchHistory;
 
   SearchHistory({this.searchList, this.showSearchHistory});
 
@@ -27,16 +27,17 @@ class SearchHistory extends StatelessWidget {
           ),
         ),
         CustomDivider(color: GuamColorFamily.grayscaleGray7),
-        Container(
-          color: GuamColorFamily.grayscaleWhite,
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-          child: Column(
-            children: [...searchList.map((w) => Padding(
-              child: SearchWord(w, showSearchHistory),
-              padding: EdgeInsets.only(bottom: 16),
-            ))],
+        if (searchList.isNotEmpty)
+          Container(
+            color: GuamColorFamily.grayscaleWhite,
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+            child: Column(
+              children: [...searchList.map((w) => Padding(
+                child: SearchWord(w, showSearchHistory),
+                padding: EdgeInsets.only(bottom: 16),
+              ))],
+            ),
           ),
-        ),
       ],
     );
   }

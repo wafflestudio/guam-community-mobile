@@ -3,13 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/filter.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../helpers/decode_ko.dart';
 import '../../helpers/http_request.dart';
-import '../posts/posts.dart';
 import '../user_auth/authenticate.dart';
-import '../user_auth/profile_data.dart';
 import '../../models/boards/post.dart';
 
 class Search with ChangeNotifier {
@@ -49,8 +46,7 @@ class Search with ChangeNotifier {
     try {
       if (word.trim() == '') return;
       if (historyFull()) history.removeAt(0);
-
-      history.add(word);
+      if (!history.contains(word)) history.add(word);
       await SharedPreferences.getInstance()
           .then((storage) => storage.setStringList(searchHistoryKey, history));
     } catch(e) {
@@ -72,7 +68,7 @@ class Search with ChangeNotifier {
     }
   }
 
-  Future searchPosts({@required String authToken, @required String query, BuildContext context}) async {
+  Future searchPosts({@required String query, BuildContext context}) async {
     loading = true;
     try {
       if (query == null || query.trim() == '') {
@@ -90,8 +86,6 @@ class Search with ChangeNotifier {
           final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
           searchedPosts = jsonList.map((e) => Post.fromJson(e)).toList();
           loading = false;
-          // TODO: set fcm token when impl. push notification
-          // setMyFcmToken();
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
