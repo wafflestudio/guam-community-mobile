@@ -36,14 +36,15 @@ class ProfileEditImgModal extends StatelessWidget {
                   setImageFile(img);
                 }),
               ),
-              Padding(padding: EdgeInsets.only(bottom: 20)),
-              CommonTextButton(
-                text: '기본 사진으로 설정',
-                fontSize: 16,
-                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                textColor: GuamColorFamily.grayscaleGray1,
-                onPressed: () => resetImageFile(),
-              ),
+              // TODO : Server와의 alignment 끝나면 기능 다시 원복할 예정.
+              // Padding(padding: EdgeInsets.only(bottom: 20)),
+              // CommonTextButton(
+              //   text: '기본 사진으로 설정',
+              //   fontSize: 16,
+              //   fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+              //   textColor: GuamColorFamily.grayscaleGray1,
+              //   onPressed: () => resetImageFile(),
+              // ),
             ],
           ),
         )

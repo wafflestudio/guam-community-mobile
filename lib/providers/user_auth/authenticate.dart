@@ -83,8 +83,6 @@ class Authenticate with ChangeNotifier {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
             me = Profile.fromJson(jsonData);
-            // TODO: set fcm token when impl. push notification
-            // setMyFcmToken();
           } else {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];
@@ -106,7 +104,6 @@ class Authenticate with ChangeNotifier {
     try {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
-
       if (authToken.isNotEmpty) {
         await HttpRequest()
           .patchMultipart(
