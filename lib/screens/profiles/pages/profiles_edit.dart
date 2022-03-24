@@ -70,7 +70,10 @@ class _ProfilesEditState extends State<ProfilesEdit> {
     try {
       await context.read<Authenticate>().setProfile(
         fields: input,
-        files: profileImage.isNotEmpty ? [File(profileImage[0].path)] : <File>[],
+        files: profileImage.isNotEmpty
+            ? [File(profileImage[0].path)] /// 프사 새롭게 추가
+            : profileImg != null
+                ? null : <File>[], /// 프사 유지하거나 기본 프사로 바꾸거나
       ).then((successful) {
         toggleSending();
         if (successful) {

@@ -60,7 +60,7 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
             return Scaffold(
               backgroundColor: GuamColorFamily.grayscaleWhite,
               appBar: CustomAppBar(
-                title: snapshot.data.nickname,
+                title: '프로필',
                 leading: Back(),
               ),
               body: SingleChildScrollView(
