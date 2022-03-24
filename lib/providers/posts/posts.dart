@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/providers/search/search.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import '../../helpers/decode_ko.dart';
 import '../../helpers/http_request.dart';
 import '../../models/boards/post.dart';
+import '../../models/filter.dart';
 import '../user_auth/authenticate.dart';
 
 class Posts with ChangeNotifier {
@@ -37,9 +39,10 @@ class Posts with ChangeNotifier {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
           _posts = jsonList.map((e) => Post.fromJson(e)).toList();
+
+          // Default search with first filter
+          sortSearchedPosts(Search.filters.first);
           loading = false;
-          // TODO: set fcm token when impl. push notification
-          // setMyFcmToken();
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
@@ -53,6 +56,11 @@ class Posts with ChangeNotifier {
     } finally {
       notifyListeners();
     }
+  }
+
+  void sortSearchedPosts(Filter f) {
+    _posts.sort((a, b) => b.toJson()[f.key].compareTo(a.toJson()[f.key]));
+    notifyListeners();
   }
 
   Future<bool> createPost({Map<String, dynamic> fields, dynamic files}) async {

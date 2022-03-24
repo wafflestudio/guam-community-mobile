@@ -19,8 +19,8 @@ class Search with ChangeNotifier {
 
   static List<Filter> filters = [
     Filter(
-        key: 'createdAt',
-        label: '최근순'
+      key: 'createdAt',
+      label: '최근순',
     ),
     Filter(
       key: 'like',

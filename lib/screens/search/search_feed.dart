@@ -28,7 +28,7 @@ class SearchFeed extends StatelessWidget {
                     fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
                     fontSize: 14,
                   ),
-                  SearchFilter(),
+                  SearchFilter(provider: context.read<Search>()),
                 ],
               ),
             ),

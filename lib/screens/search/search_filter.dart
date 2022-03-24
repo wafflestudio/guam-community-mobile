@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/common_text_button.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
-import 'package:provider/provider.dart';
 import '../../providers/search/search.dart';
 
 class SearchFilter extends StatefulWidget {
+  final provider;
+
+  SearchFilter({this.provider});
+
   @override
   State<StatefulWidget> createState() => SearchFilterState();
 }
 
-class SearchFilterState extends State {
+class SearchFilterState extends State<SearchFilter> {
   var filter;
 
   @override
@@ -21,8 +24,6 @@ class SearchFilterState extends State {
 
   @override
   Widget build(BuildContext context) {
-    final searchProvider = context.read<Search>();
-
     return Row(
       children: [...Search.filters.map((f) => CommonTextButton(
         text: f.label,
@@ -31,7 +32,7 @@ class SearchFilterState extends State {
         textColor: filter == f ? GuamColorFamily.purpleDark1 : GuamColorFamily.grayscaleGray4,
         onPressed: () {
           setState(() => filter = f);
-          searchProvider.sortSearchedPosts(f);
+          widget.provider.sortSearchedPosts(f);
         },
       ))],
     );

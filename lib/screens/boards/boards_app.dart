@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/providers/messages/messages.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
+import 'package:guam_community_client/providers/search/search.dart';
 import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/boards/boards_type.dart';
 import 'package:guam_community_client/screens/boards/posts/post_button.dart';
@@ -19,6 +20,7 @@ class BoardsApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Posts(authProvider)),
+        ChangeNotifierProvider(create: (_) => Search(authProvider)),
         ChangeNotifierProvider(create: (_) => Messages()),
       ],
       child: BoardsAppScaffold(),
