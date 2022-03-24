@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CommentBody extends StatelessWidget {
   final Comment comment;
@@ -17,13 +19,26 @@ class CommentBody extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.only(left: 32, right: 12),
-          child: Text(
-            comment.content,
+          child: Linkify(
+            onOpen: (link) async {
+              if (await canLaunch(link.url)) {
+                await launch(link.url);
+              } else {
+                throw 'Could not launch $link';
+              }
+            },
+            text: comment.content,
             style: TextStyle(
-              fontSize: 13,
               height: 1.6,
-              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+              fontSize: 13,
               color: GuamColorFamily.grayscaleGray2,
+              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+            ),
+            linkStyle: TextStyle(
+              height: 1.6,
+              fontSize: 14,
+              color: GuamColorFamily.blueCore,
+              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
             ),
           ),
         ),
