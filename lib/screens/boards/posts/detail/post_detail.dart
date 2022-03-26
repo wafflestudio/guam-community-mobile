@@ -7,6 +7,7 @@ import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
+import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/boards/comments/comments.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_banner.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_body.dart';
@@ -57,6 +58,23 @@ class _PostDetailState extends State<PostDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final postsProvider = context.watch<Posts>();
+
+    void fetchComments() {
+      comments = postsProvider.fetchComments(widget.post.id);
+    }
+
+    Future createComment({Map<String, dynamic> fields, dynamic files}) async {
+      return await postsProvider.createComment(
+        postId: widget.post.id,
+        fields: fields,
+        files: files,
+      ).then((successful) {
+        if (successful) fetchComments();
+        return successful;
+      });
+    }
+
     return Portal(
       child: Scaffold(
         backgroundColor: GuamColorFamily.grayscaleWhite,
@@ -145,9 +163,9 @@ class _PostDetailState extends State<PostDetail> {
                             children: [
                               ...snapshot.data.map((comment) => Comments(
                                 comment: comment,
-                                isAuthor: widget.post.profile.id == comment.profile.id,
+                                isAuthor: comment.isMine,
                               ))
-                            ]
+                            ],
                           );
                         } else {
                           return Padding(
@@ -177,11 +195,11 @@ class _PostDetailState extends State<PostDetail> {
         bottomSheet: Container(
           color: Colors.black.withOpacity(0.3),
           child: CommonTextField(
-            onTap: null,
-            mentionList: mentionList,
-            addCommentImage: addCommentImage,
-            removeCommentImage: removeCommentImage,
             editTarget: null,
+            onTap: createComment,
+            mentionList: mentionList,
+            addImage: addCommentImage,
+            removeImage: removeCommentImage,
           ),
         ),
       ),
