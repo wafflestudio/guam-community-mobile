@@ -167,6 +167,45 @@ class _PostDetailState extends State<PostDetail> {
                               ))
                             ],
                           );
+                          /// todo: PR 분리하여 이슈 해결할 예정 (CommentMore 위젯)
+                          /// (아래는 Could not find the correct Provider<Posts> above this CommentMore Widget 에러 해결을 위한 시나리오)
+                          // return ChangeNotifierProvider(
+                          //   create: (context) => Posts(context.read<Authenticate>()),
+                          //   child: Column(
+                          //     children: [
+                          //       ...snapshot.data.map((comment) => Comments(
+                          //         comment: comment,
+                          //         isAuthor: comment.isMine,
+                          //       ))
+                          //     ],
+                          //   ),
+                          // );
+
+                          //   return ChangeNotifierProvider.value(
+                          //   value: context.read<Authenticate>(),
+                          //   child: Column(
+                          //     children: [
+                          //       ...snapshot.data.map((comment) => Comments(
+                          //         comment: comment,
+                          //         isAuthor: comment.isMine,
+                          //       ))
+                          //     ]
+                          //   ),
+                          // );
+
+                          // return MultiProvider(
+                          //   providers: [
+                          //     ChangeNotifierProvider(create: (_) => Posts(context.read<Authenticate>())),
+                          //   ],
+                          //   child: Column(
+                          //     children: [
+                          //       ...snapshot.data.map((comment) => Comments(
+                          //         comment: comment,
+                          //         isAuthor: comment.isMine,
+                          //       ))
+                          //     ],
+                          //   ),
+                          // );
                         } else {
                           return Padding(
                             padding: EdgeInsets.only(top: 24),
