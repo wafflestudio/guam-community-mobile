@@ -112,21 +112,16 @@ class HttpRequest with Toast {
       fields.entries.forEach((e) => request.fields[e.key] = e.value);
 
       if (files != null)
-        if (files.isNotEmpty) {
-          files.forEach((e) async {
-            final multipartFile = http.MultipartFile(
-              "profileImage",
-              e.readAsBytes().asStream(),
-              e.lengthSync(),
-              filename: e.path.split("/").last,
-              contentType: MediaType("image", "${p.extension(e.path)}"),
-            );
-            request.files.add(multipartFile);
-            print(request.files);
-          });
-        } else {
-          // TODO : 기본 사진으로 설정 기능은 서버와의 alignment 이후 로직 짤 예정.
-        }
+        files.forEach((e) async {
+          final multipartFile = http.MultipartFile(
+            "profileImage",
+            e.readAsBytes().asStream(),
+            e.lengthSync(),
+            filename: e.path.split("/").last,
+            contentType: MediaType("image", "${p.extension(e.path)}"),
+          );
+          request.files.add(multipartFile);
+        });
       http.Response response = await http.Response.fromStream(await request.send());
       return response;
     } catch (e) {
