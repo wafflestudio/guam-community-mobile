@@ -128,6 +128,7 @@ class Authenticate with ChangeNotifier {
       print(e);
     } finally {
       toggleLoading();
+      notifyListeners();
     }
     return successful;
   }

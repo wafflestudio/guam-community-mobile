@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:guam_community_client/screens/profiles/buttons/profile_img_edit_button.dart';
@@ -65,6 +67,17 @@ class _ProfilesEditState extends State<ProfilesEdit> {
     });
   }
 
+  /// import the path of images from assets directory
+  Future<File> getImageFileFromAssets(String path) async {
+    final byteData = await rootBundle.load('assets/$path');
+    final buffer = byteData.buffer;
+    Directory tempDir = await getTemporaryDirectory();
+    var filePath = tempDir.path + '/tmp.png'; /// arbitrary name & extension
+    return File(filePath).writeAsBytes(buffer.asUint8List(
+      byteData.offsetInBytes, byteData.lengthInBytes,
+    ));
+  }
+
   Future setProfile() async {
     toggleSending();
     try {
@@ -72,8 +85,9 @@ class _ProfilesEditState extends State<ProfilesEdit> {
         fields: input,
         files: profileImage.isNotEmpty
             ? [File(profileImage[0].path)] /// 프사 새롭게 추가
-            : profileImg != null
-                ? null : <File>[], /// 프사 유지하거나 기본 프사로 바꾸거나
+            : profileImg != null /// 프사 유지하거나 기본 프사로 바꾸거나
+                ? null
+                : [await getImageFileFromAssets('images/profile_image.png')],
       ).then((successful) {
         toggleSending();
         if (successful) {

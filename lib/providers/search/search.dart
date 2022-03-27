@@ -20,7 +20,7 @@ class Search with ChangeNotifier {
   static List<Filter> filters = [
     Filter(
       key: 'createdAt',
-      label: '최근순',
+      label: '시간순',
     ),
     Filter(
       key: 'like',

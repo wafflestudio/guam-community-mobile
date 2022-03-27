@@ -49,15 +49,19 @@ class _SearchAppScaffoldState extends State<SearchAppScaffold> {
               ? showHistory
                 ? SearchHistory(
                     searchList: [...searchProvider.history.reversed],
-                      showSearchHistory: showSearchHistory,
-                    )
-                : Center(child: Text('검색 결과가 없습니다.', style: TextStyle(fontSize: 16)))
+                    showSearchHistory: showSearchHistory,
+                  )
+                : searchProvider.loading
+                    ? Center(child: CircularProgressIndicator())
+                    : Center(child: Text('검색 결과가 없습니다.', style: TextStyle(fontSize: 16)))
               : showHistory
                 ? SearchHistory(
                     searchList: [...searchProvider.history.reversed],
                     showSearchHistory: showSearchHistory,
                   )
-                : SearchFeed()
+                : searchProvider.loading
+                    ? Center(child: CircularProgressIndicator())
+                    : SearchFeed()
       ),
     );
   }
