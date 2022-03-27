@@ -73,7 +73,7 @@ class Posts with ChangeNotifier {
       if (authToken.isNotEmpty) {
         await HttpRequest()
             .postMultipart(
-          path: "/community/api/v1/posts",
+          path: "community/api/v1/posts",
           authToken: authToken,
           fields: fields,
           files: files,
@@ -81,14 +81,12 @@ class Posts with ChangeNotifier {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
-            print(jsonData);
             successful = true;
             loading = false;
             // TODO: set fcm token when impl. push notification
             // setMyFcmToken();
           } else {
             final jsonUtf8 = decodeKo(response);
-            print(jsonUtf8);
             // final String err = json.decode(jsonUtf8)["error"];
             // TODO: show toast after impl. toast
             // showToast(success: false, msg: err);
@@ -150,18 +148,17 @@ class Posts with ChangeNotifier {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
             successful = true;
-            print(jsonData);
           } else {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];
             // showToast(success: false, msg: err);
           }
         });
+        loading = false;
       }
     } catch (e) {
       print(e);
     } finally {
-      loading = false;
       notifyListeners();
     }
     return successful;
@@ -197,5 +194,78 @@ class Posts with ChangeNotifier {
       notifyListeners();
     }
     return comments;
+  }
+
+  Future<bool> createComment({int postId, Map<String, dynamic> fields, dynamic files}) async {
+    bool successful = false;
+    loading = true;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .postMultipart(
+          path: "community/api/v1/posts/$postId/comments",
+          authToken: authToken,
+          fields: fields,
+          files: files,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            successful = true;
+            loading = false;
+            // TODO: set fcm token when impl. push notification
+            // setMyFcmToken();
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            // final String err = json.decode(jsonUtf8)["error"];
+            // TODO: show toast after impl. toast
+            // showToast(success: false, msg: err);
+          }
+        });
+        loading = false;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return successful;
+  }
+
+  Future<bool> deleteComment({int postId, int commentId}) async {
+    bool successful = false;
+    loading = true;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .delete(
+          path: "community/api/v1/posts/$postId/comments/$commentId",
+          authToken: authToken,
+        ).then((response) {
+          print(response.statusCode);
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            successful = true;
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            // showToast(success: false, msg: err);
+          }
+        });
+        loading = false;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return successful;
   }
 }

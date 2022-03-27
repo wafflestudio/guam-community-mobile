@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
 import '../../../commons/bottom_modal/bottom_modal_default.dart';
 import '../../../commons/bottom_modal/bottom_modal_with_alert.dart';
 import '../../../commons/bottom_modal/bottom_modal_with_message.dart';
+import '../../../providers/posts/posts.dart';
 import '../posts/post_comment_report.dart';
 
 class CommentMore extends StatelessWidget {
@@ -30,7 +32,20 @@ class CommentMore extends StatelessWidget {
               funcName: '삭제하기',
               title: '댓글을 삭제하시겠어요?',
               body: '삭제된 댓글은 복원할 수 없습니다.',
-              func: () {},
+              /// todo: PR 분리하여 이슈 해결할 예정
+              // func: () async {
+              //   await context.read<Posts>().deleteComment(
+              //     postId: comment.postId, commentId: comment.id,
+              //   ).then((successful) {
+              //     if (successful) {
+              //       Navigator.of(context).pop();
+              //       Navigator.of(context).pop();
+              //       // Navigator.of(context).pushNamedAndRemoveUntil(
+              //       //     '/', (route) => true
+              //       // );
+              //     }
+              //   });
+              // },
             ),
           ] : [
             BottomModalDefault(

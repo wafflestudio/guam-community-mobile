@@ -14,23 +14,23 @@ import 'button_size_circular_progress_indicator.dart';
 class CommonTextField extends StatefulWidget {
   final String sendButton;
   final Function onTap;
-  final Function addCommentImage;
-  final Function removeCommentImage;
+  final Function addImage;
+  final Function removeImage;
   final dynamic editTarget;
   final List<Map<String, dynamic>> mentionList;
 
-  CommonTextField({this.sendButton='등록', @required this.onTap, this.addCommentImage, this.removeCommentImage, this.editTarget, this.mentionList});
+  CommonTextField({this.sendButton='등록', @required this.onTap, this.addImage, this.removeImage, this.editTarget, this.mentionList});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();
 }
 
 class _CommonTextFieldState extends State<CommonTextField> {
-  final _commentTextFieldController = TextEditingController();
   final double maxImgSize = 80;
   final double imgSheetHeight = 96;
   double mentionTargetHeight = 160;
   double bottomSheetHeight = 56;
+  String content;
   bool sending = false;
   bool activeMention = false;
   List<PickedFile> imageFileList = [];
@@ -39,18 +39,14 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
   GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
 
-
-  @override
-  void initState() {
-    _commentTextFieldController.text = '';
-    super.initState();
-  }
-
   @override
   void dispose() {
     imageFileList.clear();
-    _commentTextFieldController.dispose();
     super.dispose();
+  }
+
+  void setContent(){
+    setState(() => content = key.currentState.controller.text);
   }
 
   void setImageFile(PickedFile val) {
@@ -69,6 +65,57 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
   @override
   Widget build(BuildContext context) {
+    bool isEdit = widget.editTarget != null;
+
+    Future<void> send() async {
+      toggleSending();
+      try {
+        /// 멘션 리스트 중복 제거
+        Iterable<RegExpMatch> matches = mentionRegexp
+            .allMatches(key.currentState.controller.markupText);
+        if (matches.length > 0)
+          matches.forEach((match) {
+            int mentionId = int.parse(match.group(1));
+            if (!mentionTargetIds.contains(mentionId))
+              mentionTargetIds.add(mentionId);
+          });
+
+        if (isEdit) {
+          await widget.onTap(
+            id: widget.editTarget.id,
+            fields: {
+              "mentionIds": mentionTargetIds.join(','),
+              "content": content,
+            },
+          ).then((successful) {
+            if (successful) {
+              key.currentState.controller.text = '';
+              FocusScope.of(context).unfocus();
+            }
+          });
+        } else {
+          await widget.onTap(
+            files: [...imageFileList.map((e) => File(e.path))],
+            fields: {
+              "mentionIds": mentionTargetIds.join(','),
+              "content": content,
+            },
+          ).then((successful) {
+            if (successful) {
+              imageFileList.clear();
+              mentionTargetIds.clear();
+              key.currentState.controller.text = '';
+              FocusScope.of(context).unfocus();
+            }
+          });
+        }
+      } catch (e) {
+        print(e);
+      } finally {
+        toggleSending();
+      }
+    }
+
     return SizedBox(
       height: imageFileList.isNotEmpty
           ? imgSheetHeight + bottomSheetHeight
@@ -120,7 +167,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                                   icon: SvgPicture.asset('assets/icons/cancel_filled.svg'),
                                   onPressed: () {
                                     deleteImageFile(idx);
-                                    if (imageFileList.isEmpty) widget.removeCommentImage();
+                                    if (imageFileList.isEmpty) widget.removeImage();
                                   },
                                 ),
                               )
@@ -144,7 +191,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     onPressed: !sending
                         ? () => pickImage(type: 'gallery').then((img) {
                           setImageFile(img);
-                          widget.addCommentImage();
+                          widget.addImage();
                         })
                         : null,
                   ),
@@ -154,6 +201,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     key: key,
                     suggestionPosition: SuggestionPosition.Top,
                     style: TextStyle(fontSize: 14),
+                    onChanged: (e) => setContent(),
                     cursorColor: GuamColorFamily.purpleCore,
                     decoration: InputDecoration(
                       hintText: "댓글을 남겨주세요.",
@@ -194,36 +242,21 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     ],
                   ),
                 ),
-                !sending
-                    ? TextButton(
-                      onPressed: () {
-                        Iterable<RegExpMatch> matches = mentionRegexp
-                            .allMatches(key.currentState.controller.markupText);
-                        if (matches.length > 0) {
-                          matches.forEach((match) {
-                            int mentionId = int.parse(match.group(1));
-                            if (!mentionTargetIds.contains(mentionId))
-                              mentionTargetIds.add(mentionId);
-                          });
-                        }
-                        /// mentionTargetIds를 request에 담아 같이 보낼 예정.
-                        // key.currentState.controller.clear();
-                        mentionTargetIds.clear();
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.only(right: 6),
-                        minimumSize: Size(30, 26),
-                        alignment: Alignment.center,
-                      ),
-                      child: Text(
-                        widget.sendButton,
-                        style: TextStyle(
-                          color: GuamColorFamily.purpleCore,
-                          fontSize: 16,
-                        ),
-                      ),
-                    )
-                    : ButtonSizeCircularProgressIndicator()
+                !sending ? TextButton(
+                  onPressed: !sending ? send : null,
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.only(right: 6),
+                    minimumSize: Size(30, 26),
+                    alignment: Alignment.center,
+                  ),
+                  child: Text(
+                    widget.sendButton,
+                    style: TextStyle(
+                      color: GuamColorFamily.purpleCore,
+                      fontSize: 16,
+                    ),
+                  ),
+                ) : ButtonSizeCircularProgressIndicator(),
               ],
             ),
           ],

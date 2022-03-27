@@ -6,7 +6,6 @@ import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import 'package:guam_community_client/styles/fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'message_detail_body.dart';
@@ -97,8 +96,8 @@ class _MessageDetailState extends State<MessageDetail> {
         child: CommonTextField(
           sendButton: '전송',
           onTap: null,
-          addCommentImage: addCommentImage,
-          removeCommentImage: removeCommentImage,
+          addImage: addCommentImage,
+          removeImage: removeCommentImage,
           editTarget: null,
         ),
       ),
