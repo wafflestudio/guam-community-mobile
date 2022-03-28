@@ -79,15 +79,16 @@ class Posts with ChangeNotifier {
           files: files,
         ).then((response) async {
           if (response.statusCode == 200) {
-            final jsonUtf8 = decodeKo(response);
-            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
             successful = true;
             loading = false;
+            final jsonUtf8 = decodeKo(response);
+            // final String msg = json.decode(jsonUtf8)["message"];
+            // showToast(success: true, msg: msg);
             // TODO: set fcm token when impl. push notification
             // setMyFcmToken();
           } else {
             final jsonUtf8 = decodeKo(response);
-            // final String err = json.decode(jsonUtf8)["error"];
+            // final String err = json.decode(jsonUtf8)["message"];
             // TODO: show toast after impl. toast
             // showToast(success: false, msg: err);
           }
@@ -146,7 +147,8 @@ class Posts with ChangeNotifier {
           print(response.statusCode);
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
-            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            final String msg = json.decode(jsonUtf8)["message"];
+            // showToast(success: true, msg: msg);
             successful = true;
           } else {
             final jsonUtf8 = decodeKo(response);
@@ -178,8 +180,6 @@ class Posts with ChangeNotifier {
           final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
           comments = jsonList.map((e) => Comment.fromJson(e)).toList();
           loading = false;
-          // TODO: set fcm token when impl. push notification
-          // setMyFcmToken();
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
@@ -212,12 +212,8 @@ class Posts with ChangeNotifier {
           files: files,
         ).then((response) async {
           if (response.statusCode == 200) {
-            final jsonUtf8 = decodeKo(response);
-            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
             successful = true;
             loading = false;
-            // TODO: set fcm token when impl. push notification
-            // setMyFcmToken();
           } else {
             final jsonUtf8 = decodeKo(response);
             // final String err = json.decode(jsonUtf8)["error"];
@@ -251,7 +247,8 @@ class Posts with ChangeNotifier {
           print(response.statusCode);
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
-            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            final String msg = json.decode(jsonUtf8)["message"];
+            // showToast(success: true, msg: msg);
             successful = true;
           } else {
             final jsonUtf8 = decodeKo(response);
