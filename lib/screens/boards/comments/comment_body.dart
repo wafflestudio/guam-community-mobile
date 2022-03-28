@@ -6,6 +6,8 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../commons/image/image_container.dart';
+import '../../../helpers/http_request.dart';
 
 class CommentBody extends StatelessWidget {
   final Comment comment;
@@ -14,6 +16,8 @@ class CommentBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double maxImgSize = 96;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -42,6 +46,26 @@ class CommentBody extends StatelessWidget {
             ),
           ),
         ),
+        if (comment.imagePaths.isNotEmpty)
+          Container(
+            padding: EdgeInsets.only(left: 23, top: 8, bottom: 8),
+            constraints: BoxConstraints(maxHeight: maxImgSize + 15),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: comment.imagePaths.length,
+              itemBuilder: (_, idx) => Container(
+                padding: EdgeInsets.only(right: 10),
+                child: ImageThumbnail(
+                  width: maxImgSize,
+                  height: maxImgSize,
+                  image: Image(
+                    image: NetworkImage(HttpRequest().s3BaseAuthority + comment.imagePaths[idx]),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+            ),
+          ),
         Padding(
           padding: EdgeInsets.only(left: 32, top: 4, bottom: 8),
           child: Row(

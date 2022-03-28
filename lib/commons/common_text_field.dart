@@ -30,7 +30,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
   final double imgSheetHeight = 96;
   double mentionTargetHeight = 160;
   double bottomSheetHeight = 56;
-  String content;
+  String content = '';
   bool sending = false;
   bool activeMention = false;
   List<PickedFile> imageFileList = [];
@@ -80,7 +80,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
               mentionTargetIds.add(mentionId);
           });
 
-        if (isEdit) {
+        if (isEdit && content != '') {
           await widget.onTap(
             id: widget.editTarget.id,
             fields: {
@@ -94,20 +94,21 @@ class _CommonTextFieldState extends State<CommonTextField> {
             }
           });
         } else {
-          await widget.onTap(
-            files: [...imageFileList.map((e) => File(e.path))],
-            fields: {
-              "mentionIds": mentionTargetIds.join(','),
-              "content": content,
-            },
-          ).then((successful) {
-            if (successful) {
-              imageFileList.clear();
-              mentionTargetIds.clear();
-              key.currentState.controller.text = '';
-              FocusScope.of(context).unfocus();
-            }
-          });
+          if (content != '' || imageFileList.isNotEmpty)
+            await widget.onTap(
+              files: [...imageFileList.map((e) => File(e.path))],
+              fields: {
+                "mentionIds": mentionTargetIds.join(','),
+                "content": content,
+              },
+            ).then((successful) {
+              if (successful) {
+                imageFileList.clear();
+                mentionTargetIds.clear();
+                key.currentState.controller.text = '';
+                FocusScope.of(context).unfocus();
+              }
+            });
         }
       } catch (e) {
         print(e);
