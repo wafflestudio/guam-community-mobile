@@ -54,7 +54,7 @@ class CommentBody extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: comment.imagePaths.length,
               itemBuilder: (_, idx) => Container(
-                padding: EdgeInsets.only(right: 14.87),
+                padding: EdgeInsets.only(right: 10),
                 child: ImageThumbnail(
                   width: maxImgSize,
                   height: maxImgSize,
