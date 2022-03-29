@@ -7,6 +7,7 @@ import '../../../../commons/bottom_modal/bottom_modal_with_alert.dart';
 import '../../../../commons/bottom_modal/bottom_modal_with_message.dart';
 import '../../../../models/boards/post.dart';
 import '../../../../providers/posts/posts.dart';
+import '../../../../providers/user_auth/authenticate.dart';
 import '../creation/post_creation.dart';
 import '../post_comment_report.dart';
 
@@ -25,11 +26,15 @@ class PostDetailMore extends StatelessWidget {
           children: post.isMine ? [
             BottomModalDefault(
               text: '수정하기',
+              /// Navigator 사용 시 Provider가 정의된 route가 달라져 새롭게 정의해야함.
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => PostCreation(
-                    isEdit: true,
-                    editTarget: post, // 수정할 대상 (Post)
+                  builder: (_) => ChangeNotifierProvider(
+                    create: (context) => Posts(context.read<Authenticate>()),
+                    child: PostCreation(
+                      isEdit: true,
+                      editTarget: post, // 수정할 대상 (Post)
+                    ),
                   ),
                 ),
               ),
