@@ -17,7 +17,6 @@ import 'package:provider/provider.dart';
 import '../../../../commons/functions_category_boardType.dart';
 import '../../../../models/boards/post.dart';
 import '../../../../providers/posts/posts.dart';
-import '../../../../providers/user_auth/authenticate.dart';
 import '../detail/post_detail.dart';
 
 class PostCreation extends StatefulWidget {
@@ -240,7 +239,7 @@ class _PostCreationState extends State<PostCreation> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PostCreationBoard(input, setBoardAnonymous),
+                  PostCreationBoard(input, widget.isEdit, setBoardAnonymous),
                   PostCreationTitle(input),
                   CustomDivider(color: GuamColorFamily.grayscaleGray7),
                   PostCreationContent(input),
