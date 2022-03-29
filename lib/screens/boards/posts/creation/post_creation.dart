@@ -17,6 +17,8 @@ import 'package:provider/provider.dart';
 import '../../../../commons/functions_category_boardType.dart';
 import '../../../../models/boards/post.dart';
 import '../../../../providers/posts/posts.dart';
+import '../../../../providers/user_auth/authenticate.dart';
+import '../detail/post_detail.dart';
 
 class PostCreation extends StatefulWidget {
   final bool isEdit;
@@ -40,9 +42,29 @@ class _PostCreationState extends State<PostCreation> {
       'boardId': input['boardId'],
       'tagId': input['tagId'],
     };
+
     try {
-      if (widget.isEdit) {
-        /// TODO: Server에서 게시글 수정 API 만들어주면 수정할 것.
+      if (widget.isEdit && widget.editTarget != null) {
+        return await context.read<Posts>().editPost(
+          postId: widget.editTarget.id,
+          body: fields,
+        ).then((successful) {
+          if (successful) {
+            context.read<Posts>().fetchPosts(0);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/', (route) => true
+            );
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => ChangeNotifierProvider.value(
+                  value: context.read<Posts>(),
+                  child: PostDetail(context.read<Posts>().post),
+                ),
+              ),
+            );
+            successful = true;
+          }
+        });
       } else {
         return await context.read<Posts>().createPost(
           fields: fields,
@@ -190,7 +212,7 @@ class _PostCreationState extends State<PostCreation> {
           child: TextButton(
             onPressed: () async {
               await createOrUpdatePost(
-                  files: (input['images'] != [])
+                  files: (input['images'] != [] && !widget.isEdit)
                       ? [...input['images'].map((e) => File(e.path))]
                       : []
               );
