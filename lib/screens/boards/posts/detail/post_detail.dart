@@ -7,7 +7,6 @@ import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
-import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/boards/comments/comments.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_banner.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_body.dart';
@@ -163,7 +162,7 @@ class _PostDetailState extends State<PostDetail> {
                             children: [
                               ...snapshot.data.map((comment) => Comments(
                                 comment: comment,
-                                isAuthor: comment.isMine,
+                                isAuthor: widget.post.isMine,
                               ))
                             ],
                           );

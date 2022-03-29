@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/providers/search/search.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import '../../helpers/decode_ko.dart';
@@ -13,6 +12,7 @@ import '../user_auth/authenticate.dart';
 
 class Posts with ChangeNotifier {
   Authenticate _authProvider;
+  Post _post;
   List<Post> _posts;
   List<Comment> _comments;
   int boardId = 0; // default : 피드게시판
@@ -23,6 +23,7 @@ class Posts with ChangeNotifier {
     fetchPosts(boardId);
   }
 
+  Post get post => _post;
   List<Post> get posts => _posts;
   List<Comment> get comments => _comments;
 
@@ -84,8 +85,6 @@ class Posts with ChangeNotifier {
             final jsonUtf8 = decodeKo(response);
             // final String msg = json.decode(jsonUtf8)["message"];
             // showToast(success: true, msg: msg);
-            // TODO: set fcm token when impl. push notification
-            // setMyFcmToken();
           } else {
             final jsonUtf8 = decodeKo(response);
             // final String err = json.decode(jsonUtf8)["message"];
@@ -104,31 +103,78 @@ class Posts with ChangeNotifier {
   }
 
   Future<Post> getPost(int postId) async {
-    Post post;
     loading = true;
 
     try {
-      await HttpRequest()
-          .get(
-        path: "community/api/v1/posts/$postId",
-      ).then((response) {
-        if (response.statusCode == 200) {
-          final jsonUtf8 = decodeKo(response);
-          final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
-          post = Post.fromJson(jsonData);
-        } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
-          // showToast(success: false, msg: err);
-        }
-      });
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .get(
+          authToken: authToken,
+          path: "community/api/v1/posts/$postId",
+        ).then((response) {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            _post = Post.fromJson(jsonData);
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            // showToast(success: false, msg: err);
+          }
+        });
+      }
     } catch (e) {
       print(e);
     } finally {
       loading = false;
       notifyListeners();
     }
-    return post;
+    return _post;
+  }
+
+  Future<bool> editPost({int postId, Map<String, dynamic> body}) async {
+    bool successful = false;
+    loading = true;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .patch(
+          path: "community/api/v1/posts/$postId",
+          authToken: authToken,
+          body: body,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            successful = true;
+            loading = false;
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+
+            /// todo: Server 측에서 response 수정해주면 getPost API 안날리고 아래 line으로 해결 가능.
+            await getPost(jsonData['postId']);
+            // _post = Post.fromJson(jsonData);
+
+            // final String msg = json.decode(jsonUtf8)["message"];
+            // showToast(success: true, msg: msg);
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            // final String err = json.decode(jsonUtf8)["message"];
+            // TODO: show toast after impl. toast
+            // showToast(success: false, msg: err);
+          }
+        });
+        loading = false;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return successful;
   }
 
   Future<bool> deletePost(int postId) async {
