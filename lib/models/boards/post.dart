@@ -62,12 +62,8 @@ class Post extends ChangeNotifier {
       profile = Profile.fromJson(json['user']);
     }
 
-    if (json['categories'] != null) {
-     /**
-      * Server에서 불필요하게 categories라는 복수의 category json을 담을 수 있는
-      * nested Json 형태로 주고 있는데, 단일 category로 달라고 해야함. 그 후에 [0] 없애기
-     **/
-      category = Category.Category.fromJson(json['categories'][0]);
+    if (json['category'] != null) {
+      category = Category.Category.fromJson(json['category']);
     }
 
     if (json['comments'] != null) {

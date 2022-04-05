@@ -24,7 +24,7 @@ class _PostCreationCategoryState extends State<PostCreationCategory> {
   void setCategory(String category){
     setState(() {
       widget.input['category'] = category;
-      widget.input['tagId'] = transferCategory(category).toString();
+      widget.input['categoryId'] = transferCategory(category).toString();
     });
   }
 

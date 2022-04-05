@@ -1,16 +1,14 @@
-import 'package:guam_community_client/commons/functions_category_boardType.dart';
-
 class Category {
   final int postId;
-  final int tagId;
+  final int categoryId;
   final String title;
 
-  Category({this.postId, this.tagId, this.title});
+  Category({this.postId, this.categoryId, this.title});
 
   factory Category.fromJson(dynamic json) {
     return Category(
       postId: json['postId'],
-      tagId: json['tagId'],
+      categoryId: json['categoryId'],
       title: json['title'],
     );
   }

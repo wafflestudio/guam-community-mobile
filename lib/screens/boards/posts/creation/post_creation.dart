@@ -39,7 +39,7 @@ class _PostCreationState extends State<PostCreation> {
       'title': input['title'],
       'content': input['content'],
       'boardId': input['boardId'],
-      'tagId': input['tagId'],
+      'categoryId': input['categoryId'],
     };
 
     try {
@@ -92,7 +92,7 @@ class _PostCreationState extends State<PostCreation> {
         'boardType': editPost.boardType,
         'boardId': transferBoardType(editPost.boardType),
         'category': editPost.category.title,
-        'tagId': editPost.category.tagId,
+        'categoryId': editPost.category.categoryId,
         'images': editPost.imagePaths,
         /// TODO: 이미지는 기존 게시글 이미지 S3 주소 받아와서 처리할 예정
       };
@@ -102,7 +102,7 @@ class _PostCreationState extends State<PostCreation> {
         'content': '',
         'boardId': '',
         'boardType': '',
-        'tagId': '',
+        'categoryId': '',
         'category': '',
         'images': [],
       };

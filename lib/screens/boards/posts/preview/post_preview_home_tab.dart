@@ -5,18 +5,17 @@ import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview_category.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
-import '../post_info.dart';
 import './post_preview_board_type.dart';
-import './post_preview_relative_time.dart';
 import './post_preview_content.dart';
+import './post_preview_relative_time.dart';
 import './post_preview_title.dart';
+import '../post_info.dart';
 
 class PostPreviewHomeTab extends StatelessWidget {
   final Post post;
   final bool isAnonymous;
 
-  PostPreviewHomeTab(this.post):
-        this.isAnonymous = post.boardType == '익명게시판';
+  PostPreviewHomeTab(this.post) : this.isAnonymous = post.boardType == '익명게시판';
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +27,8 @@ class PostPreviewHomeTab extends StatelessWidget {
             this.isAnonymous
                 ? PostPreviewBoardType(this.post.boardType)
                 : post.category != null
-                  ? PostPreviewCategory(post)
-                  : Container(),
+                    ? PostPreviewCategory(post)
+                    : Container(),
             Spacer(),
             PostPreviewRelativeTime(DateTime.parse(this.post.createdAt)),
           ],
@@ -62,7 +61,7 @@ class PostPreviewHomeTab extends StatelessWidget {
           post: post,
           iconColor: GuamColorFamily.grayscaleGray5,
           profileClickable: false,
-        )
+        ),
       ],
     );
   }

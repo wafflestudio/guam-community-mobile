@@ -42,7 +42,9 @@ class PostDetailBanner extends StatelessWidget {
                   post.boardType + '게시판',
                   style: TextStyle(
                     fontSize: 12,
-                    color: colorOfCategory(post.category.title).withOpacity(0.5),
+                    color: colorOfCategory(
+                        post.category != null ? post.category.title : '')
+                        .withOpacity(0.5),
                   ),
                 ),
                 style: TextButton.styleFrom(
@@ -55,11 +57,8 @@ class PostDetailBanner extends StatelessWidget {
           ],
         ),
         Container(
-          padding: EdgeInsets.only( top: 8),
-          child: Text(
-            post.title,
-            style: TextStyle(fontSize: 18),
-          ),
+          padding: EdgeInsets.only(top: 8),
+          child: Text(post.title, style: TextStyle(fontSize: 18)),
         ),
         Padding(
           padding: EdgeInsets.only(top: 8),
@@ -68,7 +67,8 @@ class PostDetailBanner extends StatelessWidget {
               CommonImgNickname(
                 userId: post.profile.id,
                 nickname: post.profile.nickname,
-                profileClickable: post.profile.id != 0, // 익명 프로필은 프로필 열람 불가
+                profileClickable: post.profile.id != 0,
+                // 익명 프로필은 프로필 열람 불가
                 imgUrl: post.profile.profileImg ?? null,
                 nicknameColor: GuamColorFamily.grayscaleGray3,
               ),
@@ -77,14 +77,14 @@ class PostDetailBanner extends StatelessWidget {
                 DateFormat('yyyy.MM.dd  HH:mm').format(DateTime.parse(post.createdAt)),
                 style: TextStyle(
                   fontSize: 12,
-                  fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
                   color: GuamColorFamily.grayscaleGray5,
+                  fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
                 ),
               ),
             ],
           ),
         ),
-      ]
+      ],
     );
   }
 }

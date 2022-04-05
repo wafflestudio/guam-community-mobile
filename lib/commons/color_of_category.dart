@@ -10,7 +10,7 @@ colorOfCategory(String category) {
     case '디자인': textColor = GuamColorFamily.pinkCore; break;
     case '기획/마케팅': textColor = GuamColorFamily.blueCore; break;
     case '기타': textColor = GuamColorFamily.orangeCore; break;
-    default: textColor = GuamColorFamily.grayscaleGray2; break;
+    default: textColor = GuamColorFamily.grayscaleGray1; break;
   }
   return textColor;
 }
