@@ -37,7 +37,6 @@ class _BoardsFeedState extends State<BoardsFeed> {
     context.read<Posts>().fetchPosts(widget.boardId);
 
     _scrollController.addListener(() {
-      print(context.read<Posts>().posts.length);
       turnPage = _scrollController.offset / _scrollController.position.maxScrollExtent >= 0.7
           ? true : false;
       if (turnPage && context.read<Posts>().hasNext) addPosts();
