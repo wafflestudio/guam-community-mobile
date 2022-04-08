@@ -16,6 +16,11 @@ class _BoardsFeedState extends State<BoardsFeed> {
   final ScrollController _scrollController = ScrollController();
   bool turnPage = false;
 
+  Future _onRefresh() {
+    context.read<Posts>().fetchPosts(widget.boardId);
+    return Future<void>.value();
+  }
+
   Future addPosts() async {
     if (turnPage)
       Future.delayed(Duration.zero, () async {
@@ -50,9 +55,12 @@ class _BoardsFeedState extends State<BoardsFeed> {
   Widget build(BuildContext context) {
     return context.watch<Posts>().loading
         ? Center(child: CircularProgressIndicator())
-        : SingleChildScrollView(
-            controller: _scrollController,
-            child: PostList(context.read<Posts>().posts),
-          );
+        : RefreshIndicator(
+            onRefresh: _onRefresh,
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: PostList(context.read<Posts>().posts),
+            ),
+        );
   }
 }
