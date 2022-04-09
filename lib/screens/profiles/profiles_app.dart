@@ -42,10 +42,11 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
   @override
   void initState() {
     super.initState();
-    otherProfile = Future.delayed(
-      Duration.zero,
-      () async => context.read<Authenticate>().getUserProfile(widget.userId),
-    );
+    if (widget.userId != null)
+      otherProfile = Future.delayed(
+        Duration.zero,
+        () async => context.read<Authenticate>().getUserProfile(widget.userId),
+      );
   }
 
   @override
