@@ -16,16 +16,11 @@ class _BoardsFeedState extends State<BoardsFeed> {
   final ScrollController _scrollController = ScrollController();
   bool turnPage = false;
 
-  Future _onRefresh() {
-    context.read<Posts>().fetchPosts(widget.boardId);
-    return Future<void>.value();
-  }
-
-  Future addPosts() async {
+  void addPosts() {
+    int beforePostId = context.read<Posts>().posts.last.id;
     if (turnPage)
       Future.delayed(Duration.zero, () async {
-        int beforePostId = context.read<Posts>().posts.last.id;
-        await context.read<Posts>().addPosts(
+      context.read<Posts>().addPosts(
           boardId: widget.boardId,
           beforePostId: beforePostId,
         );
@@ -37,8 +32,7 @@ class _BoardsFeedState extends State<BoardsFeed> {
     context.read<Posts>().fetchPosts(widget.boardId);
 
     _scrollController.addListener(() {
-      turnPage = _scrollController.offset / _scrollController.position.maxScrollExtent >= 0.7
-          ? true : false;
+      turnPage = _scrollController.offset / _scrollController.position.maxScrollExtent >= 0.5;
       if (turnPage && context.read<Posts>().hasNext) addPosts();
     });
     super.initState();
@@ -55,7 +49,7 @@ class _BoardsFeedState extends State<BoardsFeed> {
     return context.watch<Posts>().loading
         ? Center(child: CircularProgressIndicator())
         : RefreshIndicator(
-            onRefresh: _onRefresh,
+            onRefresh: () => context.read<Posts>().fetchPosts(widget.boardId),
             child: SingleChildScrollView(
               controller: _scrollController,
               child: PostList(context.read<Posts>().posts),
