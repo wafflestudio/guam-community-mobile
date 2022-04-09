@@ -86,7 +86,10 @@ class _PostDetailState extends State<PostDetail> {
                 IconButton(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   constraints: BoxConstraints(),
-                  icon: SvgPicture.asset('assets/icons/scrap_outlined.svg'),
+                  icon: SvgPicture.asset(widget.post.isScrapped
+                      ? 'assets/icons/scrap_filled.svg'
+                      : 'assets/icons/scrap_outlined.svg'
+                  ),
                   onPressed: () {},
                 ),
                 IconButton(
