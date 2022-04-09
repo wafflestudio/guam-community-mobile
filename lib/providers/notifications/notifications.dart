@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/notification.dart' as Notification;
 
+import '../user_auth/authenticate.dart';
+
 class Notifications with ChangeNotifier {
   List<Notification.Notification> _notifications;
   bool loading = false;
 
-  Notifications({@required String authToken}) {
-    fetchNotifications(authToken);
+  Notifications() {
+    fetchNotifications();
   }
 
   List<Notification.Notification> get notifications => _notifications;
 
-  Future fetchNotifications(String authToken) async {
+  Future fetchNotifications() async {
     try {
       loading = true;
 

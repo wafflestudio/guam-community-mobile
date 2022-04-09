@@ -13,7 +13,9 @@ import '../user_auth/authenticate.dart';
 class Posts with ChangeNotifier {
   Authenticate _authProvider;
   Post _post;
+  bool _hasNext;
   List<Post> _posts;
+  List<Post> _newPosts;
   List<Comment> _comments;
   int boardId = 0; // default : 피드게시판
   bool loading = false;
@@ -24,7 +26,9 @@ class Posts with ChangeNotifier {
   }
 
   Post get post => _post;
+  bool get hasNext => _hasNext;
   List<Post> get posts => _posts;
+  List<Post> get newPosts => _newPosts;
   List<Comment> get comments => _comments;
 
   Future fetchPosts(int boardId) async {
@@ -39,6 +43,7 @@ class Posts with ChangeNotifier {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+          _hasNext = json.decode(jsonUtf8)["hasNext"];
           _posts = jsonList.map((e) => Post.fromJson(e)).toList();
 
           // Default search with first filter
@@ -47,8 +52,41 @@ class Posts with ChangeNotifier {
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
-          // TODO: show toast after impl. toast
-          // showToast(success: false, msg: err);
+        }
+      });
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  /// For Pagination
+  Future addPosts({int boardId, int beforePostId}) async {
+    loading = true;
+    try {
+      await HttpRequest()
+          .get(
+        path: "community/api/v1/posts",
+        queryParams: {
+          "boardId": boardId.toString(),
+          "beforePostId": beforePostId.toString(),
+        },
+        authToken: await _authProvider.getFirebaseIdToken(),
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+          _hasNext = json.decode(jsonUtf8)["hasNext"];
+          _newPosts = jsonList.map((e) => Post.fromJson(e)).toList();
+
+          /// Build 시에 _newPosts가 중복되어 _posts에 더해지는 경우를 막기 위함
+          if (_posts.last.id != _newPosts.last.id) _posts += _newPosts;
+          loading = false;
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
         }
       });
       loading = false;

@@ -22,7 +22,7 @@ class SearchAppTextFieldState extends State<SearchAppTextField> {
   @override
   Widget build(BuildContext context) {
     final searchProvider = context.read<Search>();
-    bool isTextEmpty = controller.text == '';
+    bool isTextEmpty = controller.text.trim() == '';
 
     return Container(
       height: 40,
@@ -54,7 +54,10 @@ class SearchAppTextFieldState extends State<SearchAppTextField> {
                     ? IconButton(
                         padding: EdgeInsets.zero,
                         constraints: BoxConstraints(),
-                        onPressed: () => controller.clear(),
+                        onPressed: () {
+                          controller.clear();
+                          isTextEmpty = true;
+                        },
                         icon: SvgPicture.asset(
                           'assets/icons/cancel_filled_x_transparent.svg',
                           color: GuamColorFamily.grayscaleGray6,
@@ -77,11 +80,14 @@ class SearchAppTextFieldState extends State<SearchAppTextField> {
                   borderSide: BorderSide(color: GuamColorFamily.purpleCore),
                 ),
               ),
+              onChanged: (e) => isTextEmpty = controller.text.trim() == '',
               onSubmitted: (word) {
-                searchProvider.searchPosts(query: word, context: context);
-                widget.showSearchHistory(false); // 검색 시 히스토리 안보여줌.
-                searchProvider.saveHistory(word);
-                FocusScope.of(context).unfocus();
+                if (!isTextEmpty) {
+                  searchProvider.searchPosts(query: word, context: context);
+                  widget.showSearchHistory(false); // 검색 시 히스토리 안보여줌.
+                  searchProvider.saveHistory(word);
+                  FocusScope.of(context).unfocus();
+                }
               },
             ),
           ),
@@ -93,6 +99,7 @@ class SearchAppTextFieldState extends State<SearchAppTextField> {
               fontSize: 14,
               textColor: GuamColorFamily.purpleCore,
               onPressed: () {
+                isTextEmpty = true;
                 widget.showSearchHistory(true); // 취소하면 history 보여줌.
                 FocusScope.of(context).unfocus();
                 controller.clear();
