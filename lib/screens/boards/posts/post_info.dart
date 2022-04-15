@@ -84,6 +84,42 @@ class _PostInfoState extends State<PostInfo> {
       }
     }
 
+    Future scrapOrUnscrapPost() async {
+      try {
+        if (!isScrapped) {
+          return await postsProvider.scrapPost(
+            postId: widget.post.id,
+          ).then((successful) {
+            if (successful) {
+              setState(() {
+                isScrapped = true;
+                scrapCount ++;
+              });
+              successful = true;
+            } else {
+              return postsProvider.fetchPosts(postsProvider.boardId);
+            }
+          });
+        } else {
+          return await postsProvider.unscrapPost(
+            postId: widget.post.id,
+          ).then((successful) {
+            if (successful) {
+              setState(() {
+                isScrapped = !isScrapped;
+                scrapCount --;
+              });
+              successful = true;
+            } else {
+              return postsProvider.fetchPosts(postsProvider.boardId);
+            }
+          });
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+
     return Padding(
       padding: EdgeInsets.only(top: 8, bottom: 12),
       child: Row(
@@ -119,12 +155,12 @@ class _PostInfoState extends State<PostInfo> {
               ),
               IconText(
                 iconSize: widget.iconSize,
-                text: widget.post.scrapCount.toString(),
-                iconPath: widget.post.isScrapped
+                text: scrapCount.toString(),
+                iconPath: isScrapped
                     ? 'assets/icons/scrap_filled.svg'
                     : 'assets/icons/scrap_outlined.svg',
-                onPressed: () {},
-                iconColor: widget.post.isScrapped
+                onPressed: scrapOrUnscrapPost,
+                iconColor: isScrapped
                     ? GuamColorFamily.purpleCore
                     : widget.iconColor,
                 textColor: widget.iconColor,
