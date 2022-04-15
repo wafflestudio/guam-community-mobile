@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/screens/app/tab_item.dart';
@@ -11,7 +12,7 @@ import 'package:provider/provider.dart';
 import '../../../../providers/home/home_provider.dart';
 import '../../../../providers/user_auth/authenticate.dart';
 
-class PostPreview extends StatelessWidget {
+class PostPreview extends StatelessWidget with Toast {
   final Post post;
 
   PostPreview(this.post);
@@ -19,6 +20,7 @@ class PostPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Authenticate authProvider = context.watch<Authenticate>();
+    Posts postProvider = context.read<Posts>();
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -32,15 +34,25 @@ class PostPreview extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                /**
-                * TODO: ryu
-                * Post provider is out of scope in search tab.
-                */
                 builder: (_) => MultiProvider(
                   providers: [
                     ChangeNotifierProvider(create: (_) => Posts(authProvider)),
                   ],
-                  child: PostDetail(post),
+                  child: FutureBuilder(
+                    future: postProvider.getPost(post.id),
+                    builder: (_, AsyncSnapshot<Post> snapshot) {
+                      if (snapshot.hasData) {
+                        return PostDetail(snapshot.data);
+                      } else if (snapshot.hasError) {
+                        Navigator.pop(context);
+                        postProvider.fetchPosts(0);
+                        showToast(success: false, msg: '게시글을 찾을 수 없습니다.');
+                        return null;
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    }
+                  ),
                 ),
               ),
             );
