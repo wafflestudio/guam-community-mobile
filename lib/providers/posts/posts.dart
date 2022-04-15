@@ -395,7 +395,7 @@ class Posts extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future unlikePost({int postId}) async {
+  Future<bool> unlikePost({int postId}) async {
     loading = true;
     bool successful = false;
     try {
@@ -415,6 +415,74 @@ class Posts extends ChangeNotifier with Toast {
               case 401: msg = "권한이 없습니다."; break;
               case 404: msg = "존재하지 않는 게시글입니다."; break;
               case 409: msg = "이미 '좋아요' 취소한 글입니다."; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+        loading = false;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return successful;
+  }
+
+  Future<bool> scrapPost({int postId}) async {
+    loading = true;
+    bool successful = false;
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .post(
+          path: "community/api/v1/posts/$postId/scraps",
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            loading = false;
+            successful = true;
+          } else {
+            String msg = "알 수 없는 오류가 발생했습니다.";
+            switch (response.statusCode) {
+              case 401: msg = "권한이 없습니다."; break;
+              case 404: msg = "존재하지 않는 게시글입니다."; break;
+              case 409: msg = "이미 스크랩한 글입니다."; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+        loading = false;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return successful;
+  }
+
+  Future<bool> unscrapPost({int postId}) async {
+    loading = true;
+    bool successful = false;
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .delete(
+          path: "community/api/v1/posts/$postId/scraps",
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            loading = false;
+            successful = true;
+          } else {
+            String msg = "알 수 없는 오류가 발생했습니다.";
+            switch (response.statusCode) {
+              case 401: msg = "권한이 없습니다."; break;
+              case 404: msg = "존재하지 않는 게시글입니다."; break;
+              case 409: msg = "이미 스크랩 취소한 글입니다."; break;
             }
             showToast(success: false, msg: msg);
           }
