@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:guam_community_client/screens/app/splash/splash_screen.dart';
@@ -46,11 +47,12 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider<Authenticate>(create: (_) => Authenticate()),
             ],
             child: MaterialApp(
-              debugShowCheckedModeBanner: false,
               initialRoute: '/',
               routes: {
                 '/': (context) => Auth(),
               },
+              builder: BotToastInit(),
+              debugShowCheckedModeBanner: false,
               theme: ThemeData(
                 primaryColor: GuamColorFamily.purpleCore,
                 fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
