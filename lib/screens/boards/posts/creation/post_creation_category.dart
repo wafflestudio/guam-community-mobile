@@ -33,7 +33,6 @@ class _PostCreationCategoryState extends State<PostCreationCategory> {
       widget.input['category'] = '';
       widget.input['categoryId'] = 0;
     });
-    print(widget.input);
   }
 
   @override

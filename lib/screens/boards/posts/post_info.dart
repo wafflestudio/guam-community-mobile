@@ -3,9 +3,12 @@ import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../../../commons/common_img_nickname.dart';
+import 'package:provider/provider.dart';
 
-class PostInfo extends StatelessWidget {
+import '../../../commons/common_img_nickname.dart';
+import '../../../providers/posts/posts.dart';
+
+class PostInfo extends StatefulWidget {
   final Post post;
   final double iconSize;
   final bool showProfile;
@@ -21,51 +24,146 @@ class PostInfo extends StatelessWidget {
   });
 
   @override
+  State<PostInfo> createState() => _PostInfoState();
+}
+
+class _PostInfoState extends State<PostInfo> {
+  bool isLiked;
+  bool isScrapped;
+  int likeCount;
+  int scrapCount;
+
+  @override
+  void initState() {
+    isLiked = widget.post.isLiked;
+    isScrapped = widget.post.isScrapped;
+    likeCount = widget.post.likeCount;
+    scrapCount = widget.post.scrapCount;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final postsProvider = context.watch<Posts>();
+
+    Future likeOrUnlikePost() async {
+      try {
+        if (!isLiked) {
+          return await postsProvider.likePost(
+            postId: widget.post.id,
+          ).then((successful) {
+            if (successful) {
+              setState(() {
+                isLiked = true;
+                likeCount ++;
+              });
+              successful = true;
+            } else {
+              print(postsProvider.boardId);
+              return postsProvider.fetchPosts(postsProvider.boardId);
+            }
+          });
+        } else {
+          return await postsProvider.unlikePost(
+            postId: widget.post.id,
+          ).then((successful) {
+            if (successful) {
+              setState(() {
+                isLiked = !isLiked;
+                likeCount --;
+              });
+              successful = true;
+            } else {
+              print(postsProvider.boardId);
+              return postsProvider.fetchPosts(postsProvider.boardId);
+            }
+          });
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+
+    Future scrapOrUnscrapPost() async {
+      try {
+        if (!isScrapped) {
+          return await postsProvider.scrapPost(
+            postId: widget.post.id,
+          ).then((successful) {
+            if (successful) {
+              setState(() {
+                isScrapped = true;
+                scrapCount ++;
+              });
+              successful = true;
+            } else {
+              return postsProvider.fetchPosts(postsProvider.boardId);
+            }
+          });
+        } else {
+          return await postsProvider.unscrapPost(
+            postId: widget.post.id,
+          ).then((successful) {
+            if (successful) {
+              setState(() {
+                isScrapped = !isScrapped;
+                scrapCount --;
+              });
+              successful = true;
+            } else {
+              return postsProvider.fetchPosts(postsProvider.boardId);
+            }
+          });
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+
     return Padding(
       padding: EdgeInsets.only(top: 8, bottom: 12),
       child: Row(
         children: [
-          if (showProfile)
+          if (widget.showProfile)
             CommonImgNickname(
-              imgUrl: post.profile.profileImg,
-              nickname: post.profile.nickname,
-              profileClickable: profileClickable,
+              imgUrl: widget.post.profile.profileImg,
+              nickname: widget.post.profile.nickname,
+              profileClickable: widget.profileClickable,
               nicknameColor: GuamColorFamily.grayscaleGray2,
             ),
-          if (showProfile) Spacer(),
+          if (widget.showProfile) Spacer(),
           Row(
             children: [
               IconText(
-                iconSize: iconSize,
-                text: post.likeCount.toString(),
-                iconPath: post.isLiked ?? false  /// 서버 수정 후 ?? false 삭제
+                iconSize: widget.iconSize,
+                text: likeCount.toString(),
+                iconPath: isLiked
                     ? 'assets/icons/like_filled.svg'
                     : 'assets/icons/like_outlined.svg',
-                onPressed: (){},
-                iconColor: post.isLiked ?? false  /// 서버 수정 후 ?? false 삭제
+                onPressed: likeOrUnlikePost,
+                iconColor: isLiked
                     ? GuamColorFamily.redCore
-                    : iconColor,
-                textColor: iconColor,
+                    : widget.iconColor,
+                textColor: widget.iconColor,
               ),
               IconText(
-                iconSize: iconSize,
-                text: post.commentCount.toString(),
+                iconSize: widget.iconSize,
+                text: widget.post.commentCount.toString(),
                 iconPath: 'assets/icons/comment.svg',
-                iconColor: iconColor,
-                textColor: iconColor,
+                iconColor: widget.iconColor,
+                textColor: widget.iconColor,
               ),
               IconText(
-                iconSize: iconSize,
-                text: post.scrapCount.toString(),
-                iconPath: post.isScrapped ?? false  /// 서버 수정 후 ?? false 삭제
+                iconSize: widget.iconSize,
+                text: scrapCount.toString(),
+                iconPath: isScrapped
                     ? 'assets/icons/scrap_filled.svg'
                     : 'assets/icons/scrap_outlined.svg',
-                onPressed: (){},
-                iconColor: post.isScrapped ?? false  /// 서버 수정 후 ?? false 삭제
+                onPressed: scrapOrUnscrapPost,
+                iconColor: isScrapped
                     ? GuamColorFamily.purpleCore
-                    : iconColor,
-                textColor: iconColor,
+                    : widget.iconColor,
+                textColor: widget.iconColor,
               ),
             ],
           ),

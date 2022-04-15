@@ -8,6 +8,7 @@ import '../profiles/profile.dart';
 /// title, content, boardType, category는 게시글 수정 시 non-final로 정의
 class Post extends ChangeNotifier {
   final int id;
+  final int boardId;
   String boardType; // ex) 익명, 홍보, 정보공유 게시판
   final Profile profile;
   String title;
@@ -26,6 +27,7 @@ class Post extends ChangeNotifier {
   Post({
     this.id,
     this.profile,
+    this.boardId,
     this.boardType,
     this.title,
     this.content,
@@ -82,10 +84,7 @@ class Post extends ChangeNotifier {
     return Post(
       id: json['id'],
       profile: profile,
-      /**
-       * Server에서 boardType 대신 boardId로 주고 있어 함수(transferBoardId)를 통해
-       * int -> str 번역하고 있는데, 추후 str (ex. 익명게시판)으로 받아오면 해당 함수 없애기
-       **/
+      boardId: json['boardId'],
       boardType: transferBoardId(json['boardId']),
       title: json['title'],
       content: json['content'],
