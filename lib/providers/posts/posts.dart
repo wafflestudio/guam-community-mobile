@@ -18,7 +18,7 @@ class Posts extends ChangeNotifier with Toast {
   List<Post> _posts;
   List<Post> _newPosts;
   List<Comment> _comments;
-  int boardId = 0; // default : 피드게시판
+  int _boardId = 0; // default : 피드게시판
   bool loading = false;
 
   Posts(Authenticate authProvider) {
@@ -28,6 +28,7 @@ class Posts extends ChangeNotifier with Toast {
 
   Post get post => _post;
   bool get hasNext => _hasNext;
+  int get boardId => _boardId;
   List<Post> get posts => _posts;
   List<Post> get newPosts => _newPosts;
   List<Comment> get comments => _comments;
@@ -41,6 +42,8 @@ class Posts extends ChangeNotifier with Toast {
         queryParams: {"boardId": boardId.toString()},
         authToken: await _authProvider.getFirebaseIdToken(),
       ).then((response) async {
+        /// 현재 게시판 위치 저장해두기 (게시판 reload 시 사용)
+        _boardId = boardId;
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
@@ -149,7 +152,6 @@ class Posts extends ChangeNotifier with Toast {
 
   Future<Post> getPost(int postId) async {
     loading = true;
-
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
 
@@ -164,8 +166,6 @@ class Posts extends ChangeNotifier with Toast {
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
             _post = Post.fromJson(jsonData);
           } else {
-            // final jsonUtf8 = decodeKo(response);
-            // final String err = json.decode(jsonUtf8)["message"];
             String msg = '알 수 없는 오류가 발생했습니다.';
             switch (response.statusCode) {
               case 401: msg = '접근 권한이 없습니다.'; break;
@@ -349,6 +349,74 @@ class Posts extends ChangeNotifier with Toast {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];
             // showToast(success: false, msg: err);
+          }
+        });
+        loading = false;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return successful;
+  }
+
+  Future<bool> likePost({int postId}) async {
+    loading = true;
+    bool successful = false;
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .post(
+          path: "community/api/v1/posts/$postId/likes",
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            loading = false;
+            successful = true;
+          } else {
+            String msg = "알 수 없는 오류가 발생했습니다.";
+            switch (response.statusCode) {
+              case 401: msg = "권한이 없습니다."; break;
+              case 404: msg = "존재하지 않는 게시글입니다."; break;
+              case 409: msg = "이미 '좋아요'한 글입니다."; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+        loading = false;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return successful;
+  }
+
+  Future unlikePost({int postId}) async {
+    loading = true;
+    bool successful = false;
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .delete(
+          path: "community/api/v1/posts/$postId/likes",
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            loading = false;
+            successful = true;
+          } else {
+            String msg = "알 수 없는 오류가 발생했습니다.";
+            switch (response.statusCode) {
+              case 401: msg = "권한이 없습니다."; break;
+              case 404: msg = "존재하지 않는 게시글입니다."; break;
+              case 409: msg = "이미 '좋아요' 취소한 글입니다."; break;
+            }
+            showToast(success: false, msg: msg);
           }
         });
         loading = false;
