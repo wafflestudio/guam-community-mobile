@@ -57,9 +57,7 @@ class _PostInfoState extends State<PostInfo> {
                 isLiked = true;
                 likeCount ++;
               });
-              successful = true;
             } else {
-              print(postsProvider.boardId);
               return postsProvider.fetchPosts(postsProvider.boardId);
             }
           });
@@ -72,9 +70,7 @@ class _PostInfoState extends State<PostInfo> {
                 isLiked = !isLiked;
                 likeCount --;
               });
-              successful = true;
             } else {
-              print(postsProvider.boardId);
               return postsProvider.fetchPosts(postsProvider.boardId);
             }
           });
@@ -95,7 +91,6 @@ class _PostInfoState extends State<PostInfo> {
                 isScrapped = true;
                 scrapCount ++;
               });
-              successful = true;
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);
             }
@@ -109,7 +104,6 @@ class _PostInfoState extends State<PostInfo> {
                 isScrapped = !isScrapped;
                 scrapCount --;
               });
-              successful = true;
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);
             }
