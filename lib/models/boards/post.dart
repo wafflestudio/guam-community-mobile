@@ -5,13 +5,14 @@ import 'package:guam_community_client/models/boards/category.dart' as Category;
 import 'package:guam_community_client/models/boards/comment.dart';
 import '../profiles/profile.dart';
 
+/// title, content, boardType, category는 게시글 수정 시 non-final로 정의
 class Post extends ChangeNotifier {
   final int id;
-  final String boardType; // ex) 익명, 홍보, 정보공유 게시판
+  String boardType; // ex) 익명, 홍보, 정보공유 게시판
   final Profile profile;
-  final String title;
-  final String content;
-  final Category.Category category; // ex) 데이터분석, 개발, 디자인
+  String title;
+  String content;
+  Category.Category category; // ex) 데이터분석, 개발, 디자인
   final List<dynamic> imagePaths; // 서버 수정 전까지 쓰이는 임시방편 속성
   final List<Comment> comments;
   final int likeCount;

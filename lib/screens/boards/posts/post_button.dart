@@ -23,17 +23,15 @@ class PostButton extends StatelessWidget {
               width: 30,
               height: 30,
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => ChangeNotifierProvider.value(
-                    value: context.read<Posts>(),
-                    child: PostCreation(),
-                  )
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ChangeNotifierProvider.value(
+                  value: context.read<Posts>(),
+                  child: PostCreation(),
                 )
-              );
-            }
+              )
+            ),
           ),
         ),
       ),

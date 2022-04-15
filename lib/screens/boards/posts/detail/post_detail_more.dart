@@ -7,17 +7,29 @@ import '../../../../commons/bottom_modal/bottom_modal_with_alert.dart';
 import '../../../../commons/bottom_modal/bottom_modal_with_message.dart';
 import '../../../../models/boards/post.dart';
 import '../../../../providers/posts/posts.dart';
-import '../../../../providers/user_auth/authenticate.dart';
 import '../creation/post_creation.dart';
 import '../post_comment_report.dart';
 
 class PostDetailMore extends StatelessWidget {
   final Post post;
+  final Function getEditedPost;
 
-  PostDetailMore(this.post);
+  PostDetailMore(this.post, this.getEditedPost);
 
   @override
   Widget build(BuildContext context) {
+    _navigatePage(BuildContext context) async {
+      final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider.value(
+            value: context.read<Posts>(),
+            child: PostCreation(isEdit: true, editTarget: post),
+          ),
+        ),
+      );
+      getEditedPost(result);
+    }
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(left: 24, top: 24, bottom: 21),
@@ -26,18 +38,7 @@ class PostDetailMore extends StatelessWidget {
           children: post.isMine ? [
             BottomModalDefault(
               text: '수정하기',
-              /// Navigator 사용 시 Provider가 정의된 route가 달라져 새롭게 정의해야함.
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => ChangeNotifierProvider(
-                    create: (context) => Posts(context.read<Authenticate>()),
-                    child: PostCreation(
-                      isEdit: true,
-                      editTarget: post, // 수정할 대상 (Post)
-                    ),
-                  ),
-                ),
-              ),
+              onPressed: () => _navigatePage(context),
             ),
             BottomModalWithAlert(
               funcName: '삭제하기',

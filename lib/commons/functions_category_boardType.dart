@@ -27,6 +27,18 @@ transferBoardType(String boardType) {
   return boardId;
 }
 
+transferCategoryId(int categoryId) {
+  String category;
+  switch (categoryId) {
+    case 1: category = '개발'; break;
+    case 2: category = '데이터분석'; break;
+    case 3: category = '디자인'; break;
+    case 4: category = '기획/마케팅'; break;
+    case 5: category = '기타'; break;
+  }
+  return category;
+}
+
 transferCategory(String category) {
   int categoryId;
   switch (category) {
