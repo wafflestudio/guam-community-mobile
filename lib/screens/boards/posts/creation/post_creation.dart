@@ -17,7 +17,6 @@ import 'package:provider/provider.dart';
 import '../../../../commons/functions_category_boardType.dart';
 import '../../../../models/boards/post.dart';
 import '../../../../providers/posts/posts.dart';
-import '../detail/post_detail.dart';
 
 class PostCreation extends StatefulWidget {
   final bool isEdit;
@@ -33,13 +32,40 @@ class _PostCreationState extends State<PostCreation> {
   Map input = {};
   bool isBoardAnonymous = false;
 
+  @override
+  void initState() {
+    Post editPost = widget.editTarget;
+    if (widget.editTarget != null) {
+      input = {
+        'title': editPost.title,
+        'content': editPost.content,
+        'boardType': editPost.boardType,
+        'boardId': transferBoardType(editPost.boardType),
+        'category': editPost.category != null ? editPost.category.title : "",
+        'categoryId': editPost.category != null ? editPost.category.categoryId : 0,
+        'images': editPost.imagePaths, /// 이미지는 S3 주소 받아와서 그대로 전송 (수정 불가능)
+      };
+    } else {
+      input = {
+        'title': '',
+        'content': '',
+        'boardId': '',
+        'boardType': '',
+        'categoryId': '',
+        'category': '',
+        'images': [],
+      };
+    }
+    super.initState();
+  }
+
   Future createOrUpdatePost({List<File> files}) async {
     bool successful = false;
     Map<String, dynamic> fields = {
       'title': input['title'],
       'content': input['content'],
-      'boardId': input['boardId'],
-      'categoryId': input['categoryId'],
+      'boardId': input['boardId'].toString(),
+      'categoryId': input['categoryId'].toString(),
     };
 
     try {
@@ -49,18 +75,7 @@ class _PostCreationState extends State<PostCreation> {
           body: fields,
         ).then((successful) {
           if (successful) {
-            context.read<Posts>().fetchPosts(0);
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/', (route) => true
-            );
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => ChangeNotifierProvider.value(
-                  value: context.read<Posts>(),
-                  child: PostDetail(context.read<Posts>().post),
-                ),
-              ),
-            );
+            Navigator.pop(context, fields);
             successful = true;
           }
         });
@@ -80,34 +95,6 @@ class _PostCreationState extends State<PostCreation> {
       print(e);
     }
     return successful;
-  }
-
-  @override
-  void initState() {
-    Post editPost = widget.editTarget;
-    if (widget.editTarget != null) {
-      input = {
-        'title': editPost.title,
-        'content': editPost.content,
-        'boardType': editPost.boardType,
-        'boardId': transferBoardType(editPost.boardType),
-        'category': editPost.category.title,
-        'categoryId': editPost.category.categoryId,
-        'images': editPost.imagePaths,
-        /// TODO: 이미지는 기존 게시글 이미지 S3 주소 받아와서 처리할 예정
-      };
-    } else {
-      input = {
-        'title': '',
-        'content': '',
-        'boardId': '',
-        'boardType': '',
-        'categoryId': '',
-        'category': '',
-        'images': [],
-      };
-    }
-    super.initState();
   }
 
   void setBoardAnonymous(String boardType) {

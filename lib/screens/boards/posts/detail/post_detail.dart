@@ -5,6 +5,7 @@ import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
+import 'package:guam_community_client/models/boards/category.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/screens/boards/comments/comments.dart';
@@ -16,6 +17,8 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../commons/functions_category_boardType.dart';
+
 class PostDetail extends StatefulWidget {
   final Post post;
 
@@ -26,19 +29,41 @@ class PostDetail extends StatefulWidget {
 }
 
 class _PostDetailState extends State<PostDetail> {
-  final int maxRenderImgCnt = 4;
-  bool commentImageExist = false;
-  List<Map<String, dynamic>> mentionList = [];
-  Set<int> mentionListId = {};
-  List<Map<String, dynamic>> result = [];
+  Post _post;
   Future comments;
+  bool commentImageExist = false;
+  final int maxRenderImgCnt = 4;
+  Set<int> mentionListId = {};
+  List<Map<String, dynamic>> mentionList = [];
+  List<Map<String, dynamic>> result = [];
 
   @override
   void initState() {
-    mentionList = [widget.post.profile.toJson()];
-    mentionListId = {widget.post.profile.id};
-    comments = context.read<Posts>().fetchComments(widget.post.id);
+    _post = widget.post;
+    mentionList = [_post.profile.toJson()];
+    mentionListId = {_post.profile.id};
+    comments = context.read<Posts>().fetchComments(_post.id);
     super.initState();
+  }
+
+  /// 게시글 수정 시, API의 request는 Client가 들고있다는 원칙 및 서버 통신 성공 가정 하에
+  /// 수정 버튼 클릭하면 사용자에게 수정 내용 바로 반영되도록 만듦.
+  getEditedPost(Map editedPost) {
+    int editedBoardId = int.parse(editedPost['boardId']);
+    int editedCategoryId = int.parse(editedPost['categoryId']);
+
+    Category editedCategory = Category(
+      postId: widget.post.id,
+      categoryId: editedCategoryId,
+      title: transferCategoryId(editedCategoryId),
+    );
+
+    setState(() {
+      _post.title = editedPost['title'];
+      _post.content = editedPost['content'];
+      _post.boardType = transferBoardId(editedBoardId);
+      _post.category = editedCategory;
+    });
   }
 
   void addCommentImage() {
@@ -60,12 +85,12 @@ class _PostDetailState extends State<PostDetail> {
     final postsProvider = context.watch<Posts>();
 
     void fetchComments() {
-      comments = postsProvider.fetchComments(widget.post.id);
+      comments = postsProvider.fetchComments(_post.id);
     }
 
     Future createComment({Map<String, dynamic> fields, dynamic files}) async {
       return await postsProvider.createComment(
-        postId: widget.post.id,
+        postId: _post.id,
         fields: fields,
         files: files,
       ).then((successful) {
@@ -86,7 +111,7 @@ class _PostDetailState extends State<PostDetail> {
                 IconButton(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   constraints: BoxConstraints(),
-                  icon: SvgPicture.asset(widget.post.isScrapped
+                  icon: SvgPicture.asset(_post.isScrapped
                       ? 'assets/icons/scrap_filled.svg'
                       : 'assets/icons/scrap_outlined.svg'
                   ),
@@ -96,12 +121,13 @@ class _PostDetailState extends State<PostDetail> {
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
                   icon: SvgPicture.asset('assets/icons/more.svg'),
-                  onPressed: () => showMaterialModalBottomSheet(
+                  onPressed: () => showCupertinoModalBottomSheet(
+                    /// DetailMore에서 Detail로 수정된 게시글 정보 넘기기
                     context: context,
                     useRootNavigator: true,
                     builder: (_) => ChangeNotifierProvider.value(
                       value: context.read<Posts>(),
-                      child: PostDetailMore(widget.post)
+                      child: PostDetailMore(_post, getEditedPost)
                     ),
                     backgroundColor: GuamColorFamily.grayscaleWhite,
                     shape: RoundedRectangleBorder(
@@ -126,16 +152,16 @@ class _PostDetailState extends State<PostDetail> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PostDetailBanner(widget.post),
+                PostDetailBanner(_post),
                 Padding(
                   padding: EdgeInsets.only(top: 8, bottom: 20),
                   child: CustomDivider(color: GuamColorFamily.grayscaleGray7),
                 ),
-                PostDetailBody(widget.post),
+                PostDetailBody(_post),
                 Padding(
                   padding: EdgeInsets.only(top: 14, bottom: 8),
                   child: PostInfo(
-                    post: widget.post,
+                    post: _post,
                     iconSize: 24,
                     showProfile: false,
                     iconColor: GuamColorFamily.grayscaleGray4,
@@ -165,7 +191,7 @@ class _PostDetailState extends State<PostDetail> {
                             children: [
                               ...snapshot.data.map((comment) => Comments(
                                 comment: comment,
-                                isAuthor: widget.post.isMine,
+                                isAuthor: _post.isMine,
                               ))
                             ],
                           );
