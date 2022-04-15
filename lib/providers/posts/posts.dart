@@ -240,14 +240,15 @@ class Posts extends ChangeNotifier with Toast {
         ).then((response) {
           print(response.statusCode);
           if (response.statusCode == 200) {
-            final jsonUtf8 = decodeKo(response);
-            final String msg = json.decode(jsonUtf8)["message"];
-            // showToast(success: true, msg: msg);
+            showToast(success: true, msg: '게시글을 삭제했습니다.');
             successful = true;
           } else {
-            final jsonUtf8 = decodeKo(response);
-            final String err = json.decode(jsonUtf8)["message"];
-            // showToast(success: false, msg: err);
+            String msg = '알 수 없는 오류가 발생했습니다.';
+            switch (response.statusCode) {
+              case 401: msg = '삭제 권한이 없습니다.'; break;
+              case 404: msg = '존재하지 않는 게시글입니다.'; break;
+            }
+            showToast(success: false, msg: msg);
           }
         });
         loading = false;

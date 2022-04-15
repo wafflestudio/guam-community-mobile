@@ -14,7 +14,6 @@ import 'package:guam_community_client/screens/boards/posts/detail/post_detail_bo
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail_more.dart';
 import 'package:guam_community_client/screens/boards/posts/post_info.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../commons/functions_category_boardType.dart';
@@ -49,6 +48,7 @@ class _PostDetailState extends State<PostDetail> {
   /// 게시글 수정 시, API의 request는 Client가 들고있다는 원칙 및 서버 통신 성공 가정 하에
   /// 수정 버튼 클릭하면 사용자에게 수정 내용 바로 반영되도록 만듦.
   getEditedPost(Map editedPost) {
+    if (editedPost == null) return;
     int editedBoardId = int.parse(editedPost['boardId']);
     int editedCategoryId = int.parse(editedPost['categoryId']);
 
@@ -121,7 +121,7 @@ class _PostDetailState extends State<PostDetail> {
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
                   icon: SvgPicture.asset('assets/icons/more.svg'),
-                  onPressed: () => showCupertinoModalBottomSheet(
+                  onPressed: () => showModalBottomSheet(
                     /// DetailMore에서 Detail로 수정된 게시글 정보 넘기기
                     context: context,
                     useRootNavigator: true,
