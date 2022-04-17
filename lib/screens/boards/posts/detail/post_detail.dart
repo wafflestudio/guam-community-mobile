@@ -5,6 +5,7 @@ import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/boards/category.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
@@ -27,7 +28,7 @@ class PostDetail extends StatefulWidget {
   State<PostDetail> createState() => _PostDetailState();
 }
 
-class _PostDetailState extends State<PostDetail> {
+class _PostDetailState extends State<PostDetail> with Toast {
   Post _post;
   Future comments;
   bool commentImageExist = false;
@@ -177,6 +178,14 @@ class _PostDetailState extends State<PostDetail> {
                     builder: (_, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         if (snapshot.data.isNotEmpty) {
+                          /// FutureBuilder의 snapshot에서 들고 있어 map으로 뿌려주는
+                          /// Comment 인스턴스는 Provider에 속하지 않으므로
+                          /// snapshot에 직접 접근해서 지우는 방식을 택하자.
+                          void deleteComment(int commentId) {
+                            setState(() {
+                              snapshot.data.removeWhere((c) => c.id == commentId);
+                            });
+                          }
                           Future.delayed(
                             Duration.zero, () {
                               if (this.mounted)
@@ -191,49 +200,11 @@ class _PostDetailState extends State<PostDetail> {
                             children: [
                               ...snapshot.data.map((comment) => Comments(
                                 comment: comment,
+                                deleteFunc: deleteComment,
                                 isAuthor: _post.isMine,
                               ))
                             ],
                           );
-                          /// todo: PR 분리하여 이슈 해결할 예정 (CommentMore 위젯)
-                          /// (아래는 Could not find the correct Provider<Posts> above this CommentMore Widget 에러 해결을 위한 시나리오)
-                          // return ChangeNotifierProvider(
-                          //   create: (context) => Posts(context.read<Authenticate>()),
-                          //   child: Column(
-                          //     children: [
-                          //       ...snapshot.data.map((comment) => Comments(
-                          //         comment: comment,
-                          //         isAuthor: comment.isMine,
-                          //       ))
-                          //     ],
-                          //   ),
-                          // );
-
-                          //   return ChangeNotifierProvider.value(
-                          //   value: context.read<Authenticate>(),
-                          //   child: Column(
-                          //     children: [
-                          //       ...snapshot.data.map((comment) => Comments(
-                          //         comment: comment,
-                          //         isAuthor: comment.isMine,
-                          //       ))
-                          //     ]
-                          //   ),
-                          // );
-
-                          // return MultiProvider(
-                          //   providers: [
-                          //     ChangeNotifierProvider(create: (_) => Posts(context.read<Authenticate>())),
-                          //   ],
-                          //   child: Column(
-                          //     children: [
-                          //       ...snapshot.data.map((comment) => Comments(
-                          //         comment: comment,
-                          //         isAuthor: comment.isMine,
-                          //       ))
-                          //     ],
-                          //   ),
-                          // );
                         } else {
                           return Padding(
                             padding: EdgeInsets.only(top: 24),
@@ -242,14 +213,13 @@ class _PostDetailState extends State<PostDetail> {
                                 "작성된 댓글이 없습니다.",
                                 style: TextStyle(fontSize: 13, color: GuamColorFamily.grayscaleGray5),
                               ),
-                            )
+                            ),
                           );
                         }
                       } else if (snapshot.hasError) {
-                        /// TODO: 에러 메시지 띄워주기
-                        return Center(child: CircularProgressIndicator());
+                        showToast(success: true, msg: '알 수 없는 오류가 발생했습니다.');
+                        return null;
                       } else {
-                        /// API 통신 중...
                         return Center(child: CircularProgressIndicator());
                       }
                     }
