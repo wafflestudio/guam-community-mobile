@@ -18,7 +18,7 @@ class PostDetailMore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _navigatePage(BuildContext context) async {
+    void _navigatePage(BuildContext context) async {
       final result = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -30,6 +30,7 @@ class PostDetailMore extends StatelessWidget {
       );
       getEditedPost(result);
     }
+
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(left: 24, top: 24, bottom: 21),

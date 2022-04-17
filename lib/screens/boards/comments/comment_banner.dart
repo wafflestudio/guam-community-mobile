@@ -10,8 +10,9 @@ import '../../../styles/fonts.dart';
 class CommentBanner extends StatelessWidget {
   final Comment comment;
   final bool isAuthor;
+  final Function deleteFunc;
 
-  CommentBanner(this.comment, this.isAuthor);
+  CommentBanner(this.comment, this.isAuthor, this.deleteFunc);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,7 @@ class CommentBanner extends StatelessWidget {
                   topRight: Radius.circular(20),
                 )
               ),
-              builder: (context) => CommentMore(comment),
+              builder: (context) => CommentMore(comment, deleteFunc),
             ),
           ),
         ],
