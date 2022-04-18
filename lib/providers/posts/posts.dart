@@ -309,11 +309,15 @@ class Posts extends ChangeNotifier with Toast {
           if (response.statusCode == 200) {
             successful = true;
             loading = false;
+            showToast(success: true, msg: '댓글을 작성했습니다.');
           } else {
-            final jsonUtf8 = decodeKo(response);
-            // final String err = json.decode(jsonUtf8)["error"];
-            // TODO: show toast after impl. toast
-            // showToast(success: false, msg: err);
+            String msg = "알 수 없는 오류가 발생했습니다.";
+            switch (response.statusCode) {
+              case 400: msg = "빈 댓글은 입력할 수 없습니다."; break;
+              case 401: msg = "권한이 없습니다."; break;
+              case 404: msg = "존재하지 않는 글입니다."; break;
+            }
+            showToast(success: false, msg: msg);
           }
         });
         loading = false;
@@ -338,17 +342,19 @@ class Posts extends ChangeNotifier with Toast {
             .delete(
           path: "community/api/v1/posts/$postId/comments/$commentId",
           authToken: authToken,
-        ).then((response) {
-          print(response.statusCode);
+        ).then((response) async {
           if (response.statusCode == 200) {
-            final jsonUtf8 = decodeKo(response);
-            final String msg = json.decode(jsonUtf8)["message"];
-            // showToast(success: true, msg: msg);
+            fetchComments(postId);
+            showToast(success: true, msg: '댓글을 삭제했습니다.');
             successful = true;
           } else {
-            final jsonUtf8 = decodeKo(response);
-            final String err = json.decode(jsonUtf8)["message"];
-            // showToast(success: false, msg: err);
+            String msg = "알 수 없는 오류가 발생했습니다.";
+            switch (response.statusCode) {
+              case 401: msg = "권한이 없습니다."; break;
+              case 404: msg = "존재하지 않는 댓글입니다."; break;
+              case 409: msg = "이미 삭제된 댓글입니다."; break;
+            }
+            showToast(success: false, msg: msg);
           }
         });
         loading = false;
