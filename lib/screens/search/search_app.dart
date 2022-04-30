@@ -3,6 +3,7 @@ import 'package:guam_community_client/screens/search/search_feed.dart';
 import 'package:guam_community_client/screens/search/search_history.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
+import '../../providers/posts/posts.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'search_app_bar.dart';
 import 'search_app_textfield.dart';
@@ -16,6 +17,7 @@ class SearchApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Search(authProvider)),
+        ChangeNotifierProvider(create: (_) => Posts(authProvider)),
       ],
       child: SearchAppScaffold(),
     );
