@@ -6,15 +6,18 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import '../../providers/user_auth/authenticate.dart';
 import 'notifications_body.dart';
 import '../../commons/custom_app_bar.dart';
 
 class NotificationsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.watch<Authenticate>();
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Notifications()),
+        ChangeNotifierProvider(create: (_) => Notifications(authProvider)),
       ],
       child: NotificationsAppScaffold(),
     );
@@ -31,6 +34,7 @@ class _NotificationsAppScaffoldState extends State<NotificationsAppScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: NotificationsBody(),
       backgroundColor: GuamColorFamily.grayscaleWhite,
       appBar: CustomAppBar(
         title: '알림',
@@ -109,7 +113,6 @@ class _NotificationsAppScaffoldState extends State<NotificationsAppScaffold> {
           ),
         )
       ),
-      body: NotificationsBody(),
     );
   }
 }

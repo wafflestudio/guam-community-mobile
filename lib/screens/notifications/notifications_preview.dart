@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
+import 'package:guam_community_client/helpers/http_request.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/notification.dart' as Notification;
 import 'package:guam_community_client/styles/colors.dart';
@@ -13,9 +14,6 @@ class NotificationsPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// Render DateTime using 'Jiffy' library
-    Jiffy.locale('ko');
-
     return Column(
       children: [
         Padding(
@@ -24,11 +22,8 @@ class NotificationsPreview extends StatelessWidget {
             padding: EdgeInsets.only(left: 12, top: 4, bottom: 4),
             child: InkWell(
               onTap: () {
-                // Navigator.of(context).push(
-                  // MaterialPageRoute(builder: (_) => NotificationsBody(
-                    // messages,
-                    // messageBox.otherProfile.nickname,
-                  // ))
+                // Navigator.of(context, rootNavigator: true).push(
+                  // MaterialPageRoute(builder: (_) => NotificationsBody())
                 // );
               },
               child: Row(
@@ -43,8 +38,8 @@ class NotificationsPreview extends StatelessWidget {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: notification.otherProfile.profileImg != null
-                                  ? NetworkImage(notification.otherProfile.profileImg)
+                              image: notification.writer.profileImg != null
+                                  ? NetworkImage(HttpRequest().s3BaseAuthority +  notification.writer.profileImg)
                                   : SvgProvider('assets/icons/profile_image.svg')
                           ),
                         ),
@@ -54,7 +49,7 @@ class NotificationsPreview extends StatelessWidget {
                           top: 0,
                           child: CircleAvatar(
                             backgroundColor: GuamColorFamily.fuchsiaCore,
-                            radius: 6,
+                            radius: 4,
                           )
                         ),
                     ],
@@ -65,22 +60,34 @@ class NotificationsPreview extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          notification.otherProfile.nickname
-                            + _typeDescription(notification.type),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                            color: notification.isRead
-                                ? GuamColorFamily.grayscaleGray3
-                                : GuamColorFamily.grayscaleGray1,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              notification.writer.nickname,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: notification.isRead
+                                    ? GuamColorFamily.grayscaleGray3
+                                    : GuamColorFamily.grayscaleGray1,
+                              ),
+                            ),
+                            Text(
+                              _typeDescription(notification.kind),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                                color: notification.isRead
+                                    ? GuamColorFamily.grayscaleGray3
+                                    : GuamColorFamily.grayscaleGray1,
+                              ),
+                            ),
+                          ],
                         ),
-                        if (notification.comment != null)
+                        if (notification.body != null)
                           Text(
-                            notification.comment,
+                            notification.body,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -120,10 +127,10 @@ class NotificationsPreview extends StatelessWidget {
     );
   }
 
-  _typeDescription(String type) {
+  _typeDescription(String kind) {
     String description;
-    switch (type) {
-      case 'commented': description = ' 님이 댓글을 남겼습니다.'; break;
+    switch (kind) {
+      case 'POST_COMMENT': description = ' 님이 댓글을 남겼습니다.'; break;
       case 'scrapped': description = ' 님이 나의 게시글을 저장했습니다.'; break;
       case 'post_liked': description = ' 님이 나의 게시글을 좋아합니다.'; break;
       case 'comment_liked': description = ' 님이 나의 댓글을 좋아합니다.'; break;
