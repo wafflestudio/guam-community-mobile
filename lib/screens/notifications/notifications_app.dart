@@ -6,6 +6,7 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import '../../providers/posts/posts.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'notifications_body.dart';
 import '../../commons/custom_app_bar.dart';
@@ -17,6 +18,7 @@ class NotificationsApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => Posts(authProvider)),
         ChangeNotifierProvider(create: (_) => Notifications(authProvider)),
       ],
       child: NotificationsAppScaffold(),

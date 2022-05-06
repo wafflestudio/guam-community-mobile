@@ -5,6 +5,7 @@ class Notification {
   final int userId;
   final String kind;
   final String body;
+  final String linkUrl;
   final Profile writer;
   final bool isRead;
   final String createdAt;
@@ -14,6 +15,7 @@ class Notification {
     this.userId,
     this.kind,
     this.body,
+    this.linkUrl,
     this.writer,
     this.isRead,
     this.createdAt,
@@ -31,6 +33,7 @@ class Notification {
       userId: json['userId'],
       kind: json['kind'],
       body: json['body'],
+      linkUrl: json['linkUrl'],
       writer: writer,
       isRead: json['isRead'],
       createdAt: json['createdAt'],

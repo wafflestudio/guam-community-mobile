@@ -2,18 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/helpers/http_request.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/notification.dart' as Notification;
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:provider/provider.dart';
 
-class NotificationsPreview extends StatelessWidget {
+import '../../models/boards/post.dart';
+import '../../providers/posts/posts.dart';
+import '../../providers/user_auth/authenticate.dart';
+import '../boards/posts/detail/post_detail.dart';
+
+class NotificationsPreview extends StatelessWidget with Toast {
   final Notification.Notification notification;
 
   NotificationsPreview(this.notification);
 
   @override
   Widget build(BuildContext context) {
+    Posts postProvider = context.read<Posts>();
+    Authenticate authProvider = context.watch<Authenticate>();
+
     return Column(
       children: [
         Padding(
@@ -22,9 +32,30 @@ class NotificationsPreview extends StatelessWidget {
             padding: EdgeInsets.only(left: 12, top: 4, bottom: 4),
             child: InkWell(
               onTap: () {
-                // Navigator.of(context, rootNavigator: true).push(
-                  // MaterialPageRoute(builder: (_) => NotificationsBody())
-                // );
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => MultiProvider(
+                      providers: [
+                        ChangeNotifierProvider(create: (_) => Posts(authProvider)),
+                      ],
+                      child: FutureBuilder(
+                        future: postProvider.getPost(int.parse(notification.linkUrl.split('/').last)),
+                        builder: (_, AsyncSnapshot<Post> snapshot) {
+                          if (snapshot.hasData) {
+                            return PostDetail(snapshot.data);
+                          } else if (snapshot.hasError) {
+                            Navigator.pop(context);
+                            postProvider.fetchPosts(0);
+                            showToast(success: false, msg: '게시글을 찾을 수 없습니다.');
+                            return null;
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                );
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,10 +162,11 @@ class NotificationsPreview extends StatelessWidget {
     String description;
     switch (kind) {
       case 'POST_COMMENT': description = ' 님이 댓글을 남겼습니다.'; break;
+      case 'POST_COMMENT_MENTION': description = ' 님이 댓글에서 언급했습니다.'; break;
       case 'scrapped': description = ' 님이 나의 게시글을 저장했습니다.'; break;
       case 'post_liked': description = ' 님이 나의 게시글을 좋아합니다.'; break;
       case 'comment_liked': description = ' 님이 나의 댓글을 좋아합니다.'; break;
-      default: break;
+      default: description = ''; break;
     }
     return description;
   }

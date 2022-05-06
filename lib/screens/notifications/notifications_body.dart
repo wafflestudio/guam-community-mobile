@@ -41,6 +41,7 @@ class _NotificationsBodyState extends State<NotificationsBody> {
       child: RefreshIndicator(
         onRefresh: () => context.read<Notifications>().fetchNotifications(),
         child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           child: context.watch<Notifications>().loading
               ? Center(child: CircularProgressIndicator())
               : Column(children: [
