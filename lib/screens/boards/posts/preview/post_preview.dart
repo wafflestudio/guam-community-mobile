@@ -19,8 +19,8 @@ class PostPreview extends StatelessWidget with Toast {
 
   @override
   Widget build(BuildContext context) {
-    Authenticate authProvider = context.watch<Authenticate>();
     Posts postProvider = context.read<Posts>();
+    Authenticate authProvider = context.watch<Authenticate>();
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
