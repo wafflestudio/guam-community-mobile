@@ -1,45 +1,55 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:guam_community_client/helpers/http_request.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/models/messages/message_box.dart';
+import '../../helpers/decode_ko.dart';
+import '../user_auth/authenticate.dart';
 import '../user_auth/profile_data.dart';
 
-class Messages with ChangeNotifier {
+class Messages extends ChangeNotifier with Toast {
+  Authenticate _authProvider;
   List<MessageBox> _messageBoxes;
   List<Message> _messages;
   bool loading = false;
 
-  Messages({int messageBoxNo}) {
+  Messages(Authenticate authProvider) {
+    _authProvider = authProvider;
     fetchMessageBoxes();
-    fetchMessages(messageBoxNo);
   }
 
   List<MessageBox> get messageBoxes => _messageBoxes;
   List<Message> get messages => _messages;
 
   Future fetchMessageBoxes() async {
+    loading = true;
     try {
-      loading = true;
+      String authToken = await _authProvider.getFirebaseIdToken();
 
-      List<Map<String, dynamic>> messageBoxes = [
-        {
-          'id': 1,
-          'otherProfile': profiles[6],
-          'isRead': false,
-          'lastContent': '안녕하세요!',
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 8)),
-        },
-        {
-          'id': 2,
-          'otherProfile': profiles[5],
-          'isRead': true,
-          'lastContent': '사용하시는 기술 스택 관련하여 질문이 있습니다!\n저도 플러터를 공부하고 싶은데 혹시 주로 공부하시는 교재나 강의가 있으신가요?',
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
-        },
-      ];
-      _messageBoxes = messageBoxes.map((e) => MessageBox.fromJson(e)).toList();
-
-      loading = false;
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .get(
+          path: "community/api/v1/letters/letters",
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final List<dynamic> jsonList = json.decode(jsonUtf8)["letterBoxes"];
+            _messageBoxes = jsonList.map((e) => MessageBox.fromJson(e)).toList();
+            loading = false;
+          } else {
+            String msg = '알 수 없는 오류가 발생했습니다.';
+            switch (response.statusCode) {
+              case 401: msg = '열람 권한이 없습니다.'; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+        loading = false;
+      }
     } catch (e) {
       print(e);
     } finally {
