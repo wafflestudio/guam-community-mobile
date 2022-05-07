@@ -17,9 +17,6 @@ class MessagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// Render DateTime using 'Jiffy' library
-    Jiffy.locale('ko');
-
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       child: Card(
@@ -43,7 +40,7 @@ class MessagePreview extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => MessageDetail(
                     messages,
-                    messageBox.otherProfile.nickname,
+                    messageBox.otherProfile,
                   ))
                 );
             },
@@ -64,7 +61,7 @@ class MessagePreview extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (!messageBox.isRead)
+                    if (!messageBox.latestLetter.isRead)
                       Positioned(
                         top: 0,
                         child: CircleAvatar(
@@ -91,14 +88,14 @@ class MessagePreview extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        messageBox.lastContent,
+                        messageBox.latestLetter.text,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 12,
                           height: 1.6,
                           fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                          color: messageBox.isRead
+                          color: messageBox.latestLetter.isRead
                               ? GuamColorFamily.grayscaleGray4
                               : GuamColorFamily.grayscaleGray2,
                         ),
@@ -127,7 +124,7 @@ class MessagePreview extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 10, top: 14, bottom: 15),
                   child: Text(
-                    Jiffy(messageBox.createdAt).fromNow(),
+                    Jiffy(messageBox.latestLetter.createdAt).fromNow(),
                     style: TextStyle(
                       fontSize: 12,
                       height: 1.6,

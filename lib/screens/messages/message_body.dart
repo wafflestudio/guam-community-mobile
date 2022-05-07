@@ -43,7 +43,7 @@ class MessageBody extends StatelessWidget {
         padding: EdgeInsets.only(top: 18),
         child: Column(
           children: [
-            if (messageBoxes.isEmpty)
+            if (messageBoxes == null || messageBoxes.isEmpty)
               Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
@@ -57,7 +57,7 @@ class MessageBody extends StatelessWidget {
                   ),
                 ),
               ),
-            if (messageBoxes.isNotEmpty)
+            if (messageBoxes != null && messageBoxes.isNotEmpty)
               ...messageBoxes.map((messageBox) => MessagePreview(messageBox, messages)
             )
           ]

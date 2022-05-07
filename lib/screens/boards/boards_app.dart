@@ -21,7 +21,7 @@ class BoardsApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => Posts(authProvider)),
         ChangeNotifierProvider(create: (_) => Search(authProvider)),
-        ChangeNotifierProvider(create: (_) => Messages()),
+        ChangeNotifierProvider(create: (_) => Messages(authProvider)),
       ],
       child: BoardsAppScaffold(),
     );
