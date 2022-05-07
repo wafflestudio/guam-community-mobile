@@ -204,7 +204,7 @@ class _PostDetailState extends State<PostDetail> with Toast {
                                 ...snapshot.data.map((comment) => Comments(
                                   comment: comment,
                                   deleteFunc: deleteComment,
-                                  isAuthor: _post.isMine,
+                                  isAuthor: _post.profile.id == comment.profile.id,
                                 ))
                               ],
                             );
