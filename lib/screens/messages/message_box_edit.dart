@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/models/messages/message_box.dart' as MessageBox;
-import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
@@ -11,9 +8,8 @@ import 'message_preview.dart';
 
 class MessageBoxEdit extends StatelessWidget {
   final List<MessageBox.MessageBox> messageBoxes;
-  final List<Message> messages;
 
-  MessageBoxEdit(this.messageBoxes, this.messages);
+  MessageBoxEdit(this.messageBoxes);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +42,6 @@ class MessageBoxEdit extends StatelessWidget {
           children: [
             ...messageBoxes.map((messageBox) => MessagePreview(
               messageBox,
-              messages,
               editable: true,
             ))
           ]

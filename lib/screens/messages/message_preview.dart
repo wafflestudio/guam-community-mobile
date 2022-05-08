@@ -1,48 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/models/messages/message_box.dart';
+import 'package:guam_community_client/providers/messages/messages.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/user_auth/authenticate.dart';
 import 'message_detail.dart';
 
-class MessagePreview extends StatelessWidget {
+class MessagePreview extends StatelessWidget with Toast {
   final MessageBox messageBox;
-  final List<Message> messages;
   final bool editable;
 
-  MessagePreview(this.messageBox, this.messages, {this.editable=false});
+  MessagePreview(this.messageBox, {this.editable=false});
 
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.watch<Authenticate>();
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       child: Card(
+        elevation: 0,
         margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: GuamColorFamily.grayscaleGray7, width: 1.5),
+        ),
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                offset: Offset(0, -2),
-              ),
-            ],
-          ),
           padding: EdgeInsets.only(left: 12, top: 6, bottom: 6),
           child: InkWell(
             onTap: () {
-              // 쪽지함 수정 페이지에서는 쪽지 클릭 후 이동 불가능
-              if (!editable)
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => MessageDetail(
-                    messages,
-                    messageBox.otherProfile,
-                  ))
-                );
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider(create: (_) => Messages(authProvider)),
+                    ],
+                    child: FutureBuilder(
+                        future: context.read<Messages>().getMessages(messageBox.latestLetter.sentBy),
+                        builder: (_, AsyncSnapshot<List<Message>> snapshot) {
+                          if (snapshot.hasData) {
+                            return MessageDetail(snapshot.data, messageBox.otherProfile);
+                          } else if (snapshot.hasError) {
+                            Navigator.pop(context);
+                            showToast(success: false, msg: '해당 쪽지를 찾을 수 없습니다.');
+                            return null;
+                          } else {
+                            return Container(
+                              color: GuamColorFamily.grayscaleWhite,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: GuamColorFamily.purpleCore,
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                    ),
+                  ),
+                ),
+              );
             },
             child: Row(
               children: [
@@ -72,7 +94,6 @@ class MessagePreview extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.64,
                   padding: EdgeInsets.only(left: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

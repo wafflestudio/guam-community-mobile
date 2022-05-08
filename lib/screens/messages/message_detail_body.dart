@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/helpers/http_request.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
-import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:provider/provider.dart';
+
+import '../../commons/custom_divider.dart';
+import '../../models/profiles/profile.dart';
+import '../../providers/user_auth/authenticate.dart';
 
 class MessageDetailBody extends StatelessWidget {
   final Message message;
+  final Profile otherProfile;
 
-  MessageDetailBody(this.message);
+  MessageDetailBody(this.message, this.otherProfile);
 
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.read<Authenticate>();
+    bool isMe = message.sentBy == authProvider.me.id;
+    Profile sentBy = isMe ? authProvider.me : otherProfile;
+
     return Container(
-      color: message.isMe
-          ? GuamColorFamily.grayscaleGray7
-          : GuamColorFamily.purpleLight3,
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,23 +36,20 @@ class MessageDetailBody extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: message.profile.profileImg != null
-                        ? NetworkImage(message.profile.profileImg)
-                        : SvgProvider('assets/icons/profile_image.svg')
-                  ),
+                      fit: BoxFit.cover,
+                      image: sentBy.profileImg != null
+                          ? NetworkImage(sentBy.profileImg)
+                          : SvgProvider('assets/icons/profile_image.svg')),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 6),
                 child: Text(
-                  message.isMe
-                      ? message.profile.nickname + ' (나)'
-                      : message.profile.nickname,
+                  isMe ? sentBy.nickname + ' (나)': sentBy.nickname,
                   style: TextStyle(
                     fontSize: 12,
                     fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                    color: message.isMe
+                    color: isMe
                         ? GuamColorFamily.purpleCore
                         : GuamColorFamily.grayscaleGray2,
                   ),
@@ -52,7 +57,7 @@ class MessageDetailBody extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                DateFormat('yyyy.MM.dd  HH:mm').format(message.createdAt),
+                Jiffy(message.createdAt).fromNow(),
                 style: TextStyle(
                   fontSize: 12,
                   fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
@@ -62,9 +67,9 @@ class MessageDetailBody extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(top: 8),
+            padding: EdgeInsets.only(left: 10, top: 8, bottom: 5),
             child: Text(
-              message.content,
+              message.text,
               style: TextStyle(
                 height: 1.6,
                 fontSize: 13,
@@ -73,7 +78,7 @@ class MessageDetailBody extends StatelessWidget {
               ),
             ),
           ),
-          if (message.picture != null)
+          if (message.imagePath != null)
             Container(
               width: 80,
               height: 80,
@@ -81,10 +86,15 @@ class MessageDetailBody extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(message.picture.urlPath),
+                  image: NetworkImage(
+                      HttpRequest().s3BaseAuthority + message.imagePath),
                 ),
               ),
             ),
+          Padding(
+            padding: EdgeInsets.only(top: 8),
+            child: CustomDivider(color: GuamColorFamily.grayscaleGray7),
+          ),
         ],
       ),
     );

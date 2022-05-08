@@ -30,6 +30,7 @@ class _MessageBoxScaffoldState extends State<MessageBoxScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.watch<Authenticate>();
     final msgProvider = context.read<Messages>();
 
     return Padding(
@@ -42,12 +43,12 @@ class _MessageBoxScaffoldState extends State<MessageBoxScaffold> {
         ),
         onPressed: () {
           Navigator.of(context, rootNavigator: true).push(
-            MaterialPageRoute(
-              builder: (_) => MessageBody(
-                msgProvider.messageBoxes,
-                msgProvider.messages,
-              )
-            )
+            MaterialPageRoute(builder: (_) => MultiProvider(
+              providers: [
+                ChangeNotifierProvider(create: (_) => Messages(authProvider)),
+              ],
+              child: MessageBody(msgProvider.messageBoxes),
+            ))
           );
         }
       ),
