@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/helpers/http_request.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/messages/message.dart';
@@ -78,7 +79,7 @@ class MessagePreview extends StatelessWidget with Toast {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: messageBox.otherProfile.profileImg != null
-                              ? NetworkImage(messageBox.otherProfile.profileImg)
+                              ? NetworkImage(HttpRequest().s3BaseAuthority + messageBox.otherProfile.profileImg)
                               : SvgProvider('assets/icons/profile_image.svg')
                         ),
                       ),

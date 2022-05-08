@@ -38,7 +38,7 @@ class MessageDetailBody extends StatelessWidget {
                   image: DecorationImage(
                       fit: BoxFit.cover,
                       image: sentBy.profileImg != null
-                          ? NetworkImage(sentBy.profileImg)
+                          ? NetworkImage(HttpRequest().s3BaseAuthority + sentBy.profileImg)
                           : SvgProvider('assets/icons/profile_image.svg')),
                 ),
               ),

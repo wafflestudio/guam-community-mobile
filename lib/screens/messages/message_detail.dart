@@ -7,8 +7,10 @@ import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
+import 'package:guam_community_client/providers/messages/messages.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
 import 'message_detail_body.dart';
 
@@ -83,13 +85,17 @@ class _MessageDetailState extends State<MessageDetail> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 70),
-            child: Column(
-              children: [
-                ...widget.messages.map((msg) => MessageDetailBody(msg, widget.otherProfile))
-              ]
+        body: RefreshIndicator(
+          onRefresh: () => context.read<Messages>().getMessages(widget.otherProfile.id),
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 70),
+              child: Column(
+                children: [
+                  ...widget.messages.map((msg) => MessageDetailBody(msg, widget.otherProfile))
+                ]
+              ),
             ),
           ),
         ),
