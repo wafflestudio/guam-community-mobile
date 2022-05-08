@@ -1,156 +1,92 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:guam_community_client/helpers/http_request.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/models/messages/message_box.dart';
-import '../user_auth/profile_data.dart';
+import '../../helpers/decode_ko.dart';
+import '../user_auth/authenticate.dart';
 
-class Messages with ChangeNotifier {
+class Messages extends ChangeNotifier with Toast {
+  Authenticate _authProvider;
   List<MessageBox> _messageBoxes;
   List<Message> _messages;
   bool loading = false;
 
-  Messages({int messageBoxNo}) {
+  Messages(Authenticate authProvider) {
+    _authProvider = authProvider;
     fetchMessageBoxes();
-    fetchMessages(messageBoxNo);
   }
 
   List<MessageBox> get messageBoxes => _messageBoxes;
   List<Message> get messages => _messages;
 
   Future fetchMessageBoxes() async {
+    loading = true;
     try {
-      loading = true;
+      String authToken = await _authProvider.getFirebaseIdToken();
 
-      List<Map<String, dynamic>> messageBoxes = [
-        {
-          'id': 1,
-          'otherProfile': profiles[6],
-          'isRead': false,
-          'lastContent': '안녕하세요!',
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 8)),
-        },
-        {
-          'id': 2,
-          'otherProfile': profiles[5],
-          'isRead': true,
-          'lastContent': '사용하시는 기술 스택 관련하여 질문이 있습니다!\n저도 플러터를 공부하고 싶은데 혹시 주로 공부하시는 교재나 강의가 있으신가요?',
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
-        },
-      ];
-      _messageBoxes = messageBoxes.map((e) => MessageBox.fromJson(e)).toList();
-
-      loading = false;
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .get(
+          path: "community/api/v1/letters/letters",
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final List<dynamic> jsonList = json.decode(jsonUtf8)["letterBoxes"];
+            _messageBoxes = jsonList.map((e) => MessageBox.fromJson(e)).toList();
+            loading = false;
+          } else {
+            String msg = '알 수 없는 오류가 발생했습니다.';
+            switch (response.statusCode) {
+              case 401: msg = '열람 권한이 없습니다.'; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+        loading = false;
+      }
     } catch (e) {
       print(e);
     } finally {
       notifyListeners();
     }
   }
-
-  Future fetchMessages(int messageBoxNo) async {
+  Future<List<Message>> getMessages(int otherProfileId) async {
+    loading = true;
     try {
-      loading = true;
+      String authToken = await _authProvider.getFirebaseIdToken();
 
-      List<Map<String, dynamic>> messages = [
-        {
-          'id': 1,
-          'profile': profiles[7],
-          'isMe': false,
-          'content': '',
-          'picture': {
-            'id': 1,
-            'urlPath': 'https://w.namu.la/s/40de86374ddd74756b31d4694a7434ee9398baa51fa5ae72d28f2eeeafdadf0c475c55c58e29a684920e0d6a42602b339f8aaf6d19764b04405a0f8bee7f598d2922db9475579419aac4635d0a71fdb8a4b2343cb550e6ed93e13c1a05cede75',
-          },
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 8)),
-        },
-        {
-          'id': 2,
-          'profile': profiles[5],
-          'isMe': true,
-          'content': '안녕하세요',
-          'picture': null,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 6)),
-        },
-        {
-          'id': 3,
-          'profile': profiles[7],
-          'isMe': false,
-          'content': '답장',
-          'picture': null,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
-        },
-        {
-          'id': 4,
-          'profile': profiles[5],
-          'isMe': true,
-          'content': '사용하시는 기술 스택 관련하여 질문이 있습니다!\n저도 플러터를 공부하고 싶은데 혹시 주로 공부하시는 교재나 강의가 있으신가요?',
-          'picture': null,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 1)),
-        },
-        {
-          'id': 3,
-          'profile': profiles[7],
-          'isMe': false,
-          'content': '답장',
-          'picture': null,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
-        },
-        {
-          'id': 3,
-          'profile': profiles[7],
-          'isMe': false,
-          'content': '답장',
-          'picture': null,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
-        },
-        {
-          'id': 3,
-          'profile': profiles[7],
-          'isMe': false,
-          'content': '답장',
-          'picture': null,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
-        },
-        {
-          'id': 3,
-          'profile': profiles[7],
-          'isMe': false,
-          'content': '답장',
-          'picture': null,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
-        },
-        {
-          'id': 3,
-          'profile': profiles[7],
-          'isMe': false,
-          'content': '답장',
-          'picture': null,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
-        },{
-          'id': 3,
-          'profile': profiles[7],
-          'isMe': false,
-          'content': '답장',
-          'picture': null,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
-        },
-        {
-          'id': 3,
-          'profile': profiles[7],
-          'isMe': false,
-          'content': '답장',
-          'picture': null,
-          'createdAt': DateTime.now().subtract(const Duration(minutes: 3)),
-        },
-
-      ];
-      _messages = messages.map((e) => Message.fromJson(e)).toList();
-
-      loading = false;
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .get(
+          authToken: authToken,
+          path: "community/api/v1/letters/letters/$otherProfileId",
+        ).then((response) {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final List<dynamic> jsonList = json.decode(jsonUtf8)["letters"];
+            _messages = jsonList.map((e) => Message.fromJson(e)).toList();
+          } else {
+            String msg = '알 수 없는 오류가 발생했습니다.';
+            switch (response.statusCode) {
+              case 401: msg = '접근 권한이 없습니다.'; break;
+              case 403: msg = '상대방으로부터 차단되었습니다.'; break;
+              case 404: msg = '존재하지 않는 쪽지함입니다.'; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+      }
     } catch (e) {
       print(e);
     } finally {
+      loading = false;
       notifyListeners();
     }
+    return _messages;
   }
 }

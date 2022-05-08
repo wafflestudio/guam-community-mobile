@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:guam_community_client/models/messages/message.dart';
 import 'package:guam_community_client/models/messages/message_box.dart' as MessageBox;
 import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
@@ -12,9 +11,8 @@ import 'message_preview.dart';
 
 class MessageBody extends StatelessWidget {
   final List<MessageBox.MessageBox> messageBoxes;
-  final List<Message> messages;
 
-  MessageBody(this.messageBoxes, this.messages);
+  MessageBody(this.messageBoxes);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,7 @@ class MessageBody extends StatelessWidget {
             icon: SvgPicture.asset('assets/icons/delete_outlined.svg'),
             onPressed: () => Navigator.of(context, rootNavigator: true).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => MessageBoxEdit(messageBoxes, messages),
+                pageBuilder: (_, __, ___) => MessageBoxEdit(messageBoxes),
                 transitionDuration: Duration(seconds: 0),
               )
             ),
@@ -43,7 +41,7 @@ class MessageBody extends StatelessWidget {
         padding: EdgeInsets.only(top: 18),
         child: Column(
           children: [
-            if (messageBoxes.isEmpty)
+            if (messageBoxes == null || messageBoxes.isEmpty)
               Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
@@ -57,8 +55,8 @@ class MessageBody extends StatelessWidget {
                   ),
                 ),
               ),
-            if (messageBoxes.isNotEmpty)
-              ...messageBoxes.map((messageBox) => MessagePreview(messageBox, messages)
+            if (messageBoxes != null && messageBoxes.isNotEmpty)
+              ...messageBoxes.map((messageBox) => MessagePreview(messageBox)
             )
           ]
         ),

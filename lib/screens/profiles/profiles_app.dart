@@ -18,9 +18,11 @@ class ProfilesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.watch<Authenticate>();
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Messages()),
+        ChangeNotifierProvider(create: (_) => Messages(authProvider)),
       ],
       child: ProfilesAppScaffold(userId),
     );
