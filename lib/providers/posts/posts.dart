@@ -69,6 +69,7 @@ class Posts extends ChangeNotifier with Toast {
     } finally {
       notifyListeners();
     }
+    return _posts;
   }
 
   /// For Pagination
@@ -89,9 +90,6 @@ class Posts extends ChangeNotifier with Toast {
           final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
           _hasNext = json.decode(jsonUtf8)["hasNext"];
           _newPosts = jsonList.map((e) => Post.fromJson(e)).toList();
-
-          /// Build 시에 _newPosts가 중복되어 _posts에 더해지는 경우를 막기 위함
-          if (_posts.last.id != _newPosts.last.id) _posts += _newPosts;
           loading = false;
         } else {
           final jsonUtf8 = decodeKo(response);
@@ -104,6 +102,7 @@ class Posts extends ChangeNotifier with Toast {
     } finally {
       notifyListeners();
     }
+    return _newPosts;
   }
 
   void sortSearchedPosts(Filter f) {
