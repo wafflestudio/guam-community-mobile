@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/helpers/http_request.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/mixins/toast.dart';
-import 'package:guam_community_client/models/messages/message.dart';
+import 'package:guam_community_client/models/messages/message.dart' as Message;
 import 'package:guam_community_client/models/messages/message_box.dart';
 import 'package:guam_community_client/providers/messages/messages.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -44,7 +44,7 @@ class MessagePreview extends StatelessWidget with Toast {
                     ],
                     child: FutureBuilder(
                         future: context.read<Messages>().getMessages(messageBox.latestLetter.sentBy),
-                        builder: (_, AsyncSnapshot<List<Message>> snapshot) {
+                        builder: (_, AsyncSnapshot<List<Message.Message>> snapshot) {
                           if (snapshot.hasData) {
                             return MessageDetail(snapshot.data, messageBox.otherProfile);
                           } else if (snapshot.hasError) {
