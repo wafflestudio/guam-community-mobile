@@ -61,7 +61,8 @@ class _NotificationsBodyState extends State<NotificationsBody> {
                       ),
                     ),
                   if (notifications.isNotEmpty)
-                    ...notifications.map((noti) => NotificationsPreview(noti))
+                    /// todo: Server에서 notification 순서 및 페이지네이션 적용하면 reversed 빼기
+                    ...notifications.reversed.map((noti) => NotificationsPreview(noti))
                 ]),
         ),
       ),

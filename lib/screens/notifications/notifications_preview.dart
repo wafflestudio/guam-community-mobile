@@ -4,6 +4,7 @@ import 'package:guam_community_client/helpers/http_request.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/notification.dart' as Notification;
+import 'package:guam_community_client/screens/notifications/notifications_type.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:jiffy/jiffy.dart';
@@ -103,7 +104,7 @@ class NotificationsPreview extends StatelessWidget with Toast {
                               ),
                             ),
                             Text(
-                              _typeDescription(notification.kind),
+                              notificationsType(notification.kind),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -157,18 +158,4 @@ class NotificationsPreview extends StatelessWidget with Toast {
       ],
     );
   }
-
-  _typeDescription(String kind) {
-    String description;
-    switch (kind) {
-      case 'POST_COMMENT': description = ' 님이 댓글을 남겼습니다.'; break;
-      case 'POST_COMMENT_MENTION': description = ' 님이 댓글에서 언급했습니다.'; break;
-      case 'scrapped': description = ' 님이 나의 게시글을 저장했습니다.'; break;
-      case 'post_liked': description = ' 님이 나의 게시글을 좋아합니다.'; break;
-      case 'comment_liked': description = ' 님이 나의 댓글을 좋아합니다.'; break;
-      default: description = ''; break;
-    }
-    return description;
-  }
-
 }
