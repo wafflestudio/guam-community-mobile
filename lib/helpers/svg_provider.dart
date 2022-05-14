@@ -5,7 +5,6 @@ import 'dart:ui' as ui show Image, Picture;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 /// Rasterizes given svg picture for displaying in [Image] widget:

@@ -35,6 +35,7 @@ class Posts extends ChangeNotifier with Toast {
 
   Future fetchPosts(int boardId) async {
     loading = true;
+    print(await _authProvider.getFirebaseIdToken());
     try {
       await HttpRequest()
           .get(
@@ -94,6 +95,7 @@ class Posts extends ChangeNotifier with Toast {
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: '더 이상 게시글을 불러올 수 없습니다.');
         }
       });
       loading = false;

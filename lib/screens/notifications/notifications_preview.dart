@@ -23,7 +23,7 @@ class NotificationsPreview extends StatelessWidget with Toast {
   @override
   Widget build(BuildContext context) {
     Posts postProvider = context.read<Posts>();
-    Authenticate authProvider = context.watch<Authenticate>();
+    Authenticate authProvider = context.read<Authenticate>();
 
     return Column(
       children: [

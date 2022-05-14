@@ -21,7 +21,7 @@ class MessagePreview extends StatelessWidget with Toast {
 
   @override
   Widget build(BuildContext context) {
-    Authenticate authProvider = context.watch<Authenticate>();
+    Authenticate authProvider = context.read<Authenticate>();
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),

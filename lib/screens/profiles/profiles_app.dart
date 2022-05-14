@@ -18,7 +18,7 @@ class ProfilesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Authenticate authProvider = context.watch<Authenticate>();
+    Authenticate authProvider = context.read<Authenticate>();
 
     return MultiProvider(
       providers: [

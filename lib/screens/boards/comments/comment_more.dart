@@ -20,7 +20,7 @@ class CommentMore extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Posts(context.watch<Authenticate>())),
+        ChangeNotifierProvider(create: (_) => Posts(context.read<Authenticate>())),
       ],
       child: Builder(
         builder: (context) {

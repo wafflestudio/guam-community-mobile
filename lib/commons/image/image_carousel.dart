@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:guam_community_client/models/picture.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import '../custom_app_bar.dart';
 import 'image_expanded.dart';
 import 'dart:math';
-import 'dart:io' show Platform;
 
 class ImageCarousel extends StatefulWidget {
   final List<dynamic> pictures; /// 서버 수정 후 List<Picture> 로...

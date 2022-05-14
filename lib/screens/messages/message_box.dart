@@ -9,7 +9,7 @@ import 'message_body.dart';
 class MessageBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Authenticate authProvider = context.watch<Authenticate>();
+    Authenticate authProvider = context.read<Authenticate>();
 
     return MultiProvider(
       providers: [
@@ -30,7 +30,7 @@ class _MessageBoxScaffoldState extends State<MessageBoxScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    Authenticate authProvider = context.watch<Authenticate>();
+    Authenticate authProvider = context.read<Authenticate>();
     final msgProvider = context.read<Messages>();
 
     return Padding(

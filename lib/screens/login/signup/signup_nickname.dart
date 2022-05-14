@@ -36,6 +36,7 @@ class _SignupNicknameState extends State<SignupNickname> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         IconButton(
+          onPressed: null,
           padding: EdgeInsets.all(4.67),
           constraints: BoxConstraints(),
           icon: SvgPicture.asset('assets/icons/baloon.svg'),

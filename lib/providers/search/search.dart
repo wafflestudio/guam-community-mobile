@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/filter.dart';
 import 'package:shared_preferences/shared_preferences.dart';

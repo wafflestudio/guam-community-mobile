@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/image/image_container.dart';
-import 'package:guam_community_client/models/picture.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
 class PostImage extends StatelessWidget {
