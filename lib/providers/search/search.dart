@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/filter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../helpers/decode_ko.dart';
@@ -9,7 +9,7 @@ import '../../helpers/http_request.dart';
 import '../user_auth/authenticate.dart';
 import '../../models/boards/post.dart';
 
-class Search with ChangeNotifier {
+class Search extends ChangeNotifier with Toast {
   Authenticate _authProvider;
   List<Post> searchedPosts = [];
 
@@ -89,8 +89,7 @@ class Search with ChangeNotifier {
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
-          // TODO: show toast after impl. toast
-          // showToast(success: false, msg: err);
+          showToast(success: false, msg: err);
         }
       });
 

@@ -277,8 +277,7 @@ class Posts extends ChangeNotifier with Toast {
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
-          // TODO: show toast after impl. toast
-          // showToast(success: false, msg: err);
+          showToast(success: false, msg: err);
         }
       });
       loading = false;

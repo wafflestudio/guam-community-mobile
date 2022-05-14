@@ -26,8 +26,7 @@ class HttpRequest with Toast {
       return response;
     } catch (e) {
       print("Error on GET request: $e");
-      // TODO: impl toast
-      // showToast(success: false);
+      showToast(success: false, msg: e);
     }
   }
 
@@ -46,8 +45,7 @@ class HttpRequest with Toast {
       return response;
     } catch (e) {
       print("Error on POST request: $e");
-      // TODO: impl toast
-      // showToast(success: false);
+      showToast(success: false, msg: e);
     }
   }
 
@@ -76,8 +74,7 @@ class HttpRequest with Toast {
       return response;
     } catch (e) {
       print("Error on POST Multipart request: $e");
-      // TODO: impl toast
-      // showToast(success: false);
+      showToast(success: false, msg: e);
     }
   }
 
@@ -96,8 +93,7 @@ class HttpRequest with Toast {
       return response;
     } catch (e) {
       print("Error on PUT request: $e");
-      // TODO: impl toast
-      // showToast(success: false);
+      showToast(success: false, msg: e);
     }
   }
 
@@ -126,8 +122,7 @@ class HttpRequest with Toast {
       return response;
     } catch (e) {
       print("Error on PATCH Multipart request: $e");
-      // TODO: impl toast
-      // showToast(success: false);
+      showToast(success: false, msg: e);
     }
   }
 
@@ -145,8 +140,7 @@ class HttpRequest with Toast {
       return response;
     } catch (e) {
       print("Error on DELETE request: $e");
-      // TODO: impl toast
-      // showToast(success: false);
+      showToast(success: false, msg: e);
     }
   }
 }

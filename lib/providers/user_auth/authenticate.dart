@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../helpers/http_request.dart';
 import '../../helpers/decode_ko.dart';
 import 'dart:convert';
 
-class Authenticate with ChangeNotifier {
+class Authenticate extends ChangeNotifier with Toast {
   final _kakaoClientId = "367d8cf339e2ba59376ba647c7135dd2";
   final _kakaoJavascriptClientId = "2edf60d1ebf23061d200cfe4a68a235a";
 
@@ -38,21 +39,17 @@ class Authenticate with ChangeNotifier {
           final customToken = jsonDecode(response.body)['customToken'];
           await auth.signInWithCustomToken(customToken);
           await getMyProfile();
-          // TODO: show toast after impl. toast
-          // showToast(success: true, msg: "카카오 로그인 되었습니다.");
+          showToast(success: true, msg: "카카오 로그인 성공!");
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
-          // TODO: show toast after impl. toast
-          // showToast(success: false, msg: err);
+          showToast(success: false, msg: err);
         }
       });
     } on FirebaseAuthException {
-      // TODO: show toast after impl. toast
-      // showToast(success: false, msg: "Firebase Auth 에 문제가 발생했습니다.");
+      showToast(success: false, msg: "Firebase 인증에 문제가 발생했습니다.");
     } catch (e) {
-      // TODO: show toast after impl. toast
-      // showToast(success: false, msg: e.message);
+      showToast(success: false, msg: e.message);
     }
   }
 
@@ -86,8 +83,7 @@ class Authenticate with ChangeNotifier {
           } else {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];
-            // TODO: show toast after impl. toast
-            // showToast(success: false, msg: err);
+            showToast(success: false, msg: err);
           }
         });
       }
@@ -114,13 +110,12 @@ class Authenticate with ChangeNotifier {
           .then((response) async {
             if (response.statusCode == 200) {
               await getMyProfile();
-              // // showToast(success: true, msg: "프로필을 생성하였습니다.");
               successful = true;
+              showToast(success: true, msg: "프로필을 설정했습니다.");
           } else {
               final jsonUtf8 = decodeKo(response);
               final String err = json.decode(jsonUtf8)["message"];
-              // TODO: show toast after impl. toast
-              // showToast(success: false, msg: err);
+              showToast(success: false, msg: err);
             }
           });
         }
@@ -151,8 +146,7 @@ class Authenticate with ChangeNotifier {
           } else {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];
-            // TODO: show toast after impl. toast
-            // showToast(success: false, msg: err);
+            showToast(success: false, msg: err);
           }
         });
       }
@@ -181,12 +175,11 @@ class Authenticate with ChangeNotifier {
           if (response.statusCode == 200) {
             await getMyProfile();
             successful = true;
-            // showToast(success: true, msg: "관심사를 등록했습니다.");
+            showToast(success: true, msg: "관심사를 등록했습니다.");
           } else {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];
-            // TODO: show toast after impl. toast
-            // showToast(success: false, msg: err);
+            showToast(success: false, msg: err);
           }
         });
       }
@@ -215,12 +208,11 @@ class Authenticate with ChangeNotifier {
           if (response.statusCode == 200) {
             await getMyProfile();
             successful = true;
-            // showToast(success: true, msg: "해당 관심사를 삭제했습니다.");
+            showToast(success: true, msg: "해당 관심사를 삭제했습니다.");
           } else {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];
-            // TODO: show toast after impl. toast
-            // showToast(success: false, msg: err);
+            showToast(success: false, msg: err);
           }
         });
       }
@@ -239,8 +231,7 @@ class Authenticate with ChangeNotifier {
 
   Future<void> signOut() async {
     await auth.signOut();
-    // TODO: show toast after impl. toast
-    // showToast(success: true, msg: "로그아웃 되었습니다.");
+    showToast(success: true, msg: "로그아웃 되었습니다.");
     notifyListeners();
   }
 }
