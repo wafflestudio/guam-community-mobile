@@ -19,6 +19,7 @@ class Posts extends ChangeNotifier with Toast {
   List<Post> _newPosts;
   List<Comment> _comments;
   int _boardId = 0; // default : 피드게시판
+  int _createdPostId;
   bool loading = false;
 
   Posts(Authenticate authProvider) {
@@ -29,13 +30,13 @@ class Posts extends ChangeNotifier with Toast {
   Post get post => _post;
   bool get hasNext => _hasNext;
   int get boardId => _boardId;
+  int get createdPostId => _createdPostId;
   List<Post> get posts => _posts;
   List<Post> get newPosts => _newPosts;
   List<Comment> get comments => _comments;
 
   Future fetchPosts(int boardId) async {
     loading = true;
-    print(await _authProvider.getFirebaseIdToken());
     try {
       await HttpRequest()
           .get(
@@ -73,7 +74,7 @@ class Posts extends ChangeNotifier with Toast {
     return _posts;
   }
 
-  /// For Pagination
+  /// For Pagination in BoardsFeed Widget using _loadMore()
   Future addPosts({int boardId, int beforePostId}) async {
     loading = true;
     try {
@@ -128,6 +129,9 @@ class Posts extends ChangeNotifier with Toast {
           files: files,
         ).then((response) async {
           if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            _createdPostId = jsonData['postId'];
             successful = true;
             loading = false;
             showToast(success: true, msg: '게시글을 작성했습니다.');

@@ -144,6 +144,7 @@ class _PostDetailState extends State<PostDetail> with Toast {
           ),
         ),
         body: RefreshIndicator(
+          color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
           onRefresh: () => context.read<Posts>().getPost(widget.post.id),
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/screens/boards/posts/creation/post_creation_board.dart';
 import 'package:guam_community_client/screens/boards/posts/creation/post_creation_content.dart';
 import 'package:guam_community_client/screens/boards/posts/creation/post_creation_image.dart';
@@ -15,8 +16,11 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../commons/functions_category_boardType.dart';
+import '../../../../commons/guam_progress_indicator.dart';
 import '../../../../models/boards/post.dart';
 import '../../../../providers/posts/posts.dart';
+import '../../../../providers/user_auth/authenticate.dart';
+import '../detail/post_detail.dart';
 
 class PostCreation extends StatefulWidget {
   final bool isEdit;
@@ -28,7 +32,7 @@ class PostCreation extends StatefulWidget {
   State<PostCreation> createState() => _PostCreationState();
 }
 
-class _PostCreationState extends State<PostCreation> {
+class _PostCreationState extends State<PostCreation> with Toast {
   Map input = {};
   bool isBoardAnonymous = false;
 
@@ -60,6 +64,9 @@ class _PostCreationState extends State<PostCreation> {
   }
 
   Future createOrUpdatePost({List<File> files}) async {
+    Posts postProvider = context.read<Posts>();
+    Authenticate authProvider = context.read<Authenticate>();
+
     bool successful = false;
     Map<String, dynamic> fields = {
       'title': input['title'],
@@ -70,7 +77,7 @@ class _PostCreationState extends State<PostCreation> {
 
     try {
       if (widget.isEdit && widget.editTarget != null) {
-        return await context.read<Posts>().editPost(
+        return await postProvider.editPost(
           postId: widget.editTarget.id,
           body: fields,
         ).then((successful) {
@@ -80,13 +87,38 @@ class _PostCreationState extends State<PostCreation> {
           }
         });
       } else {
-        return await context.read<Posts>().createPost(
+        return await postProvider.createPost(
           fields: fields,
           files: files,
         ).then((successful) {
           if (successful) {
-            context.read<Posts>().fetchPosts(0);
             Navigator.pop(context);
+            postProvider.fetchPosts(0);
+            /// 게시글 생성 후 getPost(createdPostId) 하여 새로운 게시글로 이동
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(create: (_) => Posts(authProvider)),
+                  ],
+                  child: FutureBuilder(
+                      future: postProvider.getPost(postProvider.createdPostId),
+                      builder: (_, AsyncSnapshot<Post> snapshot) {
+                        if (snapshot.hasData) {
+                          return PostDetail(snapshot.data);
+                        } else if (snapshot.hasError) {
+                          Navigator.pop(context);
+                          postProvider.fetchPosts(0);
+                          showToast(success: false, msg: '게시글을 찾을 수 없습니다.');
+                          return null;
+                        } else {
+                          return Center(child: guamProgressIndicator());
+                        }
+                      }
+                  ),
+                ),
+              ),
+            );
             successful = true;
           }
         });

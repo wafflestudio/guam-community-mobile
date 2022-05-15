@@ -40,6 +40,7 @@ class _NotificationsBodyState extends State<NotificationsBody> {
       color: GuamColorFamily.grayscaleWhite,
       padding: EdgeInsets.only(top: 18),
       child: RefreshIndicator(
+        color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
         onRefresh: () => context.read<Notifications>().fetchNotifications(),
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),

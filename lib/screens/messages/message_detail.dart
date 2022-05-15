@@ -86,6 +86,7 @@ class _MessageDetailState extends State<MessageDetail> {
           ),
         ),
         body: RefreshIndicator(
+          color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
           onRefresh: () => context.read<Messages>().getMessages(widget.otherProfile.id),
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),

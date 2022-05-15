@@ -49,6 +49,7 @@ class PostDetailBody extends StatelessWidget {
         ),
         if (post.imagePaths.isNotEmpty)
           GridView.builder(
+            physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: min(post.imagePaths.length, maxRenderImgCnt),
               crossAxisSpacing: 10,
@@ -71,10 +72,6 @@ class PostDetailBody extends StatelessWidget {
                         pictures: [...this.post.imagePaths],
                         initialPage: idx,
                         showImageActions: true,
-                        // showImageActions: creatorId != null && context.read<Posts>().isMe(creatorId),
-                        // deleteFunc: threadId != null ? deleteThreadImage
-                        //     : commentId != null ? deleteCommentImage
-                        //     : null,
                       ),
                     )
                   )
