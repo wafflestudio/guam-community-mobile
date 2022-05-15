@@ -71,10 +71,6 @@ class PostDetailBody extends StatelessWidget {
                         pictures: [...this.post.imagePaths],
                         initialPage: idx,
                         showImageActions: true,
-                        // showImageActions: creatorId != null && context.read<Posts>().isMe(creatorId),
-                        // deleteFunc: threadId != null ? deleteThreadImage
-                        //     : commentId != null ? deleteCommentImage
-                        //     : null,
                       ),
                     )
                   )

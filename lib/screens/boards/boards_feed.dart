@@ -77,7 +77,7 @@ class _BoardsFeedState extends State<BoardsFeed> {
     return _isFirstLoadRunning
         ? Center(child: guamProgressIndicator())
         : RefreshIndicator(
-            onRefresh: () => context.read<Posts>().fetchPosts(widget.boardId),
+            onRefresh: () async => _firstLoad(),
             child: SingleChildScrollView(
               controller: _scrollController,
               child: Column(
