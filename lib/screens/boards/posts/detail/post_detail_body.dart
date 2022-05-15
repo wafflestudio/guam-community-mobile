@@ -49,6 +49,7 @@ class PostDetailBody extends StatelessWidget {
         ),
         if (post.imagePaths.isNotEmpty)
           GridView.builder(
+            physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: min(post.imagePaths.length, maxRenderImgCnt),
               crossAxisSpacing: 10,
