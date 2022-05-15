@@ -223,7 +223,9 @@ class _PostDetailState extends State<PostDetail> with Toast {
                           showToast(success: true, msg: '알 수 없는 오류가 발생했습니다.');
                           return null;
                         } else {
-                          return Center(child: CircularProgressIndicator());
+                          return Center(child: CircularProgressIndicator(
+                            color: GuamColorFamily.purpleLight3,
+                          ));
                         }
                       }
                     ),

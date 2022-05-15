@@ -3,6 +3,7 @@ import 'package:guam_community_client/screens/search/search_feed.dart';
 import 'package:guam_community_client/screens/search/search_history.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
+import '../../commons/guam_progress_indicator.dart';
 import '../../providers/posts/posts.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'search_app_bar.dart';
@@ -54,7 +55,7 @@ class _SearchAppScaffoldState extends State<SearchAppScaffold> {
                     showSearchHistory: showSearchHistory,
                   )
                 : searchProvider.loading
-                    ? Center(child: CircularProgressIndicator())
+                    ? Center(child: guamProgressIndicator())
                     : Center(child: Text('검색 결과가 없습니다.', style: TextStyle(fontSize: 16)))
               : showHistory
                 ? SearchHistory(
@@ -62,7 +63,7 @@ class _SearchAppScaffoldState extends State<SearchAppScaffold> {
                     showSearchHistory: showSearchHistory,
                   )
                 : searchProvider.loading
-                    ? Center(child: CircularProgressIndicator())
+                    ? Center(child: guamProgressIndicator())
                     : SearchFeed()
       ),
     );

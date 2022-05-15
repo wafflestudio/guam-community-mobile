@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/commons/guam_progress_indicator.dart';
 import 'package:guam_community_client/helpers/http_request.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/mixins/toast.dart';
@@ -54,11 +55,7 @@ class MessagePreview extends StatelessWidget with Toast {
                           } else {
                             return Container(
                               color: GuamColorFamily.grayscaleWhite,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: GuamColorFamily.purpleCore,
-                                ),
-                              ),
+                              child: Center(child: guamProgressIndicator()),
                             );
                           }
                         }

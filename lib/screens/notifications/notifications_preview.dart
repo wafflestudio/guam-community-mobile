@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
+import 'package:guam_community_client/commons/guam_progress_indicator.dart';
 import 'package:guam_community_client/helpers/http_request.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/mixins/toast.dart';
@@ -50,7 +51,7 @@ class NotificationsPreview extends StatelessWidget with Toast {
                             showToast(success: false, msg: '게시글을 찾을 수 없습니다.');
                             return null;
                           } else {
-                            return Center(child: CircularProgressIndicator());
+                            return Center(child: guamProgressIndicator());
                           }
                         },
                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/commons/guam_progress_indicator.dart';
 import 'package:guam_community_client/screens/boards/posts/post_list.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
@@ -74,7 +75,7 @@ class _BoardsFeedState extends State<BoardsFeed> {
   @override
   Widget build(BuildContext context) {
     return _isFirstLoadRunning
-        ? Center(child: CircularProgressIndicator())
+        ? Center(child: guamProgressIndicator())
         : RefreshIndicator(
             onRefresh: () => context.read<Posts>().fetchPosts(widget.boardId),
             child: SingleChildScrollView(
@@ -85,7 +86,7 @@ class _BoardsFeedState extends State<BoardsFeed> {
                   if (_isLoadMoreRunning == true)
                     Padding(
                       padding: EdgeInsets.only(top: 10, bottom: 40),
-                      child: Center(child: CircularProgressIndicator()),
+                      child: guamProgressIndicator(size: 40),
                     ),
                   if (_hasNextPage == false)
                     Container(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/back.dart';
+import 'package:guam_community_client/commons/guam_progress_indicator.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:guam_community_client/providers/messages/messages.dart';
 import 'package:guam_community_client/providers/user_auth/authenticate.dart';
@@ -72,7 +73,7 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
             );
           } else if (snapshot.hasError) {
             // 에러 메시지 띄워주기
-            return CircularProgressIndicator();
+            return Center(child: guamProgressIndicator());
           } else {
             return Container(
               color: GuamColorFamily.grayscaleWhite,

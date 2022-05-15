@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/commons/guam_progress_indicator.dart';
 import 'package:guam_community_client/providers/notifications/notifications.dart';
 import 'package:guam_community_client/screens/notifications/notifications_preview.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -43,7 +44,7 @@ class _NotificationsBodyState extends State<NotificationsBody> {
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           child: context.watch<Notifications>().loading
-              ? Center(child: CircularProgressIndicator())
+              ? Center(child: guamProgressIndicator())
               : Column(children: [
                   if (notifications.isEmpty)
                     Center(

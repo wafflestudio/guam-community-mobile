@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/commons/guam_progress_indicator.dart';
 import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
@@ -48,7 +49,7 @@ class PostPreview extends StatelessWidget with Toast {
                         showToast(success: false, msg: '게시글을 찾을 수 없습니다.');
                         return null;
                       } else {
-                        return Center(child: CircularProgressIndicator());
+                        return Center(child: guamProgressIndicator());
                       }
                     }
                   ),
