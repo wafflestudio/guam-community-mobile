@@ -37,7 +37,6 @@ class Posts extends ChangeNotifier with Toast {
 
   Future fetchPosts(int boardId) async {
     loading = true;
-    print(await _authProvider.getFirebaseIdToken());
     try {
       await HttpRequest()
           .get(
@@ -75,7 +74,7 @@ class Posts extends ChangeNotifier with Toast {
     return _posts;
   }
 
-  /// For Pagination
+  /// For Pagination in BoardsFeed Widget using _loadMore()
   Future addPosts({int boardId, int beforePostId}) async {
     loading = true;
     try {
