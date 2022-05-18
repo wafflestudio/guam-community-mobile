@@ -34,12 +34,12 @@ class CommentMore extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: comment.isMine ? [
-                    BottomModalDefault(
-                      text: '수정하기',
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
+                    // BottomModalDefault(
+                    //   text: '수정하기',
+                    //   onPressed: () {
+                    //     Navigator.pop(context);
+                    //   },
+                    // ),
                     BottomModalWithAlert(
                       funcName: '삭제하기',
                       title: '댓글을 삭제하시겠어요?',
