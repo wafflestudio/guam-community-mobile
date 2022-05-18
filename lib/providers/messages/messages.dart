@@ -89,4 +89,44 @@ class Messages extends ChangeNotifier with Toast {
     }
     return _messages;
   }
+
+  Future<bool> sendMessage({Map<String, dynamic> fields, dynamic files}) async {
+    bool successful = false;
+    loading = true;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .postMultipart(
+          path: "community/api/v1/letters",
+          authToken: authToken,
+          fields: fields,
+          files: files,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            successful = true;
+            loading = false;
+            showToast(success: true, msg: '쪽지를 발송했습니다.');
+          } else {
+            String msg = "알 수 없는 오류가 발생했습니다.";
+            switch (response.statusCode) {
+              case 400: msg = "정보를 입력해주세요."; break;
+              case 401: msg = "권한이 없습니다."; break;
+              case 403: msg = "쪽지를 보낼 수 없는 상대입니다."; break;
+              case 404: msg = "존재하지 않는 사용자입니다."; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+        loading = false;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return successful;
+  }
 }
