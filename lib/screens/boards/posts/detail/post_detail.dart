@@ -18,6 +18,8 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../commons/functions_category_boardType.dart';
+import '../../../../providers/messages/messages.dart';
+import '../../../../providers/user_auth/authenticate.dart';
 
 class PostDetail extends StatefulWidget {
   final Post post;
@@ -88,6 +90,7 @@ class _PostDetailState extends State<PostDetail> with Toast {
   @override
   Widget build(BuildContext context) {
     final postsProvider = context.watch<Posts>();
+    Authenticate authProvider = context.read<Authenticate>();
 
     void fetchComments() {
       comments = postsProvider.fetchComments(_post.id);
@@ -164,9 +167,12 @@ class _PostDetailState extends State<PostDetail> with Toast {
                     /// DetailMore에서 Detail로 수정된 게시글 정보 넘기기
                     context: context,
                     useRootNavigator: true,
-                    builder: (_) => ChangeNotifierProvider.value(
-                      value: context.read<Posts>(),
-                      child: PostDetailMore(_post, getEditedPost)
+                    builder: (_) => MultiProvider(
+                        providers: [
+                          ChangeNotifierProvider(create: (_) => Posts(authProvider)),
+                          ChangeNotifierProvider(create: (_) => Messages(authProvider)),
+                        ],
+                        child: PostDetailMore(_post, getEditedPost)
                     ),
                     backgroundColor: GuamColorFamily.grayscaleWhite,
                     shape: RoundedRectangleBorder(
