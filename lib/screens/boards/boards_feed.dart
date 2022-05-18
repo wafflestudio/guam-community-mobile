@@ -26,7 +26,8 @@ class _BoardsFeedState extends State<BoardsFeed> {
   void _firstLoad() async {
     setState(() => _isFirstLoadRunning = true);
     try {
-      _posts = await context.read<Posts>().fetchPosts(widget.boardId);
+      await context.read<Posts>().fetchPosts(widget.boardId);
+      _posts = context.read<Posts>().posts;
     } catch (err) {
       print('알 수 없는 오류가 발생했습니다.');
     }

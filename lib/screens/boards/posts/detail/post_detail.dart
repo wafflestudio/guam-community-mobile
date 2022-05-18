@@ -31,6 +31,8 @@ class PostDetail extends StatefulWidget {
 class _PostDetailState extends State<PostDetail> with Toast {
   Post _post;
   Future comments;
+  bool isScrapped;
+  int scrapCount;
   bool commentImageExist = false;
   final int maxRenderImgCnt = 4;
   Set<int> mentionListId = {};
@@ -43,6 +45,8 @@ class _PostDetailState extends State<PostDetail> with Toast {
     mentionList = [_post.profile.toJson()];
     mentionListId = {_post.profile.id};
     comments = context.read<Posts>().fetchComments(_post.id);
+    isScrapped = widget.post.isScrapped;
+    scrapCount = widget.post.scrapCount;
     super.initState();
   }
 
@@ -100,6 +104,40 @@ class _PostDetailState extends State<PostDetail> with Toast {
       });
     }
 
+    Future scrapOrUnscrapPost() async {
+      try {
+        if (!isScrapped) {
+          return await postsProvider.scrapPost(
+            postId: widget.post.id,
+          ).then((successful) {
+            if (successful) {
+              setState(() {
+                isScrapped = true;
+                scrapCount ++;
+              });
+            } else {
+              return postsProvider.fetchPosts(postsProvider.boardId);
+            }
+          });
+        } else {
+          return await postsProvider.unscrapPost(
+            postId: widget.post.id,
+          ).then((successful) {
+            if (successful) {
+              setState(() {
+                isScrapped = !isScrapped;
+                scrapCount --;
+              });
+            } else {
+              return postsProvider.fetchPosts(postsProvider.boardId);
+            }
+          });
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+
     return Portal(
       child: Scaffold(
         backgroundColor: GuamColorFamily.grayscaleWhite,
@@ -109,15 +147,15 @@ class _PostDetailState extends State<PostDetail> with Toast {
             padding: EdgeInsets.only(right: 11),
             child: Row(
               children: [
-                IconButton(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  constraints: BoxConstraints(),
-                  icon: SvgPicture.asset(_post.isScrapped
-                      ? 'assets/icons/scrap_filled.svg'
-                      : 'assets/icons/scrap_outlined.svg'
-                  ),
-                  onPressed: () {},
-                ),
+                // IconButton(
+                //   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                //   constraints: BoxConstraints(),
+                //   icon: SvgPicture.asset(isScrapped
+                //       ? 'assets/icons/scrap_filled.svg'
+                //       : 'assets/icons/scrap_outlined.svg'
+                //   ),
+                //   onPressed: scrapOrUnscrapPost,
+                // ),
                 IconButton(
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
