@@ -8,6 +8,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 
 import '../../commons/custom_divider.dart';
+import '../../commons/image/image_carousel.dart';
 import '../../models/profiles/profile.dart';
 import '../../providers/user_auth/authenticate.dart';
 
@@ -36,10 +37,11 @@ class MessageDetailBody extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: sentBy.profileImg != null
-                          ? NetworkImage(HttpRequest().s3BaseAuthority + sentBy.profileImg)
-                          : SvgProvider('assets/icons/profile_image.svg')),
+                    fit: BoxFit.cover,
+                    image: sentBy.profileImg != null
+                        ? NetworkImage(HttpRequest().s3BaseAuthority + sentBy.profileImg)
+                        : SvgProvider('assets/icons/profile_image.svg')
+                  ),
                 ),
               ),
               Padding(
@@ -67,7 +69,7 @@ class MessageDetailBody extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(left: 10, top: 8, bottom: 5),
+            padding: EdgeInsets.only(left: 10, top: 8, bottom: 10),
             child: Text(
               message.text,
               style: TextStyle(
@@ -79,17 +81,34 @@ class MessageDetailBody extends StatelessWidget {
             ),
           ),
           if (message.imagePath != null)
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      HttpRequest().s3BaseAuthority + message.imagePath),
+            InkWell(
+              child: Padding(
+                padding: EdgeInsets.only(left: 5),
+                child: Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                          HttpRequest().s3BaseAuthority + message.imagePath),
+                    ),
+                  ),
                 ),
               ),
+              onTap: () {
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (_) => ImageCarousel(
+                      pictures: [message.imagePath],
+                      initialPage: 0,
+                      showImageCount: false,
+                      showImageActions: true,
+                    ),
+                  ),
+                );
+              },
             ),
           Padding(
             padding: EdgeInsets.only(top: 8),

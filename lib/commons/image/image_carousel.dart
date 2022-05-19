@@ -9,13 +9,14 @@ import 'dart:math';
 class ImageCarousel extends StatefulWidget {
   final List<dynamic> pictures; /// 서버 수정 후 List<Picture> 로...
   final int initialPage;
+  final bool showImageCount;
 
   // Actions for trailing
   final bool showImageActions;
   final Function deleteFunc;
 
-  ImageCarousel({@required this.pictures, this.initialPage,
-    @required this.showImageActions, this.deleteFunc});
+  ImageCarousel({@required this.pictures, this.initialPage, this.showImageCount=true,
+    @required this.showImageActions, this.deleteFunc,});
 
   @override
   State<StatefulWidget> createState() => ImageCarouselState();
@@ -112,6 +113,7 @@ class ImageCarouselState extends State<ImageCarousel> {
             /// 서버 수정 후 e가 아니라 e.urlPath 로...
             items: [...picturesState.map((e) => ImageExpanded(imagePath: e))]
           ),
+          if (widget.showImageCount)
           Center(
             child: Padding(
               padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.65),
