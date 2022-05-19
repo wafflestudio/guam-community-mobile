@@ -41,7 +41,8 @@ class _MessageBoxScaffoldState extends State<MessageBoxScaffold> {
             ? 'assets/icons/message_new.svg'
             : 'assets/icons/message_default.svg'
         ),
-        onPressed: () {
+        onPressed: () async {
+          await msgProvider.fetchMessageBoxes();
           Navigator.of(context, rootNavigator: true).push(
             MaterialPageRoute(builder: (_) => MultiProvider(
               providers: [

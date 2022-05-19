@@ -112,7 +112,7 @@ class Messages extends ChangeNotifier with Toast {
           } else {
             String msg = "알 수 없는 오류가 발생했습니다.";
             switch (response.statusCode) {
-              case 400: msg = "정보를 입력해주세요."; break;
+              case 400: msg = "메시지를 입력해주세요."; break;
               case 401: msg = "권한이 없습니다."; break;
               case 403: msg = "쪽지를 보낼 수 없는 상대입니다."; break;
               case 404: msg = "존재하지 않는 사용자입니다."; break;
