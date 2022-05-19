@@ -49,7 +49,8 @@ class HttpRequest with Toast {
     }
   }
 
-  Future postMultipart({bool isHttps = true, String authority, String path, String authToken, Map<String, dynamic> fields, List<File> files}) async {
+  // pluralImage boolean 으로 "images" or "image" 구분.
+  Future postMultipart({bool isHttps = true, String authority, String path, String authToken, Map<String, dynamic> fields, List<File> files, bool pluralImages=true}) async {
     try {
       final uri = isHttps
           ? Uri.https(authority ?? gatewayAuthority, path)
@@ -62,7 +63,7 @@ class HttpRequest with Toast {
       if (files != null)
         files.forEach((e) async {
           final multipartFile = http.MultipartFile(
-              "images",
+              pluralImages ? "images" : "image",
               e.readAsBytes().asStream(),
               e.lengthSync(),
               filename: e.path.split("/").last,

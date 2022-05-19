@@ -59,7 +59,6 @@ class Messages extends ChangeNotifier with Toast {
     loading = true;
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
-
       if (authToken.isNotEmpty) {
         await HttpRequest()
             .get(
@@ -100,6 +99,7 @@ class Messages extends ChangeNotifier with Toast {
       if (authToken.isNotEmpty) {
         await HttpRequest()
             .postMultipart(
+          pluralImages: false, // pluralImage boolean 으로 "images" or "image" 구분
           path: "community/api/v1/letters",
           authToken: authToken,
           fields: fields,
