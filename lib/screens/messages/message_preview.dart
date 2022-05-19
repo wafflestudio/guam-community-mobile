@@ -44,7 +44,7 @@ class MessagePreview extends StatelessWidget with Toast {
                       ChangeNotifierProvider(create: (_) => Messages(authProvider)),
                     ],
                     child: FutureBuilder(
-                        future: context.read<Messages>().getMessages(messageBox.latestLetter.sentBy),
+                        future: context.read<Messages>().getMessages(messageBox.otherProfile.id),
                         builder: (_, AsyncSnapshot<List<Message.Message>> snapshot) {
                           if (snapshot.hasData) {
                             return MessageDetail(snapshot.data, messageBox.otherProfile);
@@ -91,35 +91,37 @@ class MessagePreview extends StatelessWidget with Toast {
                       ),
                   ],
                 ),
-                Container(
-                  padding: EdgeInsets.only(left: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        messageBox.otherProfile.nickname,
-                        style: TextStyle(
-                          fontSize: 12,
-                          height: 1.6,
-                          fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
-                          color: GuamColorFamily.grayscaleGray2,
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.only(left: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          messageBox.otherProfile.nickname,
+                          style: TextStyle(
+                            fontSize: 12,
+                            height: 1.6,
+                            fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
+                            color: GuamColorFamily.grayscaleGray2,
+                          ),
                         ),
-                      ),
-                      Text(
-                        messageBox.latestLetter.text,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
-                          height: 1.6,
-                          fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                          color: messageBox.latestLetter.isRead
-                              ? GuamColorFamily.grayscaleGray4
-                              : GuamColorFamily.grayscaleGray2,
+                        Text(
+                          messageBox.latestLetter.text,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 12,
+                            height: 1.6,
+                            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                            color: messageBox.latestLetter.isRead
+                                ? GuamColorFamily.grayscaleGray4
+                                : GuamColorFamily.grayscaleGray2,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Spacer(),
