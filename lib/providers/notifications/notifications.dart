@@ -25,7 +25,7 @@ class Notifications extends ChangeNotifier with Toast {
   List<Notification.Notification> get notifications => _notifications;
   List<Notification.Notification> get newNotifications => _newNotifications;
 
-  Future fetchNotifications() async {
+  Future fetchNotifications({int page=1, int size=20}) async {
     loading = true;
 
     try {
@@ -34,18 +34,23 @@ class Notifications extends ChangeNotifier with Toast {
         await HttpRequest()
             .get(
           path: "community/api/v1/push",
+          queryParams: {
+            "page": page.toString(),
+            "size": size.toString(),
+          },
           authToken: await _authProvider.getFirebaseIdToken(),
         ).then((response) async {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
-            // _hasNext = json.decode(jsonUtf8)["hasNext"];
+            _hasNext = json.decode(jsonUtf8)["hasNext"];
             _notifications = jsonList.map((e) => Notification.Notification.fromJson(e)).toList();
 
             loading = false;
           } else {
-            String msg = '알 수 없는 오류가 발생했습니다.';
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
+              case 400: msg = '정보를 모두 입력해주세요.'; break;
               case 401: msg = '열람 권한이 없습니다.'; break;
             }
             showToast(success: false, msg: msg);
@@ -58,5 +63,40 @@ class Notifications extends ChangeNotifier with Toast {
     } finally {
       notifyListeners();
     }
+  }
+
+  /// For Pagination in BoardsFeed Widget using _loadMore()
+  Future addNotifications({int page=1, int size=20}) async {
+    loading = true;
+    try {
+      await HttpRequest()
+          .get(
+        path: "community/api/v1/push",
+        queryParams: {
+          "page": page.toString(),
+          "size": size.toString(),
+        },
+        authToken: await _authProvider.getFirebaseIdToken(),
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+          _hasNext = json.decode(jsonUtf8)["hasNext"];
+          _newNotifications = jsonList.map((e) => Notification.Notification.fromJson(e)).toList();
+
+          loading = false;
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: '더 이상 알림을 불러올 수 없습니다.');
+        }
+      });
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return _newNotifications;
   }
 }
