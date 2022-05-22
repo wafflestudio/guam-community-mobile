@@ -41,33 +41,6 @@ class _MessageBodyState extends State<MessageBody> with Toast {
   }
 
   @override
-  State<MessageBody> createState() => _MessageBodyState();
-}
-
-class _MessageBodyState extends State<MessageBody> {
-  List _messageBoxes = [];
-  bool _isFirstLoadRunning = false;
-  ScrollController _scrollController = ScrollController();
-
-  void _firstLoad() async {
-    setState(() => _isFirstLoadRunning = true);
-    try {
-      await context.read<Messages>().fetchMessageBoxes();
-      _messageBoxes = context.read<Messages>().messageBoxes;
-    } catch (err) {
-      print('알 수 없는 오류가 발생했습니다.');
-    }
-    setState(() => _isFirstLoadRunning = false);
-  }
-
-  @override
-  void initState() {
-    _firstLoad();
-    // _scrollController = ScrollController()..addListener(_loadMore);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Authenticate authProvider = context.read<Authenticate>();
 
