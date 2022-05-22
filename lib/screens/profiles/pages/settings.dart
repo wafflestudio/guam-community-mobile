@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/styles/colors.dart';
+import 'package:provider/provider.dart';
 import '../../../commons/custom_app_bar.dart';
+import '../../../providers/user_auth/authenticate.dart';
 import '../buttons/long_button.dart';
 import 'blacklist_edit.dart';
 
@@ -20,18 +22,18 @@ class Settings extends StatelessWidget {
             child: Wrap(
               runSpacing: 12,
               children: [
-                LongButton(
-                  label: '차단 목록 관리',
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => BlackListEdit()
-                    )
-                  )
-                ),
+                // LongButton(
+                //   label: '차단 목록 관리',
+                //   onPressed: () => Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (_) => BlackListEdit()
+                //     )
+                //   )
+                // ),
                 LongButton(
                   label: '로그아웃',
-                  onPressed: () {}
+                  onPressed: () async => context.read<Authenticate>().signOut()
                 ),
               ],
             ),
