@@ -12,62 +12,114 @@ class NotificationsBody extends StatefulWidget {
 }
 
 class _NotificationsBodyState extends State<NotificationsBody> {
-  final ScrollController _scrollController = ScrollController();
-  bool turnPage = false;
+  List _notifications = [];
+  int _currentPage = 1;
+  bool _hasNextPage = true;
+  bool _isFirstLoadRunning = false;
+  bool _isLoadMoreRunning = false;
+  ScrollController _scrollController = ScrollController();
+
+  void _firstLoad() async {
+    setState(() => _isFirstLoadRunning = true);
+    try {
+      await context.read<Notifications>().fetchNotifications();
+      _notifications = context.read<Notifications>().notifications;
+    } catch (err) {
+      print('알 수 없는 오류가 발생했습니다.');
+    }
+    setState(() => _isFirstLoadRunning = false);
+  }
+
+  void _loadMore() async {
+    if (_hasNextPage == true &&
+        _isFirstLoadRunning == false &&
+        _isLoadMoreRunning == false &&
+        _scrollController.position.extentAfter < 300) {
+      setState(() => _isLoadMoreRunning = true);
+      try {
+        _currentPage ++;
+        final fetchedNotifications = await context.read<Notifications>().addNotifications(
+          page: _currentPage,
+        );
+        if (fetchedNotifications != null && fetchedNotifications.length > 0) {
+          setState(() => _notifications.addAll(fetchedNotifications));
+        } else {
+          // This means there is no more data
+          // and therefore, we will not send another GET request
+          setState(() => _hasNextPage = false);
+        }
+      } catch (err) {
+        print('알 수 없는 오류가 발생했습니다.');
+      }
+      setState(() => _isLoadMoreRunning = false);
+    }
+  }
 
   @override
   void initState() {
-    context.read<Notifications>().fetchNotifications();
-
-    _scrollController.addListener(() {
-      turnPage = _scrollController.offset / _scrollController.position.maxScrollExtent >= 0.5;
-      // if (turnPage && context.read<Notifications>().hasNext) addNotifications();
-    });
+    _firstLoad();
+    _scrollController = ScrollController()..addListener(_loadMore);
     super.initState();
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _scrollController.removeListener(_loadMore);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final notifications = context.read<Notifications>().notifications;
-
-    return Container(
-      color: GuamColorFamily.grayscaleWhite,
-      padding: EdgeInsets.only(top: 18),
-      child: RefreshIndicator(
-        color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
-        onRefresh: () => context.read<Notifications>().fetchNotifications(),
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: context.watch<Notifications>().loading
-              ? Center(child: guamProgressIndicator())
-              : Column(children: [
-                  if (notifications.isEmpty)
-                    Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.1),
-                        child: Text(
-                          '새로운 알림이 없습니다.',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: GuamColorFamily.grayscaleGray4,
-                            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                          ),
-                        ),
+    return _isFirstLoadRunning
+    ? Center(child: guamProgressIndicator())
+    : Container(
+        color: GuamColorFamily.grayscaleWhite,
+        padding: EdgeInsets.only(top: 18),
+        child: RefreshIndicator(
+          color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
+          onRefresh: () => context.read<Notifications>().fetchNotifications(),
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(children: [
+              if (_notifications.isEmpty)
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.1),
+                    child: Text(
+                      '새로운 알림이 없습니다.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: GuamColorFamily.grayscaleGray4,
+                        fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
                       ),
                     ),
-                  if (notifications.isNotEmpty)
-                    /// todo: Server에서 notification 순서 및 페이지네이션 적용하면 reversed 빼기
-                    ...notifications.reversed.map((noti) => NotificationsPreview(noti))
-                ]),
+                  ),
+                ),
+              if (_notifications.isNotEmpty)
+                ..._notifications.map((noti) => NotificationsPreview(noti)),
+              if (_isLoadMoreRunning == true)
+                Padding(
+                  padding: EdgeInsets.only(top: 10, bottom: 40),
+                  child: guamProgressIndicator(size: 40),
+                ),
+              if (_hasNextPage == false)
+                Container(
+                  color: GuamColorFamily.purpleLight2,
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  child: Center(child: Text(
+                    '모든 알림을 불러왔습니다!',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: GuamColorFamily.grayscaleGray2,
+                      fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                    ),
+                  )),
+                ),
+            ]),
+          ),
         ),
-      ),
-    );
+      );
   }
 }
