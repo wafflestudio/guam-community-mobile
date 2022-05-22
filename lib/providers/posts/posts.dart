@@ -57,7 +57,7 @@ class Posts extends ChangeNotifier with Toast {
           sortSearchedPosts(Search.filters.first);
           loading = false;
         } else {
-          String msg = '알 수 없는 오류가 발생했습니다.';
+          String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
           switch (response.statusCode) {
             case 400: msg = '정보를 모두 입력해주세요.'; break;
             case 401: msg = '열람 권한이 없습니다.'; break;
@@ -137,7 +137,7 @@ class Posts extends ChangeNotifier with Toast {
             loading = false;
             showToast(success: true, msg: '게시글을 작성했습니다.');
           } else {
-            String msg = '알 수 없는 오류가 발생했습니다.';
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 400: msg = '정보를 모두 입력해주세요.'; break;
               case 401: msg = '글쓰기 권한이 없습니다.'; break;
@@ -172,7 +172,7 @@ class Posts extends ChangeNotifier with Toast {
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
             _post = Post.fromJson(jsonData);
           } else {
-            String msg = '알 수 없는 오류가 발생했습니다.';
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = '접근 권한이 없습니다.'; break;
               case 404: msg = '존재하지 않는 게시글입니다.'; break;
@@ -212,7 +212,7 @@ class Posts extends ChangeNotifier with Toast {
             await getPost(jsonData['postId']);
             showToast(success: true, msg: '게시글을 수정했습니다.');
           } else {
-            String msg = '알 수 없는 오류가 발생했습니다.';
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 400: msg = '정보를 모두 입력해주세요.'; break;
               case 401: msg = '수정 권한이 없습니다.'; break;
@@ -249,7 +249,7 @@ class Posts extends ChangeNotifier with Toast {
             showToast(success: true, msg: '게시글을 삭제했습니다.');
             successful = true;
           } else {
-            String msg = '알 수 없는 오류가 발생했습니다.';
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = '삭제 권한이 없습니다.'; break;
               case 404: msg = '존재하지 않는 게시글입니다.'; break;
@@ -282,7 +282,7 @@ class Posts extends ChangeNotifier with Toast {
             loading = false;
             successful = true;
           } else {
-            String msg = "알 수 없는 오류가 발생했습니다.";
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
               case 404: msg = "존재하지 않는 게시글입니다."; break;
@@ -316,7 +316,7 @@ class Posts extends ChangeNotifier with Toast {
             loading = false;
             successful = true;
           } else {
-            String msg = "알 수 없는 오류가 발생했습니다.";
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
               case 404: msg = "존재하지 않는 게시글입니다."; break;
@@ -350,7 +350,7 @@ class Posts extends ChangeNotifier with Toast {
             loading = false;
             successful = true;
           } else {
-            String msg = "알 수 없는 오류가 발생했습니다.";
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
               case 404: msg = "존재하지 않는 게시글입니다."; break;
@@ -384,7 +384,7 @@ class Posts extends ChangeNotifier with Toast {
             loading = false;
             successful = true;
           } else {
-            String msg = "알 수 없는 오류가 발생했습니다.";
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
               case 404: msg = "존재하지 않는 게시글입니다."; break;
@@ -453,7 +453,7 @@ class Posts extends ChangeNotifier with Toast {
             loading = false;
             showToast(success: true, msg: '댓글을 작성했습니다.');
           } else {
-            String msg = "알 수 없는 오류가 발생했습니다.";
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 400: msg = "빈 댓글은 입력할 수 없습니다."; break;
               case 401: msg = "권한이 없습니다."; break;
@@ -490,7 +490,7 @@ class Posts extends ChangeNotifier with Toast {
             showToast(success: true, msg: '댓글을 삭제했습니다.');
             successful = true;
           } else {
-            String msg = "알 수 없는 오류가 발생했습니다.";
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
               case 404: msg = "존재하지 않는 댓글입니다."; break;
@@ -524,7 +524,7 @@ class Posts extends ChangeNotifier with Toast {
             loading = false;
             successful = true;
           } else {
-            String msg = "알 수 없는 오류가 발생했습니다.";
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
               case 404: msg = "존재하지 않는 댓글입니다."; break;
@@ -558,7 +558,7 @@ class Posts extends ChangeNotifier with Toast {
             loading = false;
             successful = true;
           } else {
-            String msg = "알 수 없는 오류가 발생했습니다.";
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
               case 404: msg = "존재하지 않는 댓글입니다."; break;

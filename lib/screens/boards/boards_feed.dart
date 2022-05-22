@@ -46,7 +46,7 @@ class _BoardsFeedState extends State<BoardsFeed> {
           boardId: widget.boardId,
           beforePostId: _beforePostId,
         );
-        if (fetchedPosts.length > 0) {
+        if (fetchedPosts != null && fetchedPosts.length > 0) {
           setState(() => _posts.addAll(fetchedPosts));
         } else {
           // This means there is no more data
@@ -82,6 +82,7 @@ class _BoardsFeedState extends State<BoardsFeed> {
             onRefresh: () async => _firstLoad(),
             child: SingleChildScrollView(
               controller: _scrollController,
+              physics: AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
                   PostList(_posts),
