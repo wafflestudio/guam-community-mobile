@@ -23,7 +23,7 @@ class Messages extends ChangeNotifier with Toast {
   List<MessageBox> get messageBoxes => _messageBoxes;
   List<Message> get messages => _messages;
 
-  Future fetchMessageBoxes() async {
+  Future<List<MessageBox>> fetchMessageBoxes() async {
     loading = true;
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
@@ -55,7 +55,44 @@ class Messages extends ChangeNotifier with Toast {
     } finally {
       notifyListeners();
     }
+    return _messageBoxes;
   }
+
+  Future<bool> deleteMessageBox(int otherProfileId) async {
+    bool successful = false;
+    loading = true;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .delete(
+          path: "community/api/v1/letters/$otherProfileId",
+          authToken: authToken,
+        ).then((response) {
+          if (response.statusCode == 200) {
+            showToast(success: true, msg: '쪽지함을 삭제했습니다.');
+            successful = true;
+          } else {
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+            switch (response.statusCode) {
+              case 401: msg = '삭제 권한이 없습니다.'; break;
+              case 404: msg = '비활성화된 유저입니다.'; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+        loading = false;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return successful;
+  }
+
   Future<List<Message>> getMessages(int otherProfileId) async {
     loading = true;
     try {

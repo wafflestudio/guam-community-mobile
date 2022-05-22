@@ -3,6 +3,7 @@ import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/bottom_modal/bottom_modal_default.dart';
+import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_alert.dart';
 import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/models/messages/message.dart';
@@ -12,6 +13,7 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/user_auth/authenticate.dart';
 import 'message_detail_body.dart';
 
 class MessageDetail extends StatefulWidget {
@@ -37,6 +39,8 @@ class _MessageDetailState extends State<MessageDetail> {
 
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.read<Authenticate>();
+
     return Portal(
       child: Scaffold(
         backgroundColor: GuamColorFamily.grayscaleWhite,
@@ -59,43 +63,67 @@ class _MessageDetailState extends State<MessageDetail> {
                     topRight: Radius.circular(20),
                   )
                 ),
-                builder: (context) => SingleChildScrollView(
-                  child: Container(
-                    padding: EdgeInsets.only(left: 24, top: 24, bottom: 21),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BottomModalDefault(
-                          text: '쪽지 삭제하기',
-                          onPressed: (){},
+                builder: (context) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(create: (_) => Messages(authProvider)),
+                  ],
+                  child: Builder(
+                    builder: (context) {
+                      return SingleChildScrollView(
+                        child: Container(
+                          padding: EdgeInsets.only(left: 24, top: 24, bottom: 21),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              BottomModalWithAlert(
+                                funcName: '삭제하기',
+                                title: '쪽지함을 삭제하시겠어요?',
+                                body: '삭제된 쪽지는 복원할 수 없습니다.',
+                                func: () async => await context.read<Messages>()
+                                    .deleteMessageBox(widget.otherProfile.id)
+                                    .then((successful) async {
+                                  context.read<Messages>().fetchMessageBoxes();
+                                  if (successful) {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    await context.read<Messages>().fetchMessageBoxes();
+                                  }
+                                }),
+                              ),
+                              BottomModalDefault(
+                                text: '신고하기',
+                                onPressed: (){},
+                              ),
+                              BottomModalDefault(
+                                text: '차단하기',
+                                onPressed: (){},
+                              ),
+                            ],
+                          ),
                         ),
-                        BottomModalDefault(
-                          text: '신고하기',
-                          onPressed: (){},
-                        ),
-                        BottomModalDefault(
-                          text: '차단하기',
-                          onPressed: (){},
-                        ),
-                      ],
-                    ),
-                  ),
+                      );
+                    }
+                  )
                 )
-              )
+              ),
             ),
           ),
         ),
         body: RefreshIndicator(
           color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
           onRefresh: () => context.read<Messages>().getMessages(widget.otherProfile.id),
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 70),
-              child: Column(
-                children: [
-                  ...widget.messages.map((msg) => MessageDetailBody(msg, widget.otherProfile))
-                ]
+          child: Container(
+            height: double.infinity,
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 70),
+                child: Column(
+                  children: [
+                    ...widget.messages.map((msg) => MessageDetailBody(msg, widget.otherProfile))
+                  ]
+                ),
               ),
             ),
           ),

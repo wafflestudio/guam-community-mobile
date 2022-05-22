@@ -3,7 +3,6 @@ import 'package:guam_community_client/models/messages/message_box.dart' as Messa
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
-
 import 'message_preview.dart';
 
 class MessageBoxEdit extends StatelessWidget {

@@ -11,6 +11,7 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 
+import '../../commons/bottom_modal/bottom_modal_with_alert.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'message_detail.dart';
 
@@ -36,34 +37,32 @@ class MessagePreview extends StatelessWidget with Toast {
         child: Container(
           padding: EdgeInsets.only(left: 12, top: 6, bottom: 6),
           child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider(create: (_) => Messages(authProvider)),
-                    ],
-                    child: FutureBuilder(
-                        future: context.read<Messages>().getMessages(messageBox.otherProfile.id),
-                        builder: (_, AsyncSnapshot<List<Message.Message>> snapshot) {
-                          if (snapshot.hasData) {
-                            return MessageDetail(snapshot.data, messageBox.otherProfile);
-                          } else if (snapshot.hasError) {
-                            Navigator.pop(context);
-                            showToast(success: false, msg: '해당 쪽지를 찾을 수 없습니다.');
-                            return null;
-                          } else {
-                            return Container(
-                              color: GuamColorFamily.grayscaleWhite,
-                              child: Center(child: guamProgressIndicator()),
-                            );
-                          }
-                        }
-                    ),
+            onTap: !editable ? () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(create: (_) => Messages(authProvider)),
+                  ],
+                  child: FutureBuilder(
+                    future: context.read<Messages>().getMessages(messageBox.otherProfile.id),
+                    builder: (_, AsyncSnapshot<List<Message.Message>> snapshot) {
+                      if (snapshot.hasData) {
+                        return MessageDetail(snapshot.data, messageBox.otherProfile);
+                      } else if (snapshot.hasError) {
+                        Navigator.pop(context);
+                        showToast(success: false, msg: '해당 쪽지를 찾을 수 없습니다.');
+                        return null;
+                      } else {
+                        return Container(
+                          color: GuamColorFamily.grayscaleWhite,
+                          child: Center(child: guamProgressIndicator()),
+                        );
+                      }
+                    },
                   ),
                 ),
-              );
-            },
+              ),
+            ) : null,
             child: Row(
               children: [
                 Stack(
@@ -126,19 +125,39 @@ class MessagePreview extends StatelessWidget with Toast {
                 ),
                 Spacer(),
                 if (editable)
-                  TextButton(
-                    onPressed: (){},
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: Size(23, 20),
-                    ),
-                    child: Text(
-                      '삭제',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
-                        color: GuamColorFamily.redCore,
-                      ),
+                  MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider(create: (_) => Messages(authProvider)),
+                    ],
+                    child: Builder(
+                      builder: (context) {
+                        return TextButton(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size(23, 20),
+                            textStyle: TextStyle(
+                              fontSize: 12,
+                              fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
+                              color: GuamColorFamily.redCore,
+                            ),
+                          ),
+                          child: BottomModalWithAlert(
+                            funcName: '삭제',
+                            title: '쪽지함을 삭제하시겠어요?',
+                            body: '삭제된 쪽지는 복원할 수 없습니다.',
+                            func: () async => await context.read<Messages>()
+                                .deleteMessageBox(messageBox.otherProfile.id)
+                                .then((successful) async {
+                                  context.read<Messages>().fetchMessageBoxes();
+                                  if (successful) {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    await context.read<Messages>().fetchMessageBoxes();
+                                  }
+                              })
+                          ),
+                        );
+                      }
                     ),
                   ),
                 if (!editable)

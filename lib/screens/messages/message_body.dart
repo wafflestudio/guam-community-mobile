@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:guam_community_client/models/messages/message_box.dart' as MessageBox;
 import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/providers/messages/messages.dart';
 import 'package:guam_community_client/screens/messages/message_box_edit.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -10,18 +10,16 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../commons/guam_progress_indicator.dart';
+import '../../models/messages/message_box.dart';
+import '../../providers/user_auth/authenticate.dart';
 import 'message_preview.dart';
 
 class MessageBody extends StatefulWidget {
-  final List<MessageBox.MessageBox> messageBoxes;
-
-  MessageBody(this.messageBoxes);
-
   @override
   State<MessageBody> createState() => _MessageBodyState();
 }
 
-class _MessageBodyState extends State<MessageBody> {
+class _MessageBodyState extends State<MessageBody> with Toast {
   List _messageBoxes = [];
   bool _isFirstLoadRunning = false;
   ScrollController _scrollController = ScrollController();
@@ -46,6 +44,8 @@ class _MessageBodyState extends State<MessageBody> {
 
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.read<Authenticate>();
+
     return Scaffold(
       backgroundColor: GuamColorFamily.grayscaleWhite,
       appBar: CustomAppBar(
@@ -61,7 +61,27 @@ class _MessageBodyState extends State<MessageBody> {
                 ? null
                 : () => Navigator.of(context, rootNavigator: true).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => MessageBoxEdit(_messageBoxes),
+                  pageBuilder: (_, __, ___) => MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider(create: (_) => Messages(authProvider)),
+                    ],
+                    child: FutureBuilder(
+                      future: context.read<Messages>().fetchMessageBoxes(),
+                      builder: (_, AsyncSnapshot<List<MessageBox>> snapshot) {
+                        if (snapshot.hasData) {
+                          return MessageBoxEdit(snapshot.data);
+                        } else if (snapshot.hasError) {
+                          Navigator.pop(context);
+                          showToast(success: false, msg: '쪽지함을 찾을 수 없습니다.');
+                          return null;
+                        } else {
+                          return Container(
+                            color: GuamColorFamily.grayscaleWhite,
+                            child: Center(child: guamProgressIndicator()),
+                          );
+                        }
+                      },
+                    )),
                   transitionDuration: Duration(seconds: 0),
                 )
             ),
