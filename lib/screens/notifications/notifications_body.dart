@@ -98,7 +98,7 @@ class _NotificationsBodyState extends State<NotificationsBody> {
                   ),
                 ),
               if (_notifications.isNotEmpty)
-                ..._notifications.map((noti) => NotificationsPreview(noti)),
+                ..._notifications.map((noti) => NotificationsPreview(noti, onRefresh: _firstLoad)),
               if (_isLoadMoreRunning == true)
                 Padding(
                   padding: EdgeInsets.only(top: 10, bottom: 40),

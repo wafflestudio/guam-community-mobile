@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/commons/guam_progress_indicator.dart';
@@ -5,6 +7,7 @@ import 'package:guam_community_client/helpers/http_request.dart';
 import 'package:guam_community_client/helpers/svg_provider.dart';
 import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/notification.dart' as Notification;
+import 'package:guam_community_client/providers/notifications/notifications.dart';
 import 'package:guam_community_client/screens/notifications/notifications_type.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
@@ -18,13 +21,24 @@ import '../boards/posts/detail/post_detail.dart';
 
 class NotificationsPreview extends StatelessWidget with Toast {
   final Notification.Notification notification;
+  final Function onRefresh;
 
-  NotificationsPreview(this.notification);
+  NotificationsPreview(this.notification, {this.onRefresh});
 
   @override
   Widget build(BuildContext context) {
     Posts postProvider = context.read<Posts>();
     Authenticate authProvider = context.read<Authenticate>();
+    Notifications notiProvider = context.read<Notifications>();
+
+    void readNotifications() async {
+      await notiProvider.readNotifications(
+        userId: authProvider.me.id,
+        pushEventIds: [notification.id.toString()],
+      );
+      await Future.delayed(Duration(seconds: 1));
+      onRefresh();
+    }
 
     return Column(
       children: [
@@ -34,6 +48,7 @@ class NotificationsPreview extends StatelessWidget with Toast {
             padding: EdgeInsets.only(left: 12, top: 4, bottom: 4),
             child: InkWell(
               onTap: () {
+                readNotifications();
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => MultiProvider(
