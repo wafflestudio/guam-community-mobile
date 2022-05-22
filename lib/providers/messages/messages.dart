@@ -31,7 +31,7 @@ class Messages extends ChangeNotifier with Toast {
       if (authToken.isNotEmpty) {
         await HttpRequest()
             .get(
-          path: "community/api/v1/letters/letters",
+          path: "community/api/v1/letters",
           authToken: authToken,
         ).then((response) async {
           if (response.statusCode == 200) {
@@ -64,7 +64,7 @@ class Messages extends ChangeNotifier with Toast {
         await HttpRequest()
             .get(
           authToken: authToken,
-          path: "community/api/v1/letters/letters/$otherProfileId",
+          path: "community/api/v1/letters/$otherProfileId",
         ).then((response) {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
