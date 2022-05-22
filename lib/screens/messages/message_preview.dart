@@ -15,11 +15,23 @@ import '../../commons/bottom_modal/bottom_modal_with_alert.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'message_detail.dart';
 
-class MessagePreview extends StatelessWidget with Toast {
+class MessagePreview extends StatefulWidget {
   final MessageBox messageBox;
+  final Function onRefresh;
   final bool editable;
 
-  MessagePreview(this.messageBox, {this.editable=false});
+  MessagePreview(this.messageBox, {this.onRefresh, this.editable=false});
+
+  @override
+  State<MessagePreview> createState() => _MessagePreviewState();
+}
+
+class _MessagePreviewState extends State<MessagePreview> with Toast {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,17 +49,17 @@ class MessagePreview extends StatelessWidget with Toast {
         child: Container(
           padding: EdgeInsets.only(left: 12, top: 6, bottom: 6),
           child: InkWell(
-            onTap: !editable ? () => Navigator.of(context).push(
+            onTap: !widget.editable ? () => Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => MultiProvider(
                   providers: [
                     ChangeNotifierProvider(create: (_) => Messages(authProvider)),
                   ],
                   child: FutureBuilder(
-                    future: context.read<Messages>().getMessages(messageBox.otherProfile.id),
+                    future: context.read<Messages>().getMessages(widget.messageBox.otherProfile.id),
                     builder: (_, AsyncSnapshot<List<Message.Message>> snapshot) {
                       if (snapshot.hasData) {
-                        return MessageDetail(snapshot.data, messageBox.otherProfile);
+                        return MessageDetail(snapshot.data, widget.messageBox.otherProfile, widget.onRefresh);
                       } else if (snapshot.hasError) {
                         Navigator.pop(context);
                         showToast(success: false, msg: '해당 쪽지를 찾을 수 없습니다.');
@@ -74,13 +86,13 @@ class MessagePreview extends StatelessWidget with Toast {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: messageBox.otherProfile.profileImg != null
-                              ? NetworkImage(HttpRequest().s3BaseAuthority + messageBox.otherProfile.profileImg)
+                          image: widget.messageBox.otherProfile.profileImg != null
+                              ? NetworkImage(HttpRequest().s3BaseAuthority + widget.messageBox.otherProfile.profileImg)
                               : SvgProvider('assets/icons/profile_image.svg')
                         ),
                       ),
                     ),
-                    if (!messageBox.latestLetter.isRead)
+                    if (!widget.messageBox.latestLetter.isRead)
                       Positioned(
                         top: 0,
                         child: CircleAvatar(
@@ -98,7 +110,7 @@ class MessagePreview extends StatelessWidget with Toast {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          messageBox.otherProfile.nickname,
+                          widget.messageBox.otherProfile.nickname,
                           style: TextStyle(
                             fontSize: 12,
                             height: 1.6,
@@ -107,14 +119,14 @@ class MessagePreview extends StatelessWidget with Toast {
                           ),
                         ),
                         Text(
-                          messageBox.latestLetter.text,
+                          widget.messageBox.latestLetter.text,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 12,
                             height: 1.6,
                             fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                            color: messageBox.latestLetter.isRead
+                            color: widget.messageBox.latestLetter.isRead
                                 ? GuamColorFamily.grayscaleGray4
                                 : GuamColorFamily.grayscaleGray2,
                           ),
@@ -124,7 +136,7 @@ class MessagePreview extends StatelessWidget with Toast {
                   ),
                 ),
                 Spacer(),
-                if (editable)
+                if (widget.editable)
                   MultiProvider(
                     providers: [
                       ChangeNotifierProvider(create: (_) => Messages(authProvider)),
@@ -146,12 +158,13 @@ class MessagePreview extends StatelessWidget with Toast {
                             title: '쪽지함을 삭제하시겠어요?',
                             body: '삭제된 쪽지는 복원할 수 없습니다.',
                             func: () async => await context.read<Messages>()
-                                .deleteMessageBox(messageBox.otherProfile.id)
+                                .deleteMessageBox(widget.messageBox.otherProfile.id)
                                 .then((successful) async {
                                   context.read<Messages>().fetchMessageBoxes();
                                   if (successful) {
+                                    // Navigator.pop(context);
                                     Navigator.pop(context);
-                                    Navigator.pop(context);
+                                    widget.onRefresh();
                                     await context.read<Messages>().fetchMessageBoxes();
                                   }
                               })
@@ -160,11 +173,11 @@ class MessagePreview extends StatelessWidget with Toast {
                       }
                     ),
                   ),
-                if (!editable)
+                if (!widget.editable)
                 Padding(
                   padding: EdgeInsets.only(right: 10, top: 14, bottom: 15),
                   child: Text(
-                    Jiffy(messageBox.latestLetter.createdAt).fromNow(),
+                    Jiffy(widget.messageBox.latestLetter.createdAt).fromNow(),
                     style: TextStyle(
                       fontSize: 12,
                       height: 1.6,

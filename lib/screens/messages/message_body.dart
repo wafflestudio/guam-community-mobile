@@ -10,7 +10,6 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../commons/guam_progress_indicator.dart';
-import '../../models/messages/message_box.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'message_preview.dart';
 
@@ -38,7 +37,6 @@ class _MessageBodyState extends State<MessageBody> with Toast {
   @override
   void initState() {
     _firstLoad();
-    // _scrollController = ScrollController()..addListener(_loadMore);
     super.initState();
   }
 
@@ -92,23 +90,8 @@ class _MessageBodyState extends State<MessageBody> {
                     providers: [
                       ChangeNotifierProvider(create: (_) => Messages(authProvider)),
                     ],
-                    child: FutureBuilder(
-                      future: context.read<Messages>().fetchMessageBoxes(),
-                      builder: (_, AsyncSnapshot<List<MessageBox>> snapshot) {
-                        if (snapshot.hasData) {
-                          return MessageBoxEdit(snapshot.data);
-                        } else if (snapshot.hasError) {
-                          Navigator.pop(context);
-                          showToast(success: false, msg: '쪽지함을 찾을 수 없습니다.');
-                          return null;
-                        } else {
-                          return Container(
-                            color: GuamColorFamily.grayscaleWhite,
-                            child: Center(child: guamProgressIndicator()),
-                          );
-                        }
-                      },
-                    )),
+                    child: MessageBoxEdit(onRefresh: _firstLoad),
+                  ),
                   transitionDuration: Duration(seconds: 0),
                 )
             ),
@@ -144,7 +127,7 @@ class _MessageBodyState extends State<MessageBody> {
                           ),
                         ),
                       if (_messageBoxes != null && _messageBoxes.isNotEmpty)
-                        ..._messageBoxes.map((messageBox) => MessagePreview(messageBox)
+                        ..._messageBoxes.reversed.map((messageBox) => MessagePreview(messageBox, onRefresh: _firstLoad)
                       )
                     ]
                   ),
