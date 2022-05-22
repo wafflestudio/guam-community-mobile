@@ -46,7 +46,7 @@ class _BoardsFeedState extends State<BoardsFeed> {
           boardId: widget.boardId,
           beforePostId: _beforePostId,
         );
-        if (fetchedPosts.length > 0) {
+        if (fetchedPosts != null && fetchedPosts.length > 0) {
           setState(() => _posts.addAll(fetchedPosts));
         } else {
           // This means there is no more data
@@ -80,30 +80,34 @@ class _BoardsFeedState extends State<BoardsFeed> {
         : RefreshIndicator(
             color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
             onRefresh: () async => _firstLoad(),
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              child: Column(
-                children: [
-                  PostList(_posts),
-                  if (_isLoadMoreRunning == true)
-                    Padding(
-                      padding: EdgeInsets.only(top: 10, bottom: 40),
-                      child: guamProgressIndicator(size: 40),
-                    ),
-                  if (_hasNextPage == false)
-                    Container(
-                      color: GuamColorFamily.purpleLight2,
-                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                      child: Center(child: Text(
-                        '모든 게시글을 불러왔습니다!',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: GuamColorFamily.grayscaleGray2,
-                          fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                        ),
-                      )),
-                    ),
-                ],
+            child: Container(
+              height: double.infinity,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  children: [
+                    PostList(_posts),
+                    if (_isLoadMoreRunning == true)
+                      Padding(
+                        padding: EdgeInsets.only(top: 10, bottom: 40),
+                        child: guamProgressIndicator(size: 40),
+                      ),
+                    if (_hasNextPage == false)
+                      Container(
+                        color: GuamColorFamily.purpleLight2,
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        child: Center(child: Text(
+                          '모든 게시글을 불러왔습니다!',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: GuamColorFamily.grayscaleGray2,
+                            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                          ),
+                        )),
+                      ),
+                  ],
+                ),
               ),
             ),
         );

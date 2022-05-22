@@ -31,7 +31,7 @@ class Messages extends ChangeNotifier with Toast {
       if (authToken.isNotEmpty) {
         await HttpRequest()
             .get(
-          path: "community/api/v1/letters/letters",
+          path: "community/api/v1/letters",
           authToken: authToken,
         ).then((response) async {
           if (response.statusCode == 200) {
@@ -40,8 +40,9 @@ class Messages extends ChangeNotifier with Toast {
             _messageBoxes = jsonList.map((e) => MessageBox.fromJson(e)).toList();
             loading = false;
           } else {
-            String msg = '알 수 없는 오류가 발생했습니다.';
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
+              case 400: msg = '메시지를 불러올 수 없습니다.'; break;
               case 401: msg = '열람 권한이 없습니다.'; break;
             }
             showToast(success: false, msg: msg);
@@ -64,14 +65,14 @@ class Messages extends ChangeNotifier with Toast {
         await HttpRequest()
             .get(
           authToken: authToken,
-          path: "community/api/v1/letters/letters/$otherProfileId",
+          path: "community/api/v1/letters/$otherProfileId",
         ).then((response) {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final List<dynamic> jsonList = json.decode(jsonUtf8)["letters"];
             _messages = jsonList.map((e) => Message.fromJson(e)).toList();
           } else {
-            String msg = '알 수 없는 오류가 발생했습니다.';
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = '접근 권한이 없습니다.'; break;
               case 403: msg = '상대방으로부터 차단되었습니다.'; break;
