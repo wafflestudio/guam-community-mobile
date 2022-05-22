@@ -135,14 +135,14 @@ class _MessageDetailState extends State<MessageDetail> {
                                   }
                                 }),
                               ),
-                              BottomModalDefault(
-                                text: '신고하기',
-                                onPressed: (){},
-                              ),
-                              BottomModalDefault(
-                                text: '차단하기',
-                                onPressed: (){},
-                              ),
+                              // BottomModalDefault(
+                              //   text: '신고하기',
+                              //   onPressed: (){},
+                              // ),
+                              // BottomModalDefault(
+                              //   text: '차단하기',
+                              //   onPressed: (){},
+                              // ),
                             ],
                           ),
                         ),

@@ -24,8 +24,12 @@ class Authenticate extends ChangeNotifier with Toast {
 
   bool userSignedIn() => auth.currentUser != null && me != null; // 로그인 된 유저 존재 여부
   bool profileExists() => me != null && me.profileSet; // 프로필까지 만든 정상 유저인지 여부
-
   bool isMe(int userId) => me.id == userId;
+
+  void toggleLoading() {
+    loading = !loading;
+    notifyListeners();
+  }
 
   Future kakaoSignIn(String kakaoAccessToken) async {
     try {
@@ -55,7 +59,6 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Future<String> getFirebaseIdToken() async {
     String idToken;
-
     try {
       User user = auth.currentUser;
       idToken = await user.getIdToken();
@@ -67,14 +70,19 @@ class Authenticate extends ChangeNotifier with Toast {
     return idToken;
   }
 
+  Future<void> signOut() async {
+    await auth.signOut();
+    showToast(success: true, msg: "로그아웃 되었습니다.");
+    notifyListeners();
+  }
+
   Future getMyProfile() async {
     try {
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
-        await HttpRequest()
-          .get(
-            path: "community/api/v1/users/me",
-            authToken: authToken,
+        await HttpRequest().get(
+          path: "community/api/v1/users/me",
+          authToken: authToken,
         ).then((response) async {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
@@ -101,24 +109,23 @@ class Authenticate extends ChangeNotifier with Toast {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
-        await HttpRequest()
-          .patchMultipart(
-            path: "community/api/v1/users/${me.id}",
-            fields: fields,
-            files: files,
-            authToken: authToken)
-          .then((response) async {
-            if (response.statusCode == 200) {
-              await getMyProfile();
-              successful = true;
-              showToast(success: true, msg: "프로필을 설정했습니다.");
+        await HttpRequest().patchMultipart(
+          path: "community/api/v1/users/${me.id}",
+          fields: fields,
+          files: files,
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            await getMyProfile();
+            successful = true;
+            showToast(success: true, msg: "프로필을 설정했습니다.");
           } else {
-              final jsonUtf8 = decodeKo(response);
-              final String err = json.decode(jsonUtf8)["message"];
-              showToast(success: false, msg: err);
-            }
-          });
-        }
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            showToast(success: false, msg: err);
+          }
+        });
+      }
     } catch (e) {
       print(e);
     } finally {
@@ -132,8 +139,7 @@ class Authenticate extends ChangeNotifier with Toast {
     try {
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
-        await HttpRequest()
-            .get(
+        await HttpRequest().get(
           path: "community/api/v1/users/$userId",
           authToken: authToken,
         ).then((response) async {
@@ -160,18 +166,16 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Future<bool> setInterest({Map<String, dynamic> body}) async {
     bool successful = false;
-
     try {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
 
       if (authToken.isNotEmpty) {
-        await HttpRequest()
-            .post(
-            path: "community/api/v1/users/${me.id}/interest",
-            body: body,
-            authToken: authToken)
-            .then((response) async {
+        await HttpRequest().post(
+          path: "community/api/v1/users/${me.id}/interest",
+          body: body,
+          authToken: authToken,
+        ).then((response) async {
           if (response.statusCode == 200) {
             await getMyProfile();
             successful = true;
@@ -193,18 +197,16 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Future<bool> deleteInterest({dynamic queryParams}) async {
     bool successful = false;
-
     try {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
 
       if (authToken.isNotEmpty) {
-        await HttpRequest()
-            .delete(
-            path: "community/api/v1/users/${me.id}/interest",
-            queryParams: queryParams,
-            authToken: authToken)
-            .then((response) async {
+        await HttpRequest().delete(
+          path: "community/api/v1/users/${me.id}/interest",
+          queryParams: queryParams,
+          authToken: authToken,
+        ).then((response) async {
           if (response.statusCode == 200) {
             await getMyProfile();
             successful = true;
@@ -224,14 +226,38 @@ class Authenticate extends ChangeNotifier with Toast {
     return successful;
   }
 
-  void toggleLoading() {
-    loading = !loading;
-    notifyListeners();
-  }
+  Future<bool> blockUser({userId}) async {
+    bool successful = false;
+    try {
+      toggleLoading();
+      String authToken = await getFirebaseIdToken();
 
-  Future<void> signOut() async {
-    await auth.signOut();
-    showToast(success: true, msg: "로그아웃 되었습니다.");
-    notifyListeners();
+      if (authToken.isNotEmpty) {
+        await HttpRequest().post(
+          path: "community/api/v1/block",
+          queryParams: {"targetId": userId.toString()},
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            await getMyProfile();
+            successful = true;
+            showToast(success: true, msg: "해당 사용자를 차단했습니다.");
+          } else {
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+            switch (response.statusCode) {
+              case 401: msg = "권한이 없습니다."; break;
+              case 404: msg = "존재하지 않는 유저입니다."; break;
+              case 409: msg = "이미 차단한 유저입니다."; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      toggleLoading();
+    }
+    return successful;
   }
 }

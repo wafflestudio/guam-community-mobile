@@ -21,15 +21,15 @@ class ProfileBottomButtons extends StatelessWidget {
               )
             )
           ),
-          LongButton(
-            label: '저장한 글',
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => SavedPosts()
-              )
-            )
-          ),
+          // LongButton(
+          //   label: '저장한 글',
+          //   onPressed: () => Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (_) => SavedPosts()
+          //     )
+          //   )
+          // ),
           LongButton(
             label: '계정 설정',
             onPressed: () => Navigator.push(

@@ -99,4 +99,39 @@ class Notifications extends ChangeNotifier with Toast {
     }
     return _newNotifications;
   }
+
+  Future readNotifications({int userId, List pushEventIds}) async {
+    loading = true;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+      if (authToken.isNotEmpty) {
+        await HttpRequest().post(
+          path: "community/api/v1/push/read",
+          queryParams: {
+            "userId": userId.toString(),
+            "pushEventIds": pushEventIds,
+          },
+          authToken: await _authProvider.getFirebaseIdToken(),
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            loading = false;
+          } else {
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+            switch (response.statusCode) {
+              case 400: msg = '정보를 모두 입력해주세요.'; break;
+              case 401: msg = '열람 권한이 없습니다.'; break;
+              case 404: msg = '존재하지 않는 알림입니다.'; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+        loading = false;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
 }
