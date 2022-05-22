@@ -6,7 +6,9 @@ import '../../../../commons/bottom_modal/bottom_modal_default.dart';
 import '../../../../commons/bottom_modal/bottom_modal_with_alert.dart';
 import '../../../../commons/bottom_modal/bottom_modal_with_message.dart';
 import '../../../../models/boards/post.dart';
+import '../../../../providers/messages/messages.dart';
 import '../../../../providers/posts/posts.dart';
+import '../../../../providers/user_auth/authenticate.dart';
 import '../creation/post_creation.dart';
 import '../post_comment_report.dart';
 
@@ -18,12 +20,17 @@ class PostDetailMore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.read<Authenticate>();
+
     void _navigatePage(BuildContext context) async {
       final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => ChangeNotifierProvider.value(
-            value: context.read<Posts>(),
+          builder: (_) => MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => Posts(authProvider)),
+              ChangeNotifierProvider(create: (_) => Messages(authProvider)),
+            ],
             child: PostCreation(isEdit: true, editTarget: post),
           ),
         ),
@@ -68,7 +75,10 @@ class PostDetailMore extends StatelessWidget {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                builder: (context) => Container(
+                builder: (context) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(create: (_) => Messages(authProvider)),
+                  ],
                   child: SingleChildScrollView(
                     child: BottomModalWithMessage(
                       funcName: '보내기',

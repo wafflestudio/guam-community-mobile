@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:guam_community_client/models/messages/message_box.dart' as MessageBox;
 import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/providers/messages/messages.dart';
 import 'package:guam_community_client/screens/messages/message_box_edit.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -10,18 +10,15 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../commons/guam_progress_indicator.dart';
+import '../../providers/user_auth/authenticate.dart';
 import 'message_preview.dart';
 
 class MessageBody extends StatefulWidget {
-  final List<MessageBox.MessageBox> messageBoxes;
-
-  MessageBody(this.messageBoxes);
-
   @override
   State<MessageBody> createState() => _MessageBodyState();
 }
 
-class _MessageBodyState extends State<MessageBody> {
+class _MessageBodyState extends State<MessageBody> with Toast {
   List _messageBoxes = [];
   bool _isFirstLoadRunning = false;
   ScrollController _scrollController = ScrollController();
@@ -40,12 +37,13 @@ class _MessageBodyState extends State<MessageBody> {
   @override
   void initState() {
     _firstLoad();
-    // _scrollController = ScrollController()..addListener(_loadMore);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.read<Authenticate>();
+
     return Scaffold(
       backgroundColor: GuamColorFamily.grayscaleWhite,
       appBar: CustomAppBar(
@@ -61,7 +59,12 @@ class _MessageBodyState extends State<MessageBody> {
                 ? null
                 : () => Navigator.of(context, rootNavigator: true).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => MessageBoxEdit(_messageBoxes),
+                  pageBuilder: (_, __, ___) => MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider(create: (_) => Messages(authProvider)),
+                    ],
+                    child: MessageBoxEdit(onRefresh: _firstLoad),
+                  ),
                   transitionDuration: Duration(seconds: 0),
                 )
             ),
@@ -97,7 +100,7 @@ class _MessageBodyState extends State<MessageBody> {
                           ),
                         ),
                       if (_messageBoxes != null && _messageBoxes.isNotEmpty)
-                        ..._messageBoxes.map((messageBox) => MessagePreview(messageBox)
+                        ..._messageBoxes.reversed.map((messageBox) => MessagePreview(messageBox, onRefresh: _firstLoad)
                       )
                     ]
                   ),

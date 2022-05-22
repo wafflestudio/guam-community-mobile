@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_message.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
+import 'package:guam_community_client/providers/messages/messages.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
+
+import '../../../providers/user_auth/authenticate.dart';
 
 class MessageSendButton extends StatelessWidget {
   final Profile otherProfile;
@@ -12,6 +16,8 @@ class MessageSendButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Authenticate authProvider = context.read<Authenticate>();
+
     return Padding(
       padding: EdgeInsets.only(bottom: 24),
       child: InkWell(
@@ -53,7 +59,10 @@ class MessageSendButton extends StatelessWidget {
               topRight: Radius.circular(20),
             ),
           ),
-          builder: (context) => Container(
+          builder: (context) => MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => Messages(authProvider)),
+            ],
             child: SingleChildScrollView(
               child: BottomModalWithMessage(
                 funcName: '보내기',

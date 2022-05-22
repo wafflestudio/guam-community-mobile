@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/guam_progress_indicator.dart';
 import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/boards/post.dart';
+import 'package:guam_community_client/providers/messages/messages.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/screens/app/tab_item.dart';
 import 'package:guam_community_client/screens/boards/posts/detail/post_detail.dart';
@@ -37,6 +38,7 @@ class PostPreview extends StatelessWidget with Toast {
                 builder: (_) => MultiProvider(
                   providers: [
                     ChangeNotifierProvider(create: (_) => Posts(authProvider)),
+                    ChangeNotifierProvider(create: (_) => Messages(authProvider)),
                   ],
                   child: FutureBuilder(
                     future: postProvider.getPost(post.id),

@@ -8,27 +8,28 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MessageBottomModal extends StatefulWidget {
+  final Map input;
+
+  MessageBottomModal(this.input);
+
   @override
   _MessageBottomModalState createState() => _MessageBottomModalState();
 }
 
 class _MessageBottomModalState extends State<MessageBottomModal> {
   final _messageTextFieldController = TextEditingController();
-
-  Map input = {
-    'content': '',
-    'images': [],
-  };
+  Map input;
 
   @override
   void initState() {
     super.initState();
-    input['images'] = [];
+    input = widget.input;
+    input['image'] = [];
   }
 
   @override
   void dispose() {
-    input['images'].clear();
+    input['image'].clear();
     _messageTextFieldController.dispose();
     super.dispose();
   }
@@ -39,12 +40,12 @@ class _MessageBottomModalState extends State<MessageBottomModal> {
 
     Future<void> setImageFile(PickedFile val) async {
       setState(() {
-        if (val != null) input['images'].add(val);
+        if (val != null) widget.input['image'].add(val);
       });
     }
 
     Future<void> deleteImageFile() async {
-      setState(() => input['images'].removeAt(0));
+      setState(() => widget.input['image'].removeAt(0));
     }
 
     return Container(
@@ -59,6 +60,7 @@ class _MessageBottomModalState extends State<MessageBottomModal> {
           TextField(
             keyboardType: TextInputType.multiline,
             controller: _messageTextFieldController,
+            onChanged: (e) => widget.input['text'] = e,
             maxLines: 4,
             maxLength: 200,
             style: TextStyle(fontSize: 14, height: 1.6, color: GuamColorFamily.grayscaleGray2),
@@ -75,7 +77,7 @@ class _MessageBottomModalState extends State<MessageBottomModal> {
           ),
           Padding(
             padding: EdgeInsets.only(left: 16, bottom: 16),
-            child: input['images'].length == 0
+            child: widget.input['image'].length == 0
                 ? SizedBox(
               height: maxImgSize,
               width: maxImgSize,
@@ -104,7 +106,7 @@ class _MessageBottomModalState extends State<MessageBottomModal> {
                     width: maxImgSize,
                     height: maxImgSize,
                     image: Image(
-                      image: FileImage(File(input['images'][0].path)),
+                      image: FileImage(File(widget.input['image'][0].path)),
                       fit: BoxFit.fill,
                     ),
                   ),

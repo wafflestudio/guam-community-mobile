@@ -31,7 +31,7 @@ class _MessageBoxScaffoldState extends State<MessageBoxScaffold> {
   @override
   Widget build(BuildContext context) {
     Authenticate authProvider = context.read<Authenticate>();
-    final msgProvider = context.read<Messages>();
+    Messages msgProvider = context.read<Messages>();
 
     return Padding(
       padding: EdgeInsets.only(right: 4),
@@ -41,13 +41,14 @@ class _MessageBoxScaffoldState extends State<MessageBoxScaffold> {
             ? 'assets/icons/message_new.svg'
             : 'assets/icons/message_default.svg'
         ),
-        onPressed: () {
+        onPressed: () async {
+          await msgProvider.fetchMessageBoxes();
           Navigator.of(context, rootNavigator: true).push(
             MaterialPageRoute(builder: (_) => MultiProvider(
               providers: [
                 ChangeNotifierProvider(create: (_) => Messages(authProvider)),
               ],
-              child: MessageBody(msgProvider.messageBoxes),
+              child: MessageBody(),
             ))
           );
         }

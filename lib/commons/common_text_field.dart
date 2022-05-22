@@ -6,12 +6,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import '../helpers/pick_image.dart';
+import '../providers/messages/messages.dart';
 import 'common_img_nickname.dart';
 import 'image/image_thumbnail.dart';
 import 'button_size_circular_progress_indicator.dart';
 
 class CommonTextField extends StatefulWidget {
+  final int messageTo;
   final String sendButton;
   final Function onTap;
   final Function addImage;
@@ -19,7 +22,7 @@ class CommonTextField extends StatefulWidget {
   final dynamic editTarget;
   final List<Map<String, dynamic>> mentionList;
 
-  CommonTextField({this.sendButton='등록', @required this.onTap, this.addImage, this.removeImage, this.editTarget, this.mentionList});
+  CommonTextField({this.sendButton='등록', @required this.onTap, this.messageTo, this.addImage, this.removeImage, this.editTarget, this.mentionList});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();
@@ -79,36 +82,56 @@ class _CommonTextFieldState extends State<CommonTextField> {
             if (!mentionTargetIds.contains(mentionId))
               mentionTargetIds.add(mentionId);
           });
-
-        if (isEdit && content != '') {
+        if (widget.messageTo != null) {
+          /// 쪽지함에서 쪽지 작성
           await widget.onTap(
-            id: widget.editTarget.id,
+            files: [...imageFileList.map((e) => File(e.path))],
             fields: {
-              "mentionIds": mentionTargetIds.join(','),
-              "content": content,
+              'to': widget.messageTo.toString(),
+              'text': content == '' && imageFileList.isNotEmpty ? '사진' : content,
+              // 서버 수정 전까지 사진만 달랑 보내는 경우 텍스트를 '사진'으로 지정하여 전송.
             },
           ).then((successful) {
+            /// successful == msgSended bool from MessageDetail Widget
             if (successful) {
+              imageFileList.clear();
+              mentionTargetIds.clear();
               key.currentState.controller.text = '';
               FocusScope.of(context).unfocus();
             }
           });
         } else {
-          if (content != '' || imageFileList.isNotEmpty)
+          /// 게시글 or 댓글 작성
+          if (isEdit && content != '') {
             await widget.onTap(
-              files: [...imageFileList.map((e) => File(e.path))],
+              id: widget.editTarget.id,
               fields: {
                 "mentionIds": mentionTargetIds.join(','),
                 "content": content,
               },
             ).then((successful) {
               if (successful) {
-                imageFileList.clear();
-                mentionTargetIds.clear();
                 key.currentState.controller.text = '';
                 FocusScope.of(context).unfocus();
               }
             });
+          } else {
+            if (content != '' || imageFileList.isNotEmpty)
+              await widget.onTap(
+                files: [...imageFileList.map((e) => File(e.path))],
+                fields: {
+                  "mentionIds": mentionTargetIds.join(','),
+                  "content": content,
+                },
+              ).then((successful) {
+                if (successful) {
+                  imageFileList.clear();
+                  mentionTargetIds.clear();
+                  key.currentState.controller.text = '';
+                  FocusScope.of(context).unfocus();
+                }
+              });
+          }
         }
       } catch (e) {
         print(e);
