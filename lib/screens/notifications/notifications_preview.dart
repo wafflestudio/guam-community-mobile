@@ -41,7 +41,8 @@ class NotificationsPreview extends StatelessWidget with Toast {
                         ChangeNotifierProvider(create: (_) => Posts(authProvider)),
                       ],
                       child: FutureBuilder(
-                        future: postProvider.getPost(int.parse(notification.linkUrl.split('/').last)),
+                        /// todo: linkUrl 을 '/'로 split 하여 postId 추출 => postId 값만 보내주기
+                        future: postProvider.getPost(int.parse(notification.linkUrl.split('/')[4])),
                         builder: (_, AsyncSnapshot<Post> snapshot) {
                           if (snapshot.hasData) {
                             return PostDetail(snapshot.data);
