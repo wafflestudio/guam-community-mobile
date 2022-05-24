@@ -53,7 +53,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:648780047414:android:3fc58c8364ffee5c21a497",
         "android_client_info": {
-          "package_name": "com.wafflestudio.guam.guam_community_client"
+          "package_name": "com.wafflestudio.guam"
         }
       },
       "oauth_client": [
