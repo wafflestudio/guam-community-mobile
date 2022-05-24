@@ -15,7 +15,7 @@ class Auth extends StatelessWidget {
         ? authProvider.profileExists()
           ? ChangeNotifierProvider(
             create: (_) => HomeProvider(),
-            child: App()
+            child: App(),
           )
           : SignUp()
         : LoginPage();

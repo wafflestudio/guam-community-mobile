@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
@@ -29,7 +30,7 @@ class ProfilesEdit extends StatefulWidget {
   State<ProfilesEdit> createState() => _ProfilesEditState();
 }
 
-class _ProfilesEditState extends State<ProfilesEdit> {
+class _ProfilesEditState extends State<ProfilesEdit> with Toast {
   bool sending = false;
   Map<String, dynamic> input = {};
   List<dynamic> profileImage = [];
@@ -81,6 +82,9 @@ class _ProfilesEditState extends State<ProfilesEdit> {
   Future setProfile() async {
     toggleSending();
     try {
+      if (input['nickname'] == '') {
+        return showToast(success: false, msg: '닉네임을 설정해주세요.');
+      }
       await context.read<Authenticate>().setProfile(
         fields: input,
         files: profileImage.isNotEmpty
