@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wafflestudio.guam">
+    package="com.wafflestudio.guam_community">
    <application
         android:label="Guam"
         android:icon="@mipmap/ic_launcher">

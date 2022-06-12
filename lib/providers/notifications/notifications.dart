@@ -25,7 +25,7 @@ class Notifications extends ChangeNotifier with Toast {
   List<Notification.Notification> get notifications => _notifications;
   List<Notification.Notification> get newNotifications => _newNotifications;
 
-  Future fetchNotifications({int page=1, int size=20}) async {
+  Future fetchNotifications({int page=0, int size=20}) async {
     loading = true;
 
     try {

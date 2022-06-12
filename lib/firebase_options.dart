@@ -56,6 +56,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'waffle-guam.appspot.com',
     androidClientId: '648780047414-d2fbe0qcdiugckgq8stcqvgef89ie6a9.apps.googleusercontent.com',
     iosClientId: '648780047414-erb4hojdlnk09dk8nvcjjgdps2q3cc8n.apps.googleusercontent.com',
-    iosBundleId: 'com.wafflestudio.guam',
+    iosBundleId: 'com.wafflestudio.guam-community',
   );
 }

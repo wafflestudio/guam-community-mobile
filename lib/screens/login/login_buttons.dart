@@ -9,7 +9,7 @@ class LoginButtons extends StatelessWidget {
     return Column(
       children: [
         KakaoLogin(),
-        LoginButton('google_logo', '구글로 시작하기', GuamColorFamily.grayscaleWhite, () {}),
+        // LoginButton('google_logo', '구글로 시작하기', GuamColorFamily.grayscaleWhite, () {}),
       ],
     );
   }

@@ -122,8 +122,8 @@ class HttpRequest with Toast {
       http.Response response = await http.Response.fromStream(await request.send());
       return response;
     } catch (e) {
-      print("Error on PATCH Multipart request: $e");
-      showToast(success: false, msg: e);
+      print("Error on PATCH Multipart request: ${e.toString()}");
+      showToast(success: false, msg: e.toString());
     }
   }
 

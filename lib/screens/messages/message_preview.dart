@@ -92,7 +92,7 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                         ),
                       ),
                     ),
-                    if (!widget.messageBox.latestLetter.isRead)
+                    if (!widget.messageBox.lastLetter.isRead)
                       Positioned(
                         top: 0,
                         child: CircleAvatar(
@@ -119,14 +119,14 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                           ),
                         ),
                         Text(
-                          widget.messageBox.latestLetter.text,
+                          widget.messageBox.lastLetter.text,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 12,
                             height: 1.6,
                             fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                            color: widget.messageBox.latestLetter.isRead
+                            color: widget.messageBox.lastLetter.isRead
                                 ? GuamColorFamily.grayscaleGray4
                                 : GuamColorFamily.grayscaleGray2,
                           ),
@@ -177,7 +177,7 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                 Padding(
                   padding: EdgeInsets.only(right: 10, top: 14, bottom: 15),
                   child: Text(
-                    Jiffy(widget.messageBox.latestLetter.createdAt).fromNow(),
+                    Jiffy(widget.messageBox.lastLetter.createdAt).fromNow(),
                     style: TextStyle(
                       fontSize: 12,
                       height: 1.6,

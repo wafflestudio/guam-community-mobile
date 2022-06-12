@@ -78,46 +78,49 @@ class _NotificationsBodyState extends State<NotificationsBody> {
         child: RefreshIndicator(
           color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
           onRefresh: () => context.read<Notifications>().fetchNotifications(),
-          child: SingleChildScrollView(
-            controller: _scrollController,
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Column(children: [
-              if (_notifications.isEmpty)
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.1),
-                    child: Text(
-                      '새로운 알림이 없습니다.',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: GuamColorFamily.grayscaleGray4,
-                        fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+          child: Container(
+            height: double.infinity,
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Column(children: [
+                if (_notifications.isEmpty)
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.1),
+                      child: Text(
+                        '새로운 알림이 없습니다.',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: GuamColorFamily.grayscaleGray4,
+                          fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              if (_notifications.isNotEmpty)
-                ..._notifications.map((noti) => NotificationsPreview(noti, onRefresh: _firstLoad)),
-              if (_isLoadMoreRunning == true)
-                Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 40),
-                  child: guamProgressIndicator(size: 40),
-                ),
-              if (_hasNextPage == false)
-                Container(
-                  color: GuamColorFamily.purpleLight2,
-                  padding: EdgeInsets.only(top: 10, bottom: 10),
-                  child: Center(child: Text(
-                    '모든 알림을 불러왔습니다!',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: GuamColorFamily.grayscaleGray2,
-                      fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                    ),
-                  )),
-                ),
-            ]),
+                if (_notifications.isNotEmpty)
+                  ..._notifications.map((noti) => NotificationsPreview(noti, onRefresh: _firstLoad)),
+                if (_isLoadMoreRunning == true)
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 40),
+                    child: guamProgressIndicator(size: 40),
+                  ),
+                if (_hasNextPage == false)
+                  Container(
+                    color: GuamColorFamily.purpleLight2,
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    child: Center(child: Text(
+                      '모든 알림을 불러왔습니다!',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: GuamColorFamily.grayscaleGray2,
+                        fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                      ),
+                    )),
+                  ),
+              ]),
+            ),
           ),
         ),
       );
