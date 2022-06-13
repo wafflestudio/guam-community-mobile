@@ -82,14 +82,12 @@ class _ProfilesEditState extends State<ProfilesEdit> with Toast {
   Future setProfile() async {
     toggleSending();
     try {
-      return showToast(success: false, msg: '프로필 수정 디버깅 중입니다...');
-
       if (input['nickname'] == '') {
         return showToast(success: false, msg: '닉네임을 설정해주세요.');
       }
-      // if (profileImage.isEmpty && profileImg == null) {
-      //   return showToast(success: false, msg: '프로필 사진을 설정해주세요.');
-      // }
+      if (profileImage.isEmpty && profileImg == null) {
+        return showToast(success: false, msg: '프로필 사진을 설정해주세요.');
+      }
       await context.read<Authenticate>().setProfile(
         fields: input,
         files: profileImage.isNotEmpty
