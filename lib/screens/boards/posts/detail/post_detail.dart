@@ -159,6 +159,7 @@ class _PostDetailState extends State<PostDetail> with Toast {
                 //   ),
                 //   onPressed: scrapOrUnscrapPost,
                 // ),
+                if (widget.post.isMine)
                 IconButton(
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
