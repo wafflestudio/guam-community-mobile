@@ -42,7 +42,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAYoZLtqIgtE8eLeyNgCoLYIa3f3UYmXDs',
-    appId: '1:648780047414:android:3fc58c8364ffee5c21a497',
+    appId: '1:648780047414:android:f3e6e071c18e0e8721a497',
     messagingSenderId: '648780047414',
     projectId: 'waffle-guam',
     storageBucket: 'waffle-guam.appspot.com',
@@ -50,7 +50,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCkeKrJihj2WMWtlqWxfzL2aQTtNr-ytTg',
-    appId: '1:648780047414:ios:054210930e5e474921a497',
+    appId: '1:648780047414:ios:f8612570b75dadb921a497',
     messagingSenderId: '648780047414',
     projectId: 'waffle-guam',
     storageBucket: 'waffle-guam.appspot.com',

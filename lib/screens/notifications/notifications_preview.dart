@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/commons/guam_progress_indicator.dart';
@@ -104,7 +102,7 @@ class NotificationsPreview extends StatelessWidget with Toast {
                     ],
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.79,
+                    // width: MediaQuery.of(context).size.width * 0.75,
                     padding: EdgeInsets.only(left: 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

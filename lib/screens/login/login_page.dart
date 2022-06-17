@@ -72,7 +72,7 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: size.height*0.75,
+            top: size.height*0.7,
             child: LoginButtons(),
           ),
         ],

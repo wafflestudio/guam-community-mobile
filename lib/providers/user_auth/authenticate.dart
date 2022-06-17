@@ -39,6 +39,7 @@ class Authenticate extends ChangeNotifier with Toast {
         path: "/api/v1/user/token",
         queryParams: {"kakaoToken": kakaoAccessToken},
       ).then((response) async {
+        print(response.statusCode);
         if (response.statusCode == 200) {
           final customToken = jsonDecode(response.body)['customToken'];
           await auth.signInWithCustomToken(customToken);
@@ -102,19 +103,26 @@ class Authenticate extends ChangeNotifier with Toast {
     }
   }
 
-  Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
+  Future setProfile({Map<String, dynamic> fields, dynamic files, bool imgReset}) async {
     bool successful = false;
 
     try {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
-        await HttpRequest().patchMultipart(
+        /// files == null 여부에 따라 raw-data로 보내거나 multipart type으로 분리
+        Future<dynamic> request = imgReset
+            ? HttpRequest().patch(
+          path: "community/api/v1/users/${me.id}/json",
+          body: fields,
+          authToken: authToken,
+        ) : HttpRequest().patchMultipart(
           path: "community/api/v1/users/${me.id}",
           fields: fields,
           files: files,
           authToken: authToken,
-        ).then((response) async {
+        );
+        await request.then((response) async {
           if (response.statusCode == 200) {
             await getMyProfile();
             successful = true;
