@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:648780047414:android:f3e6e071c18e0e8721a497",
         "android_client_info": {
-          "package_name": "com.wafflestudio.guam_community"
+          "package_name": "com.wafflestudio.guam"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "648780047414-d2fbe0qcdiugckgq8stcqvgef89ie6a9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.wafflestudio.guam_community",
+            "package_name": "com.wafflestudio.guam",
             "certificate_hash": "e53cba4c1facd94625b7c877a80a183694acaf05"
           }
         },
@@ -42,7 +42,7 @@
               "client_id": "648780047414-erb4hojdlnk09dk8nvcjjgdps2q3cc8n.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.wafflestudio.guam_community"
+                "bundle_id": "com.wafflestudio.guam"
               }
             }
           ]
@@ -53,7 +53,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:648780047414:android:3fc58c8364ffee5c21a497",
         "android_client_info": {
-          "package_name": "com.wafflestudio.guam_community"
+          "package_name": "com.wafflestudio.guam.guam_community_client"
         }
       },
       "oauth_client": [
@@ -78,7 +78,51 @@
               "client_id": "648780047414-erb4hojdlnk09dk8nvcjjgdps2q3cc8n.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.wafflestudio.guam_community"
+                "bundle_id": "com.wafflestudio.guam"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648780047414:android:9fcba7e09b98432d21a497",
+        "android_client_info": {
+          "package_name": "com.wafflestudio.guam_community"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648780047414-taiol9ffttcuen7ddu8gsa0dalgsf8b2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wafflestudio.guam_community",
+            "certificate_hash": "ba17d0c7b96ecb24ad20cbd545fd0706be37edd9"
+          }
+        },
+        {
+          "client_id": "648780047414-9sscdi6fbqrfnme42cvub06b9sgl9ojm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYoZLtqIgtE8eLeyNgCoLYIa3f3UYmXDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648780047414-9sscdi6fbqrfnme42cvub06b9sgl9ojm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "648780047414-erb4hojdlnk09dk8nvcjjgdps2q3cc8n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.wafflestudio.guam"
               }
             }
           ]
