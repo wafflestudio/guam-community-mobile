@@ -100,7 +100,7 @@ class _MessageBodyState extends State<MessageBody> with Toast {
                           ),
                         ),
                       if (_messageBoxes != null && _messageBoxes.isNotEmpty)
-                        ..._messageBoxes.reversed.map((messageBox) => MessagePreview(messageBox, onRefresh: _firstLoad)
+                        ..._messageBoxes.map((messageBox) => MessagePreview(messageBox, onRefresh: _firstLoad)
                       )
                     ]
                   ),
