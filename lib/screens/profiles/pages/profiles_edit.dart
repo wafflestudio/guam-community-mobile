@@ -32,6 +32,7 @@ class ProfilesEdit extends StatefulWidget {
 
 class _ProfilesEditState extends State<ProfilesEdit> with Toast {
   bool sending = false;
+  bool imgReset = false;
   Map<String, dynamic> input = {};
   List<dynamic> profileImage = [];
   String profileImg;
@@ -63,12 +64,13 @@ class _ProfilesEditState extends State<ProfilesEdit> with Toast {
 
   Future<void> resetImageFile() async {
     setState(() {
+      imgReset = true;
       profileImg = null;
       if (profileImage.isNotEmpty) profileImage.clear();
     });
   }
 
-  /// import the path of images from assets directory
+  /// Deprecated: import the path of images from assets directory
   Future<File> getImageFileFromAssets(String path) async {
     final byteData = await rootBundle.load('assets/$path');
     final buffer = byteData.buffer;
@@ -82,21 +84,15 @@ class _ProfilesEditState extends State<ProfilesEdit> with Toast {
   Future setProfile() async {
     toggleSending();
     try {
-      return showToast(success: false, msg: '프로필 수정 디버깅 중입니다...');
-
       if (input['nickname'] == '') {
         return showToast(success: false, msg: '닉네임을 설정해주세요.');
       }
-      // if (profileImage.isEmpty && profileImg == null) {
-      //   return showToast(success: false, msg: '프로필 사진을 설정해주세요.');
-      // }
       await context.read<Authenticate>().setProfile(
         fields: input,
         files: profileImage.isNotEmpty
             ? [File(profileImage[0].path)] /// 프사 새롭게 추가
-            : profileImg != null /// 프사 유지하거나 기본 프사로 바꾸거나
-                ? null
-                : [await getImageFileFromAssets('images/profile_image.png')],
+            : null,
+        imgReset: imgReset,
       ).then((successful) {
         toggleSending();
         if (successful) {

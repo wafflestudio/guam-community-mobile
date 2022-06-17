@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '5'
+    flutterVersionCode = '8'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '5'
+    flutterVersionName = '8'
 }
 
 def keystoreProperties = new Properties()
@@ -79,6 +79,9 @@ flutter {
 }
 
 dependencies {
+    // https://console.firebase.google.com/u/0/project/waffle-guam/overview
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+
     // kotlin version dependency issue:
     // https://stackoverflow.com/questions/64822045/could-not-find-com-google-firebasefirebase-analytics-ktx-required-by-project
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
