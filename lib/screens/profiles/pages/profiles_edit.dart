@@ -32,7 +32,7 @@ class ProfilesEdit extends StatefulWidget {
 
 class _ProfilesEditState extends State<ProfilesEdit> with Toast {
   bool sending = false;
-  bool imgReset = false;
+  bool imgReset = true;
   Map<String, dynamic> input = {};
   List<dynamic> profileImage = [];
   String profileImg;
@@ -83,9 +83,13 @@ class _ProfilesEditState extends State<ProfilesEdit> with Toast {
 
   Future setProfile() async {
     toggleSending();
+    imgReset = profileImage.isEmpty;
     try {
-      if (input['nickname'] == '') {
+      if (input['nickname'] == null || input['nickname'] == '') {
         return showToast(success: false, msg: '닉네임을 설정해주세요.');
+      }
+      if (input['introduction'] == null) {
+        return showToast(success: false, msg: '자기소개를 작성해주세요.');
       }
       await context.read<Authenticate>().setProfile(
         fields: input,
