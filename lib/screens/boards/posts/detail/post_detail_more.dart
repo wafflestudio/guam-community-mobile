@@ -64,7 +64,7 @@ class PostDetailMore extends StatelessWidget {
               },
             ),
           ] : [
-            /// Deprecated: until 'if (widget.post.isMine)' exists in PostDetail
+            /// Deprecated: until 'if (widget.post.profile.id != 0)' exists in PostDetail
             BottomModalDefault(
               text: '쪽지 보내기',
               onPressed: () => showMaterialModalBottomSheet(
