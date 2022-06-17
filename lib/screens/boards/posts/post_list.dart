@@ -30,7 +30,8 @@ class _PostListState extends State<PostList> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SubHeadings("특별한 일이 있나요? ✨"),
-                SearchFilter(provider: context.read<Posts>()),
+                /// TODO: 추천순 API 완성되면 붙이기.
+                // SearchFilter(provider: context.read<Posts>()),
               ],
             ),
           ),
