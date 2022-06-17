@@ -9,8 +9,9 @@ import 'package:image_picker/image_picker.dart';
 
 class MessageBottomModal extends StatefulWidget {
   final Map input;
+  final Function setText;
 
-  MessageBottomModal(this.input);
+  MessageBottomModal(this.input, this.setText);
 
   @override
   _MessageBottomModalState createState() => _MessageBottomModalState();
@@ -60,7 +61,7 @@ class _MessageBottomModalState extends State<MessageBottomModal> {
           TextField(
             keyboardType: TextInputType.multiline,
             controller: _messageTextFieldController,
-            onChanged: (e) => widget.input['text'] = e,
+            onChanged: (e) => widget.setText(e),
             maxLines: 4,
             maxLength: 200,
             style: TextStyle(fontSize: 14, height: 1.6, color: GuamColorFamily.grayscaleGray2),
