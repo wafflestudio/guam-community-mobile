@@ -22,20 +22,29 @@ class BottomModalWithMessage extends StatefulWidget {
 }
 
 class _BottomModalWithMessageState extends State<BottomModalWithMessage> with Toast {
+  Map input = {'text': '', 'image': []}; // image
+
   @override
   Widget build(BuildContext context) {
-    final msgProvider = context.read<Messages>();
-    Map input = {'text': '', 'image': []}; // image
     bool sending = false;
+    final msgProvider = context.read<Messages>();
 
     void toggleSending() {
       setState(() => sending = !sending);
     }
 
+    void setText(String textMsg){
+      setState(() => input['text'] = textMsg);
+    }
+
     Future sendMessage({List<File> files}) async {
       toggleSending();
       try {
-        await msgProvider.sendMessage(
+        if (input['text'] == '' && files.isEmpty) {
+          showToast(success: false, msg: '쪽지를 작성해주세요.');
+          return null;
+        }
+          await msgProvider.sendMessage(
           fields: {
             'to': widget.profile.id.toString(),
             'text': input['text'] == '' && files.isNotEmpty ? '사진' : input['text'],
@@ -88,7 +97,7 @@ class _BottomModalWithMessageState extends State<BottomModalWithMessage> with To
             ],
           ),
           Padding(padding: EdgeInsets.only(bottom: 14)),
-          MessageBottomModal(input),
+          MessageBottomModal(input, setText),
           Padding(padding: EdgeInsets.only(bottom: 14)),
           !sending ? Center(
             child: TextButton(
