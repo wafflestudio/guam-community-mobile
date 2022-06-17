@@ -108,11 +108,11 @@ class Notifications extends ChangeNotifier with Toast {
       if (authToken.isNotEmpty) {
         await HttpRequest().post(
           path: "community/api/v1/push/read",
-          queryParams: {
+          body: {
             "userId": userId.toString(),
             "pushEventIds": pushEventIds,
           },
-          authToken: await _authProvider.getFirebaseIdToken(),
+          authToken: authToken,
         ).then((response) async {
           if (response.statusCode == 200) {
             loading = false;

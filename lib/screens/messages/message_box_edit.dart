@@ -71,7 +71,7 @@ class _MessageBoxEditState extends State<MessageBoxEdit> {
         padding: EdgeInsets.only(top: 18),
         child: Column(
           children: [
-            ..._messageBoxes.reversed.map((messageBox) => MessagePreview(
+            ..._messageBoxes.map((messageBox) => MessagePreview(
               messageBox,
               onRefresh: widget.onRefresh,
               editable: true,
