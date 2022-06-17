@@ -37,7 +37,6 @@ class Posts extends ChangeNotifier with Toast {
 
   /// ==== Posts ====
   Future fetchPosts(int boardId) async {
-    // print(await _authProvider.getFirebaseIdToken(),);
     loading = true;
     try {
       await HttpRequest()
