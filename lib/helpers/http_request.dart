@@ -106,7 +106,7 @@ class HttpRequest with Toast {
 
       http.MultipartRequest request = http.MultipartRequest("PATCH", uri);
       request.headers['Authorization'] = 'Bearer $authToken';
-      fields.entries.forEach((e) => request.fields[e.key] = e.value);
+      fields.entries.forEach((e) => request.fields[e.key] = e.value ?? "");
 
       if (files != null)
         files.forEach((e) async {

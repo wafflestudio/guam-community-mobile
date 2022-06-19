@@ -83,7 +83,7 @@ class _ProfilesEditState extends State<ProfilesEdit> with Toast {
 
   Future setProfile() async {
     toggleSending();
-    imgReset = profileImage.isEmpty;
+    imgReset = profileImage.isEmpty && profileImg == null;
     try {
       if (input['nickname'] == null || input['nickname'] == '') {
         return showToast(success: false, msg: '닉네임을 설정해주세요.');
