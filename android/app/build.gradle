@@ -6,6 +6,13 @@ if (localPropertiesFile.exists()) {
     }
 }
 
+def keystoreProperties = new Properties()
+// keytool -list -v -keystore key.jks
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
@@ -13,18 +20,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '13'
+    flutterVersionCode = '14'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '13'
-}
-
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    flutterVersionName = '14'
 }
 
 apply plugin: 'com.android.application'
@@ -49,10 +50,11 @@ android {
         versionName flutterVersionName
     }
 
+    // https://stackoverflow.com/questions/54457245/a-problem-occurred-evaluating-project-app-path-may-not-be-null-or-empty-st
+    // https://itwise.tistory.com/47
+    /// https://flutter-ko.dev/docs/deployment/android
     signingConfigs {
         release {
-            // https://stackoverflow.com/questions/54457245/a-problem-occurred-evaluating-project-app-path-may-not-be-null-or-empty-st
-            // https://itwise.tistory.com/47
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
             storeFile file(keystoreProperties['storeFile'])
@@ -63,13 +65,10 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-
-            /// https://flutter-ko.dev/docs/deployment/android
             minifyEnabled true
+
             useProguard true
-
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
         }
     }
 }
