@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/back.dart';
-import 'package:guam_community_client/commons/bottom_modal/bottom_modal_default.dart';
 import 'package:guam_community_client/commons/bottom_modal/bottom_modal_with_alert.dart';
 import 'package:guam_community_client/commons/common_text_field.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';

@@ -91,8 +91,7 @@ class MessageDetailBody extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(
-                          HttpRequest().s3BaseAuthority + message.imagePath),
+                      image: NetworkImage(HttpRequest().s3BaseAuthority + message.imagePath),
                     ),
                   ),
                 ),

@@ -33,9 +33,17 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
     super.dispose();
   }
 
+  void asdf () async {
+    widget.onRefresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     Authenticate authProvider = context.read<Authenticate>();
+    MessageBox msgBox = widget.messageBox;
+    /// 가장 최근 메시지가 읽혀지지 않았고, 해당 메시지 발신자가 나인 경우
+    bool newMsg = !msgBox.lastLetter.isRead
+        && msgBox.lastLetter.sentTo == authProvider.me.id;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -56,10 +64,10 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                     ChangeNotifierProvider(create: (_) => Messages(authProvider)),
                   ],
                   child: FutureBuilder(
-                    future: context.read<Messages>().getMessages(widget.messageBox.otherProfile.id),
+                    future: context.read<Messages>().getMessages(msgBox.otherProfile.id),
                     builder: (_, AsyncSnapshot<List<Message.Message>> snapshot) {
                       if (snapshot.hasData) {
-                        return MessageDetail(snapshot.data, widget.messageBox.otherProfile, widget.onRefresh);
+                        return MessageDetail(snapshot.data, msgBox.otherProfile, widget.onRefresh);
                       } else if (snapshot.hasError) {
                         Navigator.pop(context);
                         showToast(success: false, msg: '해당 쪽지를 찾을 수 없습니다.');
@@ -86,13 +94,14 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: widget.messageBox.otherProfile.profileImg != null
-                              ? NetworkImage(HttpRequest().s3BaseAuthority + widget.messageBox.otherProfile.profileImg)
+                          image: msgBox.otherProfile.profileImg != null
+                              ? NetworkImage(HttpRequest().s3BaseAuthority + msgBox.otherProfile.profileImg)
                               : SvgProvider('assets/icons/profile_image.svg')
                         ),
                       ),
                     ),
-                    if (!widget.messageBox.lastLetter.isRead)
+                    /// 가장 최근 메시지가 읽혀지지 않았고, 해당 메시지 발신자가 나인 경우
+                    if (newMsg)
                       Positioned(
                         top: 0,
                         child: CircleAvatar(
@@ -110,7 +119,7 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          widget.messageBox.otherProfile.nickname,
+                          msgBox.otherProfile.nickname,
                           style: TextStyle(
                             fontSize: 12,
                             height: 1.6,
@@ -119,16 +128,16 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                           ),
                         ),
                         Text(
-                          widget.messageBox.lastLetter.text,
+                          msgBox.lastLetter.text,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 12,
                             height: 1.6,
                             fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                            color: widget.messageBox.lastLetter.isRead
-                                ? GuamColorFamily.grayscaleGray4
-                                : GuamColorFamily.grayscaleGray2,
+                            color: newMsg
+                                ? GuamColorFamily.grayscaleGray2
+                                : GuamColorFamily.grayscaleGray4,
                           ),
                         ),
                       ],
@@ -158,7 +167,7 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                             title: '쪽지함을 삭제하시겠어요?',
                             body: '삭제된 쪽지는 복원할 수 없습니다.',
                             func: () async => await context.read<Messages>()
-                                .deleteMessageBox(widget.messageBox.otherProfile.id)
+                                .deleteMessageBox(msgBox.otherProfile.id)
                                 .then((successful) async {
                                   context.read<Messages>().fetchMessageBoxes();
                                   if (successful) {
@@ -177,7 +186,7 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                 Padding(
                   padding: EdgeInsets.only(right: 10, top: 14, bottom: 15),
                   child: Text(
-                    Jiffy(widget.messageBox.lastLetter.createdAt).fromNow(),
+                    Jiffy(msgBox.lastLetter.createdAt).fromNow(),
                     style: TextStyle(
                       fontSize: 12,
                       height: 1.6,
