@@ -42,3 +42,5 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
+# Android Signing
+android/key.properties

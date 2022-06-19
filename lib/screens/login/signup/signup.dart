@@ -24,7 +24,7 @@ class _SignUpState extends State<SignUp> {
     Size size = MediaQuery.of(context).size;
 
     Future signUp() async {
-      await context.read<Authenticate>().setProfile(fields: input);
+      await context.read<Authenticate>().setProfile(fields: input, imgReset: true);
     }
 
     return Scaffold(
