@@ -41,6 +41,9 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
   Widget build(BuildContext context) {
     Authenticate authProvider = context.read<Authenticate>();
     MessageBox msgBox = widget.messageBox;
+    /// 가장 최근 메시지가 읽혀지지 않았고, 해당 메시지 발신자가 나인 경우
+    bool newMsg = !msgBox.lastLetter.isRead
+        && msgBox.lastLetter.sentTo == authProvider.me.id;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -98,8 +101,7 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                       ),
                     ),
                     /// 가장 최근 메시지가 읽혀지지 않았고, 해당 메시지 발신자가 나인 경우
-                    if (!msgBox.lastLetter.isRead
-                        && msgBox.lastLetter.sentTo == authProvider.me.id)
+                    if (newMsg)
                       Positioned(
                         top: 0,
                         child: CircleAvatar(
@@ -133,9 +135,7 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                             fontSize: 12,
                             height: 1.6,
                             fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                            /// 가장 최근 메시지가 읽혀지지 않았고, 해당 메시지 발신자가 나인 경우
-                            color: !msgBox.lastLetter.isRead
-                                && msgBox.lastLetter.sentTo == authProvider.me.id
+                            color: newMsg
                                 ? GuamColorFamily.grayscaleGray2
                                 : GuamColorFamily.grayscaleGray4,
                           ),
