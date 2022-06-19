@@ -106,7 +106,7 @@ class _NotificationsBodyState extends State<NotificationsBody> {
                     padding: EdgeInsets.only(top: 10, bottom: 40),
                     child: guamProgressIndicator(size: 40),
                   ),
-                if (_hasNextPage == false)
+                if (_hasNextPage == false && _currentPage > 2)
                   Container(
                     color: GuamColorFamily.purpleLight2,
                     padding: EdgeInsets.only(top: 10, bottom: 10),
