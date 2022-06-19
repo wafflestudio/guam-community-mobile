@@ -6,9 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/custom_divider.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import '../helpers/pick_image.dart';
-import '../providers/messages/messages.dart';
 import 'common_img_nickname.dart';
 import 'image/image_thumbnail.dart';
 import 'button_size_circular_progress_indicator.dart';
@@ -54,7 +52,11 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
   void setImageFile(PickedFile val) {
     setState(() {
-      if (val != null) imageFileList.add(val);
+      if (val != null) {
+        imageFileList.add(val);
+        /// 쪽지함의 경우, 사진을 한 장씩만 보내도록 FIFO 방식의 삭제 적용.
+        if (widget.messageTo != null && imageFileList.length > 1) imageFileList.removeAt(0);
+      }
     });
   }
 
