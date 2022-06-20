@@ -33,10 +33,6 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
     super.dispose();
   }
 
-  void asdf () async {
-    widget.onRefresh();
-  }
-
   @override
   Widget build(BuildContext context) {
     Authenticate authProvider = context.read<Authenticate>();
@@ -186,7 +182,9 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                 Padding(
                   padding: EdgeInsets.only(right: 10, top: 14, bottom: 15),
                   child: Text(
-                    Jiffy(msgBox.lastLetter.createdAt).fromNow(),
+                    Jiffy(msgBox.lastLetter.createdAt).fromNow() == "몇 초 후"
+                        ? "몇 초 전"
+                        : Jiffy(msgBox.lastLetter.createdAt).fromNow(),
                     style: TextStyle(
                       fontSize: 12,
                       height: 1.6,

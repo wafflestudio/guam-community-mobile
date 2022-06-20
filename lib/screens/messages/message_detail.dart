@@ -70,7 +70,7 @@ class _MessageDetailState extends State<MessageDetail> {
           if (successful) {
             msgSended = true;
             _refreshMsg(); /// 쪽지 페이지 갱신
-            widget.onRefresh(); /// 쪽지함 페이지 갱신
+            widget.onRefresh(); /// 쪽지함 페이지 & 안 읽은 쪽지 개수 갱신
           } else {
             print("Error!");
           }
@@ -89,7 +89,7 @@ class _MessageDetailState extends State<MessageDetail> {
         backgroundColor: GuamColorFamily.grayscaleWhite,
         appBar: CustomAppBar(
           title: widget.otherProfile.nickname,
-          leading: Back(),
+          leading: Back(onPressed: widget.onRefresh),
           trailing: Padding(
             padding: EdgeInsets.only(right: 11),
             child: IconButton(
