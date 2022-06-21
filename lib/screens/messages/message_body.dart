@@ -14,6 +14,10 @@ import '../../providers/user_auth/authenticate.dart';
 import 'message_preview.dart';
 
 class MessageBody extends StatefulWidget {
+  final Function recountMsg;
+
+  MessageBody(this.recountMsg);
+
   @override
   State<MessageBody> createState() => _MessageBodyState();
 }
@@ -27,6 +31,7 @@ class _MessageBodyState extends State<MessageBody> with Toast {
     setState(() => _isFirstLoadRunning = true);
     try {
       await context.read<Messages>().fetchMessageBoxes();
+      widget.recountMsg();
       _messageBoxes = context.read<Messages>().messageBoxes;
     } catch (err) {
       print('알 수 없는 오류가 발생했습니다.');
@@ -48,7 +53,7 @@ class _MessageBodyState extends State<MessageBody> with Toast {
       backgroundColor: GuamColorFamily.grayscaleWhite,
       appBar: CustomAppBar(
         title: '쪽지함',
-        leading: Back(),
+        leading: Back(onPressed: widget.recountMsg),
         trailing: Padding(
           padding: EdgeInsets.only(right: 14),
           child: IconButton(

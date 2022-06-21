@@ -59,7 +59,9 @@ class MessageDetailBody extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                Jiffy(message.createdAt).fromNow(),
+                Jiffy(message.createdAt).fromNow() == "몇 초 후"
+                    ? "몇 초 전"
+                    : Jiffy(message.createdAt).fromNow(),
                 style: TextStyle(
                   fontSize: 12,
                   fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
