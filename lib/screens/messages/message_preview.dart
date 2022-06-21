@@ -99,10 +99,15 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                     /// 가장 최근 메시지가 읽혀지지 않았고, 해당 메시지 발신자가 나인 경우
                     if (newMsg)
                       Positioned(
-                        top: 0,
+                        top: -2,
+                        left: -2,
                         child: CircleAvatar(
-                          backgroundColor: GuamColorFamily.fuchsiaCore,
-                          radius: 6,
+                          backgroundColor: GuamColorFamily.grayscaleWhite,
+                          radius: 8,
+                          child: CircleAvatar(
+                            backgroundColor: GuamColorFamily.fuchsiaCore,
+                            radius: 6,
+                          ),
                         )
                       ),
                   ],
