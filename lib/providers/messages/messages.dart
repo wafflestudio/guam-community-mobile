@@ -13,7 +13,6 @@ class Messages extends ChangeNotifier with Toast {
   Authenticate _authProvider;
   List<MessageBox> _messageBoxes;
   List<Message> _messages;
-  int _unRead;
   bool loading = false;
 
   Messages(Authenticate authProvider) {
@@ -23,7 +22,6 @@ class Messages extends ChangeNotifier with Toast {
 
   List<MessageBox> get messageBoxes => _messageBoxes;
   List<Message> get messages => _messages;
-  int get unRead => _unRead;
 
   Future<List<MessageBox>> fetchMessageBoxes() async {
     loading = true;
@@ -106,7 +104,7 @@ class Messages extends ChangeNotifier with Toast {
           path: "community/api/v1/letters/$otherProfileId",
         ).then((response) async {
           if (response.statusCode == 200) {
-            await countUnRead();
+            await _authProvider.countMsg();
             final jsonUtf8 = decodeKo(response);
             final List<dynamic> jsonList = json.decode(jsonUtf8)["letters"];
             _messages = jsonList.map((e) => Message.fromJson(e)).toList();
@@ -169,36 +167,5 @@ class Messages extends ChangeNotifier with Toast {
       notifyListeners();
     }
     return successful;
-  }
-
-  Future<int> countUnRead() async {
-    loading = true;
-    try {
-      String authToken = await _authProvider.getFirebaseIdToken();
-      if (authToken.isNotEmpty) {
-        await HttpRequest()
-            .get(
-          authToken: authToken,
-          path: "community/api/v1/letters/me",
-        ).then((response) {
-          if (response.statusCode == 200) {
-            final jsonUtf8 = decodeKo(response);
-            _unRead = json.decode(jsonUtf8)["unRead"];
-          } else {
-            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
-            switch (response.statusCode) {
-              case 401: msg = '접근 권한이 없습니다.'; break;
-            }
-            showToast(success: false, msg: msg);
-          }
-        });
-      }
-    } catch (e) {
-      print(e);
-    } finally {
-      loading = false;
-      notifyListeners();
-    }
-    return _unRead;
   }
 }

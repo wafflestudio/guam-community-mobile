@@ -33,7 +33,7 @@ class _MessageBoxScaffoldState extends State<MessageBoxScaffold> {
   Future<void> _countMsg() async {
     setState(() => _countRunning = true);
     try {
-      await context.read<Messages>().countUnRead();
+      await context.read<Authenticate>().countMsg();
     } catch (err) {
       print('알 수 없는 오류가 발생했습니다.');
     }
@@ -41,8 +41,8 @@ class _MessageBoxScaffoldState extends State<MessageBoxScaffold> {
   }
 
   Future<void> _recountMsg() async {
-    await context.read<Messages>().countUnRead();
-    setState(() => _unReadMsg = context.read<Messages>().unRead);
+    await context.read<Authenticate>().countMsg();
+    setState(() => _unReadMsg = context.read<Authenticate>().unRead);
   }
 
   @override
@@ -55,7 +55,7 @@ class _MessageBoxScaffoldState extends State<MessageBoxScaffold> {
   Widget build(BuildContext context) {
     Authenticate authProvider = context.read<Authenticate>();
     Messages msgProvider = context.read<Messages>();
-    _unReadMsg = context.read<Messages>().unRead;
+    _unReadMsg = context.read<Authenticate>().unRead;
 
     return Padding(
       padding: EdgeInsets.only(right: 4),
