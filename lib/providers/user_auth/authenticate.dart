@@ -36,7 +36,6 @@ class Authenticate extends ChangeNotifier with Toast {
   Future kakaoSignIn(String kakaoAccessToken) async {
     try {
       await HttpRequest().get(
-        isHttps: false, // TODO: remove after immigration heads to gateway
         authority: HttpRequest().immigrationAuthority,
         path: "/api/v1/user/token",
         queryParams: {"kakaoToken": kakaoAccessToken},
