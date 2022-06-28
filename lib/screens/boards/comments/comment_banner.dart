@@ -46,7 +46,7 @@ class CommentBanner extends StatelessWidget {
               ),
             ),
           Spacer(),
-          if (comment.profile.id != 0)
+          if (comment.isMine || comment.profile.id != 0)
           IconButton(
             iconSize: 20,
             padding: EdgeInsets.zero,
