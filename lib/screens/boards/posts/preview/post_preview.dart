@@ -14,9 +14,11 @@ import '../../../../providers/home/home_provider.dart';
 import '../../../../providers/user_auth/authenticate.dart';
 
 class PostPreview extends StatelessWidget with Toast {
+  final int idx;
   final Post post;
+  final Function refreshPost;
 
-  PostPreview(this.post);
+  PostPreview(this.idx, this.post, this.refreshPost);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class PostPreview extends StatelessWidget with Toast {
                     future: postProvider.getPost(post.id),
                     builder: (_, AsyncSnapshot<Post> snapshot) {
                       if (snapshot.hasData) {
-                        return PostDetail(snapshot.data);
+                        return PostDetail(index: idx, post: snapshot.data, refreshPost: refreshPost);
                       } else if (snapshot.hasError) {
                         Navigator.pop(context);
                         postProvider.fetchPosts(0);
@@ -61,7 +63,7 @@ class PostPreview extends StatelessWidget with Toast {
           },
           child: TabItem.values[context.read<HomeProvider>().idx] == TabItem.search
               ? PostPreviewSearchTab(post)
-              : PostPreviewHomeTab(post)
+              : PostPreviewHomeTab(idx, post, refreshPost)
         ),
       ),
     );

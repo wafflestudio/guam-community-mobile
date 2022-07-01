@@ -18,7 +18,7 @@ class Posts extends ChangeNotifier with Toast {
   List<Post> _posts;
   List<Post> _newPosts;
   List<Comment> _comments;
-  int _boardId = 0; // default : 피드게시판
+  int _boardId; // default : 피드게시판
   int _createdPostId;
   bool loading = false;
 
@@ -43,7 +43,7 @@ class Posts extends ChangeNotifier with Toast {
       await HttpRequest()
           .get(
         path: "community/api/v1/posts",
-        queryParams: {"boardId": boardId.toString()},
+        queryParams: {"boardId": boardId != null ? boardId.toString() : null},
         authToken: await _authProvider.getFirebaseIdToken(),
       ).then((response) async {
         /// 현재 게시판 위치 저장해두기 (게시판 reload 시 사용)
@@ -53,9 +53,6 @@ class Posts extends ChangeNotifier with Toast {
           final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
           _hasNext = json.decode(jsonUtf8)["hasNext"];
           _posts = jsonList.map((e) => Post.fromJson(e)).toList();
-
-          // Default search with first filter
-          sortSearchedPosts(Search.filters.first);
           loading = false;
         } else {
           String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
@@ -84,7 +81,7 @@ class Posts extends ChangeNotifier with Toast {
           .get(
         path: "community/api/v1/posts",
         queryParams: {
-          "boardId": boardId.toString(),
+          "boardId": boardId != null ? boardId.toString() : null,
           "beforePostId": beforePostId.toString(),
         },
         authToken: await _authProvider.getFirebaseIdToken(),
@@ -108,11 +105,6 @@ class Posts extends ChangeNotifier with Toast {
       notifyListeners();
     }
     return _newPosts;
-  }
-
-  void sortSearchedPosts(Filter f) {
-    _posts.sort((a, b) => b.toJson()[f.key].compareTo(a.toJson()[f.key]));
-    notifyListeners();
   }
 
   Future<bool> createPost({Map<String, dynamic> fields, dynamic files}) async {

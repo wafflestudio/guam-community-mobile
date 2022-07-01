@@ -10,11 +10,21 @@ import '../../models/boards/post.dart';
 
 class Search extends ChangeNotifier with Toast {
   Authenticate _authProvider;
-  List<Post> searchedPosts = [];
+  bool loading = false;
+  bool _hasNext;
+  String _searchedKeyword;
+  List<Post> _searchedPosts = [];
+  List<Post> _newSearchedPosts;
 
+  bool historyFull() => history.length >= maxNHistory;
   List<String> history = [];  // Recently searched word is at the back
   static const String searchHistoryKey = 'search-history';
   static const int maxNHistory = 5;
+
+  String get searchedKeyword => _searchedKeyword;
+  List<Post> get searchedPosts => _searchedPosts;
+  List<Post> get newSearchedPosts => _newSearchedPosts;
+  bool get hasNext => _hasNext;
 
   static List<Filter> filters = [
     Filter(
@@ -31,10 +41,6 @@ class Search extends ChangeNotifier with Toast {
     _authProvider = authProvider;
     getHistory();
   }
-
-  bool loading = false;
-
-  bool historyFull() => history.length >= maxNHistory;
 
   Future getHistory() async {
     await SharedPreferences.getInstance()
@@ -71,19 +77,20 @@ class Search extends ChangeNotifier with Toast {
     loading = true;
     try {
       if (query == null || query.trim() == '') {
-        searchedPosts.clear();
+        _searchedPosts.clear();
         return;
       }
       await HttpRequest()
           .get(
-        path: "community/api/v1/posts",
+        path: "community/api/v1/posts/search",
         queryParams: {"keyword": query},
         authToken: await _authProvider.getFirebaseIdToken(),
       ).then((response) async {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
-          searchedPosts = jsonList.map((e) => Post.fromJson(e)).toList();
+          _searchedPosts = jsonList.map((e) => Post.fromJson(e)).toList();
+          _searchedKeyword = query;
           loading = false;
         } else {
           final jsonUtf8 = decodeKo(response);
@@ -102,8 +109,39 @@ class Search extends ChangeNotifier with Toast {
     }
   }
 
+  /// For Pagination in SearchFeed Widget using _loadMore()
+  Future addSearchedPosts({int beforePostId}) async {
+    try {
+      await HttpRequest()
+          .get(
+        path: "community/api/v1/posts/search",
+        queryParams: {
+          "keyword": _searchedKeyword,
+          "beforePostId": beforePostId.toString(),
+        },
+        authToken: await _authProvider.getFirebaseIdToken(),
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+          _hasNext = json.decode(jsonUtf8)["hasNext"];
+          _newSearchedPosts = jsonList.map((e) => Post.fromJson(e)).toList();
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          // showToast(success: false, msg: '검색된 게시글을 모두 불러왔습니다.');
+        }
+      });
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return _newSearchedPosts;
+  }
+
   void sortSearchedPosts(Filter f) {
-    searchedPosts.sort((a, b) => b.toJson()[f.key].compareTo(a.toJson()[f.key]));
+    _searchedPosts.sort((a, b) => b.toJson()[f.key].compareTo(a.toJson()[f.key]));
     notifyListeners();
   }
 }

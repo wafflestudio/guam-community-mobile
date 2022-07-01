@@ -12,10 +12,13 @@ import './post_preview_title.dart';
 import '../post_info.dart';
 
 class PostPreviewHomeTab extends StatelessWidget {
+  final int idx;
   final Post post;
   final bool isAnonymous;
+  final Function refreshPost;
 
-  PostPreviewHomeTab(this.post) : this.isAnonymous = post.boardType == '익명게시판';
+  PostPreviewHomeTab(this.idx, this.post, this.refreshPost)
+      : this.isAnonymous = post.boardType == '익명게시판';
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +62,9 @@ class PostPreviewHomeTab extends StatelessWidget {
           child: PostPreviewContent(this.post.content),
         ),
         PostInfo(
+          index: idx,
           post: post,
+          refreshPost: refreshPost,
           iconColor: GuamColorFamily.grayscaleGray5,
           profileClickable: false,
         ),

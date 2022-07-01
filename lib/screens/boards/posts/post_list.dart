@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:collection/collection.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -10,8 +11,9 @@ import '../../search/search_filter.dart';
 
 class PostList extends StatefulWidget {
   final List<Post> posts;
+  final Function refreshPost;
 
-  PostList(this.posts);
+  PostList(this.posts, this.refreshPost);
 
   @override
   State<PostList> createState() => _PostListState();
@@ -38,7 +40,7 @@ class _PostListState extends State<PostList> {
           Padding(
             padding: EdgeInsets.only(bottom: 10),
             child: Column(
-              children: [...widget.posts.map((post) => PostPreview(post))]
+              children: [...widget.posts.mapIndexed((idx, post) => PostPreview(idx, post, widget.refreshPost))]
             ),
           ),
         ],

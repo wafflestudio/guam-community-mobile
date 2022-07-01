@@ -134,7 +134,6 @@ class Messages extends ChangeNotifier with Toast {
 
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
-
       if (authToken.isNotEmpty) {
         await HttpRequest()
             .postMultipart(

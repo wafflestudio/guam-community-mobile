@@ -105,7 +105,7 @@ class _PostCreationState extends State<PostCreation> with Toast {
                       future: postProvider.getPost(postProvider.createdPostId),
                       builder: (_, AsyncSnapshot<Post> snapshot) {
                         if (snapshot.hasData) {
-                          return PostDetail(snapshot.data);
+                          return PostDetail(post: snapshot.data);
                         } else if (snapshot.hasError) {
                           Navigator.pop(context);
                           postProvider.fetchPosts(0);

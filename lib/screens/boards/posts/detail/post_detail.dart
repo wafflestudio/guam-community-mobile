@@ -22,9 +22,11 @@ import '../../../../providers/messages/messages.dart';
 import '../../../../providers/user_auth/authenticate.dart';
 
 class PostDetail extends StatefulWidget {
+  final int index;
   final Post post;
+  final Function refreshPost;
 
-  PostDetail(this.post);
+  PostDetail({this.index, this.post, this.refreshPost});
 
   @override
   State<PostDetail> createState() => _PostDetailState();
@@ -33,8 +35,6 @@ class PostDetail extends StatefulWidget {
 class _PostDetailState extends State<PostDetail> with Toast {
   Post _post;
   Future comments;
-  bool isScrapped;
-  int scrapCount;
   bool commentImageExist = false;
   final int maxRenderImgCnt = 4;
   Set<int> mentionListId = {};
@@ -47,8 +47,6 @@ class _PostDetailState extends State<PostDetail> with Toast {
     mentionList = [_post.profile.toJson()];
     mentionListId = {_post.profile.id};
     comments = context.read<Posts>().fetchComments(_post.id);
-    isScrapped = widget.post.isScrapped;
-    scrapCount = widget.post.scrapCount;
     super.initState();
   }
 
@@ -101,44 +99,13 @@ class _PostDetailState extends State<PostDetail> with Toast {
         postId: _post.id,
         fields: fields,
         files: files,
-      ).then((successful) {
+      ).then((successful) async {
         if (successful) fetchComments();
+        Post _temp = await postsProvider.getPost(_post.id);
+        _post.commentCount = _temp.commentCount;
+        widget.refreshPost(widget.index, _temp);
         return successful;
       });
-    }
-
-    Future scrapOrUnscrapPost() async {
-      try {
-        if (!isScrapped) {
-          return await postsProvider.scrapPost(
-            postId: widget.post.id,
-          ).then((successful) {
-            if (successful) {
-              setState(() {
-                isScrapped = true;
-                scrapCount ++;
-              });
-            } else {
-              return postsProvider.fetchPosts(postsProvider.boardId);
-            }
-          });
-        } else {
-          return await postsProvider.unscrapPost(
-            postId: widget.post.id,
-          ).then((successful) {
-            if (successful) {
-              setState(() {
-                isScrapped = !isScrapped;
-                scrapCount --;
-              });
-            } else {
-              return postsProvider.fetchPosts(postsProvider.boardId);
-            }
-          });
-        }
-      } catch (e) {
-        print(e);
-      }
     }
 
     return Portal(
@@ -150,15 +117,6 @@ class _PostDetailState extends State<PostDetail> with Toast {
             padding: EdgeInsets.only(right: 11),
             child: Row(
               children: [
-                // IconButton(
-                //   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                //   constraints: BoxConstraints(),
-                //   icon: SvgPicture.asset(isScrapped
-                //       ? 'assets/icons/scrap_filled.svg'
-                //       : 'assets/icons/scrap_outlined.svg'
-                //   ),
-                //   onPressed: scrapOrUnscrapPost,
-                // ),
                 if (widget.post.profile.id != 0)
                 IconButton(
                   padding: EdgeInsets.zero,
@@ -211,7 +169,9 @@ class _PostDetailState extends State<PostDetail> with Toast {
                   Padding(
                     padding: EdgeInsets.only(top: 14, bottom: 8),
                     child: PostInfo(
+                      index: widget.index,
                       post: _post,
+                      refreshPost: widget.refreshPost,
                       iconSize: 24,
                       showProfile: false,
                       iconColor: GuamColorFamily.grayscaleGray4,

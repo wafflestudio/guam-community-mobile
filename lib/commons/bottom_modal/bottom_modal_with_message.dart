@@ -66,7 +66,10 @@ class _BottomModalWithMessageState extends State<BottomModalWithMessage> with To
     }
 
     return Container(
-      padding: EdgeInsets.only(left: 24, top: 24, right: 18, bottom: 14),
+      padding: EdgeInsets.only(
+        left: 24, top: 24, right: 18,
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
       decoration: BoxDecoration(
         color: GuamColorFamily.grayscaleWhite,
         borderRadius: BorderRadius.all(Radius.circular(20)),

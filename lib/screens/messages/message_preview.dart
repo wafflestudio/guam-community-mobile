@@ -17,21 +17,22 @@ import 'message_detail.dart';
 
 class MessagePreview extends StatefulWidget {
   final MessageBox messageBox;
-  final Function onRefresh;
+  final Function reload; // 쪽지함 삭제 페이지 갱신
+  final Function onRefresh; // 쪽지함 페이지 갱신
   final bool editable;
 
-  MessagePreview(this.messageBox, {this.onRefresh, this.editable=false});
+  MessagePreview(this.messageBox, {this.onRefresh, this.reload, this.editable=false});
 
   @override
   State<MessagePreview> createState() => _MessagePreviewState();
 }
 
 class _MessagePreviewState extends State<MessagePreview> with Toast {
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -170,12 +171,10 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                             func: () async => await context.read<Messages>()
                                 .deleteMessageBox(msgBox.otherProfile.id)
                                 .then((successful) async {
-                                  context.read<Messages>().fetchMessageBoxes();
                                   if (successful) {
-                                    // Navigator.pop(context);
+                                    widget.reload();
                                     Navigator.pop(context);
                                     widget.onRefresh();
-                                    await context.read<Messages>().fetchMessageBoxes();
                                   }
                               })
                           ),
