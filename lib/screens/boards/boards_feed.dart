@@ -6,6 +6,8 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 
+import '../../models/boards/post.dart';
+
 class BoardsFeed extends StatefulWidget {
   final int boardId;
 
@@ -60,6 +62,16 @@ class _BoardsFeedState extends State<BoardsFeed> {
     }
   }
 
+  void refreshPost(int idx, Post refreshedPost) {
+    setState(() {
+      _posts.elementAt(idx).commentCount = refreshedPost.commentCount;
+      _posts.elementAt(idx).isLiked = refreshedPost.isLiked;
+      _posts.elementAt(idx).likeCount = refreshedPost.likeCount;
+      _posts.elementAt(idx).isScrapped = refreshedPost.isScrapped;
+      _posts.elementAt(idx).scrapCount = refreshedPost.scrapCount;
+    });
+  }
+
   @override
   void initState() {
     _firstLoad();
@@ -87,7 +99,7 @@ class _BoardsFeedState extends State<BoardsFeed> {
                 physics: AlwaysScrollableScrollPhysics(),
                 child: Column(
                   children: [
-                    PostList(_posts),
+                    PostList(_posts, refreshPost),
                     if (_isLoadMoreRunning == true)
                       Padding(
                         padding: EdgeInsets.only(top: 10, bottom: 40),

@@ -39,6 +39,12 @@ class _MessageBoxEditState extends State<MessageBoxEdit> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: GuamColorFamily.grayscaleWhite,
@@ -73,6 +79,7 @@ class _MessageBoxEditState extends State<MessageBoxEdit> {
           children: [
             ..._messageBoxes.map((messageBox) => MessagePreview(
               messageBox,
+              reload: _firstLoad,
               onRefresh: widget.onRefresh,
               editable: true,
             ))

@@ -16,12 +16,14 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Profile me;
   Profile user;
+  int _unRead;
   bool loading = false;
 
   Authenticate() {
     getMyProfile();
   }
 
+  int get unRead => _unRead;
   bool userSignedIn() => auth.currentUser != null && me != null; // 로그인 된 유저 존재 여부
   bool profileExists() => me != null && me.profileSet; // 프로필까지 만든 정상 유저인지 여부
   bool isMe(int userId) => me.id == userId;
@@ -34,7 +36,6 @@ class Authenticate extends ChangeNotifier with Toast {
   Future kakaoSignIn(String kakaoAccessToken) async {
     try {
       await HttpRequest().get(
-        isHttps: false, // TODO: remove after immigration heads to gateway
         authority: HttpRequest().immigrationAuthority,
         path: "/api/v1/user/token",
         queryParams: {"kakaoToken": kakaoAccessToken},
@@ -267,5 +268,36 @@ class Authenticate extends ChangeNotifier with Toast {
       toggleLoading();
     }
     return successful;
+  }
+
+  Future<int> countMsg() async {
+    loading = true;
+    try {
+      String authToken = await getFirebaseIdToken();
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .get(
+          authToken: authToken,
+          path: "community/api/v1/letters/me",
+        ).then((response) {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            _unRead = json.decode(jsonUtf8)["unRead"];
+          } else {
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+            switch (response.statusCode) {
+              case 401: msg = '접근 권한이 없습니다.'; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      loading = false;
+      notifyListeners();
+    }
+    return _unRead;
   }
 }

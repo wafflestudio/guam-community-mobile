@@ -27,19 +27,43 @@ class MessageBoxScaffold extends StatefulWidget {
 
 class _MessageBoxScaffoldState extends State<MessageBoxScaffold> {
   final bool newMessage = true;
+  int _unReadMsg = 0;
+  bool _countRunning = false;
+
+  Future<void> _countMsg() async {
+    setState(() => _countRunning = true);
+    try {
+      await context.read<Authenticate>().countMsg();
+    } catch (err) {
+      print('알 수 없는 오류가 발생했습니다.');
+    }
+    setState(() => _countRunning = false);
+  }
+
+  Future<void> _recountMsg() async {
+    await context.read<Authenticate>().countMsg();
+    setState(() => _unReadMsg = context.read<Authenticate>().unRead);
+  }
+
+  @override
+  void initState() {
+    _countMsg();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     Authenticate authProvider = context.read<Authenticate>();
     Messages msgProvider = context.read<Messages>();
+    _unReadMsg = context.read<Authenticate>().unRead;
 
     return Padding(
       padding: EdgeInsets.only(right: 4),
       child: IconButton(
         icon: SvgPicture.asset(
-          newMessage
-            ? 'assets/icons/message_new.svg'
-            : 'assets/icons/message_default.svg'
+            _countRunning || _unReadMsg == 0
+                ? 'assets/icons/message_default.svg'
+                : 'assets/icons/message_new.svg'
         ),
         onPressed: () async {
           await msgProvider.fetchMessageBoxes();
@@ -48,7 +72,7 @@ class _MessageBoxScaffoldState extends State<MessageBoxScaffold> {
               providers: [
                 ChangeNotifierProvider(create: (_) => Messages(authProvider)),
               ],
-              child: MessageBody(),
+              child: MessageBody(_recountMsg),
             ))
           );
         }

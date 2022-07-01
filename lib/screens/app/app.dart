@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/providers/home/home_provider.dart';
 import 'package:provider/provider.dart';
 import 'bottom_navigation.dart';
@@ -10,7 +11,7 @@ class App extends StatefulWidget {
   State<StatefulWidget> createState() => AppState();
 }
 
-class AppState extends State<App> {
+class AppState extends State<App> with Toast {
   var _currentTab = TabItem.home;
   final _navigatorKeys = {
     TabItem.home: GlobalKey<NavigatorState>(),
@@ -50,13 +51,13 @@ class AppState extends State<App> {
           if (currentBackPressTime == null ||
               now.difference(currentBackPressTime) > Duration(seconds: 2)) {
             currentBackPressTime = now;
-            // 토스트 넣을 때 '뒤로가기를 한번 더 누르면 앱이 종료 됩니다.' 처리하기
-            // Fluttertoast.showToast(msg: exit_warning);
+            String msg = '한 번 더 뒤로가면 앱이 종료 됩니다.';
+            showToast(success: false, msg: msg);
             return Future.value(false);
           }
           return Future.value(true);
           // let system handle back button if we're on the first route
-          return isFirstRouteInCurrentTab;
+          // return isFirstRouteInCurrentTab;
         },
         child: Scaffold(
           body: Stack(children: <Widget>[

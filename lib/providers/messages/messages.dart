@@ -102,8 +102,9 @@ class Messages extends ChangeNotifier with Toast {
             .get(
           authToken: authToken,
           path: "community/api/v1/letters/$otherProfileId",
-        ).then((response) {
+        ).then((response) async {
           if (response.statusCode == 200) {
+            await _authProvider.countMsg();
             final jsonUtf8 = decodeKo(response);
             final List<dynamic> jsonList = json.decode(jsonUtf8)["letters"];
             _messages = jsonList.map((e) => Message.fromJson(e)).toList();
@@ -133,7 +134,6 @@ class Messages extends ChangeNotifier with Toast {
 
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
-
       if (authToken.isNotEmpty) {
         await HttpRequest()
             .postMultipart(

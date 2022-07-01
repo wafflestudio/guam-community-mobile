@@ -58,7 +58,7 @@ class NotificationsPreview extends StatelessWidget with Toast {
                         future: postProvider.getPost(int.parse(notification.linkUrl.split('/')[4])),
                         builder: (_, AsyncSnapshot<Post> snapshot) {
                           if (snapshot.hasData) {
-                            return PostDetail(snapshot.data);
+                            return PostDetail(post: snapshot.data);
                           } else if (snapshot.hasError) {
                             Navigator.pop(context);
                             postProvider.fetchPosts(0);
@@ -93,11 +93,16 @@ class NotificationsPreview extends StatelessWidget with Toast {
                       ),
                       if (!notification.isRead)
                         Positioned(
-                          top: 0,
-                          child: CircleAvatar(
-                            backgroundColor: GuamColorFamily.fuchsiaCore,
-                            radius: 4,
-                          )
+                            top: -2,
+                            left: -2,
+                            child: CircleAvatar(
+                              backgroundColor: GuamColorFamily.grayscaleWhite,
+                              radius: 8,
+                              child: CircleAvatar(
+                                backgroundColor: GuamColorFamily.fuchsiaCore,
+                                radius: 6,
+                              ),
+                            )
                         ),
                     ],
                   ),

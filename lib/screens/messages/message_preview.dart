@@ -17,25 +17,22 @@ import 'message_detail.dart';
 
 class MessagePreview extends StatefulWidget {
   final MessageBox messageBox;
-  final Function onRefresh;
+  final Function reload; // 쪽지함 삭제 페이지 갱신
+  final Function onRefresh; // 쪽지함 페이지 갱신
   final bool editable;
 
-  MessagePreview(this.messageBox, {this.onRefresh, this.editable=false});
+  MessagePreview(this.messageBox, {this.onRefresh, this.reload, this.editable=false});
 
   @override
   State<MessagePreview> createState() => _MessagePreviewState();
 }
 
 class _MessagePreviewState extends State<MessagePreview> with Toast {
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  void asdf () async {
-    widget.onRefresh();
-  }
+  // @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -103,10 +100,15 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                     /// 가장 최근 메시지가 읽혀지지 않았고, 해당 메시지 발신자가 나인 경우
                     if (newMsg)
                       Positioned(
-                        top: 0,
+                        top: -2,
+                        left: -2,
                         child: CircleAvatar(
-                          backgroundColor: GuamColorFamily.fuchsiaCore,
-                          radius: 6,
+                          backgroundColor: GuamColorFamily.grayscaleWhite,
+                          radius: 8,
+                          child: CircleAvatar(
+                            backgroundColor: GuamColorFamily.fuchsiaCore,
+                            radius: 6,
+                          ),
                         )
                       ),
                   ],
@@ -169,12 +171,10 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                             func: () async => await context.read<Messages>()
                                 .deleteMessageBox(msgBox.otherProfile.id)
                                 .then((successful) async {
-                                  context.read<Messages>().fetchMessageBoxes();
                                   if (successful) {
-                                    // Navigator.pop(context);
+                                    widget.reload();
                                     Navigator.pop(context);
                                     widget.onRefresh();
-                                    await context.read<Messages>().fetchMessageBoxes();
                                   }
                               })
                           ),
@@ -186,7 +186,9 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                 Padding(
                   padding: EdgeInsets.only(right: 10, top: 14, bottom: 15),
                   child: Text(
-                    Jiffy(msgBox.lastLetter.createdAt).fromNow(),
+                    Jiffy(msgBox.lastLetter.createdAt).fromNow() == "몇 초 후"
+                        ? "몇 초 전"
+                        : Jiffy(msgBox.lastLetter.createdAt).fromNow(),
                     style: TextStyle(
                       fontSize: 12,
                       height: 1.6,
