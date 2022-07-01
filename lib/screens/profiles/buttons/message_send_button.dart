@@ -50,9 +50,10 @@ class MessageSendButton extends StatelessWidget {
             ],
           ),
         ),
-        onTap: () => showMaterialModalBottomSheet(
+        onTap: () => showModalBottomSheet(
           context: context,
           useRootNavigator: true,
+          isScrollControlled: true,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20),
