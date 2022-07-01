@@ -9,14 +9,18 @@ import '../../../commons/common_img_nickname.dart';
 import '../../../providers/posts/posts.dart';
 
 class PostInfo extends StatefulWidget {
+  final int index;
   final Post post;
+  final Function refreshPost;
   final double iconSize;
   final bool showProfile;
   final bool profileClickable;
   final HexColor iconColor;
 
   PostInfo({
+    this.index,
     this.post,
+    this.refreshPost,
     this.iconSize = 20,
     this.showProfile = true,
     this.profileClickable = true,
@@ -51,12 +55,14 @@ class _PostInfoState extends State<PostInfo> {
         if (!isLiked) {
           return await postsProvider.likePost(
             postId: widget.post.id,
-          ).then((successful) {
+          ).then((successful) async {
             if (successful) {
-              setState(() {
-                isLiked = true;
-                likeCount ++;
-              });
+              Post _temp = await postsProvider.getPost(widget.post.id);
+              isLiked = _temp.isLiked;
+              likeCount = _temp.likeCount;
+              print(widget.index);
+              print(_temp.likeCount);
+              widget.refreshPost(widget.index, _temp);
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);
             }
@@ -64,12 +70,12 @@ class _PostInfoState extends State<PostInfo> {
         } else {
           return await postsProvider.unlikePost(
             postId: widget.post.id,
-          ).then((successful) {
+          ).then((successful) async {
             if (successful) {
-              setState(() {
-                isLiked = !isLiked;
-                likeCount --;
-              });
+              Post _temp = await postsProvider.getPost(widget.post.id);
+              isLiked = _temp.isLiked;
+              likeCount = _temp.likeCount;
+              widget.refreshPost(widget.index, _temp);
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);
             }

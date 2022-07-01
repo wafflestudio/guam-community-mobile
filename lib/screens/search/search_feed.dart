@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:guam_community_client/commons/sub_headings.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview.dart';
 import 'package:guam_community_client/screens/search/search_filter.dart';
@@ -6,6 +7,7 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
 import '../../commons/guam_progress_indicator.dart';
+import '../../models/boards/post.dart';
 import '../../providers/search/search.dart';
 
 class SearchFeed extends StatefulWidget {
@@ -54,6 +56,12 @@ class _SearchFeedState extends State<SearchFeed> {
     }
   }
 
+  void refreshPost(int idx, Post post) {
+    setState(() {
+      _searchedPosts.removeAt(idx);
+    });
+  }
+
   @override
   void initState() {
     _firstLoad();
@@ -100,7 +108,7 @@ class _SearchFeedState extends State<SearchFeed> {
                       ),
                     ),
                     Column(
-                      children: [..._searchedPosts.map((p) => PostPreview(p))],
+                      children: [..._searchedPosts.mapIndexed((idx, p) => PostPreview(idx, p, refreshPost))],
                     ),
                     if (_isLoadMoreRunning == true)
                       Padding(

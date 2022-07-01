@@ -58,7 +58,7 @@ class NotificationsPreview extends StatelessWidget with Toast {
                         future: postProvider.getPost(int.parse(notification.linkUrl.split('/')[4])),
                         builder: (_, AsyncSnapshot<Post> snapshot) {
                           if (snapshot.hasData) {
-                            return PostDetail(snapshot.data);
+                            return PostDetail(post: snapshot.data);
                           } else if (snapshot.hasError) {
                             Navigator.pop(context);
                             postProvider.fetchPosts(0);

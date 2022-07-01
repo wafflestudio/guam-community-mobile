@@ -8,21 +8,21 @@ import '../profiles/profile.dart';
 /// title, content, boardType, category는 게시글 수정 시 non-final로 정의
 class Post extends ChangeNotifier {
   final int id;
-  final int boardId;
-  String boardType; // ex) 익명, 홍보, 정보공유 게시판
   final Profile profile;
+  final List<dynamic> imagePaths; // 서버 수정 전까지 쓰이는 임시방편 속성
+  final List<Comment> comments;
+  final bool isMine;
+  final String createdAt;
+  int boardId;
+  String boardType; // ex) 익명, 홍보, 정보공유 게시판
   String title;
   String content;
   Category.Category category; // ex) 데이터분석, 개발, 디자인
-  final List<dynamic> imagePaths; // 서버 수정 전까지 쓰이는 임시방편 속성
-  final List<Comment> comments;
-  final int likeCount;
-  final int commentCount;
-  final int scrapCount;
-  final bool isMine;
-  final bool isLiked;
-  final bool isScrapped;
-  final String createdAt;
+  int likeCount;
+  int commentCount;
+  int scrapCount;
+  bool isLiked;
+  bool isScrapped;
 
   Post({
     this.id,
