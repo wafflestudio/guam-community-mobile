@@ -40,7 +40,6 @@ class Authenticate extends ChangeNotifier with Toast {
         path: "/api/v1/user/token",
         queryParams: {"kakaoToken": kakaoAccessToken},
       ).then((response) async {
-        print(response.statusCode);
         if (response.statusCode == 200) {
           final customToken = jsonDecode(response.body)['customToken'];
           await auth.signInWithCustomToken(customToken);
@@ -56,6 +55,23 @@ class Authenticate extends ChangeNotifier with Toast {
       showToast(success: false, msg: "Firebase 인증에 문제가 발생했습니다.");
     } catch (e) {
       showToast(success: false, msg: e.message);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future googleSignIn(UserCredential userCredential) async {
+    try {
+      if (userCredential != null) {
+        await getMyProfile();
+        showToast(success: true, msg: "구글 로그인 성공!");
+      }
+    } on FirebaseAuthException {
+      showToast(success: false, msg: "Firebase 인증에 문제가 발생했습니다.");
+    } catch (e) {
+      showToast(success: false, msg: e.toString());
+    } finally {
+      notifyListeners();
     }
   }
 
