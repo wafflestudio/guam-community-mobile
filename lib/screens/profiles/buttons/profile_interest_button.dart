@@ -51,11 +51,11 @@ class _ProfileInterestButtonState extends State<ProfileInterestButton> {
         fontSize: 12,
         height: 19.2/12,
         fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-        color: widget.deletable ? GuamColorFamily.grayscaleGray2 : GuamColorFamily.grayscaleGray4,
+        color: widget.deletable ? GuamColorFamily.grayscaleGray2 : GuamColorFamily.grayscaleGray3,
       ),
       backgroundColor: GuamColorFamily.grayscaleWhite,
       onDeleted: widget.deletable ? deleteInterest : null,
-      side: BorderSide(color: GuamColorFamily.grayscaleGray6),
+      side: BorderSide(color: GuamColorFamily.grayscaleGray5),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }

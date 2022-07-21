@@ -14,7 +14,7 @@ class WebButton extends StatelessWidget {
     return IconText(
       iconSize: 24,
       iconPath: iconPath,
-      iconColor: GuamColorFamily.grayscaleGray5,
+      iconColor: GuamColorFamily.grayscaleGray4,
       paddingBtw: 0,
       onPressed: _launchURL,
     );

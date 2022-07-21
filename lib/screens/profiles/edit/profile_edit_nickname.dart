@@ -11,7 +11,7 @@ class ProfileEditNickname extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 24, 0, 44),
+      padding: EdgeInsets.fromLTRB(0, 24, 0, 24),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

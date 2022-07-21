@@ -12,15 +12,15 @@ class ProfileBottomButtons extends StatelessWidget {
       child: Wrap(
         runSpacing: 12,
         children: [
-          // LongButton(
-          //   label: '내가 쓴 글',
-          //   onPressed: () => Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (_) => MyPosts()
-          //     )
-          //   )
-          // ),
+          LongButton(
+            label: '내가 쓴 글',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MyPosts()
+              )
+            )
+          ),
           // LongButton(
           //   label: '저장한 글',
           //   onPressed: () => Navigator.push(

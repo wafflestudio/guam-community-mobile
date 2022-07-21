@@ -15,7 +15,7 @@ class LongButton extends StatelessWidget {
       style: TextButton.styleFrom(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        side: BorderSide(color: GuamColorFamily.grayscaleGray6),
+        side: BorderSide(color: GuamColorFamily.grayscaleGray5),
         backgroundColor: Colors.transparent,
       ),
       child: Row(
@@ -31,7 +31,7 @@ class LongButton extends StatelessWidget {
           ),
           IconText(
             iconSize: 18,
-            iconColor: GuamColorFamily.grayscaleGray5,
+            iconColor: GuamColorFamily.grayscaleGray4,
             paddingBtw: 0,
             iconPath: 'assets/icons/right.svg',
           )
