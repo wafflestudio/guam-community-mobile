@@ -49,7 +49,7 @@ class Search extends ChangeNotifier with Toast {
 
   Future saveHistory(String word) async {
     try {
-      if (word.trim() == '') return;
+      if (word.trim() == '' || word.length < 2) return;
       if (historyFull()) history.removeAt(0);
       if (!history.contains(word)) history.add(word);
       await SharedPreferences.getInstance()
@@ -78,6 +78,11 @@ class Search extends ChangeNotifier with Toast {
     try {
       if (query == null || query.trim() == '') {
         _searchedPosts.clear();
+        return;
+      }
+      if (query.length < 2) {
+        showToast(success: false, msg: '두 글자 이상 입력해주세요.');
+        loading = false;
         return;
       }
       await HttpRequest()
