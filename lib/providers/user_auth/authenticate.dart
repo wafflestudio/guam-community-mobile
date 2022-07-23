@@ -17,7 +17,7 @@ class Authenticate extends ChangeNotifier with Toast {
   Profile me;
   Profile user;
   int _unRead;
-  bool loading = false;
+  bool loading = true;
 
   Authenticate() {
     getMyProfile();
@@ -35,16 +35,18 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Future kakaoSignIn(String kakaoAccessToken) async {
     try {
+      loading = true;
       await HttpRequest().get(
         authority: HttpRequest().immigrationAuthority,
         path: "/api/v1/user/token",
         queryParams: {"kakaoToken": kakaoAccessToken},
       ).then((response) async {
         if (response.statusCode == 200) {
+          showToast(success: true, msg: "카카오 로그인 성공!");
+          loading = false;
           final customToken = jsonDecode(response.body)['customToken'];
           await auth.signInWithCustomToken(customToken);
           await getMyProfile();
-          showToast(success: true, msg: "카카오 로그인 성공!");
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
@@ -63,8 +65,8 @@ class Authenticate extends ChangeNotifier with Toast {
   Future googleSignIn(UserCredential userCredential) async {
     try {
       if (userCredential != null) {
-        await getMyProfile();
         showToast(success: true, msg: "구글 로그인 성공!");
+        await getMyProfile();
       }
     } on FirebaseAuthException {
       showToast(success: false, msg: "Firebase 인증에 문제가 발생했습니다.");
@@ -89,6 +91,7 @@ class Authenticate extends ChangeNotifier with Toast {
   }
 
   Future<void> signOut() async {
+    loading = false;
     await auth.signOut();
     showToast(success: true, msg: "로그아웃 되었습니다.");
     notifyListeners();
