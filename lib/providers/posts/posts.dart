@@ -37,7 +37,7 @@ class Posts extends ChangeNotifier with Toast {
 
   /// ==== Posts ====
   Future fetchPosts(int boardId) async {
-    // print(await _authProvider.getFirebaseIdToken());
+    print(await _authProvider.getFirebaseIdToken());
     loading = true;
     try {
       await HttpRequest()
@@ -107,7 +107,7 @@ class Posts extends ChangeNotifier with Toast {
     return _newPosts;
   }
 
-  Future<bool> createPost({Map<String, dynamic> fields, dynamic files}) async {
+  Future<bool> createPost({Map<String, dynamic> body, dynamic files}) async {
     bool successful = false;
     loading = true;
 
@@ -116,15 +116,23 @@ class Posts extends ChangeNotifier with Toast {
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
-            .postMultipart(
+            .post(
           path: "community/api/v1/posts",
           authToken: authToken,
-          fields: fields,
-          files: files,
+          body: body,
         ).then((response) async {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+
+            /// S3 Presigned Urls
+            List<dynamic> presignedUrls = jsonData['presignedUrls'];
+            if (presignedUrls != []) {
+              await HttpRequest().put(
+                presignedUrls: presignedUrls,
+                files: files,
+              );
+            }
             _createdPostId = jsonData['postId'];
             successful = true;
             loading = false;
@@ -132,7 +140,7 @@ class Posts extends ChangeNotifier with Toast {
           } else {
             String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
-              case 400: msg = '정보를 모두 입력해주세요.'; break;
+              case 400: msg = '정보를 모두 입력해주세요. ${response.body}'; break;
               case 401: msg = '글쓰기 권한이 없습니다.'; break;
               case 404: msg = '정보를 모두 입력해주세요.'; break;
             }
@@ -170,6 +178,7 @@ class Posts extends ChangeNotifier with Toast {
               case 401: msg = '접근 권한이 없습니다.'; break;
               case 404: msg = '존재하지 않는 게시글입니다.'; break;
             }
+            _post = null;
             showToast(success: false, msg: msg);
           }
         });
@@ -312,7 +321,7 @@ class Posts extends ChangeNotifier with Toast {
             String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
-              case 404: msg = "존재하지 않는 게시글입니다."; break;
+              case 404: msg = "'좋아요'하지 않은 게시글입니다."; break;
               case 409: msg = "이미 '좋아요' 취소한 글입니다."; break;
             }
             showToast(success: false, msg: msg);
@@ -380,7 +389,7 @@ class Posts extends ChangeNotifier with Toast {
             String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
-              case 404: msg = "존재하지 않는 게시글입니다."; break;
+              case 404: msg = "스크랩하지 않은 게시글입니다."; break;
               case 409: msg = "이미 스크랩 취소한 글입니다."; break;
             }
             showToast(success: false, msg: msg);
@@ -554,7 +563,7 @@ class Posts extends ChangeNotifier with Toast {
             String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
-              case 404: msg = "존재하지 않는 댓글입니다."; break;
+              case 404: msg = "'좋아요'하지 않은 댓글입니다."; break;
               case 409: msg = "이미 '좋아요' 취소한 댓글입니다."; break;
             }
             showToast(success: false, msg: msg);

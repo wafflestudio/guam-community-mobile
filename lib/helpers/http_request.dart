@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io' show File;
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:collection/collection.dart';
 import 'package:path/path.dart' as p;
 import '../mixins/toast.dart';
 
@@ -75,6 +76,23 @@ class HttpRequest with Toast {
       return response;
     } catch (e) {
       print("Error on POST Multipart request: $e");
+      showToast(success: false, msg: e);
+    }
+  }
+
+  /// Only for S3 Presigned Url
+  Future put({List<dynamic> presignedUrls, List<File> files}) async {
+    try {
+      presignedUrls.forEachIndexed((idx, e) async {
+        final uri = Uri.parse(e);
+        final file = files[idx];
+        http.Response response = await http.put(uri, body: file.readAsBytesSync());
+
+        /// 마지막 파일까지 잘 전송되었으면 마지막 presignedUrl PUT response 반환
+        if (idx == presignedUrls.length) return response;
+      });
+    } catch (e) {
+      print("Error on PUT request: $e");
       showToast(success: false, msg: e);
     }
   }
