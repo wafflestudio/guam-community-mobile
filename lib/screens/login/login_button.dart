@@ -16,14 +16,11 @@ class LoginButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 16),
       child: InkWell(
-        // onTap: () => Navigator.of(context).push(
-        //   MaterialPageRoute(builder: (_) => SignUp()),
-        // ),
         onTap: onTap,
         child: Container(
           alignment: Alignment.center,
           height: 56,
-          width: MediaQuery.of(context).size.width * 0.9,
+          width: MediaQuery.of(context).size.width * 0.85,
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.all(Radius.circular(10)),

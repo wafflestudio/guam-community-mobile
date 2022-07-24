@@ -41,14 +41,14 @@ class _GoogleLoginState extends State<GoogleLogin> {
 
   _loginWithGoogle() async {
     try {
-      authProvider.toggleLoading();
+      authProvider.loading = true;
 
       final _userCredential = await _signInWithGoogle();
       await authProvider.googleSignIn(_userCredential);
     } catch (e) {
       print(e);
     } finally {
-      authProvider.toggleLoading();
+      authProvider.loading = false;
     }
   }
 
