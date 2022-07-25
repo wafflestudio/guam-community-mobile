@@ -15,7 +15,7 @@ class LongButton extends StatelessWidget {
       style: TextButton.styleFrom(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        side: BorderSide(color: GuamColorFamily.grayscaleGray5),
+        side: BorderSide(color: GuamColorFamily.grayscaleGray6),
         backgroundColor: Colors.transparent,
       ),
       child: Row(
