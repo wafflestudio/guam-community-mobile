@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/back.dart';
@@ -94,10 +95,10 @@ class _PostDetailState extends State<PostDetail> with Toast {
       comments = postsProvider.fetchComments(_post.id);
     }
 
-    Future createComment({Map<String, dynamic> fields, dynamic files}) async {
+    Future createComment({Map<String, dynamic> body, dynamic files}) async {
       return await postsProvider.createComment(
         postId: _post.id,
-        fields: fields,
+        body: body,
         files: files,
       ).then((successful) async {
         if (successful) fetchComments();

@@ -127,7 +127,7 @@ class Posts extends ChangeNotifier with Toast {
 
             /// S3 Presigned Urls
             List<dynamic> presignedUrls = jsonData['presignedUrls'];
-            if (presignedUrls != []) {
+            if (presignedUrls.isNotEmpty) {
               await HttpRequest().put(
                 presignedUrls: presignedUrls,
                 files: files,
@@ -176,7 +176,7 @@ class Posts extends ChangeNotifier with Toast {
             String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = '접근 권한이 없습니다.'; break;
-              case 404: msg = '존재하지 않는 게시글입니다.'; break;
+              case 404: msg = '존재하지 않는 게시글입니다.ㅁㄴㅇㄹㅁㄴㅇㄹ'; break;
             }
             _post = null;
             showToast(success: false, msg: msg);
@@ -435,7 +435,7 @@ class Posts extends ChangeNotifier with Toast {
     return comments;
   }
 
-  Future<bool> createComment({int postId, Map<String, dynamic> fields, dynamic files}) async {
+  Future<bool> createComment({int postId, Map<String, dynamic> body, dynamic files}) async {
     bool successful = false;
     loading = true;
 
@@ -444,13 +444,23 @@ class Posts extends ChangeNotifier with Toast {
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
-            .postMultipart(
+            .post(
           path: "community/api/v1/posts/$postId/comments",
           authToken: authToken,
-          fields: fields,
-          files: files,
+          body: body,
         ).then((response) async {
           if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+
+            /// S3 Presigned Urls
+            List<dynamic> preSignedUrls = jsonData['preSignedUrls'];
+            if (preSignedUrls.isNotEmpty) {
+              await HttpRequest().put(
+                presignedUrls: preSignedUrls,
+                files: files,
+              );
+            }
             successful = true;
             loading = false;
             showToast(success: true, msg: '댓글을 작성했습니다.');
