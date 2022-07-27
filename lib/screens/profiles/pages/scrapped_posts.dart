@@ -20,6 +20,7 @@ class _ScrappedPostsState extends State<ScrappedPosts> {
   bool _hasNextPage = true;
   bool _isFirstLoadRunning = false;
   bool _isLoadMoreRunning = false;
+  bool _showBackToTopButton = false;
   ScrollController _scrollController = ScrollController();
 
   void _firstLoad() async {
@@ -58,10 +59,23 @@ class _ScrappedPostsState extends State<ScrappedPosts> {
     }
   }
 
+  void _scrollToTop() => _scrollController
+      .animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.linear);
+
   @override
   void initState() {
     _firstLoad();
-    _scrollController = ScrollController()..addListener(_loadMore);
+    _scrollController = ScrollController()
+      ..addListener(_loadMore)
+      ..addListener(() {
+        setState(() {
+          if (_scrollController.offset >= 100) {
+            _showBackToTopButton = true; // show the back-to-top button
+          } else {
+            _showBackToTopButton = false; // hide the back-to-top button
+          }
+        });
+      });
     super.initState();
   }
 
@@ -76,58 +90,68 @@ class _ScrappedPostsState extends State<ScrappedPosts> {
     return _isFirstLoadRunning
         ? Center(child: guamProgressIndicator())
         : Scaffold(
-      appBar: CustomAppBar(
-        leading: Back(),
-        title: "스크랩한 글",
-      ),
-      body: Container(
-        color: GuamColorFamily.purpleLight3,
-        padding: EdgeInsets.only(top: 18),
-        child: Container(
-          height: double.infinity,
-          child: SingleChildScrollView(
-            controller: _scrollController,
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Column(children: [
-              if (_scrappedPosts.isEmpty)
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.1),
-                    child: Text(
-                      '아직 스크랩한 글이 없습니다.',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: GuamColorFamily.grayscaleGray4,
-                        fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+            appBar: CustomAppBar(
+              leading: Back(),
+              title: "스크랩한 글",
+            ),
+            body: RefreshIndicator(
+              color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
+              onRefresh: () async => _firstLoad(),
+              child: Container(
+                height: double.infinity,
+                padding: EdgeInsets.only(top: 18),
+                color: GuamColorFamily.purpleLight3,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Column(children: [
+                    if (_scrappedPosts.isEmpty)
+                      Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * 0.1),
+                          child: Text(
+                            '아직 스크랩한 글이 없습니다.',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: GuamColorFamily.grayscaleGray4,
+                              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    if (_scrappedPosts.isNotEmpty)
+                      ..._scrappedPosts.mapIndexed((idx, p) => PostPreview(idx, p, _firstLoad)),
+                    if (_isLoadMoreRunning == true)
+                      Padding(
+                        padding: EdgeInsets.only(top: 10, bottom: 40),
+                        child: guamProgressIndicator(size: 40),
+                      ),
+                    if (_hasNextPage == false && _currentPage > 2)
+                      Container(
+                        color: GuamColorFamily.purpleLight2,
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        child: Center(child: Text(
+                          '스크랩한 글을 모두 불러왔습니다!',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: GuamColorFamily.grayscaleGray2,
+                            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                          ),
+                        )),
+                      ),
+                  ]),
+                ),
+              ),
+            ),
+            floatingActionButton: _showBackToTopButton == false
+                ? null
+                : FloatingActionButton(
+                    mini: true,
+                    onPressed: _scrollToTop,
+                    backgroundColor: GuamColorFamily.purpleLight1,
+                    child: Icon(Icons.arrow_upward, size: 20, color: GuamColorFamily.grayscaleWhite),
                   ),
-                ),
-              if (_scrappedPosts.isNotEmpty)
-                ..._scrappedPosts.mapIndexed((idx, p) => PostPreview(idx, p, _firstLoad)),
-              if (_isLoadMoreRunning == true)
-                Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 40),
-                  child: guamProgressIndicator(size: 40),
-                ),
-              if (_hasNextPage == false && _currentPage > 2)
-                Container(
-                  color: GuamColorFamily.purpleLight2,
-                  padding: EdgeInsets.only(top: 10, bottom: 10),
-                  child: Center(child: Text(
-                    '스크랩한 글을 모두 불러왔습니다!',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: GuamColorFamily.grayscaleGray2,
-                      fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                    ),
-                  )),
-                ),
-            ]),
-          ),
-        ),
-      ),
-    );
+          );
   }
 }
