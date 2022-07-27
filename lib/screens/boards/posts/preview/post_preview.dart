@@ -25,6 +25,13 @@ class PostPreview extends StatelessWidget with Toast {
     Posts postProvider = context.read<Posts>();
     Authenticate authProvider = context.read<Authenticate>();
 
+    Future<Post> _getPost(int id) {
+      return Future.delayed(Duration(seconds: 0), () async {
+        Post _post = await postProvider.getPost(id);
+        return _post;
+      });
+    }
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
@@ -43,7 +50,7 @@ class PostPreview extends StatelessWidget with Toast {
                     ChangeNotifierProvider(create: (_) => Messages(authProvider)),
                   ],
                   child: FutureBuilder(
-                    future: postProvider.getPost(post.id),
+                    future: _getPost(post.id),
                     builder: (_, AsyncSnapshot<Post> snapshot) {
                       if (snapshot.hasData) {
                         return PostDetail(index: idx, post: snapshot.data, refreshPost: refreshPost);

@@ -116,7 +116,6 @@ class _NotificationsPreviewState extends State<NotificationsPreview> with Toast 
                     ],
                   ),
                   Container(
-                    // width: MediaQuery.of(context).size.width * 0.75,
                     padding: EdgeInsets.only(left: 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -12,6 +12,7 @@ class Search extends ChangeNotifier with Toast {
   Authenticate _authProvider;
   bool loading = false;
   bool _hasNext;
+  int _count;
   String _searchedKeyword;
   List<Post> _searchedPosts = [];
   List<Post> _newSearchedPosts;
@@ -21,6 +22,7 @@ class Search extends ChangeNotifier with Toast {
   static const String searchHistoryKey = 'search-history';
   static const int maxNHistory = 5;
 
+  int get count => _count;
   String get searchedKeyword => _searchedKeyword;
   List<Post> get searchedPosts => _searchedPosts;
   List<Post> get newSearchedPosts => _newSearchedPosts;
@@ -92,6 +94,8 @@ class Search extends ChangeNotifier with Toast {
         authToken: await _authProvider.getFirebaseIdToken(),
       ).then((response) async {
         if (response.statusCode == 200) {
+          await countSearch(query);
+
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
           _searchedPosts = jsonList.map((e) => Post.fromJson(e)).toList();
@@ -143,6 +147,38 @@ class Search extends ChangeNotifier with Toast {
       notifyListeners();
     }
     return _newSearchedPosts;
+  }
+
+  Future<int> countSearch(String query) async {
+    loading = true;
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .get(
+          authToken: authToken,
+          path: "community/api/v1/posts/search/count",
+          queryParams: {"keyword": query},
+        ).then((response) {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            _count = json.decode(jsonUtf8);
+          } else {
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+            switch (response.statusCode) {
+              case 401: msg = '접근 권한이 없습니다.'; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      loading = false;
+      notifyListeners();
+    }
+    return _count;
   }
 
   void sortSearchedPosts(Filter f) {

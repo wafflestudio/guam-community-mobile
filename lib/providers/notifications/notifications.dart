@@ -65,7 +65,7 @@ class Notifications extends ChangeNotifier with Toast {
     }
   }
 
-  /// For Pagination in BoardsFeed Widget using _loadMore()
+  /// For Pagination in NotificationBody Widget using _loadMore()
   Future addNotifications({int page=1, int size=20}) async {
     loading = true;
     try {

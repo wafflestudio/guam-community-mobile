@@ -121,7 +121,7 @@ class _PostCreationState extends State<PostCreation> with Toast {
                     ChangeNotifierProvider(create: (_) => Posts(authProvider)),
                   ],
                   child: FutureBuilder(
-                    future: postProvider.getPost(postProvider.createdPostId),
+                    future: postProvider.getCreatedPost(postProvider.createdPostId),
                     builder: (_, AsyncSnapshot<Post> snapshot) {
                       if (snapshot.hasData) {
                         return PostDetail(post: snapshot.data);

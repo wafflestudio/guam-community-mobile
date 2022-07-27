@@ -37,7 +37,7 @@ class Posts extends ChangeNotifier with Toast {
 
   /// ==== Posts ====
   Future fetchPosts(int boardId) async {
-    print(await _authProvider.getFirebaseIdToken());
+    // print(await _authProvider.getFirebaseIdToken());
     loading = true;
     try {
       await HttpRequest()
@@ -192,6 +192,36 @@ class Posts extends ChangeNotifier with Toast {
     return _post;
   }
 
+  /// 게시글 삭제 시 getPost 호출 버그 회피를 위해 toast 제거한 getPost 대체 코드
+  Future<Post> getCreatedPost(int postId) async {
+    loading = true;
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .get(
+          authToken: authToken,
+          path: "community/api/v1/posts/$postId",
+        ).then((response) {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            _post = Post.fromJson(jsonData);
+          } else {
+            _post = null;
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      loading = false;
+      notifyListeners();
+    }
+    return _post;
+  }
+
   Future<bool> editPost({int postId, Map<String, dynamic> body}) async {
     bool successful = false;
     loading = true;
@@ -246,7 +276,6 @@ class Posts extends ChangeNotifier with Toast {
           path: "community/api/v1/posts/$postId",
           authToken: authToken,
         ).then((response) {
-          print(response.statusCode);
           if (response.statusCode == 200) {
             showToast(success: true, msg: '게시글을 삭제했습니다.');
             successful = true;
