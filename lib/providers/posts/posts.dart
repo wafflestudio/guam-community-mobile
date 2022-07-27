@@ -107,7 +107,7 @@ class Posts extends ChangeNotifier with Toast {
     return _newPosts;
   }
 
-  Future<bool> createPost({Map<String, dynamic> fields, dynamic files}) async {
+  Future<bool> createPost({Map<String, dynamic> body, dynamic files}) async {
     bool successful = false;
     loading = true;
 
@@ -116,15 +116,23 @@ class Posts extends ChangeNotifier with Toast {
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
-            .postMultipart(
+            .post(
           path: "community/api/v1/posts",
           authToken: authToken,
-          fields: fields,
-          files: files,
+          body: body,
         ).then((response) async {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+
+            /// S3 Presigned Urls
+            List<dynamic> presignedUrls = jsonData['presignedUrls'];
+            if (presignedUrls.isNotEmpty) {
+              await HttpRequest().put(
+                presignedUrls: presignedUrls,
+                files: files,
+              );
+            }
             _createdPostId = jsonData['postId'];
             successful = true;
             loading = false;
@@ -132,7 +140,7 @@ class Posts extends ChangeNotifier with Toast {
           } else {
             String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
-              case 400: msg = '정보를 모두 입력해주세요.'; break;
+              case 400: msg = '정보를 모두 입력해주세요. ${response.body}'; break;
               case 401: msg = '글쓰기 권한이 없습니다.'; break;
               case 404: msg = '정보를 모두 입력해주세요.'; break;
             }
@@ -168,9 +176,40 @@ class Posts extends ChangeNotifier with Toast {
             String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = '접근 권한이 없습니다.'; break;
-              case 404: msg = '존재하지 않는 게시글입니다.'; break;
+              case 404: msg = '존재하지 않는 게시글입니다.ㅁㄴㅇㄹㅁㄴㅇㄹ'; break;
             }
+            _post = null;
             showToast(success: false, msg: msg);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      loading = false;
+      notifyListeners();
+    }
+    return _post;
+  }
+
+  /// 게시글 삭제 시 getPost 호출 버그 회피를 위해 toast 제거한 getPost 대체 코드
+  Future<Post> getCreatedPost(int postId) async {
+    loading = true;
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .get(
+          authToken: authToken,
+          path: "community/api/v1/posts/$postId",
+        ).then((response) {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+            _post = Post.fromJson(jsonData);
+          } else {
+            _post = null;
           }
         });
       }
@@ -237,7 +276,6 @@ class Posts extends ChangeNotifier with Toast {
           path: "community/api/v1/posts/$postId",
           authToken: authToken,
         ).then((response) {
-          print(response.statusCode);
           if (response.statusCode == 200) {
             showToast(success: true, msg: '게시글을 삭제했습니다.');
             successful = true;
@@ -312,7 +350,7 @@ class Posts extends ChangeNotifier with Toast {
             String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
-              case 404: msg = "존재하지 않는 게시글입니다."; break;
+              case 404: msg = "'좋아요'하지 않은 게시글입니다."; break;
               case 409: msg = "이미 '좋아요' 취소한 글입니다."; break;
             }
             showToast(success: false, msg: msg);
@@ -380,7 +418,7 @@ class Posts extends ChangeNotifier with Toast {
             String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
-              case 404: msg = "존재하지 않는 게시글입니다."; break;
+              case 404: msg = "스크랩하지 않은 게시글입니다."; break;
               case 409: msg = "이미 스크랩 취소한 글입니다."; break;
             }
             showToast(success: false, msg: msg);
@@ -426,7 +464,7 @@ class Posts extends ChangeNotifier with Toast {
     return comments;
   }
 
-  Future<bool> createComment({int postId, Map<String, dynamic> fields, dynamic files}) async {
+  Future<bool> createComment({int postId, Map<String, dynamic> body, dynamic files}) async {
     bool successful = false;
     loading = true;
 
@@ -435,13 +473,23 @@ class Posts extends ChangeNotifier with Toast {
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
-            .postMultipart(
+            .post(
           path: "community/api/v1/posts/$postId/comments",
           authToken: authToken,
-          fields: fields,
-          files: files,
+          body: body,
         ).then((response) async {
           if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+
+            /// S3 Presigned Urls
+            List<dynamic> preSignedUrls = jsonData['preSignedUrls'];
+            if (preSignedUrls.isNotEmpty) {
+              await HttpRequest().put(
+                presignedUrls: preSignedUrls,
+                files: files,
+              );
+            }
             successful = true;
             loading = false;
             showToast(success: true, msg: '댓글을 작성했습니다.');
@@ -554,7 +602,7 @@ class Posts extends ChangeNotifier with Toast {
             String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = "권한이 없습니다."; break;
-              case 404: msg = "존재하지 않는 댓글입니다."; break;
+              case 404: msg = "'좋아요'하지 않은 댓글입니다."; break;
               case 409: msg = "이미 '좋아요' 취소한 댓글입니다."; break;
             }
             showToast(success: false, msg: msg);

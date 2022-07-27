@@ -21,6 +21,7 @@ class _SearchFeedState extends State<SearchFeed> {
   bool _hasNextPage = true;
   bool _isFirstLoadRunning = false;
   bool _isLoadMoreRunning = false;
+  bool _showBackToTopButton = false;
   ScrollController _scrollController = ScrollController();
 
   void _firstLoad() async {
@@ -37,7 +38,7 @@ class _SearchFeedState extends State<SearchFeed> {
     if (_hasNextPage == true &&
         _isFirstLoadRunning == false &&
         _isLoadMoreRunning == false &&
-        _scrollController.position.extentAfter < 300) {
+        _scrollController.position.extentAfter < 600) {
       setState(() => _isLoadMoreRunning = true);
       _beforePostId = _searchedPosts.last.id;
       try {
@@ -62,10 +63,22 @@ class _SearchFeedState extends State<SearchFeed> {
     });
   }
 
+  void _scrollToTop() => _scrollController
+      .animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.linear);
+
   @override
   void initState() {
     _firstLoad();
-    _scrollController = ScrollController()..addListener(_loadMore);
+    _scrollController = ScrollController()..addListener(_loadMore)
+      ..addListener(() {
+        setState(() {
+          if (_scrollController.offset >= 300) {
+            _showBackToTopButton = true; // show the back-to-top button
+          } else {
+            _showBackToTopButton = false; // hide the back-to-top button
+          }
+        });
+      });
     super.initState();
   }
 
@@ -81,57 +94,72 @@ class _SearchFeedState extends State<SearchFeed> {
 
     return _isFirstLoadRunning
         ? Center(child: guamProgressIndicator())
-        : RefreshIndicator(
-            color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
-            onRefresh: () async => _firstLoad(),
-            child: Container(
-              height: double.infinity,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                physics: AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        : Stack(
+            children: [
+              RefreshIndicator(
+                  color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
+                  onRefresh: () async => _firstLoad(),
+                  child: Container(
+                    height: double.infinity,
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      physics: AlwaysScrollableScrollPhysics(),
+                      child: Column(
                         children: [
-                          SubHeadings(
-                            /// TODO: commit 전에 검색결과 바꿀 것!
-                            '검색결과 ${searchProvider.searchedPosts.length}건',
-                            fontColor: GuamColorFamily.grayscaleGray1,
-                            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                            fontSize: 14,
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SubHeadings(
+                                  /// TODO: commit 전에 검색결과 바꿀 것!
+                                  '검색결과 ${searchProvider.count}건',
+                                  fontColor: GuamColorFamily.grayscaleGray1,
+                                  fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                                  fontSize: 14,
+                                ),
+                                // SearchFilter(provider: context.read<Search>()),
+                              ],
+                            ),
                           ),
-                          // SearchFilter(provider: context.read<Search>()),
+                          Column(
+                            children: [..._searchedPosts.mapIndexed((idx, p) => PostPreview(idx, p, refreshPost))],
+                          ),
+                          if (_isLoadMoreRunning == true)
+                            Padding(
+                              padding: EdgeInsets.only(top: 10, bottom: 40),
+                              child: guamProgressIndicator(size: 40),
+                            ),
+                          if (_hasNextPage == false && _searchedPosts.length > 10)
+                            Container(
+                              color: GuamColorFamily.purpleLight2,
+                              padding: EdgeInsets.only(top: 10, bottom: 10),
+                              child: Center(child: Text(
+                                '모든 게시글을 불러왔습니다!',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: GuamColorFamily.grayscaleGray2,
+                                  fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                                ),
+                              )),
+                            ),
                         ],
                       ),
                     ),
-                    Column(
-                      children: [..._searchedPosts.mapIndexed((idx, p) => PostPreview(idx, p, refreshPost))],
-                    ),
-                    if (_isLoadMoreRunning == true)
-                      Padding(
-                        padding: EdgeInsets.only(top: 10, bottom: 40),
-                        child: guamProgressIndicator(size: 40),
-                      ),
-                    if (_hasNextPage == false && _searchedPosts.length > 10)
-                      Container(
-                        color: GuamColorFamily.purpleLight2,
-                        padding: EdgeInsets.only(top: 10, bottom: 10),
-                        child: Center(child: Text(
-                          '모든 게시글을 불러왔습니다!',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: GuamColorFamily.grayscaleGray2,
-                            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                          ),
-                        )),
-                      ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
+              if (_showBackToTopButton)
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: FloatingActionButton(
+                    mini: true,
+                    onPressed: _scrollToTop,
+                    backgroundColor: GuamColorFamily.purpleLight1,
+                    child: Icon(Icons.arrow_upward, size: 20, color: GuamColorFamily.grayscaleWhite),
+                  ),
+                ),
+            ],
           );
   }
 }

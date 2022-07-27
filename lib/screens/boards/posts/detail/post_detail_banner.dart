@@ -4,7 +4,7 @@ import 'package:guam_community_client/commons/common_img_nickname.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
-import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 
 class PostDetailBanner extends StatelessWidget {
   final Post post;
@@ -74,7 +74,7 @@ class PostDetailBanner extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                DateFormat('yyyy.MM.dd  HH:mm').format(DateTime.parse(post.createdAt)),
+                Jiffy(DateTime.parse(post.createdAt)).add(hours: 9).format('yyyy.MM.dd  HH:mm'),
                 style: TextStyle(
                   fontSize: 12,
                   color: GuamColorFamily.grayscaleGray5,

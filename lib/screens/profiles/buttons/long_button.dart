@@ -31,7 +31,7 @@ class LongButton extends StatelessWidget {
           ),
           IconText(
             iconSize: 18,
-            iconColor: GuamColorFamily.grayscaleGray5,
+            iconColor: GuamColorFamily.grayscaleGray4,
             paddingBtw: 0,
             iconPath: 'assets/icons/right.svg',
           )

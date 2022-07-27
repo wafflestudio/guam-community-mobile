@@ -44,10 +44,8 @@ class _CommentBodyState extends State<CommentBody> {
             commentId: widget.comment.id,
           ).then((successful) {
             if (successful) {
-              setState(() {
-                isLiked = true;
-                likeCount ++;
-              });
+              isLiked = true;
+              likeCount ++;
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);
             }
@@ -59,7 +57,7 @@ class _CommentBodyState extends State<CommentBody> {
           ).then((successful) {
             if (successful) {
               setState(() {
-                isLiked = !isLiked;
+                isLiked = false;
                 likeCount --;
               });
             } else {

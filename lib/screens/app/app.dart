@@ -47,14 +47,14 @@ class AppState extends State<App> with Toast {
               return false;
             }
           }
-          DateTime now = DateTime.now();
-          if (currentBackPressTime == null ||
-              now.difference(currentBackPressTime) > Duration(seconds: 2)) {
-            currentBackPressTime = now;
-            String msg = '한 번 더 뒤로가면 앱이 종료 됩니다.';
-            showToast(success: false, msg: msg);
-            return Future.value(false);
-          }
+          // DateTime now = DateTime.now();
+          // if (currentBackPressTime == null ||
+          //     now.difference(currentBackPressTime) < Duration(seconds: 1)) {
+          //   currentBackPressTime = now;
+          //   String msg = '한 번 더 뒤로가면 앱이 종료됩니다.';
+          //   showToast(success: false, msg: msg);
+          //   return Future.value(false);
+          // }
           return Future.value(true);
           // let system handle back button if we're on the first route
           // return isFirstRouteInCurrentTab;

@@ -6,6 +6,8 @@ import '../../helpers/http_request.dart';
 import '../../helpers/decode_ko.dart';
 import 'dart:convert';
 
+import '../../models/boards/post.dart';
+
 class Authenticate extends ChangeNotifier with Toast {
   final _kakaoClientId = "367d8cf339e2ba59376ba647c7135dd2";
   final _kakaoJavascriptClientId = "2edf60d1ebf23061d200cfe4a68a235a";
@@ -17,13 +19,23 @@ class Authenticate extends ChangeNotifier with Toast {
   Profile me;
   Profile user;
   int _unRead;
-  bool loading = false;
+  List<Post> _myPosts;
+  List<Post> _newMyPosts;
+  List<Post> _scrappedPosts;
+  List<Post> _newScrappedPosts;
+  bool _hasNext;
+  bool loading = true;
 
   Authenticate() {
     getMyProfile();
   }
 
   int get unRead => _unRead;
+  bool get hasNext => _hasNext;
+  List<Post> get myPosts => _myPosts;
+  List<Post> get newMyPosts => _newMyPosts;
+  List<Post> get scrappedPosts => _scrappedPosts;
+  List<Post> get newScrappedPosts => _newScrappedPosts;
   bool userSignedIn() => auth.currentUser != null && me != null; // 로그인 된 유저 존재 여부
   bool profileExists() => me != null && me.profileSet; // 프로필까지 만든 정상 유저인지 여부
   bool isMe(int userId) => me.id == userId;
@@ -35,17 +47,18 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Future kakaoSignIn(String kakaoAccessToken) async {
     try {
+      loading = true;
       await HttpRequest().get(
         authority: HttpRequest().immigrationAuthority,
         path: "/api/v1/user/token",
         queryParams: {"kakaoToken": kakaoAccessToken},
       ).then((response) async {
-        print(response.statusCode);
         if (response.statusCode == 200) {
+          showToast(success: true, msg: "카카오 로그인 성공!");
+          loading = false;
           final customToken = jsonDecode(response.body)['customToken'];
           await auth.signInWithCustomToken(customToken);
           await getMyProfile();
-          showToast(success: true, msg: "카카오 로그인 성공!");
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
@@ -56,6 +69,25 @@ class Authenticate extends ChangeNotifier with Toast {
       showToast(success: false, msg: "Firebase 인증에 문제가 발생했습니다.");
     } catch (e) {
       showToast(success: false, msg: e.message);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future googleSignIn(UserCredential userCredential) async {
+    try {
+      loading = true;
+      if (userCredential != null) {
+        showToast(success: true, msg: "구글 로그인 성공!");
+        await getMyProfile();
+        loading = false;
+      }
+    } on FirebaseAuthException {
+      showToast(success: false, msg: "Firebase 인증에 문제가 발생했습니다.");
+    } catch (e) {
+      showToast(success: false, msg: e.toString());
+    } finally {
+      notifyListeners();
     }
   }
 
@@ -73,8 +105,9 @@ class Authenticate extends ChangeNotifier with Toast {
   }
 
   Future<void> signOut() async {
+    loading = false;
     await auth.signOut();
-    showToast(success: true, msg: "로그아웃 되었습니다.");
+    showToast(success: true, msg: "다시 만나요!");
     notifyListeners();
   }
 
@@ -268,6 +301,140 @@ class Authenticate extends ChangeNotifier with Toast {
       toggleLoading();
     }
     return successful;
+  }
+
+  Future fetchMyPosts({int userId}) async {
+    loading = true;
+    try {
+      String authToken = await getFirebaseIdToken();
+      await HttpRequest()
+          .get(
+        path: "community/api/v1/posts/users/${me.id}/my",
+        authToken: authToken,
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+          _myPosts = jsonList.map((e) => Post.fromJson(e)).toList();
+          loading = false;
+        } else {
+          String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+          switch (response.statusCode) {
+            case 401: msg = '열람 권한이 없습니다.'; break;
+            case 404: msg = '잘못된 유저 정보입니다.'; break;
+          }
+          showToast(success: false, msg: msg);
+        }
+      });
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return _myPosts;
+  }
+
+  /// For Pagination in MyPosts Widget using _loadMore()
+  Future addMyPosts({int page=1, int size=20}) async {
+    loading = true;
+    try {
+      String authToken = await getFirebaseIdToken();
+      await HttpRequest()
+          .get(
+        path: "community/api/v1/posts/users/${me.id}/my",
+        queryParams: {
+          "page": page.toString(),
+          "size": size.toString(),
+        },
+        authToken: authToken,
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+          _hasNext = json.decode(jsonUtf8)["hasNext"];
+          _newMyPosts = jsonList.map((e) => Post.fromJson(e)).toList();
+          loading = false;
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: '더 이상 글을 불러올 수 없습니다.');
+        }
+      });
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return _newMyPosts;
+  }
+
+  Future fetchScrappedPosts({int userId}) async {
+    loading = true;
+    try {
+      String authToken = await getFirebaseIdToken();
+      await HttpRequest()
+          .get(
+        path: "community/api/v1/posts/users/${me.id}/scrapped",
+        authToken: authToken,
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+          _scrappedPosts = jsonList.map((e) => Post.fromJson(e)).toList();
+          loading = false;
+        } else {
+          String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+          switch (response.statusCode) {
+            case 401: msg = '열람 권한이 없습니다.'; break;
+            case 404: msg = '잘못된 유저 정보입니다.'; break;
+          }
+          showToast(success: false, msg: msg);
+        }
+      });
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return _scrappedPosts;
+  }
+
+  /// For Pagination in ScrappedPosts Widget using _loadMore()
+  Future addScrappedPosts({int page=1, int size=20}) async {
+    loading = true;
+    try {
+      String authToken = await getFirebaseIdToken();
+      await HttpRequest()
+          .get(
+        path: "community/api/v1/posts/users/${me.id}/scrapped",
+        queryParams: {
+          "page": page.toString(),
+          "size": size.toString(),
+        },
+        authToken: authToken,
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+          _hasNext = json.decode(jsonUtf8)["hasNext"];
+          _newScrappedPosts = jsonList.map((e) => Post.fromJson(e)).toList();
+          loading = false;
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: '더 이상 글을 불러올 수 없습니다.');
+        }
+      });
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return _newScrappedPosts;
   }
 
   Future<int> countMsg() async {

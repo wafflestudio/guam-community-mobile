@@ -3,6 +3,7 @@ import 'package:guam_community_client/commons/back.dart';
 import 'package:guam_community_client/commons/guam_progress_indicator.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:guam_community_client/providers/messages/messages.dart';
+import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/messages/message_box.dart';
 import 'package:guam_community_client/screens/profiles/other_profiles_body.dart';
@@ -24,6 +25,7 @@ class ProfilesApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Messages(authProvider)),
+        ChangeNotifierProvider(create: (_) => Posts(authProvider)),
       ],
       child: ProfilesAppScaffold(userId),
     );
@@ -87,7 +89,7 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
         }
       );
     } else {
-      // 특정 유저 id를 받지 않아 프로필 탭으로 이동하는 경우
+      // 특정 유저 id를 받지 않아 프로필 탭으로 이동하는 경우, 즉 내 프로필
       return Scaffold(
         backgroundColor: GuamColorFamily.grayscaleWhite,
         appBar: CustomAppBar(

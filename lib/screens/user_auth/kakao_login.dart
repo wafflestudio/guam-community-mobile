@@ -46,7 +46,7 @@ class KakaoLoginState extends State<KakaoLogin> {
   */
   _loginWithKakao() async {
     try {
-      authProvider.toggleLoading();
+      // authProvider.loading = true;
 
       final authCode = await AuthCodeClient.instance.request();
       final token = await _issueAccessToken(authCode);
@@ -58,7 +58,7 @@ class KakaoLoginState extends State<KakaoLogin> {
     } catch (e) {
       print(e);
     } finally {
-      authProvider.toggleLoading();
+      // authProvider.loading = false;
     }
   }
 
@@ -67,7 +67,7 @@ class KakaoLoginState extends State<KakaoLogin> {
   */
   _loginWithTalk() async {
     try {
-      authProvider.toggleLoading();
+      // authProvider.loading = true;
 
       final authCode = await AuthCodeClient.instance.requestWithTalk();
       final token = await _issueAccessToken(authCode);
@@ -79,7 +79,7 @@ class KakaoLoginState extends State<KakaoLogin> {
     } catch (e) {
       print(e);
     } finally {
-      authProvider.toggleLoading();
+      // authProvider.loading = false;
     }
   }
 

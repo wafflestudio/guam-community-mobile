@@ -60,8 +60,6 @@ class _PostInfoState extends State<PostInfo> {
               Post _temp = await postsProvider.getPost(widget.post.id);
               isLiked = _temp.isLiked;
               likeCount = _temp.likeCount;
-              print(widget.index);
-              print(_temp.likeCount);
               widget.refreshPost(widget.index, _temp);
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);

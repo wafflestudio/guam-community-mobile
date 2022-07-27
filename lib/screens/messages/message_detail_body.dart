@@ -7,6 +7,7 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 
+import '../../commons/common_img_nickname.dart';
 import '../../commons/custom_divider.dart';
 import '../../commons/image/image_carousel.dart';
 import '../../models/profiles/profile.dart';
@@ -31,31 +32,42 @@ class MessageDetailBody extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: sentBy.profileImg != null
-                        ? NetworkImage(HttpRequest().s3BaseAuthority + sentBy.profileImg)
-                        : SvgProvider('assets/icons/profile_image.svg')
+              isMe ? Row(
+                children: [
+                  Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: sentBy.profileImg != null
+                            ? NetworkImage(HttpRequest().s3BaseAuthority + sentBy.profileImg)
+                            : SvgProvider('assets/icons/profile_image.svg')
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 6),
-                child: Text(
-                  isMe ? sentBy.nickname + ' (나)': sentBy.nickname,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                    color: isMe
-                        ? GuamColorFamily.purpleCore
-                        : GuamColorFamily.grayscaleGray2,
+                  Padding(
+                    padding: EdgeInsets.only(left: 6),
+                    child: Text(
+                      isMe ? sentBy.nickname + ' (나)': sentBy.nickname,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                        color: isMe
+                            ? GuamColorFamily.purpleCore
+                            : GuamColorFamily.grayscaleGray2,
+                      ),
+                    ),
                   ),
-                ),
+                ],
+              ) : CommonImgNickname(
+                userId: sentBy.id,
+                nickname: sentBy.nickname,
+                // profileClickable: post.profile.id != 0,
+                // 익명 프로필은 프로필 열람 불가
+                imgUrl: sentBy.profileImg ?? null,
+                nicknameColor: GuamColorFamily.grayscaleGray3,
               ),
               Spacer(),
               Text(

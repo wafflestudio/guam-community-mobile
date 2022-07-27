@@ -9,14 +9,13 @@ import '../../../commons/back.dart';
 import '../../../commons/guam_progress_indicator.dart';
 import '../../../styles/fonts.dart';
 
-
-class MyPosts extends StatefulWidget {
+class ScrappedPosts extends StatefulWidget {
   @override
-  State<MyPosts> createState() => _MyPostsState();
+  State<ScrappedPosts> createState() => _ScrappedPostsState();
 }
 
-class _MyPostsState extends State<MyPosts> {
-  List _myPosts = [];
+class _ScrappedPostsState extends State<ScrappedPosts> {
+  List _scrappedPosts = [];
   int _currentPage = 1;
   bool _hasNextPage = true;
   bool _isFirstLoadRunning = false;
@@ -27,8 +26,8 @@ class _MyPostsState extends State<MyPosts> {
   void _firstLoad() async {
     setState(() => _isFirstLoadRunning = true);
     try {
-      await context.read<Authenticate>().fetchMyPosts();
-      _myPosts = context.read<Authenticate>().myPosts;
+      await context.read<Authenticate>().fetchScrappedPosts();
+      _scrappedPosts = context.read<Authenticate>().scrappedPosts;
     } catch (err) {
       print('알 수 없는 오류가 발생했습니다.');
     }
@@ -43,11 +42,11 @@ class _MyPostsState extends State<MyPosts> {
       setState(() => _isLoadMoreRunning = true);
       try {
         _currentPage ++;
-        final fetchedMyPosts = await context.read<Authenticate>().addMyPosts(
+        final fetchedScrappedPosts = await context.read<Authenticate>().addScrappedPosts(
           page: _currentPage,
         );
-        if (fetchedMyPosts != null && fetchedMyPosts.length > 0) {
-          setState(() => _myPosts.addAll(fetchedMyPosts));
+        if (fetchedScrappedPosts != null && fetchedScrappedPosts.length > 0) {
+          setState(() => _scrappedPosts.addAll(fetchedScrappedPosts));
         } else {
           // This means there is no more data
           // and therefore, we will not send another GET request
@@ -93,7 +92,7 @@ class _MyPostsState extends State<MyPosts> {
         : Scaffold(
             appBar: CustomAppBar(
               leading: Back(),
-              title: "내가 쓴 글",
+              title: "스크랩한 글",
             ),
             body: RefreshIndicator(
               color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
@@ -106,13 +105,13 @@ class _MyPostsState extends State<MyPosts> {
                   controller: _scrollController,
                   physics: AlwaysScrollableScrollPhysics(),
                   child: Column(children: [
-                    if (_myPosts.isEmpty)
+                    if (_scrappedPosts.isEmpty)
                       Center(
                         child: Padding(
                           padding: EdgeInsets.only(
                               top: MediaQuery.of(context).size.height * 0.1),
                           child: Text(
-                            '아직 작성된 글이 없습니다.',
+                            '아직 스크랩한 글이 없습니다.',
                             style: TextStyle(
                               fontSize: 16,
                               color: GuamColorFamily.grayscaleGray4,
@@ -121,8 +120,8 @@ class _MyPostsState extends State<MyPosts> {
                           ),
                         ),
                       ),
-                    if (_myPosts.isNotEmpty)
-                      ..._myPosts.mapIndexed((idx, p) => PostPreview(idx, p, _firstLoad)),
+                    if (_scrappedPosts.isNotEmpty)
+                      ..._scrappedPosts.mapIndexed((idx, p) => PostPreview(idx, p, _firstLoad)),
                     if (_isLoadMoreRunning == true)
                       Padding(
                         padding: EdgeInsets.only(top: 10, bottom: 40),
@@ -133,7 +132,7 @@ class _MyPostsState extends State<MyPosts> {
                         color: GuamColorFamily.purpleLight2,
                         padding: EdgeInsets.only(top: 10, bottom: 10),
                         child: Center(child: Text(
-                          '작성글을 모두 불러왔습니다!',
+                          '스크랩한 글을 모두 불러왔습니다!',
                           style: TextStyle(
                             fontSize: 13,
                             color: GuamColorFamily.grayscaleGray2,
@@ -153,6 +152,6 @@ class _MyPostsState extends State<MyPosts> {
                     backgroundColor: GuamColorFamily.purpleLight1,
                     child: Icon(Icons.arrow_upward, size: 20, color: GuamColorFamily.grayscaleWhite),
                   ),
-    );
+          );
   }
 }

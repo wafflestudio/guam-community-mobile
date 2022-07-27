@@ -103,12 +103,12 @@ class _CommonTextFieldState extends State<CommonTextField> {
             }
           });
         } else {
-          /// 게시글 or 댓글 작성
+          /// 댓글 작성
           if (isEdit && content != '') {
             await widget.onTap(
               id: widget.editTarget.id,
               fields: {
-                "mentionIds": mentionTargetIds.join(','),
+                "mentionIds": mentionTargetIds,
                 "content": content,
               },
             ).then((successful) {
@@ -121,9 +121,10 @@ class _CommonTextFieldState extends State<CommonTextField> {
             if (content != '' || imageFileList.isNotEmpty)
               await widget.onTap(
                 files: [...imageFileList.map((e) => File(e.path))],
-                fields: {
-                  "mentionIds": mentionTargetIds.join(','),
+                body: {
+                  "mentionIds": mentionTargetIds,
                   "content": content,
+                  "imageFilePaths": imageFileList.map((e) => e.path.split('/').last).toList(),
                 },
               ).then((successful) {
                 if (successful) {

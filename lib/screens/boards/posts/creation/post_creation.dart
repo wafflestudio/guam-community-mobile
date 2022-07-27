@@ -66,34 +66,53 @@ class _PostCreationState extends State<PostCreation> with Toast {
   Future createOrUpdatePost({List<File> files}) async {
     Posts postProvider = context.read<Posts>();
     Authenticate authProvider = context.read<Authenticate>();
+    List<String> imageFilePaths = files.map((e) => e.path.split('/').last).toList();
 
     bool successful = false;
-    Map<String, dynamic> fields = {
+    Map<String, dynamic> body = {
       'title': input['title'],
       'content': input['content'],
       'boardId': input['boardId'].toString(),
       'categoryId': input['categoryId'].toString(),
+      'imageFilePaths': imageFilePaths,
     };
 
     try {
+      if (body['boardId'] == '') {
+        String msg = '게시판을 선택해주세요.';
+        return showToast(success: false, msg: msg);
+      }
+      if (body['title'] == '') {
+        String msg = '제목을 입력해주세요.';
+        return showToast(success: false, msg: msg);
+      }
+      if (body['content'] == '') {
+        String msg = '내용을 입력해주세요.';
+        return showToast(success: false, msg: msg);
+      }
+      if (body['categoryId'] == '') {
+        String msg = '카테고리를 선택해주세요.';
+        return showToast(success: false, msg: msg);
+      }
+      /// 게시글 수정
       if (widget.isEdit && widget.editTarget != null) {
         return await postProvider.editPost(
           postId: widget.editTarget.id,
-          body: fields,
+          body: body,
         ).then((successful) {
           if (successful) {
-            Navigator.pop(context, fields);
+            Navigator.pop(context, body);
             successful = true;
           }
         });
+      /// 게시글 생성
       } else {
         return await postProvider.createPost(
-          fields: fields,
+          body: body,
           files: files,
         ).then((successful) {
           if (successful) {
             Navigator.pop(context);
-            postProvider.fetchPosts(0);
             /// 게시글 생성 후 getPost(createdPostId) 하여 새로운 게시글로 이동
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -102,19 +121,18 @@ class _PostCreationState extends State<PostCreation> with Toast {
                     ChangeNotifierProvider(create: (_) => Posts(authProvider)),
                   ],
                   child: FutureBuilder(
-                      future: postProvider.getPost(postProvider.createdPostId),
-                      builder: (_, AsyncSnapshot<Post> snapshot) {
-                        if (snapshot.hasData) {
-                          return PostDetail(post: snapshot.data);
-                        } else if (snapshot.hasError) {
-                          Navigator.pop(context);
-                          postProvider.fetchPosts(0);
-                          showToast(success: false, msg: '게시글을 찾을 수 없습니다.');
-                          return null;
-                        } else {
-                          return Center(child: guamProgressIndicator());
-                        }
+                    future: postProvider.getCreatedPost(postProvider.createdPostId),
+                    builder: (_, AsyncSnapshot<Post> snapshot) {
+                      if (snapshot.hasData) {
+                        return PostDetail(post: snapshot.data);
+                      } else if (snapshot.hasError) {
+                        Navigator.pop(context);
+                        showToast(success: false, msg: '게시글을 찾을 수 없습니다.');
+                        return null;
+                      } else {
+                        return Center(child: guamProgressIndicator());
                       }
+                    },
                   ),
                 ),
               ),

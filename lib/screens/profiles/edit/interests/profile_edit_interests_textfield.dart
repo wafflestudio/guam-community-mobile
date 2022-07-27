@@ -60,7 +60,7 @@ class ProfileEditInterestsTextFieldState extends State<ProfileEditInterestsTextF
                 height: 22.4/14
               ),
               decoration: InputDecoration(
-                hintText: "관심사를 입력해주세요",
+                hintText: "관심사를 입력해주세요.  ex) SpringBoot",
                 hintStyle: TextStyle(fontSize: 14, color: GuamColorFamily.grayscaleGray5),
                 border: InputBorder.none,
                 focusedBorder: InputBorder.none,
@@ -88,7 +88,7 @@ class ProfileEditInterestsTextFieldState extends State<ProfileEditInterestsTextF
           ) : ButtonSizeCircularProgressIndicator()
         ],
       ),
-      margin: EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: 22),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         border: Border.all(color: GuamColorFamily.grayscaleGray6, width: 1),

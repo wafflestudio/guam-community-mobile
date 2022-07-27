@@ -27,8 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      // future: Future.delayed(Duration(milliseconds: 1500)),
-      // 개발시에 주석처리하면 hot reload 시 초기화 안시킬 수 있음.
+      future: Future.delayed(Duration(milliseconds: 1500)),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return MaterialApp(

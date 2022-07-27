@@ -20,27 +20,35 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>kakao367d8cf339e2ba59376ba647c7135dd2</string>
-            </array>
-        </dict>
-    </array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kakao367d8cf339e2ba59376ba647c7135dd2</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.648780047414-87op6am5cm2cf3agmecpukfq61q32atj</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-    <key>NSCameraUsageDescription</key>
-    <string>To take an avatar photo</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>To upload an image</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>To choose an avatar</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To take an avatar photo</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>To upload an image</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To choose an avatar</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

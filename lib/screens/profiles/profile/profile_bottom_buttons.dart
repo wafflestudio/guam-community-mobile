@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../providers/posts/posts.dart';
 import '../buttons/long_button.dart';
 import '../pages/my_posts.dart';
-import '../pages/saved_posts.dart';
+import '../pages/scrapped_posts.dart';
 import '../pages/settings.dart';
 
 class ProfileBottomButtons extends StatelessWidget {
@@ -12,24 +14,30 @@ class ProfileBottomButtons extends StatelessWidget {
       child: Wrap(
         runSpacing: 12,
         children: [
-          // LongButton(
-          //   label: '내가 쓴 글',
-          //   onPressed: () => Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (_) => MyPosts()
-          //     )
-          //   )
-          // ),
-          // LongButton(
-          //   label: '저장한 글',
-          //   onPressed: () => Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (_) => SavedPosts()
-          //     )
-          //   )
-          // ),
+          LongButton(
+            label: '내가 쓴 글',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ChangeNotifierProvider.value(
+                  value: context.read<Posts>(),
+                  child: MyPosts(),
+                ),
+              ),
+            ),
+          ),
+          LongButton(
+            label: '스크랩한 글',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ChangeNotifierProvider.value(
+                  value: context.read<Posts>(),
+                  child: ScrappedPosts(),
+                ),
+              ),
+            )
+          ),
           LongButton(
             label: '계정 설정',
             onPressed: () => Navigator.push(

@@ -69,6 +69,7 @@ class _PostCreationImageState extends State<PostCreationImage> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
+              if (widget.input['images'].length < 5)
               InkWell(
                 onTap: !sending
                     ? () => pickImage(type: 'gallery').then((img) => setImageFile(img))

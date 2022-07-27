@@ -17,25 +17,37 @@ import '../../providers/posts/posts.dart';
 import '../../providers/user_auth/authenticate.dart';
 import '../boards/posts/detail/post_detail.dart';
 
-class NotificationsPreview extends StatelessWidget with Toast {
+class NotificationsPreview extends StatefulWidget{
   final Notification.Notification notification;
   final Function onRefresh;
 
   NotificationsPreview(this.notification, {this.onRefresh});
 
   @override
+  State<NotificationsPreview> createState() => _NotificationsPreviewState();
+}
+
+class _NotificationsPreviewState extends State<NotificationsPreview> with Toast {
+  @override
   Widget build(BuildContext context) {
+    bool isLoading = true;
     Posts postProvider = context.read<Posts>();
     Authenticate authProvider = context.read<Authenticate>();
     Notifications notiProvider = context.read<Notifications>();
 
-    void readNotifications() async {
-      await notiProvider.readNotifications(
-        userId: authProvider.me.id,
-        pushEventIds: [notification.id.toString()],
-      );
-      await Future.delayed(Duration(seconds: 1));
-      onRefresh();
+    Future<Post> _getPost() {
+      return Future.delayed(Duration(seconds: 0), () async {
+        Post _post = await postProvider.getPost(int.parse(widget.notification.linkUrl.split('/')[4]));
+        setState(() => isLoading = false);
+
+        /// read notification API
+        await notiProvider.readNotifications(
+          userId: authProvider.me.id,
+          pushEventIds: [widget.notification.id.toString()],
+        );
+        widget.onRefresh();
+        return _post;
+      });
     }
 
     return Column(
@@ -46,7 +58,6 @@ class NotificationsPreview extends StatelessWidget with Toast {
             padding: EdgeInsets.only(left: 12, top: 4, bottom: 4),
             child: InkWell(
               onTap: () {
-                readNotifications();
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => MultiProvider(
@@ -55,15 +66,13 @@ class NotificationsPreview extends StatelessWidget with Toast {
                       ],
                       child: FutureBuilder(
                         /// todo: linkUrl 을 '/'로 split 하여 postId 추출 => postId 값만 보내주기
-                        future: postProvider.getPost(int.parse(notification.linkUrl.split('/')[4])),
+                        future: _getPost(),
                         builder: (_, AsyncSnapshot<Post> snapshot) {
                           if (snapshot.hasData) {
                             return PostDetail(post: snapshot.data);
-                          } else if (snapshot.hasError) {
+                          } else if (snapshot.hasError || !isLoading) {
                             Navigator.pop(context);
-                            postProvider.fetchPosts(0);
-                            showToast(success: false, msg: '게시글을 찾을 수 없습니다.');
-                            return null;
+                            return Container();
                           } else {
                             return Center(child: guamProgressIndicator());
                           }
@@ -85,13 +94,13 @@ class NotificationsPreview extends StatelessWidget with Toast {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: notification.writer.profileImg != null
-                                  ? NetworkImage(HttpRequest().s3BaseAuthority +  notification.writer.profileImg)
+                              image: widget.notification.writer.profileImg != null
+                                  ? NetworkImage(HttpRequest().s3BaseAuthority +  widget.notification.writer.profileImg)
                                   : SvgProvider('assets/icons/profile_image.svg')
                           ),
                         ),
                       ),
-                      if (!notification.isRead)
+                      if (!widget.notification.isRead)
                         Positioned(
                             top: -2,
                             left: -2,
@@ -107,7 +116,6 @@ class NotificationsPreview extends StatelessWidget with Toast {
                     ],
                   ),
                   Container(
-                    // width: MediaQuery.of(context).size.width * 0.75,
                     padding: EdgeInsets.only(left: 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,38 +123,38 @@ class NotificationsPreview extends StatelessWidget with Toast {
                         Row(
                           children: [
                             Text(
-                              notification.writer.nickname,
+                              widget.notification.writer.nickname,
                               style: TextStyle(
                                 fontSize: 13,
-                                color: notification.isRead
+                                color: widget.notification.isRead
                                     ? GuamColorFamily.grayscaleGray3
                                     : GuamColorFamily.grayscaleGray1,
                               ),
                             ),
                             Text(
-                              notificationsType(notification.kind),
+                              notificationsType(widget.notification.kind),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 13,
                                 fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                                color: notification.isRead
+                                color: widget.notification.isRead
                                     ? GuamColorFamily.grayscaleGray3
                                     : GuamColorFamily.grayscaleGray1,
                               ),
                             ),
                           ],
                         ),
-                        if (notification.body != null)
+                        if (widget.notification.body != null)
                           Text(
-                            notification.body,
+                            widget.notification.body,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 12,
                               height: 1.6,
                               fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                              color: notification.isRead
+                              color: widget.notification.isRead
                                   ? GuamColorFamily.grayscaleGray4
                                   : GuamColorFamily.grayscaleGray3,
                             ),
@@ -154,7 +162,7 @@ class NotificationsPreview extends StatelessWidget with Toast {
                         Padding(
                           padding: EdgeInsets.only(top: 4),
                           child: Text(
-                            Jiffy(notification.createdAt).fromNow(),
+                            Jiffy(widget.notification.createdAt).fromNow(),
                             style: TextStyle(
                               fontSize: 12,
                               height: 1.6,
