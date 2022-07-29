@@ -3,17 +3,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
+import '../../mixins/toast.dart';
 import '../../providers/user_auth/authenticate.dart';
 import '../../styles/colors.dart';
 import '../login/login_button.dart';
 
 
 class GoogleLogin extends StatefulWidget {
+  final Function setLoading;
+
+  GoogleLogin(this.setLoading);
+
   @override
   State<GoogleLogin> createState() => _GoogleLoginState();
 }
 
-class _GoogleLoginState extends State<GoogleLogin> {
+class _GoogleLoginState extends State<GoogleLogin> with Toast {
   Authenticate authProvider;
 
   @override
@@ -41,14 +46,16 @@ class _GoogleLoginState extends State<GoogleLogin> {
 
   _loginWithGoogle() async {
     try {
-      authProvider.loading = true;
+      widget.setLoading(true);
 
       final _userCredential = await _signInWithGoogle();
       await authProvider.googleSignIn(_userCredential);
     } catch (e) {
+      widget.setLoading(false);
+      showToast(success: false, msg: '일시적인 오류로 인해\n카카오 로그인을 이용해주세요.');
       print(e);
     } finally {
-      authProvider.loading = false;
+      widget.setLoading(false);
     }
   }
 
