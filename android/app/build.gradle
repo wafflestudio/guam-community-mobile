@@ -20,12 +20,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '21'
+    flutterVersionCode = '22'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '21'
+    flutterVersionName = '22'
 }
 
 apply plugin: 'com.android.application'
@@ -86,4 +86,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.firebase:firebase-analytics-ktx:21.0.0'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.4'
+
+    // Also declare the dependency for the Google Play services library and specify its version
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
 }

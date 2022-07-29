@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:guam_community_client/commons/guam_progress_indicator.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import '../../providers/user_auth/authenticate.dart';
@@ -6,6 +8,10 @@ import 'package:provider/provider.dart';
 import '../login/login_button.dart';
 
 class KakaoLogin extends StatefulWidget {
+  final Function setLoading;
+
+  KakaoLogin(this.setLoading);
+
   @override
   State<StatefulWidget> createState() {
     return KakaoLoginState();
@@ -46,19 +52,23 @@ class KakaoLoginState extends State<KakaoLogin> {
   */
   _loginWithKakao() async {
     try {
-      // authProvider.loading = true;
+      widget.setLoading(true);
 
       final authCode = await AuthCodeClient.instance.request();
       final token = await _issueAccessToken(authCode);
       await authProvider.kakaoSignIn(token.accessToken);
+
     } on KakaoAuthException catch (e) {
       print("Kakao Auth Exception:\n$e");
     } on KakaoClientException catch (e) {
       print("Kakao Client Exception:\n$e");
     } catch (e) {
+      if (e is PlatformException && e.code == 'CANCELED') {
+        widget.setLoading(false);
+      }
       print(e);
     } finally {
-      // authProvider.loading = false;
+      widget.setLoading(false);
     }
   }
 
@@ -67,7 +77,7 @@ class KakaoLoginState extends State<KakaoLogin> {
   */
   _loginWithTalk() async {
     try {
-      // authProvider.loading = true;
+      widget.setLoading(true);
 
       final authCode = await AuthCodeClient.instance.requestWithTalk();
       final token = await _issueAccessToken(authCode);
@@ -77,9 +87,12 @@ class KakaoLoginState extends State<KakaoLogin> {
     } on KakaoClientException catch (e) {
       print("Kakao Client Exception:\n$e");
     } catch (e) {
+      if (e is PlatformException && e.code == 'CANCELED') {
+        widget.setLoading(false);
+      }
       print(e);
     } finally {
-      // authProvider.loading = false;
+      widget.setLoading(false);
     }
   }
 
@@ -87,7 +100,7 @@ class KakaoLoginState extends State<KakaoLogin> {
   Widget build(BuildContext context) {
     return LoginButton(
       'kakao_logo',
-      '카카오톡으로 시작하기',
+      '카카오로 시작하기',
       GuamColorFamily.kakaoYellow,
       () => _isKakaoTalkInstalled ? _loginWithTalk() : _loginWithKakao()
     );

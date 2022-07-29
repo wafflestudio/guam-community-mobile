@@ -17,6 +17,7 @@ class MyPosts extends StatefulWidget {
 
 class _MyPostsState extends State<MyPosts> {
   List _myPosts = [];
+  int _beforePostId;
   int _currentPage = 1;
   bool _hasNextPage = true;
   bool _isFirstLoadRunning = false;
@@ -41,10 +42,11 @@ class _MyPostsState extends State<MyPosts> {
         _isLoadMoreRunning == false &&
         _scrollController.position.extentAfter < 300) {
       setState(() => _isLoadMoreRunning = true);
+      _beforePostId = _myPosts.last.id;
       try {
         _currentPage ++;
         final fetchedMyPosts = await context.read<Authenticate>().addMyPosts(
-          page: _currentPage,
+          beforePostId: _currentPage,
         );
         if (fetchedMyPosts != null && fetchedMyPosts.length > 0) {
           setState(() => _myPosts.addAll(fetchedMyPosts));
