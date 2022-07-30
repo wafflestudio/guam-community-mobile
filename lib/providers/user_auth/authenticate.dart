@@ -336,7 +336,7 @@ class Authenticate extends ChangeNotifier with Toast {
   }
 
   /// For Pagination in MyPosts Widget using _loadMore()
-  Future addMyPosts({int page=1, int size=20}) async {
+  Future addMyPosts({int beforePostId}) async {
     loading = true;
     try {
       String authToken = await getFirebaseIdToken();
@@ -344,8 +344,7 @@ class Authenticate extends ChangeNotifier with Toast {
           .get(
         path: "community/api/v1/posts/users/${me.id}/my",
         queryParams: {
-          "page": page.toString(),
-          "size": size.toString(),
+          "beforePostId": beforePostId.toString(),
         },
         authToken: authToken,
       ).then((response) async {
@@ -403,7 +402,7 @@ class Authenticate extends ChangeNotifier with Toast {
   }
 
   /// For Pagination in ScrappedPosts Widget using _loadMore()
-  Future addScrappedPosts({int page=1, int size=20}) async {
+  Future addScrappedPosts({int page=1}) async {
     loading = true;
     try {
       String authToken = await getFirebaseIdToken();
@@ -412,7 +411,6 @@ class Authenticate extends ChangeNotifier with Toast {
         path: "community/api/v1/posts/users/${me.id}/scrapped",
         queryParams: {
           "page": page.toString(),
-          "size": size.toString(),
         },
         authToken: authToken,
       ).then((response) async {
