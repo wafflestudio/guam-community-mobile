@@ -94,7 +94,7 @@ class _NotificationsPreviewState extends State<NotificationsPreview> with Toast 
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: widget.notification.writer.profileImg != null
+                              image: widget.notification.writer.profileImg != null && widget.notification.writer.profileImg.isNotEmpty
                                   ? NetworkImage(HttpRequest().s3BaseAuthority +  widget.notification.writer.profileImg)
                                   : SvgProvider('assets/icons/profile_image.svg')
                           ),
