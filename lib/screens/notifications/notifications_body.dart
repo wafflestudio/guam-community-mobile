@@ -17,6 +17,7 @@ class _NotificationsBodyState extends State<NotificationsBody> {
   bool _hasNextPage = true;
   bool _isFirstLoadRunning = false;
   bool _isLoadMoreRunning = false;
+  bool _showBackToTopButton = false;
   ScrollController _scrollController = ScrollController();
 
   void _firstLoad() async {
@@ -55,10 +56,22 @@ class _NotificationsBodyState extends State<NotificationsBody> {
     }
   }
 
+  void _scrollToTop() => _scrollController
+      .animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.linear);
+
   @override
   void initState() {
     _firstLoad();
-    _scrollController = ScrollController()..addListener(_loadMore);
+    _scrollController = ScrollController()..addListener(_loadMore)
+      ..addListener(() {
+        setState(() {
+          if (_scrollController.offset >= 300) {
+            _showBackToTopButton = true; // show the back-to-top button
+          } else {
+            _showBackToTopButton = false; // hide the back-to-top button
+          }
+        });
+      });
     super.initState();
   }
 
@@ -72,57 +85,72 @@ class _NotificationsBodyState extends State<NotificationsBody> {
   Widget build(BuildContext context) {
     return _isFirstLoadRunning
     ? Center(child: guamProgressIndicator())
-    : Container(
-        color: GuamColorFamily.grayscaleWhite,
-        padding: EdgeInsets.only(top: 18),
-        child: RefreshIndicator(
-          color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
-          onRefresh: () => context.read<Notifications>().fetchNotifications(),
-          child: Container(
-            height: double.infinity,
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              physics: AlwaysScrollableScrollPhysics(),
-              child: Column(children: [
-                if (_notifications.isEmpty)
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height * 0.1),
-                      child: Text(
-                        '새로운 알림이 없습니다.',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: GuamColorFamily.grayscaleGray4,
-                          fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+    : Stack(
+      children: [
+        Container(
+            color: GuamColorFamily.grayscaleWhite,
+            padding: EdgeInsets.only(top: 18),
+            child: RefreshIndicator(
+              color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
+              onRefresh: () => context.read<Notifications>().fetchNotifications(),
+              child: Container(
+                height: double.infinity,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Column(children: [
+                    if (_notifications.isEmpty)
+                      Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * 0.1),
+                          child: Text(
+                            '새로운 알림이 없습니다.',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: GuamColorFamily.grayscaleGray4,
+                              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                if (_notifications.isNotEmpty)
-                  ..._notifications.map((noti) => NotificationsPreview(noti, onRefresh: _firstLoad)),
-                if (_isLoadMoreRunning == true)
-                  Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 40),
-                    child: guamProgressIndicator(size: 40),
-                  ),
-                if (_hasNextPage == false && _currentPage > 2)
-                  Container(
-                    color: GuamColorFamily.purpleLight2,
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                    child: Center(child: Text(
-                      '모든 알림을 불러왔습니다!',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: GuamColorFamily.grayscaleGray2,
-                        fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                    if (_notifications.isNotEmpty)
+                      ..._notifications.map((noti) => NotificationsPreview(noti, onRefresh: _firstLoad)),
+                    if (_isLoadMoreRunning == true)
+                      Padding(
+                        padding: EdgeInsets.only(top: 10, bottom: 40),
+                        child: guamProgressIndicator(size: 40),
                       ),
-                    )),
-                  ),
-              ]),
+                    if (_hasNextPage == false && _currentPage > 2)
+                      Container(
+                        color: GuamColorFamily.purpleLight2,
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        child: Center(child: Text(
+                          '모든 알림을 불러왔습니다!',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: GuamColorFamily.grayscaleGray2,
+                            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                          ),
+                        )),
+                      ),
+                  ]),
+                ),
+              ),
             ),
           ),
-        ),
-      );
+        if (_showBackToTopButton)
+          Positioned(
+            top: 10,
+            right: 10,
+            child: FloatingActionButton(
+              mini: true,
+              onPressed: _scrollToTop,
+              backgroundColor: GuamColorFamily.purpleLight1,
+              child: Icon(Icons.arrow_upward, size: 20, color: GuamColorFamily.grayscaleWhite),
+            ),
+          ),
+      ],
+    );
   }
 }
