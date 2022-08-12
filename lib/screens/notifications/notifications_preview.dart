@@ -34,10 +34,11 @@ class _NotificationsPreviewState extends State<NotificationsPreview> with Toast 
     Posts postProvider = context.read<Posts>();
     Authenticate authProvider = context.read<Authenticate>();
     Notifications notiProvider = context.read<Notifications>();
+    int _postId = int.parse(widget.notification.linkUrl.split('/')[4]);
 
     Future<Post> _getPost() {
       return Future.delayed(Duration(seconds: 0), () async {
-        Post _post = await postProvider.getPost(int.parse(widget.notification.linkUrl.split('/')[4]));
+        Post _post = await postProvider.getPost(_postId);
         setState(() => isLoading = false);
 
         /// read notification API

@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> with Toast {
   @override
   void initState() {
     userLoggedIn = Future.delayed(
-      Duration(milliseconds: 1000),
+      Duration(milliseconds: 1500),
           () async => context.read<Authenticate>().profileExists(),
     );
     super.initState();
