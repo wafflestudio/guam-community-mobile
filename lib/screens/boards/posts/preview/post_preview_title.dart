@@ -7,11 +7,13 @@ class PostPreviewTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: TextStyle(fontSize: 14),
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
+    return Flexible(
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 14),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 }

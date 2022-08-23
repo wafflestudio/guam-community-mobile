@@ -116,63 +116,65 @@ class _NotificationsPreviewState extends State<NotificationsPreview> with Toast 
                         ),
                     ],
                   ),
-                  Container(
-                    padding: EdgeInsets.only(left: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              widget.notification.writer.nickname,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: widget.notification.isRead
-                                    ? GuamColorFamily.grayscaleGray3
-                                    : GuamColorFamily.grayscaleGray1,
+                  Flexible(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                widget.notification.writer.nickname,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: widget.notification.isRead
+                                      ? GuamColorFamily.grayscaleGray3
+                                      : GuamColorFamily.grayscaleGray1,
+                                ),
                               ),
-                            ),
+                              Text(
+                                notificationsType(widget.notification.kind),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                                  color: widget.notification.isRead
+                                      ? GuamColorFamily.grayscaleGray3
+                                      : GuamColorFamily.grayscaleGray1,
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (widget.notification.body != null)
                             Text(
-                              notificationsType(widget.notification.kind),
+                              widget.notification.body,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 12,
+                                height: 1.6,
                                 fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
                                 color: widget.notification.isRead
-                                    ? GuamColorFamily.grayscaleGray3
-                                    : GuamColorFamily.grayscaleGray1,
+                                    ? GuamColorFamily.grayscaleGray4
+                                    : GuamColorFamily.grayscaleGray3,
                               ),
                             ),
-                          ],
-                        ),
-                        if (widget.notification.body != null)
-                          Text(
-                            widget.notification.body,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 12,
-                              height: 1.6,
-                              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                              color: widget.notification.isRead
-                                  ? GuamColorFamily.grayscaleGray4
-                                  : GuamColorFamily.grayscaleGray3,
+                          Padding(
+                            padding: EdgeInsets.only(top: 4),
+                            child: Text(
+                              Jiffy(widget.notification.createdAt).fromNow(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                height: 1.6,
+                                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                                color: GuamColorFamily.grayscaleGray4,
+                              ),
                             ),
                           ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 4),
-                          child: Text(
-                            Jiffy(widget.notification.createdAt).fromNow(),
-                            style: TextStyle(
-                              fontSize: 12,
-                              height: 1.6,
-                              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                              color: GuamColorFamily.grayscaleGray4,
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
