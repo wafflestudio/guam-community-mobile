@@ -110,33 +110,35 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.only(left: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          msgBox.otherProfile.nickname,
-                          style: TextStyle(
-                            fontSize: 12,
-                            height: 1.6,
-                            fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
-                            color: GuamColorFamily.grayscaleGray2,
+                    child: Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            msgBox.otherProfile.nickname,
+                            style: TextStyle(
+                              fontSize: 12,
+                              height: 1.6,
+                              fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,
+                              color: GuamColorFamily.grayscaleGray2,
+                            ),
                           ),
-                        ),
-                        Text(
-                          msgBox.lastLetter.text,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 12,
-                            height: 1.6,
-                            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                            color: newMsg
-                                ? GuamColorFamily.grayscaleGray2
-                                : GuamColorFamily.grayscaleGray4,
+                          Text(
+                            msgBox.lastLetter.text,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 12,
+                              height: 1.6,
+                              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                              color: newMsg
+                                  ? GuamColorFamily.grayscaleGray2
+                                  : GuamColorFamily.grayscaleGray4,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
