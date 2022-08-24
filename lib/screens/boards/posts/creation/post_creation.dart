@@ -91,8 +91,18 @@ class _PostCreationState extends State<PostCreation> with Toast {
         setState(() => loading = false);
         return showToast(success: false, msg: msg);
       }
+      if (body['title'].length > 30) {
+        String msg = '제목은 30자 이하로 입력해주세요.';
+        setState(() => loading = false);
+        return showToast(success: false, msg: msg);
+      }
       if (body['content'] == '') {
         String msg = '내용을 입력해주세요.';
+        setState(() => loading = false);
+        return showToast(success: false, msg: msg);
+      }
+      if (body['content'].length > 400) {
+        String msg = '내용은 400자 이하로 입력해주세요.';
         setState(() => loading = false);
         return showToast(success: false, msg: msg);
       }
@@ -259,6 +269,7 @@ class _PostCreationState extends State<PostCreation> with Toast {
             child: Container(
               width: 20,
               height: 20,
+              margin: EdgeInsets.only(right: 6),
               child: CircularProgressIndicator(
                 color: GuamColorFamily.purpleLight1,
               ),
