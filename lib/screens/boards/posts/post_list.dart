@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
-import 'package:guam_community_client/providers/posts/posts.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview.dart';
 
 import '../../../commons/sub_headings.dart';
-import '../../search/search_filter.dart';
+import 'post_filter.dart';
 
 class PostList extends StatefulWidget {
   final List<Post> posts;
   final Function refreshPost;
+  final Function sortPosts;
+  final bool isSorted;
 
-  PostList(this.posts, this.refreshPost);
+  PostList(this.posts, this.refreshPost, this.sortPosts, this.isSorted);
 
   @override
   State<PostList> createState() => _PostListState();
@@ -32,8 +32,7 @@ class _PostListState extends State<PostList> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SubHeadings("특별한 일이 있나요? ✨"),
-                /// TODO: 추천순 API 완성되면 붙이기.
-                // SearchFilter(provider: context.read<Posts>()),
+                PostFilter(widget.sortPosts, widget.isSorted),
               ],
             ),
           ),
