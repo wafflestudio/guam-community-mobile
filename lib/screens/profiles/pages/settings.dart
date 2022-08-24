@@ -26,15 +26,15 @@ class Settings extends StatelessWidget {
             child: Wrap(
               runSpacing: 12,
               children: [
-                // LongButton(
-                //   label: '차단 목록 관리',
-                //   onPressed: () => Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (_) => BlackListEdit()
-                //     )
-                //   )
-                // ),
+                LongButton(
+                  label: '차단 목록 관리',
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BlackListEdit()
+                    )
+                  )
+                ),
                 LongButton(
                   label: '로그아웃',
                   onPressed: () => showMaterialModalBottomSheet(

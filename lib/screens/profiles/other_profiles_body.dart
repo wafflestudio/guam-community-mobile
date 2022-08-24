@@ -26,7 +26,7 @@ class OtherProfilesBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ProfileImg(profileImg: profile.profileImg, height: 144, width: 144),
-          ProfileNickname(nickname: profile.nickname, editable: false),
+          ProfileNickname(profile.nickname),
           ProfileIntro(profile.intro ?? ""),
           ProfileWebButtons(
             githubId: profile.githubId ?? "",
