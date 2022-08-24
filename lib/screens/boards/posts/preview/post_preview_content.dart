@@ -9,17 +9,15 @@ class PostPreviewContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Text(
-        content,
-        maxLines: 4,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          height: 20.8/13,
-          fontSize: 13,
-          fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-          color: GuamColorFamily.grayscaleGray3,
-        ),
+    return Text(
+      content,
+      maxLines: 4,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        height: 20.8/13,
+        fontSize: 13,
+        fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+        color: GuamColorFamily.grayscaleGray3,
       ),
     );
   }
