@@ -20,7 +20,7 @@ class LoginWallpaper extends StatelessWidget {
             image: DecorationImage(
               fit: BoxFit.fitWidth,
               alignment: Alignment.bottomCenter,
-              image: AssetImage('assets/backgrounds/back_0.75x.png'),
+              image: AssetImage('assets/backgrounds/back_1x.png'),
             ),
           ),
         ),
@@ -31,7 +31,7 @@ class LoginWallpaper extends StatelessWidget {
             image: DecorationImage(
               fit: BoxFit.fitWidth,
               alignment: Alignment.bottomCenter,
-              image: AssetImage('assets/backgrounds/front_0.75x.png'),
+              image: AssetImage('assets/backgrounds/front_1x.png'),
             ),
           ),
           child: Stack(
