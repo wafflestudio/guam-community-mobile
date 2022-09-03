@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/next_button.dart';
+import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/screens/login/signup/signup_nickname.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,7 @@ class SignUp extends StatefulWidget {
   _SignUpState createState() => _SignUpState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignUpState extends State<SignUp> with Toast {
   Map<String, dynamic> input = {};
   int pageIdx = 0;
 
@@ -24,6 +25,10 @@ class _SignUpState extends State<SignUp> {
     Size size = MediaQuery.of(context).size;
 
     Future signUp() async {
+      if (input['nickname'] == '') {
+        showToast(success: false, msg: '닉네임을 입력해주세요.');
+        return null;
+      }
       await context.read<Authenticate>().setProfile(fields: input, imgReset: true);
     }
 

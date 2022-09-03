@@ -17,6 +17,8 @@ class Posts extends ChangeNotifier with Toast {
   bool _hasNext;
   List<Post> _posts;
   List<Post> _newPosts;
+  List<Post> _favoritePosts;
+  List<Post> _newFavoritePosts;
   List<Comment> _comments;
   int _boardId; // default : 피드게시판
   int _createdPostId;
@@ -33,6 +35,8 @@ class Posts extends ChangeNotifier with Toast {
   int get createdPostId => _createdPostId;
   List<Post> get posts => _posts;
   List<Post> get newPosts => _newPosts;
+  List<Post> get favoritePosts => _favoritePosts;
+  List<Post> get newFavoritePosts => _newFavoritePosts;
   List<Comment> get comments => _comments;
 
   /// ==== Posts ====
@@ -73,6 +77,45 @@ class Posts extends ChangeNotifier with Toast {
     return _posts;
   }
 
+  Future fetchFavoritePosts({int boardId, int rankFrom=0}) async {
+    loading = true;
+    try {
+      await HttpRequest()
+          .get(
+        path: "community/api/v1/posts/favorites",
+        queryParams: {
+          "boardId": boardId != null ? boardId.toString() : null,
+          "rankFrom": rankFrom.toString(),
+        },
+        authToken: await _authProvider.getFirebaseIdToken(),
+      ).then((response) async {
+        /// 현재 게시판 위치 저장해두기 (게시판 reload 시 사용)
+        _boardId = boardId;
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+          _hasNext = json.decode(jsonUtf8)["hasNext"];
+          _favoritePosts = jsonList.map((e) => Post.fromJson(e)).toList();
+          loading = false;
+        } else {
+          String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+          switch (response.statusCode) {
+            case 400: msg = '정보를 모두 입력해주세요.'; break;
+            case 401: msg = '열람 권한이 없습니다.'; break;
+            case 404: msg = '존재하지 않는 게시판입니다.'; break;
+          }
+          showToast(success: false, msg: msg);
+        }
+      });
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return _favoritePosts;
+  }
+
   /// For Pagination in BoardsFeed Widget using _loadMore()
   Future addPosts({int boardId, int beforePostId}) async {
     loading = true;
@@ -105,6 +148,39 @@ class Posts extends ChangeNotifier with Toast {
       notifyListeners();
     }
     return _newPosts;
+  }
+
+  Future addFavoritePosts({int boardId, int rankFrom}) async {
+    loading = true;
+    try {
+      await HttpRequest()
+          .get(
+        path: "community/api/v1/posts/favorites",
+        queryParams: {
+          "boardId": boardId != null ? boardId.toString() : null,
+          "rankFrom": rankFrom.toString(),
+        },
+        authToken: await _authProvider.getFirebaseIdToken(),
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+          _hasNext = json.decode(jsonUtf8)["hasNext"];
+          _newFavoritePosts = jsonList.map((e) => Post.fromJson(e)).toList();
+          loading = false;
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: '더 이상 게시글을 불러올 수 없습니다.');
+        }
+      });
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return _newFavoritePosts;
   }
 
   Future<bool> createPost({Map<String, dynamic> body, dynamic files}) async {
@@ -176,7 +252,7 @@ class Posts extends ChangeNotifier with Toast {
             String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = '접근 권한이 없습니다.'; break;
-              case 404: msg = '존재하지 않는 게시글입니다.ㅁㄴㅇㄹㅁㄴㅇㄹ'; break;
+              case 404: msg = '존재하지 않는 게시글입니다.'; break;
             }
             _post = null;
             showToast(success: false, msg: msg);

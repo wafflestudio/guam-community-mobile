@@ -52,7 +52,7 @@ class _GoogleLoginState extends State<GoogleLogin> with Toast {
       await authProvider.googleSignIn(_userCredential);
     } catch (e) {
       widget.setLoading(false);
-      showToast(success: false, msg: '일시적인 오류로 인해\n카카오 로그인을 이용해주세요.');
+      showToast(success: false, msg: '일시적인 오류로 인해\n다른 소셜 로그인을 이용해주세요.');
       print(e);
     } finally {
       widget.setLoading(false);

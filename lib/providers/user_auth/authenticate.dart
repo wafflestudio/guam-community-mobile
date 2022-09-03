@@ -16,9 +16,10 @@ class Authenticate extends ChangeNotifier with Toast {
   get kakaoClientId => _kakaoClientId;
   get kakaoJavascriptClientId => _kakaoJavascriptClientId;
 
+  int _unRead;
   Profile me;
   Profile user;
-  int _unRead;
+  List<Profile> _blockedUsers;
   List<Post> _myPosts;
   List<Post> _newMyPosts;
   List<Post> _scrappedPosts;
@@ -32,6 +33,7 @@ class Authenticate extends ChangeNotifier with Toast {
 
   int get unRead => _unRead;
   bool get hasNext => _hasNext;
+  List<Profile> get blockedUsers => _blockedUsers;
   List<Post> get myPosts => _myPosts;
   List<Post> get newMyPosts => _newMyPosts;
   List<Post> get scrappedPosts => _scrappedPosts;
@@ -268,7 +270,34 @@ class Authenticate extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<bool> blockUser({userId}) async {
+  Future<List<Profile>> fetchBlockedUsers() async {
+    try {
+      String authToken = await getFirebaseIdToken();
+      if (authToken.isNotEmpty) {
+        await HttpRequest().get(
+          path: "community/api/v1/blocks",
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final List<dynamic> jsonList = json.decode(jsonUtf8)["blockUsers"];
+            _blockedUsers = jsonList.map((e) => Profile.fromJson(e)).toList();
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            showToast(success: false, msg: err);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+    return _blockedUsers;
+  }
+
+  Future<bool> blockUser(blockedUserId) async {
     bool successful = false;
     try {
       toggleLoading();
@@ -276,12 +305,11 @@ class Authenticate extends ChangeNotifier with Toast {
 
       if (authToken.isNotEmpty) {
         await HttpRequest().post(
-          path: "community/api/v1/block",
-          queryParams: {"targetId": userId.toString()},
+          path: "community/api/v1/blocks",
+          body: {"blockUserId": blockedUserId.toString()},
           authToken: authToken,
         ).then((response) async {
           if (response.statusCode == 200) {
-            await getMyProfile();
             successful = true;
             showToast(success: true, msg: "해당 사용자를 차단했습니다.");
           } else {
@@ -290,6 +318,40 @@ class Authenticate extends ChangeNotifier with Toast {
               case 401: msg = "권한이 없습니다."; break;
               case 404: msg = "존재하지 않는 유저입니다."; break;
               case 409: msg = "이미 차단한 유저입니다."; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      toggleLoading();
+    }
+    return successful;
+  }
+
+  Future<bool> deleteBlockedUser(blockedUserId) async {
+    bool successful = false;
+    try {
+      toggleLoading();
+      String authToken = await getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest().delete(
+          path: "community/api/v1/blocks",
+          body: {"blockUserId": blockedUserId.toString()},
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            successful = true;
+            showToast(success: true, msg: "차단을 해제했습니다.");
+          } else {
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+            switch (response.statusCode) {
+              case 401: msg = "권한이 없습니다."; break;
+              case 404: msg = "존재하지 않는 유저입니다."; break;
+              case 409: msg = "이미 차단 해제된 유저입니다."; break;
             }
             showToast(success: false, msg: msg);
           }

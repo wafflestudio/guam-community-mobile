@@ -28,12 +28,6 @@ class MessagePreview extends StatefulWidget {
 }
 
 class _MessagePreviewState extends State<MessagePreview> with Toast {
-  // @override
-  // void dispose() {
-  //   // TODO: implement dispose
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     Authenticate authProvider = context.read<Authenticate>();

@@ -2,39 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/common_text_button.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
-import '../../providers/search/search.dart';
 
-class SearchFilter extends StatefulWidget {
-  final provider;
 
-  SearchFilter({this.provider});
+class PostFilter extends StatefulWidget {
+  final Function sortPosts;
+  final bool isSorted;
+
+  PostFilter(this.sortPosts, this.isSorted);
 
   @override
-  State<StatefulWidget> createState() => SearchFilterState();
+  State<StatefulWidget> createState() => PostFilterState();
 }
 
-class SearchFilterState extends State<SearchFilter> {
-  var filter;
+class PostFilterState extends State<PostFilter> {
+  String filter;
+  static List<String> filters = ['시간순', '추천순'];
 
   @override
   void initState() {
-    filter = Search.filters.first;
+    filter = widget.isSorted ? filters.last : filters.first;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [...Search.filters.map((f) => CommonTextButton(
-        text: f.label,
+      children: [...filters.map((f) => CommonTextButton(
+        text: f,
         fontSize: 14,
         fontFamily: filter == f ? GuamFontFamily.SpoqaHanSansNeoMedium : GuamFontFamily.SpoqaHanSansNeoRegular,
         textColor: filter == f ? GuamColorFamily.purpleDark1 : GuamColorFamily.grayscaleGray4,
         onPressed: () {
-          setState(() => filter = f);
-          widget.provider.sortSearchedPosts(f);
-        },
-      ))],
+          setState(() {
+            filter = f;
+            widget.sortPosts(filter);
+          });
+        })),
+      ],
     );
   }
 }

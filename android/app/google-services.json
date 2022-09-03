@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "648780047414-9jjmks19d8rhd8b0han97vaf9246k9r7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wafflestudio.guam_community",
+            "certificate_hash": "d02451e0761e41e976f9b59512f01d5fc09db98c"
+          }
+        },
+        {
           "client_id": "648780047414-taiol9ffttcuen7ddu8gsa0dalgsf8b2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

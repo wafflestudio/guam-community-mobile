@@ -31,7 +31,7 @@ class _PostCreationCategoryState extends State<PostCreationCategory> {
   void initCategory(){
     setState(() {
       widget.input['category'] = '';
-      widget.input['categoryId'] = 0;
+      widget.input['categoryId'] = '';
     });
   }
 

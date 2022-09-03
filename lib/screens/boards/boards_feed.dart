@@ -20,17 +20,34 @@ class BoardsFeed extends StatefulWidget {
 class _BoardsFeedState extends State<BoardsFeed> {
   List _posts = [];
   int _beforePostId;
+  int _rankFrom = 0;
+  bool _isSorted = false;
   bool _hasNextPage = true;
   bool _isFirstLoadRunning = false;
   bool _isLoadMoreRunning = false;
   bool _showBackToTopButton = false;
   ScrollController _scrollController = ScrollController();
 
+  sortPosts(String filter) {
+    setState(() {
+      _isSorted = filter == '추천순' ? true : false;
+      _firstLoad();
+    });
+    return _isSorted;
+  }
+
   void _firstLoad() async {
     setState(() => _isFirstLoadRunning = true);
     try {
-      await context.read<Posts>().fetchPosts(widget.boardId);
-      _posts = context.read<Posts>().posts;
+      if (!_isSorted) {
+        // 시간순 정렬
+        await context.read<Posts>().fetchPosts(widget.boardId);
+        _posts = context.read<Posts>().posts;
+      } else {
+        // 좋아요순 정렬
+        await context.read<Posts>().fetchFavoritePosts(boardId: widget.boardId, rankFrom: _rankFrom);
+        _posts = context.read<Posts>().favoritePosts;
+      }
     } catch (err) {
       print('알 수 없는 오류가 발생했습니다.');
     }
@@ -44,11 +61,11 @@ class _BoardsFeedState extends State<BoardsFeed> {
         _scrollController.position.extentAfter < 300) {
       setState(() => _isLoadMoreRunning = true);
       _beforePostId = _posts.last.id;
+      _rankFrom += 20;
       try {
-        final fetchedPosts = await context.read<Posts>().addPosts(
-          boardId: widget.boardId,
-          beforePostId: _beforePostId,
-        );
+        final fetchedPosts = _isSorted
+            ? await context.read<Posts>().addFavoritePosts(boardId: widget.boardId, rankFrom: _rankFrom)
+            : await context.read<Posts>().addPosts(boardId: widget.boardId, beforePostId: _beforePostId);
         if (fetchedPosts != null && fetchedPosts.length > 0) {
           setState(() => _posts.addAll(fetchedPosts));
         } else {
@@ -114,7 +131,7 @@ class _BoardsFeedState extends State<BoardsFeed> {
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
-                        PostList(_posts, refreshPost),
+                        PostList(_posts, refreshPost, sortPosts, _isSorted),
                         if (_isLoadMoreRunning == true)
                           Padding(
                             padding: EdgeInsets.only(top: 10, bottom: 40),

@@ -35,8 +35,6 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
 
   @override
   Widget build(BuildContext context) {
-    bool isBoardAnonymous = widget.input['boardType'] == '익명';
-
     return Container(
       child: TextButton(
         child: Row(
@@ -49,12 +47,12 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
               style: TextStyle(
                 fontSize: 14,
                 fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                color: widget.input['boardType'] == '' || (isBoardAnonymous && widget.isEdit)
+                color: widget.input['boardType'] == '' || widget.isEdit
                     ? GuamColorFamily.grayscaleGray3
                     : GuamColorFamily.purpleCore,
               ),
             ),
-            if ( !(isBoardAnonymous && widget.isEdit) )
+            if (!widget.isEdit)
               IconButton(
                 onPressed: null,
                 padding: EdgeInsets.only(left: 4),
@@ -71,7 +69,7 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
           ],
         ),
         style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size(136, 23)),
-        onPressed: (isBoardAnonymous && widget.isEdit)
+        onPressed: widget.isEdit
             ? null
             : () => showMaterialModalBottomSheet(
             context: context,
