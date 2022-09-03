@@ -95,7 +95,6 @@ class _BlackListEditState extends State<BlackListEdit> {
               children: [
                 Container(
                   color: GuamColorFamily.grayscaleWhite,
-                  padding: EdgeInsets.only(top: 18),
                   child: RefreshIndicator(
                     color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
                     onRefresh: () => context.read<Authenticate>().fetchBlockedUsers(),
@@ -111,7 +110,7 @@ class _BlackListEditState extends State<BlackListEdit> {
                                 child: Padding(
                                   padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
                                   child: Text(
-                                    '새로운 알림이 없습니다.',
+                                    '차단한 사용자가 없습니다.',
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: GuamColorFamily.grayscaleGray4,
@@ -130,6 +129,8 @@ class _BlackListEditState extends State<BlackListEdit> {
                                     children: [
                                       CommonImgNickname(
                                         userId: e.id,
+                                        fontSize: 14,
+                                        imageSize: 26,
                                         imgUrl: e.profileImg,
                                         nickname: e.nickname,
                                       ),
