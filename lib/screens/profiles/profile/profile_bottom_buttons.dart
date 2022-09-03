@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/styles/colors.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../providers/posts/posts.dart';
 import '../buttons/long_button.dart';
 import '../pages/my_posts.dart';
@@ -7,6 +10,11 @@ import '../pages/scrapped_posts.dart';
 import '../pages/settings.dart';
 
 class ProfileBottomButtons extends StatelessWidget {
+  _launchURL(String urlPath) async {
+    final String url = 'https://guam.wafflestudio.com';
+    if (!await launch(url + urlPath)) throw 'Could not launch ${url + urlPath}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,6 +55,14 @@ class ProfileBottomButtons extends StatelessWidget {
               )
             )
           ),
+          TextButton(
+            onPressed: () => _launchURL('/terms_of_service'),
+            child: Text('이용약관', style: TextStyle(color: GuamColorFamily.grayscaleGray4, fontSize: 12)),
+          ),
+          TextButton(
+            onPressed: () => _launchURL('/privacy_policy'),
+            child: Text('개인정보처리방침', style: TextStyle(color: GuamColorFamily.grayscaleGray4, fontSize: 12)),
+          )
         ],
       ),
     );

@@ -75,15 +75,18 @@ class _MessageBoxEditState extends State<MessageBoxEdit> {
       ) : Container(
         color: GuamColorFamily.grayscaleWhite,
         padding: EdgeInsets.only(top: 18),
-        child: Column(
-          children: [
-            ..._messageBoxes.map((messageBox) => MessagePreview(
-              messageBox,
-              reload: _firstLoad,
-              onRefresh: widget.onRefresh,
-              editable: true,
-            ))
-          ]
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              ..._messageBoxes.map((messageBox) => MessagePreview(
+                messageBox,
+                reload: _firstLoad,
+                onRefresh: widget.onRefresh,
+                editable: true,
+              ))
+            ]
+          ),
         ),
       ),
     );

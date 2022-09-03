@@ -22,17 +22,20 @@ class AppState extends State<App> with Toast {
 
   void _selectTab(TabItem tabItem) {
     if (tabItem == _currentTab) {
-      // pop to first route
+      // 현재 탭 버튼 두 번 누르면 해당 탭의 처음 루트로 복귀
       _navigatorKeys[tabItem].currentState.popUntil((route) => route.isFirst);
     } else {
-      setState(() => _currentTab = tabItem);
+      setState(() {
+        // 알림 탭 FutureBuilder가 탭 전환 시 null을 받게 되는 현상 회피
+        if (_currentTab == TabItem.notification)
+          _navigatorKeys[_currentTab].currentState.popUntil((route) => route.isFirst);
+        _currentTab = tabItem;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    DateTime currentBackPressTime;
-
     return ChangeNotifierProvider(
       create: (_) => HomeProvider(),
       child: WillPopScope(
@@ -47,14 +50,6 @@ class AppState extends State<App> with Toast {
               return false;
             }
           }
-          // DateTime now = DateTime.now();
-          // if (currentBackPressTime == null ||
-          //     now.difference(currentBackPressTime) < Duration(seconds: 1)) {
-          //   currentBackPressTime = now;
-          //   String msg = '한 번 더 뒤로가면 앱이 종료됩니다.';
-          //   showToast(success: false, msg: msg);
-          //   return Future.value(false);
-          // }
           return Future.value(true);
           // let system handle back button if we're on the first route
           // return isFirstRouteInCurrentTab;

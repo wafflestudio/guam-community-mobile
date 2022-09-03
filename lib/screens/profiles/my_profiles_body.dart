@@ -24,14 +24,8 @@ class MyProfilesBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ProfileImg(profileImg: me.profileImg, height: 144, width: 144),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ProfileNickname(nickname: me.nickname),
-              ProfileEditButton(),
-            ],
-          ),
+          ProfileNickname(me.nickname),
+          ProfileEditButton(),
           ProfileIntro(me.intro),
           ProfileWebButtons(githubId: me.githubId, blogUrl: me.blogUrl),
           ProfileInterests(me.interests),

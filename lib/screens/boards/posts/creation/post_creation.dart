@@ -34,6 +34,7 @@ class PostCreation extends StatefulWidget {
 
 class _PostCreationState extends State<PostCreation> with Toast {
   Map input = {};
+  bool loading = false;
   bool isBoardAnonymous = false;
 
   @override
@@ -78,28 +79,46 @@ class _PostCreationState extends State<PostCreation> with Toast {
     };
 
     try {
+      setState(() => loading = true);
+
       if (body['boardId'] == '') {
         String msg = '게시판을 선택해주세요.';
+        setState(() => loading = false);
         return showToast(success: false, msg: msg);
       }
       if (body['title'] == '') {
         String msg = '제목을 입력해주세요.';
+        setState(() => loading = false);
+        return showToast(success: false, msg: msg);
+      }
+      if (body['title'].length > 30) {
+        String msg = '제목은 30자 이하로 입력해주세요.';
+        setState(() => loading = false);
         return showToast(success: false, msg: msg);
       }
       if (body['content'] == '') {
         String msg = '내용을 입력해주세요.';
+        setState(() => loading = false);
+        return showToast(success: false, msg: msg);
+      }
+      if (body['content'].length > 400) {
+        String msg = '내용은 400자 이하로 입력해주세요.';
+        setState(() => loading = false);
         return showToast(success: false, msg: msg);
       }
       if (body['categoryId'] == '') {
         String msg = '카테고리를 선택해주세요.';
+        setState(() => loading = false);
         return showToast(success: false, msg: msg);
       }
+
       /// 게시글 수정
       if (widget.isEdit && widget.editTarget != null) {
         return await postProvider.editPost(
           postId: widget.editTarget.id,
           body: body,
         ).then((successful) {
+          setState(() => loading = false);
           if (successful) {
             Navigator.pop(context, body);
             successful = true;
@@ -111,6 +130,7 @@ class _PostCreationState extends State<PostCreation> with Toast {
           body: body,
           files: files,
         ).then((successful) {
+          setState(() => loading = false);
           if (successful) {
             Navigator.pop(context);
             /// 게시글 생성 후 getPost(createdPostId) 하여 새로운 게시글로 이동
@@ -245,7 +265,16 @@ class _PostCreationState extends State<PostCreation> with Toast {
         ),
         trailing: Padding(
           padding: EdgeInsets.only(right: 11),
-          child: TextButton(
+          child: loading ? Center(
+            child: Container(
+              width: 20,
+              height: 20,
+              margin: EdgeInsets.only(right: 6),
+              child: CircularProgressIndicator(
+                color: GuamColorFamily.purpleLight1,
+              ),
+            )
+          ) : TextButton(
             onPressed: () async {
               await createOrUpdatePost(
                   files: (input['images'] != [] && !widget.isEdit)
@@ -267,41 +296,44 @@ class _PostCreationState extends State<PostCreation> with Toast {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              color: GuamColorFamily.grayscaleWhite,
-              padding: EdgeInsets.only(left: 24, top: 10, right: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  PostCreationBoard(input, widget.isEdit, setBoardAnonymous),
-                  PostCreationTitle(input),
-                  CustomDivider(color: GuamColorFamily.grayscaleGray7),
-                  PostCreationContent(input),
-                ],
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                color: GuamColorFamily.grayscaleWhite,
+                padding: EdgeInsets.only(left: 24, top: 10, right: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PostCreationBoard(input, widget.isEdit, setBoardAnonymous),
+                    PostCreationTitle(input),
+                    CustomDivider(color: GuamColorFamily.grayscaleGray7),
+                    PostCreationContent(input),
+                  ],
+                ),
               ),
-            ),
-            CustomDivider(
-              height: 12,
-              thickness: 12,
-              color: GuamColorFamily.purpleLight3,
-            ),
-            Container(
-              color: GuamColorFamily.grayscaleWhite,
-              width: double.infinity,
-              padding: EdgeInsets.only(left: 24, top: 20, right: 0, bottom: 42),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // if (!isBoardAnonymous)
-                  PostCreationCategory(input),
-                  if (!widget.isEdit) PostCreationImage(input)
-                ],
+              CustomDivider(
+                height: 12,
+                thickness: 12,
+                color: GuamColorFamily.purpleLight3,
               ),
-            ),
-          ],
+              Container(
+                color: GuamColorFamily.grayscaleWhite,
+                width: double.infinity,
+                padding: EdgeInsets.only(left: 24, top: 20, right: 0, bottom: 42),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // if (!isBoardAnonymous)
+                    PostCreationCategory(input),
+                    if (!widget.isEdit) PostCreationImage(input)
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -118,7 +118,6 @@ class _PostDetailState extends State<PostDetail> with Toast {
             padding: EdgeInsets.only(right: 11),
             child: Row(
               children: [
-                if (widget.post.profile.id != 0)
                 IconButton(
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
@@ -147,97 +146,100 @@ class _PostDetailState extends State<PostDetail> with Toast {
             ),
           ),
         ),
-        body: RefreshIndicator(
-          color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
-          onRefresh: () => context.read<Posts>().getPost(widget.post.id),
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 24,
-                right: 24,
-                bottom: commentImageExist ? 156 : 56,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  PostDetailBanner(_post),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8, bottom: 20),
-                    child: CustomDivider(color: GuamColorFamily.grayscaleGray7),
-                  ),
-                  PostDetailBody(_post),
-                  Padding(
-                    padding: EdgeInsets.only(top: 14, bottom: 8),
-                    child: PostInfo(
-                      index: widget.index,
-                      post: _post,
-                      refreshPost: widget.refreshPost,
-                      iconSize: 24,
-                      showProfile: false,
-                      iconColor: GuamColorFamily.grayscaleGray4,
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: RefreshIndicator(
+            color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
+            onRefresh: () => context.read<Posts>().getPost(widget.post.id),
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 24,
+                  right: 24,
+                  bottom: commentImageExist ? 156 : 56,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PostDetailBanner(_post),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8, bottom: 20),
+                      child: CustomDivider(color: GuamColorFamily.grayscaleGray7),
                     ),
-                  ),
-                  CustomDivider(color: GuamColorFamily.grayscaleGray7),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: FutureBuilder(
-                      /// FutureBuilder의 future에 명시하는 비동기 함수가 반복해서 실행되는
-                      /// 문제를 해결하고자 initState에서 정의시킨다.
-                      future: comments,
-                      builder: (_, AsyncSnapshot snapshot) {
-                        if (snapshot.hasData) {
-                          if (snapshot.data.isNotEmpty) {
-                            /// FutureBuilder의 snapshot에서 들고 있어 map으로 뿌려주는
-                            /// Comment 인스턴스는 Provider에 속하지 않으므로
-                            /// snapshot에 직접 접근해서 지우는 방식을 택하자.
-                            void deleteComment(int commentId) {
-                              setState(() {
-                                snapshot.data.removeWhere((c) => c.id == commentId);
-                              });
-                            }
-                            Future.delayed(
-                              Duration.zero, () {
-                                if (this.mounted)
-                                  setState(() => snapshot.data.forEach((e) {
-                                    if (!mentionListId.contains(e.profile.id))
-                                      mentionList.add(e.profile.toJson());
-                                    mentionListId.add(e.profile.id);
-                                  }));
+                    PostDetailBody(_post),
+                    Padding(
+                      padding: EdgeInsets.only(top: 14, bottom: 8),
+                      child: PostInfo(
+                        index: widget.index,
+                        post: _post,
+                        refreshPost: widget.refreshPost,
+                        iconSize: 24,
+                        showProfile: false,
+                        iconColor: GuamColorFamily.grayscaleGray4,
+                      ),
+                    ),
+                    CustomDivider(color: GuamColorFamily.grayscaleGray7),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: FutureBuilder(
+                        /// FutureBuilder의 future에 명시하는 비동기 함수가 반복해서 실행되는
+                        /// 문제를 해결하고자 initState에서 정의시킨다.
+                        future: comments,
+                        builder: (_, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            if (snapshot.data.isNotEmpty) {
+                              /// FutureBuilder의 snapshot에서 들고 있어 map으로 뿌려주는
+                              /// Comment 인스턴스는 Provider에 속하지 않으므로
+                              /// snapshot에 직접 접근해서 지우는 방식을 택하자.
+                              void deleteComment(int commentId) {
+                                setState(() {
+                                  snapshot.data.removeWhere((c) => c.id == commentId);
+                                });
                               }
-                            );
-                            return Column(
-                              children: [
-                                ...snapshot.data.map((comment) => Comments(
-                                  comment: comment,
-                                  deleteFunc: deleteComment,
-                                  isAuthor: _post.profile.id == comment.profile.id,
-                                ))
-                              ],
-                            );
-                          } else {
-                            return Padding(
-                              padding: EdgeInsets.only(top: 24),
-                              child: Center(
-                                child: Text(
-                                  "작성된 댓글이 없습니다.",
-                                  style: TextStyle(fontSize: 13, color: GuamColorFamily.grayscaleGray5),
+                              Future.delayed(
+                                Duration.zero, () {
+                                  if (this.mounted)
+                                    setState(() => snapshot.data.forEach((e) {
+                                      if (!mentionListId.contains(e.profile.id))
+                                        mentionList.add(e.profile.toJson());
+                                      mentionListId.add(e.profile.id);
+                                    }));
+                                }
+                              );
+                              return Column(
+                                children: [
+                                  ...snapshot.data.map((comment) => Comments(
+                                    comment: comment,
+                                    deleteFunc: deleteComment,
+                                    isAuthor: _post.profile.id == comment.profile.id,
+                                  ))
+                                ],
+                              );
+                            } else {
+                              return Padding(
+                                padding: EdgeInsets.only(top: 24),
+                                child: Center(
+                                  child: Text(
+                                    "작성된 댓글이 없습니다.",
+                                    style: TextStyle(fontSize: 13, color: GuamColorFamily.grayscaleGray5),
+                                  ),
                                 ),
-                              ),
-                            );
+                              );
+                            }
+                          } else if (snapshot.hasError) {
+                            showToast(success: true, msg: '알 수 없는 오류가 발생했습니다.');
+                            return null;
+                          } else {
+                            return Center(child: CircularProgressIndicator(
+                              color: GuamColorFamily.purpleLight3,
+                            ));
                           }
-                        } else if (snapshot.hasError) {
-                          showToast(success: true, msg: '알 수 없는 오류가 발생했습니다.');
-                          return null;
-                        } else {
-                          return Center(child: CircularProgressIndicator(
-                            color: GuamColorFamily.purpleLight3,
-                          ));
                         }
-                      }
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
