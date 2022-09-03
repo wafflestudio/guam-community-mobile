@@ -255,7 +255,7 @@ class Posts extends ChangeNotifier with Toast {
               case 404: msg = '존재하지 않는 게시글입니다.'; break;
             }
             _post = null;
-            showToast(success: false, msg: msg);
+            // showToast(success: false, msg: msg);
           }
         });
       }
