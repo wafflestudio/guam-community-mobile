@@ -47,9 +47,9 @@ class _BlackListRemoveButtonState extends State<BlackListRemoveButton> {
 
     return CommonTextButton(
       text: '해제',
-      fontSize: 14,
+      fontSize: 15,
       fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-      textColor: GuamColorFamily.grayscaleGray4,
+      textColor: GuamColorFamily.grayscaleGray3,
       onPressed: () => deleteInterest(),
     );
   }
