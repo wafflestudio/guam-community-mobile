@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/models/boards/post.dart';
+import 'package:guam_community_client/providers/share/share.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
@@ -162,6 +163,12 @@ class _PostInfoState extends State<PostInfo> {
                     ? GuamColorFamily.purpleCore
                     : widget.iconColor,
                 textColor: widget.iconColor,
+              ),
+              IconButton(
+                  onPressed: (){
+                    Share(context).share(widget.post.id);
+                  },
+                  icon: Icon(Icons.share),
               ),
             ],
           ),

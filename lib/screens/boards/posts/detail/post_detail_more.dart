@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/providers/share/share.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -45,6 +46,12 @@ class PostDetailMore extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: post.isMine ? [
             BottomModalDefault(
+              text: '공유하기',
+              onPressed: (){
+                Share(context).share(post.id);
+              },
+            ),
+            BottomModalDefault(
               text: '수정하기',
               onPressed: () => _navigatePage(context),
             ),
@@ -64,6 +71,12 @@ class PostDetailMore extends StatelessWidget {
               },
             ),
           ] : [
+            BottomModalDefault(
+              text: '공유하기',
+              onPressed: (){
+                Share(context).share(post.id);
+              },
+            ),
             /// Deprecated: until 'if (widget.post.profile.id != 0)' exists in PostDetail
             if (post.profile.id != 0)
             BottomModalDefault(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/providers/home/home_provider.dart';
+import 'package:guam_community_client/providers/share/share.dart';
 import 'package:provider/provider.dart';
 import 'bottom_navigation.dart';
 import 'tab_item.dart';
@@ -32,6 +33,12 @@ class AppState extends State<App> with Toast {
         _currentTab = tabItem;
       });
     }
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    Share(context).initialize();
   }
 
   @override

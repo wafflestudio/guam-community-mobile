@@ -63,6 +63,10 @@ dependencies:
   package_info: ^2.0.2
   google_sign_in: ^5.3.3
 
+  # Share & Dynamic links
+  firebase_dynamic_links: ^4.3.6
+  share_plus: ^4.0.10+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

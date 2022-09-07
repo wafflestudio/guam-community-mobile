@@ -44,3 +44,6 @@ app.*.map.json
 
 # Android Signing
 android/key.properties
+
+# fvm
+.fvm
