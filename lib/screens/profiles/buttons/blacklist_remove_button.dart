@@ -7,7 +7,7 @@ import 'package:guam_community_client/styles/fonts.dart';
 import '../../../providers/user_auth/authenticate.dart';
 
 class BlackListRemoveButton extends StatefulWidget {
-  final int blockedUserId;
+  final int? blockedUserId;
   final Function firstLoad;
 
   BlackListRemoveButton(this.blockedUserId, this.firstLoad);

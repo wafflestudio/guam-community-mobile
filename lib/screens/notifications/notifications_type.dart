@@ -1,4 +1,4 @@
-notificationsType(String kind) {
+notificationsType(String? kind) {
   String description;
   switch (kind) {
     case 'POST_COMMENT': description = ' 님이 댓글을 남겼습니다.'; break;

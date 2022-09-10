@@ -8,23 +8,23 @@ import 'dart:math';
 
 class ImageCarousel extends StatefulWidget {
   final List<dynamic> pictures; /// 서버 수정 후 List<Picture> 로...
-  final int initialPage;
+  final int? initialPage;
   final bool showImageCount;
 
   // Actions for trailing
   final bool showImageActions;
-  final Function deleteFunc;
+  final Function? deleteFunc;
 
-  ImageCarousel({@required this.pictures, this.initialPage, this.showImageCount=true,
-    @required this.showImageActions, this.deleteFunc,});
+  ImageCarousel({required this.pictures, this.initialPage, this.showImageCount=true,
+    required this.showImageActions, this.deleteFunc,});
 
   @override
   State<StatefulWidget> createState() => ImageCarouselState();
 }
 
 class ImageCarouselState extends State<ImageCarousel> {
-  List<dynamic> picturesState; /// 서버 수정 후 List<Picture> 로...
-  int currPage;
+  late List<dynamic> picturesState; /// 서버 수정 후 List<Picture> 로...
+  late int currPage;
 
   @override
   void initState() {

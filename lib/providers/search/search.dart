@@ -9,24 +9,24 @@ import '../user_auth/authenticate.dart';
 import '../../models/boards/post.dart';
 
 class Search extends ChangeNotifier with Toast {
-  Authenticate _authProvider;
+  late Authenticate _authProvider;
   bool loading = false;
-  bool _hasNext;
-  int _count;
-  String _searchedKeyword;
+  bool? _hasNext;
+  int? _count;
+  String? _searchedKeyword;
   List<Post> _searchedPosts = [];
-  List<Post> _newSearchedPosts;
+  List<Post>? _newSearchedPosts;
 
   bool historyFull() => history.length >= maxNHistory;
   List<String> history = [];  // Recently searched word is at the back
   static const String searchHistoryKey = 'search-history';
   static const int maxNHistory = 5;
 
-  int get count => _count;
-  String get searchedKeyword => _searchedKeyword;
+  int? get count => _count;
+  String? get searchedKeyword => _searchedKeyword;
   List<Post> get searchedPosts => _searchedPosts;
-  List<Post> get newSearchedPosts => _newSearchedPosts;
-  bool get hasNext => _hasNext;
+  List<Post>? get newSearchedPosts => _newSearchedPosts;
+  bool? get hasNext => _hasNext;
 
   static List<Filter> filters = [
     Filter(
@@ -75,10 +75,10 @@ class Search extends ChangeNotifier with Toast {
     }
   }
 
-  Future searchPosts({@required String query, BuildContext context}) async {
+  Future searchPosts({required String query, BuildContext? context}) async {
     loading = true;
     try {
-      if (query == null || query.trim() == '') {
+      if (query.trim() == '') {
         _searchedPosts.clear();
         return;
       }
@@ -103,7 +103,7 @@ class Search extends ChangeNotifier with Toast {
           loading = false;
         } else {
           final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
+          final String? err = json.decode(jsonUtf8)["message"];
           showToast(success: false, msg: err);
         }
       });
@@ -119,7 +119,7 @@ class Search extends ChangeNotifier with Toast {
   }
 
   /// For Pagination in SearchFeed Widget using _loadMore()
-  Future addSearchedPosts({int beforePostId}) async {
+  Future addSearchedPosts({int? beforePostId}) async {
     try {
       await HttpRequest()
           .get(
@@ -136,8 +136,8 @@ class Search extends ChangeNotifier with Toast {
           _hasNext = json.decode(jsonUtf8)["hasNext"];
           _newSearchedPosts = jsonList.map((e) => Post.fromJson(e)).toList();
         } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
+          // final jsonUtf8 = decodeKo(response);
+          // final String? err = json.decode(jsonUtf8)["message"];
           // showToast(success: false, msg: '검색된 게시글을 모두 불러왔습니다.');
         }
       });
@@ -149,7 +149,7 @@ class Search extends ChangeNotifier with Toast {
     return _newSearchedPosts;
   }
 
-  Future<int> countSearch(String query) async {
+  Future<int?> countSearch(String query) async {
     loading = true;
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
@@ -182,7 +182,7 @@ class Search extends ChangeNotifier with Toast {
   }
 
   void sortSearchedPosts(Filter f) {
-    _searchedPosts.sort((a, b) => b.toJson()[f.key].compareTo(a.toJson()[f.key]));
+    _searchedPosts.sort((a, b) => b.toJson()[f.key!].compareTo(a.toJson()[f.key!]));
     notifyListeners();
   }
 }

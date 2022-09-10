@@ -9,7 +9,7 @@ import 'package:guam_community_client/providers/posts/posts.dart';
 import '../../models/boards/post.dart';
 
 class BoardsFeed extends StatefulWidget {
-  final int boardId;
+  final int? boardId;
 
   BoardsFeed({this.boardId});
 
@@ -18,8 +18,8 @@ class BoardsFeed extends StatefulWidget {
 }
 
 class _BoardsFeedState extends State<BoardsFeed> {
-  List _posts = [];
-  int _beforePostId;
+  List? _posts = [];
+  int? _beforePostId;
   int _rankFrom = 0;
   bool _isSorted = false;
   bool _hasNextPage = true;
@@ -60,14 +60,14 @@ class _BoardsFeedState extends State<BoardsFeed> {
         _isLoadMoreRunning == false &&
         _scrollController.position.extentAfter < 300) {
       setState(() => _isLoadMoreRunning = true);
-      _beforePostId = _posts.last.id;
+      _beforePostId = _posts!.last.id;
       _rankFrom += 20;
       try {
         final fetchedPosts = _isSorted
             ? await context.read<Posts>().addFavoritePosts(boardId: widget.boardId, rankFrom: _rankFrom)
             : await context.read<Posts>().addPosts(boardId: widget.boardId, beforePostId: _beforePostId);
         if (fetchedPosts != null && fetchedPosts.length > 0) {
-          setState(() => _posts.addAll(fetchedPosts));
+          setState(() => _posts!.addAll(fetchedPosts));
         } else {
           // This means there is no more data
           // and therefore, we will not send another GET request
@@ -82,11 +82,11 @@ class _BoardsFeedState extends State<BoardsFeed> {
 
   void refreshPost(int idx, Post refreshedPost) {
     setState(() {
-      _posts.elementAt(idx).commentCount = refreshedPost.commentCount;
-      _posts.elementAt(idx).isLiked = refreshedPost.isLiked;
-      _posts.elementAt(idx).likeCount = refreshedPost.likeCount;
-      _posts.elementAt(idx).isScrapped = refreshedPost.isScrapped;
-      _posts.elementAt(idx).scrapCount = refreshedPost.scrapCount;
+      _posts!.elementAt(idx).commentCount = refreshedPost.commentCount;
+      _posts!.elementAt(idx).isLiked = refreshedPost.isLiked;
+      _posts!.elementAt(idx).likeCount = refreshedPost.likeCount;
+      _posts!.elementAt(idx).isScrapped = refreshedPost.isScrapped;
+      _posts!.elementAt(idx).scrapCount = refreshedPost.scrapCount;
     });
   }
 
@@ -131,13 +131,13 @@ class _BoardsFeedState extends State<BoardsFeed> {
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
-                        PostList(_posts, refreshPost, sortPosts, _isSorted),
+                        PostList(_posts as List<Post>?, refreshPost, sortPosts, _isSorted),
                         if (_isLoadMoreRunning == true)
                           Padding(
                             padding: EdgeInsets.only(top: 10, bottom: 40),
                             child: guamProgressIndicator(size: 40),
                           ),
-                        if (_hasNextPage == false && _posts.length > 10)
+                        if (_hasNextPage == false && _posts!.length > 10)
                           Container(
                             color: GuamColorFamily.purpleLight2,
                             padding: EdgeInsets.only(top: 10, bottom: 10),

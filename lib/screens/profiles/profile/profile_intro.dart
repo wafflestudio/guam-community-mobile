@@ -3,7 +3,7 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 
 class ProfileIntro extends StatelessWidget {
-  final String intro;
+  final String? intro;
 
   ProfileIntro(this.intro);
 

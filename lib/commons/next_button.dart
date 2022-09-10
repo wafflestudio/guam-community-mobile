@@ -6,8 +6,8 @@ class NextButton extends StatelessWidget {
   final Function onTap;
 
   NextButton({
-    @required this.label,
-    @required this.onTap,
+    required this.label,
+    required this.onTap,
   });
 
   @override
@@ -15,7 +15,7 @@ class NextButton extends StatelessWidget {
     return Container(
       padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
       child: InkWell(
-        onTap: onTap,
+        onTap: onTap as void Function()?,
         child: Container(
           alignment: Alignment.center,
           height: 56,

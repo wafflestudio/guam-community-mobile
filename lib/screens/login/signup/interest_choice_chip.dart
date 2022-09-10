@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
 class InterestChoiceChip extends StatefulWidget {
-  final List<String> interestOptions;
-  final List<String> interestList;
-  final Function(List<String>) onSelectionChanged;
+  final List<String>? interestOptions;
+  final List<String>? interestList;
+  final Function(List<String>?)? onSelectionChanged;
 
   InterestChoiceChip({this.interestOptions, this.interestList, this.onSelectionChanged});
 
@@ -22,9 +22,9 @@ class _InterestChoiceChipState extends State<InterestChoiceChip> {
 
   _buildChoiceList() {
     List<Widget> choices = [];
-    List<String> selectedInterests = widget.interestList;
+    List<String>? selectedInterests = widget.interestList;
 
-    widget.interestOptions.forEach((interest) {
+    widget.interestOptions!.forEach((interest) {
       choices.add(
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -38,7 +38,7 @@ class _InterestChoiceChipState extends State<InterestChoiceChip> {
                 interest,
                 style: TextStyle(
                   fontSize: 16,
-                  color: selectedInterests.contains(interest)
+                  color: selectedInterests!.contains(interest)
                       ? GuamColorFamily.purpleCore
                       : GuamColorFamily.grayscaleGray2,
                 ),
@@ -60,7 +60,7 @@ class _InterestChoiceChipState extends State<InterestChoiceChip> {
                 selectedInterests.contains(interest)
                     ? selectedInterests.remove(interest)
                     : selectedInterests.add(interest);
-                widget.onSelectionChanged(selectedInterests);
+                widget.onSelectionChanged!(selectedInterests);
               });
             },
           ),

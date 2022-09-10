@@ -23,7 +23,7 @@ class MessageBody extends StatefulWidget {
 }
 
 class _MessageBodyState extends State<MessageBody> with Toast {
-  List _messageBoxes = [];
+  List? _messageBoxes = [];
   bool _isFirstLoadRunning = false;
   ScrollController _scrollController = ScrollController();
 
@@ -60,7 +60,7 @@ class _MessageBodyState extends State<MessageBody> with Toast {
             padding: EdgeInsets.zero,
             constraints: BoxConstraints(),
             icon: SvgPicture.asset('assets/icons/delete_outlined.svg'),
-            onPressed: (_messageBoxes == null || _messageBoxes.isEmpty)
+            onPressed: (_messageBoxes == null || _messageBoxes!.isEmpty)
                 ? null
                 : () => Navigator.of(context, rootNavigator: true).push(
                 PageRouteBuilder(
@@ -90,7 +90,7 @@ class _MessageBodyState extends State<MessageBody> with Toast {
                   physics: AlwaysScrollableScrollPhysics(),
                   child: Column(
                     children: [
-                      if (_messageBoxes == null || _messageBoxes.isEmpty)
+                      if (_messageBoxes == null || _messageBoxes!.isEmpty)
                         Center(
                           child: Padding(
                             padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
@@ -104,8 +104,8 @@ class _MessageBodyState extends State<MessageBody> with Toast {
                             ),
                           ),
                         ),
-                      if (_messageBoxes != null && _messageBoxes.isNotEmpty)
-                        ..._messageBoxes.map((messageBox) => MessagePreview(messageBox, onRefresh: _firstLoad)
+                      if (_messageBoxes != null && _messageBoxes!.isNotEmpty)
+                        ..._messageBoxes!.map((messageBox) => MessagePreview(messageBox, onRefresh: _firstLoad)
                       )
                     ]
                   ),

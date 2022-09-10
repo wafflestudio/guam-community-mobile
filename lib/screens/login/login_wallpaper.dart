@@ -75,7 +75,7 @@ class LoginWallpaper extends StatelessWidget {
     );
   }
 
-  Widget _star({double top, double left, double width, double height, HexColor color}){
+  Widget _star({double? top, double? left, double? width, double? height, HexColor? color}){
     return Positioned(
       top: top,
       left: left,

@@ -4,7 +4,7 @@ import 'package:guam_community_client/styles/fonts.dart';
 
 
 class ProfileNickname extends StatelessWidget {
-  final String nickname;
+  final String? nickname;
 
   ProfileNickname(this.nickname);
 
@@ -13,7 +13,7 @@ class ProfileNickname extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: 16),
       child: Text(
-        nickname,
+        nickname!,
         textAlign: TextAlign.center,
         style: TextStyle(
             fontFamily: GuamFontFamily.SpoqaHanSansNeoMedium,

@@ -34,7 +34,7 @@ class _PostCreationImageState extends State<PostCreationImage> {
     super.dispose();
   }
 
-  void setImageFile(PickedFile val) {
+  void setImageFile(PickedFile? val) {
     setState(() {
       if (val != null) widget.input['images'].add(val);
     });

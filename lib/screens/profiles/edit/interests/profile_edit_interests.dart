@@ -10,7 +10,7 @@ import '../../../../models/profiles/interest.dart';
 class ProfileEditInterests extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final List<Interest> interests = context.read<Authenticate>().me.interests;
+    final List<Interest> interests = context.read<Authenticate>().me!.interests!;
 
     return Column(
       children: [

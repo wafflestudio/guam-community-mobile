@@ -25,9 +25,9 @@ class PostPreview extends StatelessWidget with Toast {
     Posts postProvider = context.read<Posts>();
     Authenticate authProvider = context.read<Authenticate>();
 
-    Future<Post> _getPost(int id) {
+    Future<Post?> _getPost(int? id) {
       return Future.delayed(Duration(seconds: 0), () async {
-        Post _post = await postProvider.getPost(id);
+        Post? _post = await postProvider.getPost(id);
         return _post;
       });
     }
@@ -51,14 +51,14 @@ class PostPreview extends StatelessWidget with Toast {
                   ],
                   child: FutureBuilder(
                     future: _getPost(post.id),
-                    builder: (_, AsyncSnapshot<Post> snapshot) {
+                    builder: (_, AsyncSnapshot<Post?> snapshot) {
                       if (snapshot.hasData) {
                         return PostDetail(index: idx, post: snapshot.data, refreshPost: refreshPost);
                       } else if (snapshot.hasError) {
-                        Navigator.pop(context);
                         postProvider.fetchPosts(0);
                         showToast(success: false, msg: '게시글을 찾을 수 없습니다.');
-                        return null;
+                        Navigator.pop(context);
+                        return Container();
                       } else {
                         return Center(child: guamProgressIndicator());
                       }

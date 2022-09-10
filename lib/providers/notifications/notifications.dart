@@ -11,19 +11,19 @@ import '../user_auth/authenticate.dart';
 
 class Notifications extends ChangeNotifier with Toast {
   bool loading = false;
-  bool _hasNext;
-  Authenticate _authProvider;
-  List<Notification.Notification> _notifications;
-  List<Notification.Notification> _newNotifications;
+  bool? _hasNext;
+  late Authenticate _authProvider;
+  List<Notification.Notification>? _notifications;
+  List<Notification.Notification>? _newNotifications;
 
   Notifications(Authenticate authProvider) {
     _authProvider = authProvider;
     fetchNotifications();
   }
 
-  bool get hasNext => _hasNext;
-  List<Notification.Notification> get notifications => _notifications;
-  List<Notification.Notification> get newNotifications => _newNotifications;
+  bool? get hasNext => _hasNext;
+  List<Notification.Notification>? get notifications => _notifications;
+  List<Notification.Notification>? get newNotifications => _newNotifications;
 
   Future fetchNotifications({int page=0, int size=20}) async {
     loading = true;
@@ -86,8 +86,8 @@ class Notifications extends ChangeNotifier with Toast {
 
           loading = false;
         } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
+          // final jsonUtf8 = decodeKo(response);
+          // final String? err = json.decode(jsonUtf8)["message"];
           showToast(success: false, msg: '더 이상 알림을 불러올 수 없습니다.');
         }
       });
@@ -100,7 +100,7 @@ class Notifications extends ChangeNotifier with Toast {
     return _newNotifications;
   }
 
-  Future readNotifications({int userId, List pushEventIds}) async {
+  Future readNotifications({int? userId, List? pushEventIds}) async {
     loading = true;
 
     try {

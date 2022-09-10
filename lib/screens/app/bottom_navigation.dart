@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'tab_item.dart';
 
 class BottomNavigation extends StatelessWidget {
-  BottomNavigation({@required this.currentTab, @required this.onSelectTab});
+  BottomNavigation({required this.currentTab, required this.onSelectTab});
 
   final TabItem currentTab;
   final ValueChanged<TabItem> onSelectTab;

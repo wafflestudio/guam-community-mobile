@@ -18,8 +18,8 @@ class KakaoLogin extends StatefulWidget {
 }
 
 class KakaoLoginState extends State<KakaoLogin> {
-  Authenticate authProvider;
-  bool _isKakaoTalkInstalled;
+  late Authenticate authProvider;
+  late bool _isKakaoTalkInstalled;
 
   @override
   void initState() {

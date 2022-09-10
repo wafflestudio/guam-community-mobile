@@ -48,7 +48,7 @@ class _SignUpState extends State<SignUp> with Toast {
                 padding: EdgeInsets.only(bottom: 40),
                 child: NextButton(
                   label: pageIdx < pages.length - 1 ? '다음' : '시작',
-                  onTap: pageIdx < pages.length - 1 ? pageIdx++ : signUp
+                  onTap: pageIdx < pages.length - 1 ? pageIdx++ as Function : signUp
                 ),
               ),
             ],

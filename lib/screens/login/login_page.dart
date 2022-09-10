@@ -12,7 +12,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> with Toast {
-  Future userLoggedIn;
+  Future? userLoggedIn;
 
   @override
   void initState() {
@@ -39,7 +39,8 @@ class _LoginPageState extends State<LoginPage> with Toast {
                 return Positioned(top: size.height*0.72, child: LoginButtons());
               } else if (snapshot.hasError) {
                 showToast(success: false, msg: '일시적인 오류입니다. \n잠시 후 다시 시도해주세요.');
-                return null;
+                Navigator.pop(context);
+                return Container();
               } else {
                 return authProvider.loading ? Align(
                   alignment: FractionalOffset.bottomCenter,

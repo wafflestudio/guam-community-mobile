@@ -2,26 +2,24 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/mixins/toast.dart';
-import 'package:guam_community_client/providers/search/search.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_community_client/models/boards/comment.dart';
 import '../../helpers/decode_ko.dart';
 import '../../helpers/http_request.dart';
 import '../../models/boards/post.dart';
-import '../../models/filter.dart';
 import '../user_auth/authenticate.dart';
 
 class Posts extends ChangeNotifier with Toast {
-  Authenticate _authProvider;
-  Post _post;
-  bool _hasNext;
-  List<Post> _posts;
-  List<Post> _newPosts;
-  List<Post> _favoritePosts;
-  List<Post> _newFavoritePosts;
-  List<Comment> _comments;
-  int _boardId; // default : 피드게시판
-  int _createdPostId;
+  late Authenticate _authProvider;
+  Post? _post;
+  bool? _hasNext;
+  List<Post>? _posts;
+  List<Post>? _newPosts;
+  List<Post>? _favoritePosts;
+  List<Post>? _newFavoritePosts;
+  List<Comment>? _comments;
+  int? _boardId; // default : 피드게시판
+  int? _createdPostId;
   bool loading = false;
 
   Posts(Authenticate authProvider) {
@@ -29,18 +27,18 @@ class Posts extends ChangeNotifier with Toast {
     fetchPosts(boardId);
   }
 
-  Post get post => _post;
-  bool get hasNext => _hasNext;
-  int get boardId => _boardId;
-  int get createdPostId => _createdPostId;
-  List<Post> get posts => _posts;
-  List<Post> get newPosts => _newPosts;
-  List<Post> get favoritePosts => _favoritePosts;
-  List<Post> get newFavoritePosts => _newFavoritePosts;
-  List<Comment> get comments => _comments;
+  Post? get post => _post;
+  bool? get hasNext => _hasNext;
+  int? get boardId => _boardId;
+  int? get createdPostId => _createdPostId;
+  List<Post>? get posts => _posts;
+  List<Post>? get newPosts => _newPosts;
+  List<Post>? get favoritePosts => _favoritePosts;
+  List<Post>? get newFavoritePosts => _newFavoritePosts;
+  List<Comment>? get comments => _comments;
 
   /// ==== Posts ====
-  Future fetchPosts(int boardId) async {
+  Future fetchPosts(int? boardId) async {
     // print(await _authProvider.getFirebaseIdToken());
     loading = true;
     try {
@@ -77,7 +75,7 @@ class Posts extends ChangeNotifier with Toast {
     return _posts;
   }
 
-  Future fetchFavoritePosts({int boardId, int rankFrom=0}) async {
+  Future fetchFavoritePosts({int? boardId, int rankFrom=0}) async {
     loading = true;
     try {
       await HttpRequest()
@@ -117,7 +115,7 @@ class Posts extends ChangeNotifier with Toast {
   }
 
   /// For Pagination in BoardsFeed Widget using _loadMore()
-  Future addPosts({int boardId, int beforePostId}) async {
+  Future addPosts({int? boardId, int? beforePostId}) async {
     loading = true;
     try {
       await HttpRequest()
@@ -136,8 +134,8 @@ class Posts extends ChangeNotifier with Toast {
           _newPosts = jsonList.map((e) => Post.fromJson(e)).toList();
           loading = false;
         } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
+          // final jsonUtf8 = decodeKo(response);
+          // final String? err = json.decode(jsonUtf8)["message"];
           showToast(success: false, msg: '더 이상 게시글을 불러올 수 없습니다.');
         }
       });
@@ -150,7 +148,7 @@ class Posts extends ChangeNotifier with Toast {
     return _newPosts;
   }
 
-  Future addFavoritePosts({int boardId, int rankFrom}) async {
+  Future addFavoritePosts({int? boardId, int? rankFrom}) async {
     loading = true;
     try {
       await HttpRequest()
@@ -169,8 +167,8 @@ class Posts extends ChangeNotifier with Toast {
           _newFavoritePosts = jsonList.map((e) => Post.fromJson(e)).toList();
           loading = false;
         } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
+          // final jsonUtf8 = decodeKo(response);
+          // final String? err = json.decode(jsonUtf8)["message"];
           showToast(success: false, msg: '더 이상 게시글을 불러올 수 없습니다.');
         }
       });
@@ -183,7 +181,7 @@ class Posts extends ChangeNotifier with Toast {
     return _newFavoritePosts;
   }
 
-  Future<bool> createPost({Map<String, dynamic> body, dynamic files}) async {
+  Future<bool> createPost({Map<String, dynamic>? body, dynamic files}) async {
     bool successful = false;
     loading = true;
 
@@ -233,7 +231,7 @@ class Posts extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<Post> getPost(int postId) async {
+  Future<Post?> getPost(int? postId) async {
     loading = true;
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
@@ -269,7 +267,7 @@ class Posts extends ChangeNotifier with Toast {
   }
 
   /// 게시글 삭제 시 getPost 호출 버그 회피를 위해 toast 제거한 getPost 대체 코드
-  Future<Post> getCreatedPost(int postId) async {
+  Future<Post?> getCreatedPost(int? postId) async {
     loading = true;
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
@@ -298,7 +296,7 @@ class Posts extends ChangeNotifier with Toast {
     return _post;
   }
 
-  Future<bool> editPost({int postId, Map<String, dynamic> body}) async {
+  Future<bool> editPost({int? postId, Map<String, dynamic>? body}) async {
     bool successful = false;
     loading = true;
 
@@ -339,7 +337,7 @@ class Posts extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<bool> deletePost(int postId) async {
+  Future<bool> deletePost(int? postId) async {
     bool successful = false;
     loading = true;
 
@@ -374,7 +372,7 @@ class Posts extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<bool> likePost({int postId}) async {
+  Future<bool> likePost({int? postId}) async {
     loading = true;
     bool successful = false;
     try {
@@ -408,7 +406,7 @@ class Posts extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<bool> unlikePost({int postId}) async {
+  Future<bool> unlikePost({int? postId}) async {
     loading = true;
     bool successful = false;
     try {
@@ -442,7 +440,7 @@ class Posts extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<bool> scrapPost({int postId}) async {
+  Future<bool> scrapPost({int? postId}) async {
     loading = true;
     bool successful = false;
     try {
@@ -476,7 +474,7 @@ class Posts extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<bool> unscrapPost({int postId}) async {
+  Future<bool> unscrapPost({int? postId}) async {
     loading = true;
     bool successful = false;
     try {
@@ -511,8 +509,8 @@ class Posts extends ChangeNotifier with Toast {
   }
 
   /// ==== Comments ====
-  Future fetchComments(int postId) async {
-    List<Comment> comments;
+  Future fetchComments(int? postId) async {
+    List<Comment>? comments;
     try {
       loading = true;
       await HttpRequest()
@@ -527,7 +525,7 @@ class Posts extends ChangeNotifier with Toast {
           loading = false;
         } else {
           final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
+          final String? err = json.decode(jsonUtf8)["message"];
           showToast(success: false, msg: err);
         }
       });
@@ -540,7 +538,7 @@ class Posts extends ChangeNotifier with Toast {
     return comments;
   }
 
-  Future<bool> createComment({int postId, Map<String, dynamic> body, dynamic files}) async {
+  Future<bool> createComment({int? postId, Map<String, dynamic>? body, dynamic files}) async {
     bool successful = false;
     loading = true;
 
@@ -589,7 +587,7 @@ class Posts extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<bool> deleteComment({int postId, int commentId}) async {
+  Future<bool> deleteComment({int? postId, int? commentId}) async {
     bool successful = false;
     loading = true;
 
@@ -626,7 +624,7 @@ class Posts extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<bool> likeComment({int postId, int commentId}) async {
+  Future<bool> likeComment({int? postId, int? commentId}) async {
     loading = true;
     bool successful = false;
     try {
@@ -660,7 +658,7 @@ class Posts extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<bool> unlikeComment({int postId, int commentId}) async {
+  Future<bool> unlikeComment({int? postId, int? commentId}) async {
     loading = true;
     bool successful = false;
     try {
