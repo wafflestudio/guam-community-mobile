@@ -78,13 +78,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
-  conditional_builder:
-    dependency: "direct main"
-    description:
-      name: conditional_builder
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
   cross_file:
     dependency: transitive
     description:

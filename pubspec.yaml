@@ -28,7 +28,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   hexcolor: ^2.0.3
   modal_bottom_sheet: ^2.0.0
-  conditional_builder: ^1.0.2
   flutter_form_builder: ^6.0.0-nullsafety.1
   intl: ^0.17.0
   bot_toast: ^4.0.1
