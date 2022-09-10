@@ -6,6 +6,7 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_auth/authenticate.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'firebase_options.dart';
 import './screens/user_auth/auth.dart';
 
@@ -19,7 +20,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  // https://developers.kakao.com/docs/latest/ko/getting-started/sdk-flutter#init
+  KakaoSdk.init(nativeAppKey: "367d8cf339e2ba59376ba647c7135dd2");
   runApp(MyApp());
 }
 
