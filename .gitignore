@@ -47,3 +47,5 @@ android/key.properties
 
 # .env using flutter_dotenv
 *.env
+
+.fvm
