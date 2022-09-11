@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../../commons/common_img_nickname.dart';
 import '../../../providers/posts/posts.dart';
+import '../../../providers/share/share.dart';
 
 class PostInfo extends StatefulWidget {
   final int? index;
@@ -164,6 +165,10 @@ class _PostInfoState extends State<PostInfo> {
                     ? GuamColorFamily.purpleCore
                     : widget.iconColor,
                 textColor: widget.iconColor,
+              ),
+              IconButton(
+                onPressed: () => Share(context).share(widget.post!.id),
+                icon: Icon(Icons.share),
               ),
             ],
           ),
