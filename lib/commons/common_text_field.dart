@@ -18,9 +18,9 @@ class CommonTextField extends StatefulWidget {
   final Function? addImage;
   final Function? removeImage;
   final dynamic editTarget;
-  final List<Map<String, dynamic>?>? mentionList;
+  final List<Map<String, dynamic>> mentionList;
 
-  CommonTextField({this.sendButton='등록', required this.onTap, this.messageTo, this.addImage, this.removeImage, this.editTarget, this.mentionList});
+  CommonTextField({this.sendButton='등록', required this.onTap, this.messageTo, this.addImage, this.removeImage, this.editTarget, required this.mentionList});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();
