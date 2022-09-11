@@ -3,18 +3,18 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 
 class BottomModalDefault extends StatelessWidget {
-  final Function onPressed;
-  final String text;
+  final Function? onPressed;
+  final String? text;
 
   const BottomModalDefault({this.onPressed, this.text});
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: onPressed,
+      onPressed: onPressed as void Function()?,
       child: Container(
         child: Text(
-          text,
+          text!,
           style: TextStyle(
             fontSize: 16,
             color: GuamColorFamily.grayscaleGray1,

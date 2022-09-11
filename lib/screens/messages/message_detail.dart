@@ -19,9 +19,9 @@ import '../../providers/user_auth/authenticate.dart';
 import 'message_detail_body.dart';
 
 class MessageDetail extends StatefulWidget {
-  final List<Message> messages;
-  final Profile otherProfile;
-  final Function onRefresh;
+  final List<Message>? messages;
+  final Profile? otherProfile;
+  final Function? onRefresh;
 
   MessageDetail(this.messages, this.otherProfile, this.onRefresh);
 
@@ -30,7 +30,7 @@ class MessageDetail extends StatefulWidget {
 }
 
 class _MessageDetailState extends State<MessageDetail> {
-  List<Message> _messages;
+  List<Message>? _messages;
   bool commentImageExist = false;
   bool _isFirstLoadRunning = false;
 
@@ -44,7 +44,7 @@ class _MessageDetailState extends State<MessageDetail> {
 
   void _refreshMsg() async {
     setState(() => _isFirstLoadRunning = true);
-    await context.read<Messages>().getMessages(widget.otherProfile.id);
+    await context.read<Messages>().getMessages(widget.otherProfile!.id);
     _messages = context.read<Messages>().messages;
     setState(() => _isFirstLoadRunning = false);
   }
@@ -60,7 +60,7 @@ class _MessageDetailState extends State<MessageDetail> {
     Messages msgProvider = context.read<Messages>();
     Authenticate authProvider = context.read<Authenticate>();
 
-    Future sendMessage({Map<String, dynamic> fields, List<File> files}) async {
+    Future sendMessage({Map<String, dynamic>? fields, List<File>? files}) async {
       bool msgSended = false;
       try {
         await msgProvider.sendMessage(
@@ -70,7 +70,7 @@ class _MessageDetailState extends State<MessageDetail> {
           if (successful) {
             msgSended = true;
             _refreshMsg(); /// 쪽지 페이지 갱신
-            widget.onRefresh(); /// 쪽지함 페이지 & 안 읽은 쪽지 개수 갱신
+            widget.onRefresh!(); /// 쪽지함 페이지 & 안 읽은 쪽지 개수 갱신
           } else {
             print("Error!");
           }
@@ -88,7 +88,7 @@ class _MessageDetailState extends State<MessageDetail> {
       child: Scaffold(
         backgroundColor: GuamColorFamily.grayscaleWhite,
         appBar: CustomAppBar(
-          title: widget.otherProfile.nickname,
+          title: widget.otherProfile!.nickname,
           leading: Back(onPressed: widget.onRefresh),
           trailing: Padding(
             padding: EdgeInsets.only(right: 11),
@@ -123,10 +123,10 @@ class _MessageDetailState extends State<MessageDetail> {
                                 title: '쪽지함을 삭제하시겠어요?',
                                 body: '삭제된 쪽지는 복원할 수 없습니다.',
                                 func: () async => await context.read<Messages>()
-                                    .deleteMessageBox(widget.otherProfile.id)
+                                    .deleteMessageBox(widget.otherProfile!.id)
                                     .then((successful) async {
                                   if (successful) {
-                                    widget.onRefresh(); /// 쪽지함 페이지 갱신
+                                    widget.onRefresh!(); /// 쪽지함 페이지 갱신
                                     Navigator.pop(context);
                                     Navigator.pop(context);
                                     Navigator.pop(context);
@@ -164,7 +164,7 @@ class _MessageDetailState extends State<MessageDetail> {
                 padding: EdgeInsets.only(bottom: 70),
                 child: Column(
                   children: [
-                    ..._messages.map((msg) => MessageDetailBody(msg, widget.otherProfile))
+                    ..._messages!.map((msg) => MessageDetailBody(msg, widget.otherProfile))
                   ]
                 ),
               ),
@@ -175,7 +175,7 @@ class _MessageDetailState extends State<MessageDetail> {
           padding: EdgeInsets.only(bottom: 10),
           color: GuamColorFamily.grayscaleWhite,
           child: CommonTextField(
-            messageTo: widget.otherProfile.id,
+            messageTo: widget.otherProfile!.id,
             sendButton: '전송',
             onTap: sendMessage,
             mentionList: [],

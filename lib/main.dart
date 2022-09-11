@@ -1,15 +1,19 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:guam_community_client/screens/app/splash/splash_screen.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_auth/authenticate.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'firebase_options.dart';
 import './screens/user_auth/auth.dart';
 
 void main() async {
+  await dotenv.load(fileName: ".env");
+
   // Returns an instance of the WidgetsBinding, creating and initializing it if necessary.
   // WidgetsBinding provides interaction w/ Flutter Engine.
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +24,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // https://developers.kakao.com/docs/latest/ko/getting-started/sdk-flutter#init
+  KakaoSdk.init(nativeAppKey: dotenv.env['kakaoNativeKey']);
   runApp(MyApp());
 }
 

@@ -3,7 +3,7 @@ import 'profile_edit_label.dart';
 import 'profile_edit_textfield.dart';
 
 class ProfileEditBlog extends StatelessWidget {
-  final String blogUrl;
+  final String? blogUrl;
   final Function setInput;
 
   ProfileEditBlog(this.blogUrl, this.setInput);

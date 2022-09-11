@@ -14,7 +14,7 @@ import '../../commons/custom_app_bar.dart';
 import 'my_profiles_body.dart';
 
 class ProfilesApp extends StatelessWidget {
-  final int userId;
+  final int? userId;
 
   ProfilesApp({this.userId});
 
@@ -33,7 +33,7 @@ class ProfilesApp extends StatelessWidget {
 }
 
 class ProfilesAppScaffold extends StatefulWidget {
-  final int userId;
+  final int? userId;
 
   ProfilesAppScaffold(this.userId);
 
@@ -42,7 +42,7 @@ class ProfilesAppScaffold extends StatefulWidget {
 }
 
 class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
-  Future<Profile> otherProfile;
+  Future<Profile?>? otherProfile;
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _ProfilesAppScaffoldState extends State<ProfilesAppScaffold> {
     if (widget.userId != null){
       return FutureBuilder(
         future: otherProfile,
-        builder: (_, AsyncSnapshot<Profile> snapshot) {
+        builder: (_, AsyncSnapshot<Profile?> snapshot) {
           // FutureBuilder에서 받아오는 otherProfile 존재 여부에 따라 위젯 변경
           if (snapshot.hasData){
             return Scaffold(

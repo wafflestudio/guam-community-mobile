@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/models/boards/post.dart';
@@ -9,13 +11,13 @@ import '../../../commons/common_img_nickname.dart';
 import '../../../providers/posts/posts.dart';
 
 class PostInfo extends StatefulWidget {
-  final int index;
-  final Post post;
-  final Function refreshPost;
+  final int? index;
+  final Post? post;
+  final Function? refreshPost;
   final double iconSize;
   final bool showProfile;
   final bool profileClickable;
-  final HexColor iconColor;
+  final HexColor? iconColor;
 
   PostInfo({
     this.index,
@@ -32,17 +34,17 @@ class PostInfo extends StatefulWidget {
 }
 
 class _PostInfoState extends State<PostInfo> {
-  bool isLiked;
-  bool isScrapped;
-  int likeCount;
-  int scrapCount;
+  bool? isLiked;
+  bool? isScrapped;
+  int? likeCount;
+  int? scrapCount;
 
   @override
   void initState() {
-    isLiked = widget.post.isLiked;
-    isScrapped = widget.post.isScrapped;
-    likeCount = widget.post.likeCount;
-    scrapCount = widget.post.scrapCount;
+    isLiked = widget.post!.isLiked;
+    isScrapped = widget.post!.isScrapped;
+    likeCount = widget.post!.likeCount;
+    scrapCount = widget.post!.scrapCount;
     super.initState();
   }
 
@@ -52,28 +54,28 @@ class _PostInfoState extends State<PostInfo> {
 
     Future likeOrUnlikePost() async {
       try {
-        if (!isLiked) {
+        if (!isLiked!) {
           return await postsProvider.likePost(
-            postId: widget.post.id,
+            postId: widget.post!.id,
           ).then((successful) async {
             if (successful) {
-              Post _temp = await postsProvider.getPost(widget.post.id);
+              Post _temp = await (postsProvider.getPost(widget.post!.id) as FutureOr<Post>);
               isLiked = _temp.isLiked;
               likeCount = _temp.likeCount;
-              widget.refreshPost(widget.index, _temp);
+              widget.refreshPost!(widget.index, _temp);
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);
             }
           });
         } else {
           return await postsProvider.unlikePost(
-            postId: widget.post.id,
+            postId: widget.post!.id,
           ).then((successful) async {
             if (successful) {
-              Post _temp = await postsProvider.getPost(widget.post.id);
+              Post _temp = await (postsProvider.getPost(widget.post!.id) as FutureOr<Post>);
               isLiked = _temp.isLiked;
               likeCount = _temp.likeCount;
-              widget.refreshPost(widget.index, _temp);
+              widget.refreshPost!(widget.index, _temp);
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);
             }
@@ -86,14 +88,14 @@ class _PostInfoState extends State<PostInfo> {
 
     Future scrapOrUnscrapPost() async {
       try {
-        if (!isScrapped) {
+        if (!isScrapped!) {
           return await postsProvider.scrapPost(
-            postId: widget.post.id,
+            postId: widget.post!.id,
           ).then((successful) {
             if (successful) {
               setState(() {
                 isScrapped = true;
-                scrapCount ++;
+                scrapCount = scrapCount! + 1;
               });
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);
@@ -101,12 +103,12 @@ class _PostInfoState extends State<PostInfo> {
           });
         } else {
           return await postsProvider.unscrapPost(
-            postId: widget.post.id,
+            postId: widget.post!.id,
           ).then((successful) {
             if (successful) {
               setState(() {
-                isScrapped = !isScrapped;
-                scrapCount --;
+                isScrapped = !isScrapped!;
+                scrapCount = scrapCount! - 1;
               });
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);
@@ -124,8 +126,8 @@ class _PostInfoState extends State<PostInfo> {
         children: [
           if (widget.showProfile)
             CommonImgNickname(
-              imgUrl: widget.post.profile.profileImg,
-              nickname: widget.post.profile.nickname,
+              imgUrl: widget.post!.profile!.profileImg,
+              nickname: widget.post!.profile!.nickname,
               profileClickable: widget.profileClickable,
               nicknameColor: GuamColorFamily.grayscaleGray2,
             ),
@@ -135,18 +137,18 @@ class _PostInfoState extends State<PostInfo> {
               IconText(
                 iconSize: widget.iconSize,
                 text: likeCount.toString(),
-                iconPath: isLiked
+                iconPath: isLiked!
                     ? 'assets/icons/like_filled.svg'
                     : 'assets/icons/like_outlined.svg',
                 onPressed: likeOrUnlikePost,
-                iconColor: isLiked
+                iconColor: isLiked!
                     ? GuamColorFamily.redCore
                     : widget.iconColor,
                 textColor: widget.iconColor,
               ),
               IconText(
                 iconSize: widget.iconSize,
-                text: widget.post.commentCount.toString(),
+                text: widget.post!.commentCount.toString(),
                 iconPath: 'assets/icons/comment.svg',
                 iconColor: widget.iconColor,
                 textColor: widget.iconColor,
@@ -154,11 +156,11 @@ class _PostInfoState extends State<PostInfo> {
               IconText(
                 iconSize: widget.iconSize,
                 text: scrapCount.toString(),
-                iconPath: isScrapped
+                iconPath: isScrapped!
                     ? 'assets/icons/scrap_filled.svg'
                     : 'assets/icons/scrap_outlined.svg',
                 onPressed: scrapOrUnscrapPost,
-                iconColor: isScrapped
+                iconColor: isScrapped!
                     ? GuamColorFamily.purpleCore
                     : widget.iconColor,
                 textColor: widget.iconColor,

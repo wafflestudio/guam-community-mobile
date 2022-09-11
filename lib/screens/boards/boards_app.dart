@@ -54,7 +54,7 @@ class _BoardsAppScaffoldState extends State<BoardsAppScaffold> {
               indicatorWeight: 2,
               tabs: [
                 ...boardsList.map((board) => Tab(
-                    child: Text(boardsType[board['name']])
+                    child: Text(boardsType[board['name']]!)
                 ))
               ],
             ),

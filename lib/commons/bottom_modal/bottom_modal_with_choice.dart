@@ -4,12 +4,12 @@ import 'package:guam_community_client/styles/fonts.dart';
 import '../custom_divider.dart';
 
 class BottomModalWithChoice extends StatelessWidget {
-  final String title;
-  final String back;
-  final String body;
-  final String alert;
-  final String confirm;
-  final List<Widget> children;
+  final String? title;
+  final String? back;
+  final String? body;
+  final String? alert;
+  final String? confirm;
+  final List<Widget>? children;
 
   BottomModalWithChoice({this.title, this.back, this.body, this.alert, this.confirm, this.children});
 
@@ -25,12 +25,12 @@ class BottomModalWithChoice extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  title,
+                  title!,
                   style: TextStyle(fontSize: 18, color: GuamColorFamily.grayscaleGray2),
                 ),
                 TextButton(
                   child: Text(
-                    back,
+                    back!,
                     style: TextStyle(fontSize: 16, color: GuamColorFamily.purpleCore),
                   ),
                   style: TextButton.styleFrom(
@@ -47,14 +47,14 @@ class BottomModalWithChoice extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: 20, bottom: 10),
                 child: Text(
-                  body,
+                  body!,
                   style: TextStyle(fontSize: 14, height: 1.6, fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular),
                 ),
               ),
             Container(
               padding: EdgeInsets.only(top: 10, bottom: 20),
               child: Column(
-                children: children,
+                children: children!,
               ),
             ),
             if (alert != null)
@@ -67,7 +67,7 @@ class BottomModalWithChoice extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(5)),
                   ),
                   child: Text(
-                    alert,
+                    alert!,
                     style: TextStyle(
                       fontSize: 14,
                       height: 1.6,
@@ -82,7 +82,7 @@ class BottomModalWithChoice extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {},
                   child: Text(
-                    confirm,
+                    confirm!,
                     style: TextStyle(fontSize: 16, color: GuamColorFamily.redCore),
                   ),
                 ),

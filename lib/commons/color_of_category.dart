@@ -1,7 +1,7 @@
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-colorOfCategory(String category) {
+colorOfCategory(String? category) {
   HexColor textColor;
 
   switch (category) {

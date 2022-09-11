@@ -22,7 +22,7 @@ import '../edit/profile_edit_intro.dart';
 import '../edit/profile_edit_optional.dart';
 
 class ProfilesEdit extends StatefulWidget {
-  final Profile profile;
+  final Profile? profile;
 
   ProfilesEdit(this.profile);
 
@@ -35,15 +35,15 @@ class _ProfilesEditState extends State<ProfilesEdit> with Toast {
   bool imgReset = true;
   Map<String, dynamic> input = {};
   List<dynamic> profileImage = [];
-  String profileImg;
+  String? profileImg;
 
   @override
   void initState() {
-    input['nickname'] = widget.profile.nickname;
-    input['introduction'] = widget.profile.intro;
-    input['githubId'] = widget.profile.githubId;
-    input['blogUrl'] = widget.profile.blogUrl;
-    profileImg = widget.profile.profileImg;
+    input['nickname'] = widget.profile!.nickname;
+    input['introduction'] = widget.profile!.intro;
+    input['githubId'] = widget.profile!.githubId;
+    input['blogUrl'] = widget.profile!.blogUrl;
+    profileImg = widget.profile!.profileImg;
     super.initState();
   }
 
@@ -58,7 +58,7 @@ class _ProfilesEditState extends State<ProfilesEdit> with Toast {
   Future<void> setImageFile(PickedFile val) async {
     setState(() {
       if (profileImage.isNotEmpty) profileImage.clear();
-      if (val != null) profileImage.add(val);
+      profileImage.add(val);
     });
   }
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
 class SearchAppBar extends StatelessWidget with PreferredSizeWidget {
-  final Widget title;
+  final Widget? title;
   final dynamic trailing;
   final dynamic bottom;
 

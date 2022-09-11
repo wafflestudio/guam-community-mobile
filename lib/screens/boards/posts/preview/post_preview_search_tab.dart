@@ -25,7 +25,7 @@ class PostPreviewSearchTab extends StatelessWidget {
       children: [
         Row(
           children: [
-            if (post.imagePaths.isNotEmpty)
+            if (post.imagePaths!.isNotEmpty)
               IconButton(
                 onPressed: null,
                 padding: EdgeInsets.only(right: 4),
@@ -53,7 +53,7 @@ class PostPreviewSearchTab extends StatelessWidget {
           children: [
             PostPreviewBoardType(this.post.boardType),
             Spacer(),
-            PostPreviewRelativeTime(DateTime.parse(this.post.createdAt)),
+            PostPreviewRelativeTime(DateTime.parse(this.post.createdAt!)),
           ],
         ),
         PostInfo(

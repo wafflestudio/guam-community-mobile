@@ -4,9 +4,9 @@ import 'comment_banner.dart';
 import 'comment_body.dart';
 
 class Comments extends StatelessWidget {
-  final Comment comment;
-  final bool isAuthor;
-  final Function deleteFunc;
+  final Comment? comment;
+  final bool? isAuthor;
+  final Function? deleteFunc;
 
   Comments({this.comment, this.isAuthor, this.deleteFunc});
 

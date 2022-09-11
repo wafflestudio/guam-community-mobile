@@ -13,7 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class PostDetailBody extends StatelessWidget {
   final int maxRenderImgCnt = 4;
-  final Post post;
+  final Post? post;
 
   PostDetailBody(this.post);
 
@@ -32,7 +32,7 @@ class PostDetailBody extends StatelessWidget {
                 throw 'Could not launch $link';
               }
             },
-            text: post.content,
+            text: post!.content!,
             style: TextStyle(
               height: 1.6,
               fontSize: 14,
@@ -47,21 +47,21 @@ class PostDetailBody extends StatelessWidget {
             ),
           ),
         ),
-        if (post.imagePaths.isNotEmpty)
+        if (post!.imagePaths!.isNotEmpty)
           GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: min(post.imagePaths.length, maxRenderImgCnt),
+              crossAxisCount: min(post!.imagePaths!.length, maxRenderImgCnt),
               crossAxisSpacing: 10,
               childAspectRatio: 1,
             ),
             shrinkWrap: true,
-            itemCount: min(post.imagePaths.length, maxRenderImgCnt),
+            itemCount: min(post!.imagePaths!.length, maxRenderImgCnt),
             itemBuilder: (_, idx) => InkWell(
               child: PostImage(
-                picture: post.imagePaths[idx],
-                blur: post.imagePaths.length > maxRenderImgCnt && idx == maxRenderImgCnt - 1,
-                hiddenImgCnt: post.imagePaths.length - maxRenderImgCnt,
+                picture: post!.imagePaths![idx],
+                blur: post!.imagePaths!.length > maxRenderImgCnt && idx == maxRenderImgCnt - 1,
+                hiddenImgCnt: post!.imagePaths!.length - maxRenderImgCnt,
               ),
               onTap: () {
                 Navigator.of(context, rootNavigator: true).push(
@@ -69,7 +69,7 @@ class PostDetailBody extends StatelessWidget {
                     builder: (_) => ChangeNotifierProvider.value(
                       value: context.read<Posts>(), // necessary?
                       child: ImageCarousel(
-                        pictures: [...this.post.imagePaths],
+                        pictures: [...this.post!.imagePaths!],
                         initialPage: idx,
                         showImageActions: true,
                       ),

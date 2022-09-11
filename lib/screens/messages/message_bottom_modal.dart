@@ -19,7 +19,7 @@ class MessageBottomModal extends StatefulWidget {
 
 class _MessageBottomModalState extends State<MessageBottomModal> {
   final _messageTextFieldController = TextEditingController();
-  Map input;
+  late Map input;
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _MessageBottomModalState extends State<MessageBottomModal> {
   Widget build(BuildContext context) {
     final double maxImgSize = 80;
 
-    Future<void> setImageFile(PickedFile val) async {
+    Future<void> setImageFile(PickedFile? val) async {
       setState(() {
         if (val != null) widget.input['image'].add(val);
       });

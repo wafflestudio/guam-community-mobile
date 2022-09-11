@@ -10,10 +10,10 @@ import 'package:provider/provider.dart';
 import '../../providers/messages/messages.dart';
 
 class BottomModalWithMessage extends StatefulWidget {
-  final String funcName;
-  final String title;
-  final Profile profile;
-  final Function func;
+  final String? funcName;
+  final String? title;
+  final Profile? profile;
+  final Function? func;
 
   BottomModalWithMessage({this.funcName, this.title, this.profile, this.func});
 
@@ -37,17 +37,17 @@ class _BottomModalWithMessageState extends State<BottomModalWithMessage> with To
       setState(() => input['text'] = textMsg);
     }
 
-    Future sendMessage({List<File> files}) async {
+    Future sendMessage({List<File>? files}) async {
       toggleSending();
       try {
-        if (input['text'] == '' && files.isEmpty) {
+        if (input['text'] == '' && files!.isEmpty) {
           showToast(success: false, msg: '쪽지를 작성해주세요.');
           return null;
         }
           await msgProvider.sendMessage(
           fields: {
-            'to': widget.profile.id.toString(),
-            'text': input['text'] == '' && files.isNotEmpty ? '사진' : input['text'],
+            'to': widget.profile!.id.toString(),
+            'text': input['text'] == '' && files!.isNotEmpty ? '사진' : input['text'],
             // 서버 수정 전까지 사진만 달랑 보내는 경우 텍스트를 '사진'으로 지정하여 전송.
           },
           files: files,
@@ -81,7 +81,7 @@ class _BottomModalWithMessageState extends State<BottomModalWithMessage> with To
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                widget.title,
+                widget.title!,
                 style: TextStyle(fontSize: 18, color: GuamColorFamily.grayscaleGray2),
               ),
               TextButton(
@@ -111,7 +111,7 @@ class _BottomModalWithMessageState extends State<BottomModalWithMessage> with To
                         : [])
                   : null,
               child: Text(
-                widget.funcName,
+                widget.funcName!,
                 style: TextStyle(fontSize: 16, color: GuamColorFamily.purpleCore),
               ),
             ),

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 class Message extends ChangeNotifier {
-  final int id;
-  final int sentBy;
-  final int sentTo;
-  final bool isRead;
-  final String text;
-  final String imagePath;
-  final String createdAt;
+  final int? id;
+  final int? sentBy;
+  final int? sentTo;
+  final bool? isRead;
+  final String? text;
+  final String? imagePath;
+  final String? createdAt;
 
   Message({
     this.id,

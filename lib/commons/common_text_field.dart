@@ -12,15 +12,15 @@ import 'image/image_thumbnail.dart';
 import 'button_size_circular_progress_indicator.dart';
 
 class CommonTextField extends StatefulWidget {
-  final int messageTo;
+  final int? messageTo;
   final String sendButton;
   final Function onTap;
-  final Function addImage;
-  final Function removeImage;
+  final Function? addImage;
+  final Function? removeImage;
   final dynamic editTarget;
-  final List<Map<String, dynamic>> mentionList;
+  final List<Map<String, dynamic>?>? mentionList;
 
-  CommonTextField({this.sendButton='등록', @required this.onTap, this.messageTo, this.addImage, this.removeImage, this.editTarget, this.mentionList});
+  CommonTextField({this.sendButton='등록', required this.onTap, this.messageTo, this.addImage, this.removeImage, this.editTarget, this.mentionList});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();
@@ -47,10 +47,10 @@ class _CommonTextFieldState extends State<CommonTextField> {
   }
 
   void setContent(){
-    setState(() => content = key.currentState.controller.text);
+    setState(() => content = key.currentState!.controller!.text);
   }
 
-  void setImageFile(PickedFile val) {
+  void setImageFile(PickedFile? val) {
     setState(() {
       if (val != null) {
         imageFileList.add(val);
@@ -77,10 +77,10 @@ class _CommonTextFieldState extends State<CommonTextField> {
       try {
         /// 멘션 리스트 중복 제거
         Iterable<RegExpMatch> matches = mentionRegexp
-            .allMatches(key.currentState.controller.markupText);
+            .allMatches(key.currentState!.controller!.markupText);
         if (matches.length > 0)
           matches.forEach((match) {
-            int mentionId = int.parse(match.group(1));
+            int mentionId = int.parse(match.group(1)!);
             if (!mentionTargetIds.contains(mentionId))
               mentionTargetIds.add(mentionId);
           });
@@ -98,7 +98,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
             if (successful) {
               imageFileList.clear();
               mentionTargetIds.clear();
-              key.currentState.controller.text = '';
+              key.currentState!.controller!.text = '';
               FocusScope.of(context).unfocus();
             }
           });
@@ -113,7 +113,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
               },
             ).then((successful) {
               if (successful) {
-                key.currentState.controller.text = '';
+                key.currentState!.controller!.text = '';
                 FocusScope.of(context).unfocus();
               }
             });
@@ -130,7 +130,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                 if (successful) {
                   imageFileList.clear();
                   mentionTargetIds.clear();
-                  key.currentState.controller.text = '';
+                  key.currentState!.controller!.text = '';
                   FocusScope.of(context).unfocus();
                 }
               });
@@ -194,7 +194,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                                   icon: SvgPicture.asset('assets/icons/cancel_filled.svg'),
                                   onPressed: () {
                                     deleteImageFile(idx);
-                                    if (imageFileList.isEmpty) widget.removeImage();
+                                    if (imageFileList.isEmpty) widget.removeImage!();
                                   },
                                 ),
                               )
@@ -218,7 +218,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     onPressed: !sending
                         ? () => pickImage(type: 'gallery').then((img) {
                           setImageFile(img);
-                          widget.addImage();
+                          widget.addImage!();
                         })
                         : null,
                   ),
@@ -244,7 +244,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                       Mention(
                         trigger: "@",
                         style: TextStyle(color: GuamColorFamily.purpleLight1),
-                        data: widget.mentionList,
+                        data: widget.mentionList as List<Map<String, dynamic>>,
                         suggestionBuilder: (data) => SingleChildScrollView(
                           dragStartBehavior: DragStartBehavior.start,
                           child: Column(

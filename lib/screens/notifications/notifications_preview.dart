@@ -19,7 +19,7 @@ import '../boards/posts/detail/post_detail.dart';
 
 class NotificationsPreview extends StatefulWidget{
   final Notification.Notification notification;
-  final Function onRefresh;
+  final Function? onRefresh;
 
   NotificationsPreview(this.notification, {this.onRefresh});
 
@@ -34,19 +34,19 @@ class _NotificationsPreviewState extends State<NotificationsPreview> with Toast 
     Posts postProvider = context.read<Posts>();
     Authenticate authProvider = context.read<Authenticate>();
     Notifications notiProvider = context.read<Notifications>();
-    int _postId = int.parse(widget.notification.linkUrl.split('/')[4]);
+    int _postId = int.parse(widget.notification.linkUrl!.split('/')[4]);
 
-    Future<Post> _getPost() {
+    Future<Post?> _getPost() {
       return Future.delayed(Duration(seconds: 0), () async {
-        Post _post = await postProvider.getPost(_postId);
+        Post? _post = await postProvider.getPost(_postId);
         setState(() => isLoading = false);
 
         /// read notification API
         await notiProvider.readNotifications(
-          userId: authProvider.me.id,
+          userId: authProvider.me!.id,
           pushEventIds: [widget.notification.id.toString()],
         );
-        widget.onRefresh();
+        widget.onRefresh!();
         return _post;
       });
     }
@@ -68,7 +68,7 @@ class _NotificationsPreviewState extends State<NotificationsPreview> with Toast 
                       child: FutureBuilder(
                         /// todo: linkUrl 을 '/'로 split 하여 postId 추출 => postId 값만 보내주기
                         future: _getPost(),
-                        builder: (_, AsyncSnapshot<Post> snapshot) {
+                        builder: (_, AsyncSnapshot<Post?> snapshot) {
                           if (snapshot.hasData) {
                             return PostDetail(post: snapshot.data);
                           } else if (snapshot.hasError || !isLoading) {
@@ -95,13 +95,13 @@ class _NotificationsPreviewState extends State<NotificationsPreview> with Toast 
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: widget.notification.writer.profileImg != null && widget.notification.writer.profileImg.isNotEmpty
-                                  ? NetworkImage(HttpRequest().s3BaseAuthority +  widget.notification.writer.profileImg)
-                                  : SvgProvider('assets/icons/profile_image.svg')
+                              image: (widget.notification.writer!.profileImg != null && widget.notification.writer!.profileImg!.isNotEmpty
+                                  ? NetworkImage(HttpRequest().s3BaseAuthority +  widget.notification.writer!.profileImg!)
+                                  : SvgProvider('assets/icons/profile_image.svg')) as ImageProvider<Object>
                           ),
                         ),
                       ),
-                      if (!widget.notification.isRead)
+                      if (!widget.notification.isRead!)
                         Positioned(
                             top: -2,
                             left: -2,
@@ -125,10 +125,10 @@ class _NotificationsPreviewState extends State<NotificationsPreview> with Toast 
                           Row(
                             children: [
                               Text(
-                                widget.notification.writer.nickname,
+                                widget.notification.writer!.nickname!,
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: widget.notification.isRead
+                                  color: widget.notification.isRead!
                                       ? GuamColorFamily.grayscaleGray3
                                       : GuamColorFamily.grayscaleGray1,
                                 ),
@@ -140,7 +140,7 @@ class _NotificationsPreviewState extends State<NotificationsPreview> with Toast 
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                                  color: widget.notification.isRead
+                                  color: widget.notification.isRead!
                                       ? GuamColorFamily.grayscaleGray3
                                       : GuamColorFamily.grayscaleGray1,
                                 ),
@@ -149,14 +149,14 @@ class _NotificationsPreviewState extends State<NotificationsPreview> with Toast 
                           ),
                           if (widget.notification.body != null)
                             Text(
-                              widget.notification.body,
+                              widget.notification.body!,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 12,
                                 height: 1.6,
                                 fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                                color: widget.notification.isRead
+                                color: widget.notification.isRead!
                                     ? GuamColorFamily.grayscaleGray4
                                     : GuamColorFamily.grayscaleGray3,
                               ),

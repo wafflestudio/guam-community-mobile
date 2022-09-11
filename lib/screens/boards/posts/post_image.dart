@@ -3,9 +3,9 @@ import 'package:guam_community_client/commons/image/image_container.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
 class PostImage extends StatelessWidget {
-  final String picture; /// 추후 String -> Picture model로...
-  final bool blur;
-  final int hiddenImgCnt;
+  final String? picture; /// 추후 String -> Picture model로...
+  final bool? blur;
+  final int? hiddenImgCnt;
 
   PostImage({this.picture, this.blur, this.hiddenImgCnt});
 
@@ -25,14 +25,14 @@ class PostImage extends StatelessWidget {
             ),
           ),
         ),
-        if (blur)
+        if (blur!)
           Container(
             decoration: BoxDecoration(
               color: Color.fromRGBO(120, 120, 120, 0.5),
               borderRadius: BorderRadius.circular(8),
             ),
           ),
-        if (blur)
+        if (blur!)
           Center(
             child: Text(
               "+ $hiddenImgCnt",

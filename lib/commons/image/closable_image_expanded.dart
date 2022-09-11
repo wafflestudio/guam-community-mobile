@@ -5,8 +5,8 @@ import '../custom_app_bar.dart';
 import 'image_expanded.dart';
 
 class ClosableImageExpanded extends StatelessWidget {
-  final Widget image;
-  final String imagePath;
+  final Widget? image;
+  final String? imagePath;
 
   ClosableImageExpanded({this.image, this.imagePath});
 

@@ -6,12 +6,12 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class CommonImgNickname extends StatelessWidget {
-  final int userId;
+  final int? userId;
   final double fontSize;
   final double imageSize;
-  final String imgUrl;
-  final String nickname;
-  final HexColor nicknameColor;
+  final String? imgUrl;
+  final String? nickname;
+  final HexColor? nicknameColor;
   final bool profileClickable;
 
   CommonImgNickname({this.userId, this.fontSize=12, this.imageSize=24, this.imgUrl, this.nickname, this.nicknameColor, this.profileClickable=true});
@@ -33,9 +33,9 @@ class CommonImgNickname extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: imgUrl != null
-                    ? NetworkImage(HttpRequest().s3BaseAuthority + imgUrl)
-                    : SvgProvider('assets/icons/profile_image.svg')
+                image: (imgUrl != null
+                    ? NetworkImage(HttpRequest().s3BaseAuthority + imgUrl!)
+                    : SvgProvider('assets/icons/profile_image.svg')) as ImageProvider<Object>
               ),
             ),
           ),

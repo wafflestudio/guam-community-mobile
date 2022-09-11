@@ -3,7 +3,7 @@ import 'profile_edit_label.dart';
 import 'profile_edit_textfield.dart';
 
 class ProfileEditNickname extends StatelessWidget {
-  final String nickname;
+  final String? nickname;
   final Function setInput;
 
   ProfileEditNickname(this.nickname, this.setInput);

@@ -2,7 +2,7 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 // dummy data의 boardType이 enum으로 잘 담겨져 오면 지울 함수
-transferBoardId(int boardId) {
+transferBoardId(int? boardId) {
   String boardType;
   switch (boardId) {
     case 1: boardType = '익명'; break;
@@ -15,8 +15,8 @@ transferBoardId(int boardId) {
   return boardType;
 }
 
-transferBoardType(String boardType) {
-  int boardId;
+transferBoardType(String? boardType) {
+  int? boardId;
   switch (boardType) {
     case '익명': boardId = 1; break;
     case '자유': boardId = 2; break;
@@ -28,7 +28,7 @@ transferBoardType(String boardType) {
 }
 
 transferCategoryId(int categoryId) {
-  String category;
+  String? category;
   switch (categoryId) {
     case 1: category = '개발'; break;
     case 2: category = '데이터분석'; break;
@@ -40,7 +40,7 @@ transferCategoryId(int categoryId) {
 }
 
 transferCategory(String category) {
-  int categoryId;
+  int? categoryId;
   switch (category) {
     case '개발': categoryId = 1; break;
     case '데이터분석': categoryId = 2; break;

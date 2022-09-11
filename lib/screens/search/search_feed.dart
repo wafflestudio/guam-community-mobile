@@ -16,7 +16,7 @@ class SearchFeed extends StatefulWidget {
 
 class _SearchFeedState extends State<SearchFeed> {
   List _searchedPosts = [];
-  int _beforePostId;
+  int? _beforePostId;
   bool _hasNextPage = true;
   bool _isFirstLoadRunning = false;
   bool _isLoadMoreRunning = false;
