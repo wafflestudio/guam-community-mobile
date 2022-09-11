@@ -2,9 +2,10 @@
 
 ![Dart](https://img.shields.io/badge/Dart-2.16.0-brightgreen.svg)
 ![Flutter](https://img.shields.io/badge/flutter-2.10.0-blue.svg)
-![Provider](https://img.shields.io/badge/provider-5.0.0-yellowgreen.svg)
+![Provider](https://img.shields.io/badge/provider-6.0.3-yellowgreen.svg)
+> 💪 Running with sound null safety 💪
 
+<br>
 
 - **We Connect Developers**
-
-- We develop Guam using Flutter framework based on Dart language.
+  - We develop Guam using Flutter framework based on Dart language.
