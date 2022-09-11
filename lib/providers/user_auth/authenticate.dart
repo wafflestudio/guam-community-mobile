@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,8 +10,8 @@ import 'dart:convert';
 import '../../models/boards/post.dart';
 
 class Authenticate extends ChangeNotifier with Toast {
-  final _kakaoNativeKey = "367d8cf339e2ba59376ba647c7135dd2";
-  final _kakaoJSKey = "2edf60d1ebf23061d200cfe4a68a235a";
+  final _kakaoNativeKey = dotenv.env['kakaoNativeKey'];
+  final _kakaoJSKey = dotenv.env['kakaoJSKey'];
 
   FirebaseAuth auth = FirebaseAuth.instance;
   get kakaoNativeKey => _kakaoNativeKey;
