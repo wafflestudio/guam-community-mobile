@@ -21,6 +21,7 @@ class PostDetailMore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Authenticate authProvider = context.read<Authenticate>();
+    final share = Share(context);
 
     void _navigatePage(BuildContext context) async {
       final result = await Navigator.push(
@@ -46,7 +47,7 @@ class PostDetailMore extends StatelessWidget {
           children: post!.isMine! ? [
             BottomModalDefault(
               text: '게시글 공유하기',
-              onPressed: () => Share(context).share(post!.id),
+              onPressed: () => share.share(post!.id),
             ),
             BottomModalDefault(
               text: '수정하기',
@@ -70,7 +71,7 @@ class PostDetailMore extends StatelessWidget {
           ] : [
             BottomModalDefault(
               text: '게시글 공유하기',
-              onPressed: () => Share(context).share(post!.id),
+              onPressed: () => share.share(post!.id),
             ),
             /// Deprecated: until 'if (widget.post.profile.id != 0)' exists in PostDetail
             if (post!.profile!.id != 0)

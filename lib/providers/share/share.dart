@@ -12,6 +12,7 @@ import 'package:share_plus/share_plus.dart' as share_plus;
 
 class Share with Toast {
   BuildContext context;
+  bool isLoading = false;
   Share(this.context);
 
   Future<bool> initialize() async {
@@ -101,9 +102,16 @@ class Share with Toast {
   }
 
   void share(int? id) async{
-    // 클래스 이름이 겹쳐서 import ~ as 사용했습니다.
-    share_plus.Share.share(
-      await _getShortLink(id!),
-    );
+    if(!isLoading){
+      isLoading = true;
+      share_plus.Share.share(
+        await _getShortLink(id!),
+      ).then((value) {
+        // 임시로 해놨습니다.
+        Future.delayed(Duration(seconds: 1),(){
+          isLoading = false;
+        });
+      });
+    }
   }
 }

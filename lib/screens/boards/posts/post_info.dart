@@ -53,6 +53,7 @@ class _PostInfoState extends State<PostInfo> {
   @override
   Widget build(BuildContext context) {
     final postsProvider = context.watch<Posts>();
+    final share = Share(context);
 
     Future likeOrUnlikePost() async {
       try {
@@ -175,7 +176,7 @@ class _PostInfoState extends State<PostInfo> {
               'assets/icons/share_outlined.svg',
               color: widget.iconColor,
             ),
-            onPressed: () => Share(context).share(widget.post!.id),
+            onPressed: () => share.share(widget.post!.id),
           ),
         ],
       ),
