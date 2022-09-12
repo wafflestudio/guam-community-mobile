@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -166,11 +167,15 @@ class _PostInfoState extends State<PostInfo> {
                     : widget.iconColor,
                 textColor: widget.iconColor,
               ),
-              IconButton(
-                onPressed: () => Share(context).share(widget.post!.id),
-                icon: Icon(Icons.share),
-              ),
             ],
+          ),
+          if(!widget.showProfile)Spacer(),
+          if(!widget.showProfile)IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/share_outlined.svg',
+              color: widget.iconColor,
+            ),
+            onPressed: () => Share(context).share(widget.post!.id),
           ),
         ],
       ),

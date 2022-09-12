@@ -45,7 +45,7 @@ class PostDetailMore extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: post!.isMine! ? [
             BottomModalDefault(
-              text: '공유하기',
+              text: '게시글 공유하기',
               onPressed: () => Share(context).share(post!.id),
             ),
             BottomModalDefault(
@@ -69,7 +69,7 @@ class PostDetailMore extends StatelessWidget {
             ),
           ] : [
             BottomModalDefault(
-              text: '공유하기',
+              text: '게시글 공유하기',
               onPressed: () => Share(context).share(post!.id),
             ),
             /// Deprecated: until 'if (widget.post.profile.id != 0)' exists in PostDetail
