@@ -62,9 +62,9 @@ class _PostInfoState extends State<PostInfo> {
             postId: widget.post!.id,
           ).then((successful) async {
             if (successful) {
-              Post _temp = await (postsProvider.getPost(widget.post!.id) as FutureOr<Post>);
-              isLiked = _temp.isLiked;
-              likeCount = _temp.likeCount;
+              Post? _temp = await (postsProvider.getPost(widget.post!.id));
+              isLiked = _temp?.isLiked;
+              likeCount = _temp?.likeCount;
               widget.refreshPost!(widget.index, _temp);
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);
@@ -75,9 +75,9 @@ class _PostInfoState extends State<PostInfo> {
             postId: widget.post!.id,
           ).then((successful) async {
             if (successful) {
-              Post _temp = await (postsProvider.getPost(widget.post!.id) as FutureOr<Post>);
-              isLiked = _temp.isLiked;
-              likeCount = _temp.likeCount;
+              Post? _temp = await (postsProvider.getPost(widget.post!.id));
+              isLiked = _temp?.isLiked;
+              likeCount = _temp?.likeCount;
               widget.refreshPost!(widget.index, _temp);
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);

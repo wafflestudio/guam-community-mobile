@@ -102,8 +102,8 @@ class _PostDetailState extends State<PostDetail> with Toast {
         files: files,
       ).then((successful) async {
         if (successful) fetchComments();
-        Post _temp = await (postsProvider.getPost(_post!.id) as FutureOr<Post>);
-        _post!.commentCount = _temp.commentCount;
+        Post? _temp = await postsProvider.getPost(_post!.id);
+        _post!.commentCount = _temp?.commentCount;
         widget.refreshPost!(widget.index, _temp);
         return successful;
       });
