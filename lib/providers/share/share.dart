@@ -45,7 +45,7 @@ class Share with Toast {
     Posts postProvider = Posts(authProvider);
     String postId = dynamicLink.split('/').last;
     // 페이지 이동
-    Navigator.of(context).push(
+    Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (_) => MultiProvider(
           providers: [
