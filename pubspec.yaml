@@ -52,6 +52,10 @@ dependencies:
   google_sign_in: ^5.4.1
   flutter_dotenv: ^5.0.2
 
+  # Share & Dynamic links
+  firebase_dynamic_links: ^4.3.6
+  share_plus: ^4.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

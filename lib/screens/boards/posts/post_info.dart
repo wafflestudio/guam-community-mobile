@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:guam_community_client/commons/icon_text.dart';
 import 'package:guam_community_client/models/boards/post.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../../commons/common_img_nickname.dart';
 import '../../../providers/posts/posts.dart';
+import '../../../providers/share/share.dart';
 
 class PostInfo extends StatefulWidget {
   final int? index;
@@ -51,6 +53,7 @@ class _PostInfoState extends State<PostInfo> {
   @override
   Widget build(BuildContext context) {
     final postsProvider = context.watch<Posts>();
+    final share = Share(context);
 
     Future likeOrUnlikePost() async {
       try {
@@ -166,6 +169,14 @@ class _PostInfoState extends State<PostInfo> {
                 textColor: widget.iconColor,
               ),
             ],
+          ),
+          if(!widget.showProfile)Spacer(),
+          if(!widget.showProfile)IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/share_outlined.svg',
+              color: widget.iconColor,
+            ),
+            onPressed: () => share.share(widget.post!.id),
           ),
         ],
       ),

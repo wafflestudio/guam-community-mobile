@@ -40,7 +40,7 @@ class _PostDetailState extends State<PostDetail> with Toast {
   bool commentImageExist = false;
   final int maxRenderImgCnt = 4;
   Set<int?> mentionListId = {};
-  List<Map<String, dynamic>?> mentionList = [];
+  List<Map<String, dynamic>> mentionList = [];
   List<Map<String, dynamic>> result = [];
 
   @override

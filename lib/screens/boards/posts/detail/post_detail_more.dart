@@ -8,6 +8,7 @@ import '../../../../commons/bottom_modal/bottom_modal_with_message.dart';
 import '../../../../models/boards/post.dart';
 import '../../../../providers/messages/messages.dart';
 import '../../../../providers/posts/posts.dart';
+import '../../../../providers/share/share.dart';
 import '../../../../providers/user_auth/authenticate.dart';
 import '../creation/post_creation.dart';
 
@@ -20,6 +21,7 @@ class PostDetailMore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Authenticate authProvider = context.read<Authenticate>();
+    final share = Share(context);
 
     void _navigatePage(BuildContext context) async {
       final result = await Navigator.push(
@@ -44,6 +46,10 @@ class PostDetailMore extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: post!.isMine! ? [
             BottomModalDefault(
+              text: '게시글 공유하기',
+              onPressed: () => share.share(post!.id),
+            ),
+            BottomModalDefault(
               text: '수정하기',
               onPressed: () => _navigatePage(context),
             ),
@@ -63,6 +69,10 @@ class PostDetailMore extends StatelessWidget {
               },
             ),
           ] : [
+            BottomModalDefault(
+              text: '게시글 공유하기',
+              onPressed: () => share.share(post!.id),
+            ),
             /// Deprecated: until 'if (widget.post.profile.id != 0)' exists in PostDetail
             if (post!.profile!.id != 0)
             BottomModalDefault(
