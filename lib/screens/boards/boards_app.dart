@@ -9,6 +9,7 @@ import 'package:guam_community_client/screens/messages/message_box.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
 import '../../commons/custom_app_bar.dart';
+import '../../providers/share/share.dart';
 import 'boards_feed.dart';
 import 'boards_type.dart';
 
@@ -34,6 +35,13 @@ class BoardsAppScaffold extends StatefulWidget {
 }
 
 class _BoardsAppScaffoldState extends State<BoardsAppScaffold> {
+
+  @override
+  void initState(){
+    super.initState();
+    Share(context: context).initialize();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

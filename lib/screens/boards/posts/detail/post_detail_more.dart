@@ -21,7 +21,7 @@ class PostDetailMore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Authenticate authProvider = context.read<Authenticate>();
-    final share = Share(context);
+    final share = Share(context: context);
 
     void _navigatePage(BuildContext context) async {
       final result = await Navigator.push(

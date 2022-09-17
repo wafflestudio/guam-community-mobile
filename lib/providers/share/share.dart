@@ -13,7 +13,7 @@ import 'package:share_plus/share_plus.dart' as share_plus;
 class Share with Toast {
   BuildContext context;
   bool isLoading = false;
-  Share(this.context);
+  Share({required this.context});
 
   Future<bool> initialize() async {
     bool dynamicLinkExists = await _getInitialLink();
@@ -32,6 +32,14 @@ class Share with Toast {
     return false;
   }
 
+  void addListener(Function function) {
+    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
+      function();
+    }).onError((e) {
+      print(e);
+    });
+  }
+
   void _addListener() {
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
       _navigateScreen(dynamicLinkData.link.path);
@@ -45,7 +53,7 @@ class Share with Toast {
     Posts postProvider = Posts(authProvider);
     String postId = dynamicLink.split('/').last;
     // 페이지 이동
-    Navigator.of(context, rootNavigator: true).push(
+    Navigator.of(context,).push(
       MaterialPageRoute(
         builder: (_) => MultiProvider(
           providers: [
