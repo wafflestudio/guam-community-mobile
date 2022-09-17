@@ -1,14 +1,14 @@
 import 'package:guam_community_client/models/profiles/profile.dart';
 
 class Notification {
-  final int id;
-  final int userId;
-  final String kind;
-  final String body;
-  final String linkUrl;
-  final Profile writer;
-  final bool isRead;
-  final String createdAt;
+  final int? id;
+  final int? userId;
+  final String? kind;
+  final String? body;
+  final String? linkUrl;
+  final Profile? writer;
+  final bool? isRead;
+  final String? createdAt;
 
   Notification({
     this.id,
@@ -22,7 +22,7 @@ class Notification {
   });
 
   factory Notification.fromJson(dynamic json) {
-    Profile writer;
+    Profile? writer;
 
     if (json['writer'] != null) {
       writer = Profile.fromJson(json['writer']);

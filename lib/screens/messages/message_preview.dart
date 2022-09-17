@@ -17,8 +17,8 @@ import 'message_detail.dart';
 
 class MessagePreview extends StatefulWidget {
   final MessageBox messageBox;
-  final Function reload; // 쪽지함 삭제 페이지 갱신
-  final Function onRefresh; // 쪽지함 페이지 갱신
+  final Function? reload; // 쪽지함 삭제 페이지 갱신
+  final Function? onRefresh; // 쪽지함 페이지 갱신
   final bool editable;
 
   MessagePreview(this.messageBox, {this.onRefresh, this.reload, this.editable=false});
@@ -33,8 +33,8 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
     Authenticate authProvider = context.read<Authenticate>();
     MessageBox msgBox = widget.messageBox;
     /// 가장 최근 메시지가 읽혀지지 않았고, 해당 메시지 발신자가 나인 경우
-    bool newMsg = !msgBox.lastLetter.isRead
-        && msgBox.lastLetter.sentTo == authProvider.me.id;
+    bool newMsg = !msgBox.lastLetter!.isRead!
+        && msgBox.lastLetter!.sentTo == authProvider.me!.id;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -55,14 +55,14 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                     ChangeNotifierProvider(create: (_) => Messages(authProvider)),
                   ],
                   child: FutureBuilder(
-                    future: context.read<Messages>().getMessages(msgBox.otherProfile.id),
-                    builder: (_, AsyncSnapshot<List<Message.Message>> snapshot) {
+                    future: context.read<Messages>().getMessages(msgBox.otherProfile!.id),
+                    builder: (_, AsyncSnapshot<List<Message.Message>?> snapshot) {
                       if (snapshot.hasData) {
                         return MessageDetail(snapshot.data, msgBox.otherProfile, widget.onRefresh);
                       } else if (snapshot.hasError) {
-                        Navigator.pop(context);
                         showToast(success: false, msg: '해당 쪽지를 찾을 수 없습니다.');
-                        return null;
+                        Navigator.pop(context);
+                        return Container();
                       } else {
                         return Container(
                           color: GuamColorFamily.grayscaleWhite,
@@ -85,9 +85,9 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: msgBox.otherProfile.profileImg != null
-                              ? NetworkImage(HttpRequest().s3BaseAuthority + msgBox.otherProfile.profileImg)
-                              : SvgProvider('assets/icons/profile_image.svg')
+                          image: (msgBox.otherProfile!.profileImg != null
+                              ? NetworkImage(HttpRequest().s3BaseAuthority + msgBox.otherProfile!.profileImg!)
+                              : SvgProvider('assets/icons/profile_image.svg')) as ImageProvider<Object>
                         ),
                       ),
                     ),
@@ -115,7 +115,7 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          msgBox.otherProfile.nickname,
+                          msgBox.otherProfile!.nickname!,
                           style: TextStyle(
                             fontSize: 12,
                             height: 1.6,
@@ -124,7 +124,7 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                           ),
                         ),
                         Text(
-                          msgBox.lastLetter.text,
+                          msgBox.lastLetter!.text!,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -149,6 +149,7 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                     child: Builder(
                       builder: (context) {
                         return TextButton(
+                          onPressed: null,
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                             minimumSize: Size(23, 20),
@@ -163,12 +164,12 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                             title: '쪽지함을 삭제하시겠어요?',
                             body: '삭제된 쪽지는 복원할 수 없습니다.',
                             func: () async => await context.read<Messages>()
-                                .deleteMessageBox(msgBox.otherProfile.id)
+                                .deleteMessageBox(msgBox.otherProfile!.id)
                                 .then((successful) async {
                                   if (successful) {
-                                    widget.reload();
+                                    widget.reload!();
                                     Navigator.pop(context);
-                                    widget.onRefresh();
+                                    widget.onRefresh!();
                                   }
                               })
                           ),
@@ -180,9 +181,9 @@ class _MessagePreviewState extends State<MessagePreview> with Toast {
                 Padding(
                   padding: EdgeInsets.only(right: 10, top: 14, bottom: 15),
                   child: Text(
-                    Jiffy(msgBox.lastLetter.createdAt).fromNow() == "몇 초 후"
+                    Jiffy(msgBox.lastLetter!.createdAt).fromNow() == "몇 초 후"
                         ? "몇 초 전"
-                        : Jiffy(msgBox.lastLetter.createdAt).fromNow(),
+                        : Jiffy(msgBox.lastLetter!.createdAt).fromNow(),
                     style: TextStyle(
                       fontSize: 12,
                       height: 1.6,

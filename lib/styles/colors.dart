@@ -38,5 +38,5 @@ class GuamColorFamily {
 
   static HexColor fuchsiaCore = HexColor('#EF5DA8');
 
-  static HexColor kakaoYellow = HexColor('#FFCD00');
+  static HexColor kakaoYellow = HexColor('#FEE500');
 }

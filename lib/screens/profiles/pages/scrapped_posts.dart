@@ -15,7 +15,7 @@ class ScrappedPosts extends StatefulWidget {
 }
 
 class _ScrappedPostsState extends State<ScrappedPosts> {
-  List _scrappedPosts = [];
+  List? _scrappedPosts = [];
   int _currentPage = 1;
   bool _hasNextPage = true;
   bool _isFirstLoadRunning = false;
@@ -46,7 +46,7 @@ class _ScrappedPostsState extends State<ScrappedPosts> {
           page: _currentPage,
         );
         if (fetchedScrappedPosts != null && fetchedScrappedPosts.length > 0) {
-          setState(() => _scrappedPosts.addAll(fetchedScrappedPosts));
+          setState(() => _scrappedPosts!.addAll(fetchedScrappedPosts));
         } else {
           // This means there is no more data
           // and therefore, we will not send another GET request
@@ -105,7 +105,7 @@ class _ScrappedPostsState extends State<ScrappedPosts> {
                   controller: _scrollController,
                   physics: AlwaysScrollableScrollPhysics(),
                   child: Column(children: [
-                    if (_scrappedPosts.isEmpty)
+                    if (_scrappedPosts!.isEmpty)
                       Center(
                         child: Padding(
                           padding: EdgeInsets.only(
@@ -120,8 +120,8 @@ class _ScrappedPostsState extends State<ScrappedPosts> {
                           ),
                         ),
                       ),
-                    if (_scrappedPosts.isNotEmpty)
-                      ..._scrappedPosts.mapIndexed((idx, p) => PostPreview(idx, p, _firstLoad)),
+                    if (_scrappedPosts!.isNotEmpty)
+                      ..._scrappedPosts!.mapIndexed((idx, p) => PostPreview(idx, p, _firstLoad)),
                     if (_isLoadMoreRunning == true)
                       Padding(
                         padding: EdgeInsets.only(top: 10, bottom: 40),

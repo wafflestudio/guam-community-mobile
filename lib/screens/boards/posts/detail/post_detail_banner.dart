@@ -7,7 +7,7 @@ import 'package:guam_community_client/styles/fonts.dart';
 import 'package:jiffy/jiffy.dart';
 
 class PostDetailBanner extends StatelessWidget {
-  final Post post;
+  final Post? post;
 
   PostDetailBanner(this.post);
 
@@ -18,14 +18,14 @@ class PostDetailBanner extends StatelessWidget {
       children: [
         Row(
           children: [
-            if (post.category != null)
+            if (post!.category != null)
               TextButton(
                 onPressed: null,
                 child: Text(
-                  "#" + post.category.title,
+                  "#" + post!.category!.title!,
                   style: TextStyle(
                     fontSize: 16,
-                    color: colorOfCategory(post.category.title),
+                    color: colorOfCategory(post!.category!.title),
                   ),
                 ),
                 style: TextButton.styleFrom(
@@ -35,15 +35,15 @@ class PostDetailBanner extends StatelessWidget {
                 ),
               ),
             Padding(
-              padding: EdgeInsets.only(left: post.category == null ? 0 : 8),
+              padding: EdgeInsets.only(left: post!.category == null ? 0 : 8),
               child: TextButton(
                 onPressed: null,
                 child: Text(
-                  post.boardType + '게시판',
+                  post!.boardType! + '게시판',
                   style: TextStyle(
                     fontSize: 12,
                     color: colorOfCategory(
-                        post.category != null ? post.category.title : '')
+                        post!.category != null ? post!.category!.title : '')
                         .withOpacity(0.5),
                   ),
                 ),
@@ -58,23 +58,23 @@ class PostDetailBanner extends StatelessWidget {
         ),
         Container(
           padding: EdgeInsets.only(top: 8),
-          child: Text(post.title, style: TextStyle(fontSize: 18)),
+          child: Text(post!.title!, style: TextStyle(fontSize: 18)),
         ),
         Padding(
           padding: EdgeInsets.only(top: 8),
           child: Row(
             children: [
               CommonImgNickname(
-                userId: post.profile.id,
-                nickname: post.profile.nickname,
-                profileClickable: post.profile.id != 0,
+                userId: post!.profile!.id,
+                nickname: post!.profile!.nickname,
+                profileClickable: post!.profile!.id != 0,
                 // 익명 프로필은 프로필 열람 불가
-                imgUrl: post.profile.profileImg ?? null,
+                imgUrl: post!.profile!.profileImg ?? null,
                 nicknameColor: GuamColorFamily.grayscaleGray3,
               ),
               Spacer(),
               Text(
-                Jiffy(DateTime.parse(post.createdAt)).add(hours: 9).format('yyyy.MM.dd  HH:mm'),
+                Jiffy(DateTime.parse(post!.createdAt!)).add(hours: 9).format('yyyy.MM.dd  HH:mm'),
                 style: TextStyle(
                   fontSize: 12,
                   color: GuamColorFamily.grayscaleGray5,

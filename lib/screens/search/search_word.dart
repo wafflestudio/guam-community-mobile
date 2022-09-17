@@ -8,7 +8,7 @@ import '../../providers/search/search.dart';
 
 class SearchWord extends StatelessWidget {
   final String word;
-  final Function showSearchHistory;
+  final Function? showSearchHistory;
 
   SearchWord(this.word, this.showSearchHistory);
 
@@ -33,7 +33,7 @@ class SearchWord extends StatelessWidget {
             ),
             onTap: () {
               searchProvider.searchPosts(query: word);
-              showSearchHistory(false);
+              showSearchHistory!(false);
               SearchAppTextFieldState.controller.text = word;
               searchProvider.saveHistory(word);
             },

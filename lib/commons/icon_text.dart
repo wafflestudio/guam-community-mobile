@@ -8,17 +8,17 @@ class IconText extends StatelessWidget {
   final double fontSize;
   final double paddingBtw;
   final String text;
-  final String iconPath;
-  final Function onPressed;
-  final HexColor iconColor;
-  final HexColor textColor;
+  final String? iconPath;
+  final Function? onPressed;
+  final HexColor? iconColor;
+  final HexColor? textColor;
 
   IconText({this.iconSize=20, this.fontSize=12, this.paddingBtw=10, this.text="", this.iconPath, this.onPressed, this.iconColor, this.textColor});
 
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-      onPressed: onPressed,
+      onPressed: onPressed as void Function()?,
       style: TextButton.styleFrom(
         padding: EdgeInsets.only(right: paddingBtw),
         minimumSize: Size.zero,
@@ -33,12 +33,12 @@ class IconText extends StatelessWidget {
           fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
         ),
       ),
-      icon: iconPath != null ? SvgPicture.asset(
-        iconPath,
+      icon: SvgPicture.asset(
+        iconPath!,
         color: iconColor,
         width: iconSize,
         height: iconSize,
-      ) : null,
+      ),
     );
   }
 }

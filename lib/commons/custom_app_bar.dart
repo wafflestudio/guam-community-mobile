@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-  final String title;
+  final String? title;
   final dynamic leading;
   final dynamic trailing;
   final dynamic bottom;
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   CustomAppBar({this.title, this.leading, this.trailing, this.bottom, this.backgroundColor});
 

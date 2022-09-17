@@ -3,11 +3,11 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 
 class ProfileEditTextField extends StatefulWidget {
-  final String input;
-  final int maxLength;
+  final String? input;
+  final int? maxLength;
   final bool isBlogUrl;
-  final Function func; /// request body 에 쓰일 setInput 함수
-  final String funcKey; /// nickname, introduction, blogUrl 이 위 func 에 사용되는 argument
+  final Function? func; /// request body 에 쓰일 setInput 함수
+  final String? funcKey; /// nickname, introduction, blogUrl 이 위 func 에 사용되는 argument
 
   ProfileEditTextField({this.input, this.maxLength, this.isBlogUrl=false, this.func, this.funcKey});
 
@@ -20,7 +20,7 @@ class _ProfileEditTextFieldState extends State<ProfileEditTextField> {
 
   @override
   void initState() {
-    _textFieldController.text = widget.input;
+    if (widget.input != null) _textFieldController.text = widget.input!;
     super.initState();
   }
 
@@ -36,7 +36,7 @@ class _ProfileEditTextFieldState extends State<ProfileEditTextField> {
       child: TextField(
         maxLength: widget.maxLength,
         controller: _textFieldController,
-        onChanged: (e) => widget.func(widget.funcKey, _textFieldController.text),
+        onChanged: (e) => widget.func!(widget.funcKey, _textFieldController.text),
         style: TextStyle(
           fontSize: 14,
           fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,

@@ -8,7 +8,7 @@ import '../../../commons/sub_headings.dart';
 import 'post_filter.dart';
 
 class PostList extends StatefulWidget {
-  final List<Post> posts;
+  final List<Post>? posts;
   final Function refreshPost;
   final Function sortPosts;
   final bool isSorted;
@@ -39,7 +39,7 @@ class _PostListState extends State<PostList> {
           Padding(
             padding: EdgeInsets.only(bottom: 10),
             child: Column(
-              children: [...widget.posts.mapIndexed((idx, post) => PostPreview(idx, post, widget.refreshPost))]
+              children: [...widget.posts!.mapIndexed((idx, post) => PostPreview(idx, post, widget.refreshPost))]
             ),
           ),
         ],

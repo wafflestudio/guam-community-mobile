@@ -16,7 +16,7 @@ class LoginButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 16),
       child: InkWell(
-        onTap: onTap,
+        onTap: onTap as void Function()?,
         child: Container(
           alignment: Alignment.center,
           height: 56,

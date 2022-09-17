@@ -9,11 +9,10 @@ import '../../../commons/bottom_modal/bottom_modal_with_alert.dart';
 import '../../../commons/bottom_modal/bottom_modal_with_message.dart';
 import '../../../providers/posts/posts.dart';
 import '../../../providers/user_auth/authenticate.dart';
-import '../posts/post_comment_report.dart';
 
 class CommentMore extends StatelessWidget {
-  final Comment comment;
-  final Function deleteFunc;
+  final Comment? comment;
+  final Function? deleteFunc;
 
   const CommentMore(this.comment, this.deleteFunc);
 
@@ -33,7 +32,7 @@ class CommentMore extends StatelessWidget {
               padding: EdgeInsets.only(left: 24, top: 24, bottom: 21),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: comment.isMine ? [
+                children: comment!.isMine! ? [
                   // BottomModalDefault(
                   //   text: '수정하기',
                   //   onPressed: () {
@@ -45,10 +44,10 @@ class CommentMore extends StatelessWidget {
                     title: '댓글을 삭제하시겠어요?',
                     body: '삭제된 댓글은 복원할 수 없습니다.',
                     func: () => postsProvider.deleteComment(
-                      postId: comment.postId, commentId: comment.id
+                      postId: comment!.postId, commentId: comment!.id
                     ).then((successful) {
                       if (successful) {
-                        deleteFunc(comment.id);
+                        deleteFunc!(comment!.id);
                         postsProvider.fetchPosts(postsProvider.boardId);
                         Navigator.pop(context);
                         Navigator.pop(context);
@@ -74,8 +73,8 @@ class CommentMore extends StatelessWidget {
                         child: SingleChildScrollView(
                           child: BottomModalWithMessage(
                             funcName: '보내기',
-                            title: '${comment.profile.nickname} 님에게 쪽지 보내기',
-                            profile: comment.profile,
+                            title: '${comment!.profile!.nickname} 님에게 쪽지 보내기',
+                            profile: comment!.profile,
                             func: null,
                           ),
                         ),
@@ -85,10 +84,10 @@ class CommentMore extends StatelessWidget {
                   // PostCommentReport(comment.profile),
                   BottomModalWithAlert(
                     funcName: '차단하기',
-                    title: '${comment.profile.nickname} 님을 차단하시겠어요?',
+                    title: '${comment!.profile!.nickname} 님을 차단하시겠어요?',
                     body: '사용자를 차단하면, 해당 사용자의 게시글 및 댓글을 확인 할 수 없으며, 서로 쪽지를 주고 받을 수 없습니다.\n\n차단계정 관리는 프로필>계정 설정> 차단 목록 관리 탭에서 확인 가능합니다',
                     func: () async {
-                      await context.read<Authenticate>().blockUser(comment.profile.id)
+                      await context.read<Authenticate>().blockUser(comment!.profile!.id)
                           .then((successful) {
                         if (successful) {
                           Navigator.of(context).pop();

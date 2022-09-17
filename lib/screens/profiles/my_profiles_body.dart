@@ -15,7 +15,7 @@ class MyProfilesBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Profile me = context.read<Authenticate>().me;
+    final Profile me = context.read<Authenticate>().me!;
 
     return Container(
       width: double.infinity,

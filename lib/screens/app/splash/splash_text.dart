@@ -13,7 +13,7 @@ class SplashText extends StatefulWidget {
 }
 
 class _SplashTextState extends State<SplashText> with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   @override
   void initState() {

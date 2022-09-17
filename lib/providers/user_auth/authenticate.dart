@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,45 +10,45 @@ import 'dart:convert';
 import '../../models/boards/post.dart';
 
 class Authenticate extends ChangeNotifier with Toast {
-  final _kakaoClientId = "367d8cf339e2ba59376ba647c7135dd2";
-  final _kakaoJavascriptClientId = "2edf60d1ebf23061d200cfe4a68a235a";
+  final _kakaoNativeKey = dotenv.env['kakaoNativeKey'];
+  final _kakaoJSKey = dotenv.env['kakaoJSKey'];
 
   FirebaseAuth auth = FirebaseAuth.instance;
-  get kakaoClientId => _kakaoClientId;
-  get kakaoJavascriptClientId => _kakaoJavascriptClientId;
+  get kakaoNativeKey => _kakaoNativeKey;
+  get kakaoJSKey => _kakaoJSKey;
 
-  int _unRead;
-  Profile me;
-  Profile user;
-  List<Profile> _blockedUsers;
-  List<Post> _myPosts;
-  List<Post> _newMyPosts;
-  List<Post> _scrappedPosts;
-  List<Post> _newScrappedPosts;
-  bool _hasNext;
+  int? _unRead;
+  Profile? me;
+  Profile? user;
+  List<Profile>? _blockedUsers;
+  List<Post>? _myPosts;
+  List<Post>? _newMyPosts;
+  List<Post>? _scrappedPosts;
+  List<Post>? _newScrappedPosts;
+  bool? _hasNext;
   bool loading = true;
 
   Authenticate() {
     getMyProfile();
   }
 
-  int get unRead => _unRead;
-  bool get hasNext => _hasNext;
-  List<Profile> get blockedUsers => _blockedUsers;
-  List<Post> get myPosts => _myPosts;
-  List<Post> get newMyPosts => _newMyPosts;
-  List<Post> get scrappedPosts => _scrappedPosts;
-  List<Post> get newScrappedPosts => _newScrappedPosts;
+  int? get unRead => _unRead;
+  bool? get hasNext => _hasNext;
+  List<Profile>? get blockedUsers => _blockedUsers;
+  List<Post>? get myPosts => _myPosts;
+  List<Post>? get newMyPosts => _newMyPosts;
+  List<Post>? get scrappedPosts => _scrappedPosts;
+  List<Post>? get newScrappedPosts => _newScrappedPosts;
   bool userSignedIn() => auth.currentUser != null && me != null; // 로그인 된 유저 존재 여부
-  bool profileExists() => me != null && me.profileSet; // 프로필까지 만든 정상 유저인지 여부
-  bool isMe(int userId) => me.id == userId;
+  bool profileExists() => me != null && me!.profileSet!; // 프로필까지 만든 정상 유저인지 여부
+  bool isMe(int? userId) => me!.id == userId;
 
   void toggleLoading() {
     loading = !loading;
     notifyListeners();
   }
 
-  Future kakaoSignIn(String kakaoAccessToken) async {
+  Future kakaoSignIn(String? kakaoAccessToken) async {
     try {
       loading = true;
       await HttpRequest().get(
@@ -63,14 +64,14 @@ class Authenticate extends ChangeNotifier with Toast {
           await getMyProfile();
         } else {
           final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
+          final String? err = json.decode(jsonUtf8)["message"];
           showToast(success: false, msg: err);
         }
       });
     } on FirebaseAuthException {
       showToast(success: false, msg: "Firebase 인증에 문제가 발생했습니다.");
     } catch (e) {
-      showToast(success: false, msg: e.message);
+      showToast(success: false, msg: e.toString());
     } finally {
       notifyListeners();
     }
@@ -79,11 +80,9 @@ class Authenticate extends ChangeNotifier with Toast {
   Future googleSignIn(UserCredential userCredential) async {
     try {
       loading = true;
-      if (userCredential != null) {
-        showToast(success: true, msg: "구글 로그인 성공!");
-        await getMyProfile();
-        loading = false;
-      }
+      showToast(success: true, msg: "구글 로그인 성공!");
+      await getMyProfile();
+      loading = false;
     } on FirebaseAuthException {
       showToast(success: false, msg: "Firebase 인증에 문제가 발생했습니다.");
     } catch (e) {
@@ -96,7 +95,7 @@ class Authenticate extends ChangeNotifier with Toast {
   Future<String> getFirebaseIdToken() async {
     String idToken;
     try {
-      User user = auth.currentUser;
+      User user = auth.currentUser!;
       idToken = await user.getIdToken();
     } on NoSuchMethodError {
       throw new Exception("로그인이 필요합니다.");
@@ -127,7 +126,7 @@ class Authenticate extends ChangeNotifier with Toast {
             me = Profile.fromJson(jsonData);
           } else {
             final jsonUtf8 = decodeKo(response);
-            final String err = json.decode(jsonUtf8)["message"];
+            final String? err = json.decode(jsonUtf8)["message"];
             showToast(success: false, msg: err);
           }
         });
@@ -139,7 +138,7 @@ class Authenticate extends ChangeNotifier with Toast {
     }
   }
 
-  Future setProfile({Map<String, dynamic> fields, dynamic files, bool imgReset}) async {
+  Future setProfile({Map<String, dynamic>? fields, dynamic files, bool? imgReset}) async {
     bool successful = false;
 
     try {
@@ -147,14 +146,14 @@ class Authenticate extends ChangeNotifier with Toast {
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
         /// files == null 여부에 따라 raw-data로 보내거나 multipart type으로 분리
-        Future<dynamic> request = imgReset
+        Future<dynamic> request = imgReset!
             ? HttpRequest().patch(
-          path: "community/api/v1/users/${me.id}/json",
+          path: "community/api/v1/users/${me!.id}/json",
           body: fields,
           authToken: authToken,
         ) : HttpRequest().patchMultipart(
-          path: "community/api/v1/users/${me.id}",
-          fields: fields,
+          path: "community/api/v1/users/${me!.id}",
+          fields: fields!,
           files: files,
           authToken: authToken,
         );
@@ -165,7 +164,7 @@ class Authenticate extends ChangeNotifier with Toast {
             showToast(success: true, msg: "프로필을 설정했습니다.");
           } else {
             final jsonUtf8 = decodeKo(response);
-            final String err = json.decode(jsonUtf8)["message"];
+            final String? err = json.decode(jsonUtf8)["message"];
             showToast(success: false, msg: err);
           }
         });
@@ -179,7 +178,7 @@ class Authenticate extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<Profile> getUserProfile(int userId) async {
+  Future<Profile?> getUserProfile(int? userId) async {
     try {
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
@@ -195,7 +194,7 @@ class Authenticate extends ChangeNotifier with Toast {
             // setMyFcmToken();
           } else {
             final jsonUtf8 = decodeKo(response);
-            final String err = json.decode(jsonUtf8)["message"];
+            final String? err = json.decode(jsonUtf8)["message"];
             showToast(success: false, msg: err);
           }
         });
@@ -208,7 +207,7 @@ class Authenticate extends ChangeNotifier with Toast {
     return user;
   }
 
-  Future<bool> setInterest({Map<String, dynamic> body}) async {
+  Future<bool> setInterest({Map<String, dynamic>? body}) async {
     bool successful = false;
     try {
       toggleLoading();
@@ -216,7 +215,7 @@ class Authenticate extends ChangeNotifier with Toast {
 
       if (authToken.isNotEmpty) {
         await HttpRequest().post(
-          path: "community/api/v1/users/${me.id}/interest",
+          path: "community/api/v1/users/${me!.id}/interest",
           body: body,
           authToken: authToken,
         ).then((response) async {
@@ -226,7 +225,7 @@ class Authenticate extends ChangeNotifier with Toast {
             showToast(success: true, msg: "관심사를 등록했습니다.");
           } else {
             final jsonUtf8 = decodeKo(response);
-            final String err = json.decode(jsonUtf8)["message"];
+            final String? err = json.decode(jsonUtf8)["message"];
             showToast(success: false, msg: err);
           }
         });
@@ -247,7 +246,7 @@ class Authenticate extends ChangeNotifier with Toast {
 
       if (authToken.isNotEmpty) {
         await HttpRequest().delete(
-          path: "community/api/v1/users/${me.id}/interest",
+          path: "community/api/v1/users/${me!.id}/interest",
           queryParams: queryParams,
           authToken: authToken,
         ).then((response) async {
@@ -257,7 +256,7 @@ class Authenticate extends ChangeNotifier with Toast {
             showToast(success: true, msg: "해당 관심사를 삭제했습니다.");
           } else {
             final jsonUtf8 = decodeKo(response);
-            final String err = json.decode(jsonUtf8)["message"];
+            final String? err = json.decode(jsonUtf8)["message"];
             showToast(success: false, msg: err);
           }
         });
@@ -270,7 +269,7 @@ class Authenticate extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<List<Profile>> fetchBlockedUsers() async {
+  Future<List<Profile>?> fetchBlockedUsers() async {
     try {
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
@@ -284,7 +283,7 @@ class Authenticate extends ChangeNotifier with Toast {
             _blockedUsers = jsonList.map((e) => Profile.fromJson(e)).toList();
           } else {
             final jsonUtf8 = decodeKo(response);
-            final String err = json.decode(jsonUtf8)["message"];
+            final String? err = json.decode(jsonUtf8)["message"];
             showToast(success: false, msg: err);
           }
         });
@@ -365,13 +364,13 @@ class Authenticate extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future fetchMyPosts({int userId}) async {
+  Future fetchMyPosts({int? userId}) async {
     loading = true;
     try {
       String authToken = await getFirebaseIdToken();
       await HttpRequest()
           .get(
-        path: "community/api/v1/posts/users/${me.id}/my",
+        path: "community/api/v1/posts/users/${me!.id}/my",
         authToken: authToken,
       ).then((response) async {
         if (response.statusCode == 200) {
@@ -398,13 +397,13 @@ class Authenticate extends ChangeNotifier with Toast {
   }
 
   /// For Pagination in MyPosts Widget using _loadMore()
-  Future addMyPosts({int beforePostId}) async {
+  Future addMyPosts({int? beforePostId}) async {
     loading = true;
     try {
       String authToken = await getFirebaseIdToken();
       await HttpRequest()
           .get(
-        path: "community/api/v1/posts/users/${me.id}/my",
+        path: "community/api/v1/posts/users/${me!.id}/my",
         queryParams: {
           "beforePostId": beforePostId.toString(),
         },
@@ -417,8 +416,8 @@ class Authenticate extends ChangeNotifier with Toast {
           _newMyPosts = jsonList.map((e) => Post.fromJson(e)).toList();
           loading = false;
         } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
+          // final jsonUtf8 = decodeKo(response);
+          // final String? err = json.decode(jsonUtf8)["message"];
           showToast(success: false, msg: '더 이상 글을 불러올 수 없습니다.');
         }
       });
@@ -431,13 +430,13 @@ class Authenticate extends ChangeNotifier with Toast {
     return _newMyPosts;
   }
 
-  Future fetchScrappedPosts({int userId}) async {
+  Future fetchScrappedPosts({int? userId}) async {
     loading = true;
     try {
       String authToken = await getFirebaseIdToken();
       await HttpRequest()
           .get(
-        path: "community/api/v1/posts/users/${me.id}/scrapped",
+        path: "community/api/v1/posts/users/${me!.id}/scrapped",
         authToken: authToken,
       ).then((response) async {
         if (response.statusCode == 200) {
@@ -470,7 +469,7 @@ class Authenticate extends ChangeNotifier with Toast {
       String authToken = await getFirebaseIdToken();
       await HttpRequest()
           .get(
-        path: "community/api/v1/posts/users/${me.id}/scrapped",
+        path: "community/api/v1/posts/users/${me!.id}/scrapped",
         queryParams: {
           "page": page.toString(),
         },
@@ -483,8 +482,8 @@ class Authenticate extends ChangeNotifier with Toast {
           _newScrappedPosts = jsonList.map((e) => Post.fromJson(e)).toList();
           loading = false;
         } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
+          // final jsonUtf8 = decodeKo(response);
+          // final String? err = json.decode(jsonUtf8)["message"];
           showToast(success: false, msg: '더 이상 글을 불러올 수 없습니다.');
         }
       });
@@ -497,7 +496,7 @@ class Authenticate extends ChangeNotifier with Toast {
     return _newScrappedPosts;
   }
 
-  Future<int> countMsg() async {
+  Future<int?> countMsg() async {
     loading = true;
     try {
       String authToken = await getFirebaseIdToken();

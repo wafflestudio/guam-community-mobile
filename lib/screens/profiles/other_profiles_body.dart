@@ -11,13 +11,13 @@ import 'package:provider/provider.dart';
 import '../../providers/user_auth/authenticate.dart';
 
 class OtherProfilesBody extends StatelessWidget {
-  final Profile profile;
+  final Profile? profile;
 
   OtherProfilesBody({this.profile});
 
   @override
   Widget build(BuildContext context) {
-    bool isMe = context.read<Authenticate>().isMe(profile.id);
+    bool isMe = context.read<Authenticate>().isMe(profile!.id);
 
     return Container(
       width: double.infinity,
@@ -25,17 +25,17 @@ class OtherProfilesBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ProfileImg(profileImg: profile.profileImg, height: 144, width: 144),
-          ProfileNickname(profile.nickname),
-          ProfileIntro(profile.intro ?? ""),
+          ProfileImg(profileImg: profile!.profileImg, height: 144, width: 144),
+          ProfileNickname(profile!.nickname),
+          ProfileIntro(profile!.intro ?? ""),
           ProfileWebButtons(
-            githubId: profile.githubId ?? "",
-            blogUrl: profile.blogUrl ?? "",
+            githubId: profile!.githubId ?? "",
+            blogUrl: profile!.blogUrl ?? "",
             isMe: isMe,
           ),
           // 추후 MyProfile의 id랑 비교해서 본인임이 확인되면 프로필 탭으로 이동하도록 하겠습니다.
           if (!isMe) MessageSendButton(profile),
-          ProfileInterests(profile.interests),
+          ProfileInterests(profile!.interests),
         ],
       ),
     );

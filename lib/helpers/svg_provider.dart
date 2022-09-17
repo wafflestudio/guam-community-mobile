@@ -24,10 +24,10 @@ class SvgProvider extends ImageProvider<SvgImageKey> {
   /// Useful for [DecorationImage].
   /// If not specified, will use size from [Image].
   /// If [Image] not specifies size too, will use default size 100x100.
-  final Size size; // nullable
+  final Size? size; // nullable
 
   /// Color to tint the SVG
-  final Color color;
+  final Color? color;
 
   /// Defines if the SVG is loaded from assets or read from a file.
   final bool isAsset;
@@ -97,10 +97,10 @@ class SvgProvider extends ImageProvider<SvgImageKey> {
 @immutable
 class SvgImageKey {
   const SvgImageKey({
-    @required this.assetName,
-    @required this.pixelWidth,
-    @required this.pixelHeight,
-    @required this.scale,
+    required this.assetName,
+    required this.pixelWidth,
+    required this.pixelHeight,
+    required this.scale,
     this.color,
   });
 
@@ -116,7 +116,7 @@ class SvgImageKey {
   final int pixelHeight;
 
   /// Color to tint the SVG
-  final Color color;
+  final Color? color;
 
   /// Used to calculate logical size from physical, i.e.
   /// logicalWidth = [pixelWidth] / [scale],

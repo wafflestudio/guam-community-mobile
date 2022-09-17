@@ -8,9 +8,9 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../../styles/fonts.dart';
 
 class CommentBanner extends StatelessWidget {
-  final Comment comment;
-  final bool isAuthor;
-  final Function deleteFunc;
+  final Comment? comment;
+  final bool? isAuthor;
+  final Function? deleteFunc;
 
   CommentBanner(this.comment, this.isAuthor, this.deleteFunc);
 
@@ -21,13 +21,13 @@ class CommentBanner extends StatelessWidget {
       child: Row(
         children: [
           CommonImgNickname(
-            userId: comment.profile.id,
-            nickname: comment.profile.nickname,
-            profileClickable: comment.profile.id != 0,
-            imgUrl: comment.profile.profileImg ?? null,
+            userId: comment!.profile!.id,
+            nickname: comment!.profile!.nickname,
+            profileClickable: comment!.profile!.id != 0,
+            imgUrl: comment!.profile!.profileImg ?? null,
             nicknameColor: GuamColorFamily.grayscaleGray3,
           ),
-          if (isAuthor && comment.profile.id != 0) 
+          if (isAuthor! && comment!.profile!.id != 0) 
             /// 익명게시판의 경우 id가 모두 0인 것을 이용해 익명게시글 내 댓글에서 '작성자' 표시는 항상 안보이게 만듦.
             Container(
               margin: EdgeInsets.only(left: 4),
@@ -46,7 +46,7 @@ class CommentBanner extends StatelessWidget {
               ),
             ),
           Spacer(),
-          if (comment.isMine || comment.profile.id != 0)
+          if (comment!.isMine! || comment!.profile!.id != 0)
           IconButton(
             iconSize: 20,
             padding: EdgeInsets.zero,

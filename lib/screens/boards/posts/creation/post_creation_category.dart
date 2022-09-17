@@ -56,7 +56,7 @@ class _PostCreationCategoryState extends State<PostCreationCategory> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  ...categoryList.map((c) => _categoryChip(categoryType[c['name']])),
+                  ...categoryList.map((c) => _categoryChip(categoryType[c['name']]!)),
                 ],
               ),
             ),

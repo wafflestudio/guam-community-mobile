@@ -9,7 +9,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin{
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   _setAnimation(double begin, double end){
     return CurvedAnimation(
@@ -108,7 +108,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     );
   }
 
-  Widget _starSplash({double top, double left, double width, double height, double begin, double end, HexColor color}){
+  Widget _starSplash({double? top, double? left, double? width, double? height, required double begin, required double end, HexColor? color}){
     return Positioned(
       top: top,
       left: left,

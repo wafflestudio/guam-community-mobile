@@ -12,7 +12,7 @@ import '../../../helpers/http_request.dart';
 import '../../../providers/posts/posts.dart';
 
 class CommentBody extends StatefulWidget {
-  final Comment comment;
+  final Comment? comment;
 
   CommentBody(this.comment);
 
@@ -21,13 +21,13 @@ class CommentBody extends StatefulWidget {
 }
 
 class _CommentBodyState extends State<CommentBody> {
-  bool isLiked;
-  int likeCount;
+  bool? isLiked;
+  int? likeCount;
 
   @override
   void initState() {
-    isLiked = widget.comment.isLiked;
-    likeCount = widget.comment.likeCount;
+    isLiked = widget.comment!.isLiked;
+    likeCount = widget.comment!.likeCount;
     super.initState();
   }
 
@@ -38,27 +38,27 @@ class _CommentBodyState extends State<CommentBody> {
 
     Future likeOrUnlikeComment() async {
       try {
-        if (!isLiked) {
+        if (!isLiked!) {
           return await postsProvider.likeComment(
-            postId: widget.comment.postId,
-            commentId: widget.comment.id,
+            postId: widget.comment!.postId,
+            commentId: widget.comment!.id,
           ).then((successful) {
             if (successful) {
               isLiked = true;
-              likeCount ++;
+              likeCount = likeCount! + 1;
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);
             }
           });
         } else {
           return await postsProvider.unlikeComment(
-            postId: widget.comment.postId,
-            commentId: widget.comment.id,
+            postId: widget.comment!.postId,
+            commentId: widget.comment!.id,
           ).then((successful) {
             if (successful) {
               setState(() {
                 isLiked = false;
-                likeCount --;
+                likeCount = likeCount! - 1;
               });
             } else {
               return postsProvider.fetchPosts(postsProvider.boardId);
@@ -83,7 +83,7 @@ class _CommentBodyState extends State<CommentBody> {
                 throw 'Could not launch $link';
               }
             },
-            text: widget.comment.content,
+            text: widget.comment!.content!,
             style: TextStyle(
               height: 1.6,
               fontSize: 13,
@@ -98,20 +98,20 @@ class _CommentBodyState extends State<CommentBody> {
             ),
           ),
         ),
-        if (widget.comment.imagePaths.isNotEmpty)
+        if (widget.comment!.imagePaths!.isNotEmpty)
           Container(
             padding: EdgeInsets.only(left: 23, top: 8, bottom: 8),
             constraints: BoxConstraints(maxHeight: maxImgSize + 15),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: widget.comment.imagePaths.length,
+              itemCount: widget.comment!.imagePaths!.length,
               itemBuilder: (_, idx) => Container(
                 padding: EdgeInsets.only(right: 10),
                 child: ImageThumbnail(
                   width: maxImgSize,
                   height: maxImgSize,
                   image: Image(
-                    image: NetworkImage(HttpRequest().s3BaseAuthority + widget.comment.imagePaths[idx]),
+                    image: NetworkImage(HttpRequest().s3BaseAuthority + widget.comment!.imagePaths![idx]),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -126,11 +126,11 @@ class _CommentBodyState extends State<CommentBody> {
                 iconSize: 18,
                 fontSize: 10,
                 text: likeCount.toString(),
-                iconPath: isLiked
+                iconPath: isLiked!
                     ? 'assets/icons/like_filled.svg'
                     : 'assets/icons/like_outlined.svg',
                 onPressed: likeOrUnlikeComment,
-                iconColor: isLiked
+                iconColor: isLiked!
                     ? GuamColorFamily.redCore
                     : GuamColorFamily.grayscaleGray5,
                 textColor: GuamColorFamily.grayscaleGray5,
@@ -138,7 +138,7 @@ class _CommentBodyState extends State<CommentBody> {
               Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: Text(
-                  Jiffy(widget.comment.createdAt).fromNow(),
+                  Jiffy(widget.comment!.createdAt).fromNow(),
                   style: TextStyle(
                     fontSize: 9,
                     fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,

@@ -3,8 +3,8 @@ import 'package:transparent_image/transparent_image.dart';
 import '../../helpers/http_request.dart';
 
 class ImageExpanded extends StatelessWidget{
-  final Widget image;
-  final String imagePath;
+  final Widget? image;
+  final String? imagePath;
 
   ImageExpanded({this.image, this.imagePath});
 
@@ -20,7 +20,7 @@ class ImageExpanded extends StatelessWidget{
           child: InteractiveViewer(
             child: image ?? FadeInImage(
               placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(HttpRequest().s3BaseAuthority + imagePath),
+              image: NetworkImage(HttpRequest().s3BaseAuthority + imagePath!),
               fit: BoxFit.fitWidth,
             )
           ),

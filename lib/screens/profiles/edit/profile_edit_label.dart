@@ -5,7 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 class ProfileEditLabel extends StatelessWidget {
   final String label;
-  final HexColor textColor;
+  final HexColor? textColor;
 
   ProfileEditLabel(this.label, {this.textColor});
 

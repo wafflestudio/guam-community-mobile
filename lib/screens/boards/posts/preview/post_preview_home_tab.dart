@@ -33,7 +33,7 @@ class PostPreviewHomeTab extends StatelessWidget {
                     ? PostPreviewCategory(post)
                     : Container(),
             Spacer(),
-            PostPreviewRelativeTime(DateTime.parse(this.post.createdAt)),
+            PostPreviewRelativeTime(DateTime.parse(this.post.createdAt!)),
           ],
         ),
         Padding(
@@ -42,7 +42,7 @@ class PostPreviewHomeTab extends StatelessWidget {
         ),
         Row(
           children: [
-            if (post.imagePaths.isNotEmpty)
+            if (post.imagePaths!.isNotEmpty)
               IconButton(
                 onPressed: null,
                 padding: EdgeInsets.only(right: 4),

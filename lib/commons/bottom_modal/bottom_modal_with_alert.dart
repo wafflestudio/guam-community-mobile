@@ -7,10 +7,10 @@ import '../custom_divider.dart';
 import 'bottom_modal_default.dart';
 
 class BottomModalWithAlert extends StatelessWidget {
-  final String funcName;
-  final String title;
-  final String body;
-  final Function func;
+  final String? funcName;
+  final String? title;
+  final String? body;
+  final Function? func;
 
   BottomModalWithAlert({this.funcName, this.title, this.body, this.func});
 
@@ -38,7 +38,7 @@ class BottomModalWithAlert extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      title,
+                      title!,
                       style: TextStyle(fontSize: 18, color: GuamColorFamily.grayscaleGray2),
                     ),
                     TextButton(
@@ -60,15 +60,15 @@ class BottomModalWithAlert extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(
-                    body,
+                    body!,
                     style: TextStyle(fontSize: 14, height: 1.6, fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular),
                   ),
                 ),
                 Center(
                   child: TextButton(
-                    onPressed: func,
+                    onPressed: func as void Function()?,
                     child: Text(
-                      funcName,
+                      funcName!,
                       style: TextStyle(fontSize: 16, color: GuamColorFamily.redCore),
                     ),
                   ),

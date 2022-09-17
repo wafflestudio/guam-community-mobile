@@ -9,10 +9,10 @@ import 'package:transparent_image/transparent_image.dart';
 import '../../../commons/image/image_container.dart';
 
 class ProfileImg extends StatefulWidget {
-  final String profileImg;
-  final double height;
-  final double width;
-  final List<dynamic> newImage;
+  final String? profileImg;
+  final double? height;
+  final double? width;
+  final List<dynamic>? newImage;
 
   ProfileImg({this.profileImg, this.height, this.width, this.newImage});
 
@@ -32,13 +32,13 @@ class _ProfileImgState extends State<ProfileImg> {
       ),
       child: ClipOval(
         child: widget.profileImg == null
-            ? widget.newImage != null && widget.newImage.isNotEmpty
+            ? widget.newImage != null && widget.newImage!.isNotEmpty
                 ? Container( /// 프사 설정 안 된 상태에서 사진첩에서 사진 불러옴.
                     child: ImageThumbnail(
                       width: widget.width,
                       height: widget.height,
                       image: Image(
-                        image: FileImage(File(widget.newImage[0].path)),
+                        image: FileImage(File(widget.newImage![0].path)),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -48,13 +48,13 @@ class _ProfileImgState extends State<ProfileImg> {
                     width: widget.width,
                     height: widget.height,
                   )
-            : widget.newImage != null && widget.newImage.isNotEmpty
+            : widget.newImage != null && widget.newImage!.isNotEmpty
                 ? Container( /// 프사 설정된 상태에서 사진첩에서 사진 불러옴.
                     child: ImageThumbnail(
                       width: widget.width,
                       height: widget.height,
                       image: Image(
-                        image: FileImage(File(widget.newImage[0].path)),
+                        image: FileImage(File(widget.newImage![0].path)),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -62,7 +62,7 @@ class _ProfileImgState extends State<ProfileImg> {
                 : InkWell( /// 프사 설정된 상태에서 아무 작업도 안 함.
                     child: FadeInImage(
                       placeholder: MemoryImage(kTransparentImage),
-                      image: NetworkImage(HttpRequest().s3BaseAuthority + widget.profileImg),
+                      image: NetworkImage(HttpRequest().s3BaseAuthority + widget.profileImg!),
                       fit: BoxFit.cover,
                     ),
                     onTap: () {

@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
 class Back extends StatelessWidget {
-  final Function onPressed;
+  final Function? onPressed;
 
   Back({this.onPressed});
 
@@ -17,7 +17,7 @@ class Back extends StatelessWidget {
         icon: SvgPicture.asset('assets/icons/back.svg'),
         onPressed: () {
           Navigator.maybePop(context);
-          if (onPressed != null) onPressed();
+          if (onPressed != null) onPressed!();
         }
       ),
     );

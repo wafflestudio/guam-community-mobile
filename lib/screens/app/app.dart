@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/providers/home/home_provider.dart';
 import 'package:provider/provider.dart';
+import '../../providers/share/share.dart';
 import 'bottom_navigation.dart';
 import 'tab_item.dart';
 import 'tab_navigator.dart';
@@ -23,15 +24,21 @@ class AppState extends State<App> with Toast {
   void _selectTab(TabItem tabItem) {
     if (tabItem == _currentTab) {
       // 현재 탭 버튼 두 번 누르면 해당 탭의 처음 루트로 복귀
-      _navigatorKeys[tabItem].currentState.popUntil((route) => route.isFirst);
+      _navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst);
     } else {
       setState(() {
         // 알림 탭 FutureBuilder가 탭 전환 시 null을 받게 되는 현상 회피
         if (_currentTab == TabItem.notification)
-          _navigatorKeys[_currentTab].currentState.popUntil((route) => route.isFirst);
+          _navigatorKeys[_currentTab]!.currentState!.popUntil((route) => route.isFirst);
         _currentTab = tabItem;
       });
     }
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    Share(context).initialize();
   }
 
   @override
@@ -40,7 +47,7 @@ class AppState extends State<App> with Toast {
       create: (_) => HomeProvider(),
       child: WillPopScope(
         onWillPop: () async {
-          final isFirstRouteInCurrentTab = await _navigatorKeys[_currentTab].currentState.maybePop();
+          final isFirstRouteInCurrentTab = await _navigatorKeys[_currentTab]!.currentState!.maybePop();
           if (isFirstRouteInCurrentTab) {
             // if not on the 'main' tab
             if (_currentTab == TabItem.home) {

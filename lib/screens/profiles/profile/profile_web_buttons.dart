@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../buttons/web_button.dart';
 
 class ProfileWebButtons extends StatelessWidget {
-  final String githubId;
-  final String blogUrl;
+  final String? githubId;
+  final String? blogUrl;
   final bool isMe;
   static const String githubUrl = 'https://github.com/';
 
@@ -17,7 +17,7 @@ class ProfileWebButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.,
         children: [
-          if(githubId != null) WebButton(githubUrl+githubId, 'assets/icons/github.svg'),
+          if(githubId != null) WebButton(githubUrl+githubId!, 'assets/icons/github.svg'),
           if(blogUrl != null) WebButton(blogUrl, 'assets/icons/blog.svg'),
         ],
       ),
