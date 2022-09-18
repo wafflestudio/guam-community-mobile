@@ -38,7 +38,10 @@ class _NotificationsPreviewState extends State<NotificationsPreview> with Toast 
 
     Future<Post?> _getPost() {
       return Future.delayed(Duration(seconds: 0), () async {
-        Post? _post = await postProvider.getPost(_postId);
+        Post? _post = await postProvider.getPost(_postId).then((post) {
+          if (post == null) showToast(success: false, msg: "삭제된 게시글입니다.");
+          return post;
+        });
         setState(() => isLoading = false);
 
         /// read notification API
