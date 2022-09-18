@@ -9,6 +9,7 @@ import '../../../commons/bottom_modal/bottom_modal_with_alert.dart';
 import '../../../commons/bottom_modal/bottom_modal_with_message.dart';
 import '../../../providers/posts/posts.dart';
 import '../../../providers/user_auth/authenticate.dart';
+import '../../../commons/bottom_modal/bottom_modal_with_report.dart';
 
 class CommentMore extends StatelessWidget {
   final Comment? comment;
@@ -81,7 +82,7 @@ class CommentMore extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // PostCommentReport(comment.profile),
+                  BottomModalWithReport(reportPost: false, reportId: comment!.id!, profile: comment!.profile!),
                   BottomModalWithAlert(
                     funcName: '차단하기',
                     title: '${comment!.profile!.nickname} 님을 차단하시겠어요?',

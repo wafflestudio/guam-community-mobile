@@ -134,10 +134,6 @@ class _MessageDetailState extends State<MessageDetail> {
                                   }
                                 }),
                               ),
-                              // BottomModalDefault(
-                              //   text: '신고하기',
-                              //   onPressed: (){},
-                              // ),
                               BottomModalWithAlert(
                                 funcName: '차단하기',
                                 title: '${widget.otherProfile!.nickname} 님을 차단하시겠어요?',
