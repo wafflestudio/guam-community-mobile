@@ -38,7 +38,11 @@ class AppState extends State<App> with Toast {
   @override
   void initState(){
     super.initState();
-    Share(context).initialize();
+    Share(context: context).addListener((){
+      setState(() {
+        _currentTab = TabItem.home;
+      });
+    });
   }
 
   @override

@@ -53,7 +53,7 @@ class _PostInfoState extends State<PostInfo> {
   @override
   Widget build(BuildContext context) {
     final postsProvider = context.watch<Posts>();
-    final share = Share(context);
+    final share = Share(context: context);
 
     Future likeOrUnlikePost() async {
       try {
