@@ -47,9 +47,10 @@ class _PostCommentReportState extends State<PostCommentReport> {
               alert: '허위 신고자는 서비스 이용에 불이익을 받을 수 있으니 신중하게 신고해주세요. 자세한 사항은 개발자 문의를 이용해주세요.',
               confirm: '신고하기',
               children: [
-                _choice(myState, '욕설/비방/음담패설'),
-                _choice(myState, '사행성 게시물'),
+                _choice(myState, '욕설/비방'),
+                _choice(myState, '음담패설'),
                 _choice(myState, '불법 복제/무단 도용'),
+                _choice(myState, '사행성 게시물'),
                 _choice(myState, '게시글/댓글 도배'),
                 _choice(myState, '기타'),
               ],

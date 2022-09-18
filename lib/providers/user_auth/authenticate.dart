@@ -364,6 +364,42 @@ class Authenticate extends ChangeNotifier with Toast {
     return successful;
   }
 
+  Future<bool> reportUser({bool reportPost=true, Map<String, dynamic>? body}) async {
+    bool successful = false;
+    try {
+      toggleLoading();
+      String authToken = await getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest().post(
+          path: reportPost
+              ? "community/api/v1/posts/report"
+              : "community/api/v1/comments/report",
+          body: body,
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            successful = true;
+            showToast(success: true, msg: "해당 사용자를 신고했습니다.");
+          } else {
+            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+            switch (response.statusCode) {
+              case 401: msg = "권한이 없습니다."; break;
+              case 404: msg = "존재하지 않는 유저입니다."; break;
+              case 409: msg = "이미 신고한 유저입니다."; break;
+            }
+            showToast(success: false, msg: msg);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      toggleLoading();
+    }
+    return successful;
+  }
+
   Future fetchMyPosts({int? userId}) async {
     loading = true;
     try {
