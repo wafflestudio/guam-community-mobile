@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../../commons/bottom_modal/bottom_modal_default.dart';
 import '../../../../commons/bottom_modal/bottom_modal_with_alert.dart';
 import '../../../../commons/bottom_modal/bottom_modal_with_message.dart';
+import '../../../../commons/bottom_modal/bottom_modal_with_report.dart';
 import '../../../../models/boards/post.dart';
 import '../../../../providers/messages/messages.dart';
 import '../../../../providers/posts/posts.dart';
@@ -101,7 +102,7 @@ class PostDetailMore extends StatelessWidget {
                 ),
               ),
             ),
-            // PostCommentReport(post.profile),
+            BottomModalWithReport(reportId: post!.id!, profile: post!.profile!),
             BottomModalWithAlert(
               funcName: '차단하기',
               title: '${post!.profile!.nickname} 님을 차단하시겠어요?',

@@ -9,9 +9,10 @@ class BottomModalWithChoice extends StatelessWidget {
   final String? body;
   final String? alert;
   final String? confirm;
+  final Function? func;
   final List<Widget>? children;
 
-  BottomModalWithChoice({this.title, this.back, this.body, this.alert, this.confirm, this.children});
+  BottomModalWithChoice({this.title, this.back, this.body, this.alert, this.confirm, this.func, this.children});
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +81,7 @@ class BottomModalWithChoice extends StatelessWidget {
             if (confirm != null)
               Center(
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: func as void Function()?,
                   child: Text(
                     confirm!,
                     style: TextStyle(fontSize: 16, color: GuamColorFamily.redCore),
