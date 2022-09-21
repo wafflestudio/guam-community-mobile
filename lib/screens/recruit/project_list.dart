@@ -77,7 +77,7 @@ class _PostListState extends State<ProjectList> {
                 color: GuamColorFamily.purpleLight2,
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Center(child: Text(
-                  '모든 프로젝트 불러왔습니다!',
+                  '모든 프로젝트를 불러왔습니다!',
                   style: TextStyle(
                     fontSize: 13,
                     color: GuamColorFamily.grayscaleGray2,
