@@ -32,11 +32,11 @@ class HomeProvider with ChangeNotifier {
     {
       'label': '프로젝트',
       'selected_icon': SvgPicture.asset(
-        'assets/icons/project_temp.svg',
+        'assets/icons/project_filled.svg',
         color: GuamColorFamily.purpleCore,
       ),
       'unselected_icon': SvgPicture.asset(
-        'assets/icons/project_temp.svg',
+        'assets/icons/project_outlined.svg',
         color: GuamColorFamily.grayscaleGray4,
       ),
     },
