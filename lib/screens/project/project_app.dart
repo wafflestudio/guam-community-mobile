@@ -50,10 +50,10 @@ class _ProjectAppScaffoldState extends State<ProjectAppScaffold> {
                   indicatorWeight: 2,
                   tabs: [
                     Tab(
-                        child: Text('리그루팅')
+                        child: Text('리크루팅'),
                     ),
                     Tab(
-                        child: Text('작업실')
+                        child: Text('작업실'),
                     ),
                   ],
                 ),
