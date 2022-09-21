@@ -89,7 +89,7 @@ class HttpRequest with Toast {
         final response = await http.put(uri, body: file.readAsBytesSync());
 
         /// 마지막 파일까지 잘 전송되었으면 마지막 presignedUrl PUT response 반환
-        // if (idx == presignedUrls.length) return response;
+        if (idx == presignedUrls.length) return Future.value(response);
       });
     } catch (e) {
       print("Error on PUT request: $e");

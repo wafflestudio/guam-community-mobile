@@ -17,6 +17,7 @@ class AppState extends State<App> with Toast {
   final _navigatorKeys = {
     TabItem.home: GlobalKey<NavigatorState>(),
     TabItem.search: GlobalKey<NavigatorState>(),
+    TabItem.project: GlobalKey<NavigatorState>(),
     TabItem.notification: GlobalKey<NavigatorState>(),
     TabItem.profile: GlobalKey<NavigatorState>(),
   };
@@ -69,6 +70,7 @@ class AppState extends State<App> with Toast {
           body: Stack(children: <Widget>[
             _buildOffstageNavigator(TabItem.home),
             _buildOffstageNavigator(TabItem.search),
+            _buildOffstageNavigator(TabItem.project),
             _buildOffstageNavigator(TabItem.notification),
             _buildOffstageNavigator(TabItem.profile),
           ]),

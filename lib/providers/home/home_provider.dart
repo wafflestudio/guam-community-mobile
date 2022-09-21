@@ -28,6 +28,18 @@ class HomeProvider with ChangeNotifier {
         color: GuamColorFamily.grayscaleGray4,
       ),
     },
+    // project_temp 인 이유는 피그마 아이콘 란에 아이콘이 없어서 다른데서 가져왔기 때문입니다
+    {
+      'label': '프로젝트',
+      'selected_icon': SvgPicture.asset(
+        'assets/icons/project_temp.svg',
+        color: GuamColorFamily.purpleCore,
+      ),
+      'unselected_icon': SvgPicture.asset(
+        'assets/icons/project_temp.svg',
+        color: GuamColorFamily.grayscaleGray4,
+      ),
+    },
     {
       'label': '알림',
       'selected_icon': SvgPicture.asset(
