@@ -64,7 +64,7 @@ class _ProfileEditTextFieldState extends State<ProfileEditTextField> {
           isDense: true,
           contentPadding: EdgeInsets.only(bottom: 8),
           hintText: widget.isBlogUrl
-            ? 'https://guam.com'
+            ? 'https://guam.wafflestudio.com'
             : '',
           hintStyle: TextStyle(
             color: GuamColorFamily.grayscaleGray4,

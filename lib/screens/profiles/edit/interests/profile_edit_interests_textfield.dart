@@ -60,7 +60,7 @@ class ProfileEditInterestsTextFieldState extends State<ProfileEditInterestsTextF
                 height: 22.4/14
               ),
               decoration: InputDecoration(
-                hintText: "관심사를 입력해주세요.  ex) SpringBoot",
+                hintText: "관심사를 입력해주세요.  ex) Flutter",
                 hintStyle: TextStyle(fontSize: 14, color: GuamColorFamily.grayscaleGray5),
                 border: InputBorder.none,
                 focusedBorder: InputBorder.none,
