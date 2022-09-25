@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -27,29 +28,36 @@ class _GoogleLoginState extends State<GoogleLogin> with Toast {
     super.initState();
   }
 
-  Future<UserCredential> _signInWithGoogle() async {
+  Future<UserCredential?> _signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser != null) {
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication googleAuth = (await googleUser?.authentication)!;
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth = (await googleUser?.authentication)!;
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+      // Once signed in, return the UserCredential
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } else {
+      return null;
+    }
   }
 
   _loginWithGoogle() async {
     try {
       widget.setLoading(true);
 
-      final _userCredential = await _signInWithGoogle();
-      await authProvider.googleSignIn(_userCredential);
+      final UserCredential? _userCredential = await _signInWithGoogle();
+      if (_userCredential != null) {
+        await authProvider.googleSignIn(_userCredential!);
+      } else {
+        widget.setLoading(false);
+      }
     } catch (e) {
       widget.setLoading(false);
       showToast(success: false, msg: '일시적인 오류로 인해\n다른 소셜 로그인을 이용해주세요.');
