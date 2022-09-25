@@ -25,11 +25,12 @@ class _SignUpState extends State<SignUp> with Toast {
     Size size = MediaQuery.of(context).size;
 
     Future signUp() async {
+      input['updateImage'] = false;
       if (input['nickname'] == '') {
         showToast(success: false, msg: '닉네임을 입력해주세요.');
         return null;
       }
-      await context.read<Authenticate>().setProfile(fields: input, imgReset: true);
+      await context.read<Authenticate>().setProfile(fields: input);
     }
 
     return Scaffold(

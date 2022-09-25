@@ -4,7 +4,7 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 
 class SignupNickname extends StatefulWidget {
-  final Map input;
+  final Map? input;
 
   SignupNickname(this.input);
 
@@ -17,7 +17,7 @@ class _SignupNicknameState extends State<SignupNickname> {
 
   @override
   void initState() {
-    _nicknameTextFieldController.text = widget.input['nickname'];
+    _nicknameTextFieldController.text = "";
     super.initState();
   }
 
@@ -28,7 +28,7 @@ class _SignupNicknameState extends State<SignupNickname> {
   }
 
   void _setNickname(String nickname) =>
-      setState(() => widget.input['nickname'] = nickname);
+      setState(() => widget.input!['nickname'] = nickname);
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class _SignupNicknameState extends State<SignupNickname> {
           keyboardType: TextInputType.name,
           controller: _nicknameTextFieldController,
           minLines: 1,
-          maxLength: widget.input['nickname'] == '' ? null : 10,
+          maxLength: widget.input!['nickname'] == '' ? null : 10,
           onChanged: (e) {
             _setNickname(_nicknameTextFieldController.text);
             // _checkButtonEnable();
