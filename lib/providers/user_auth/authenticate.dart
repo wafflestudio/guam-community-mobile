@@ -107,6 +107,7 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Future<void> signOut() async {
     loading = false;
+    me = null;
     await auth.signOut();
     showToast(success: true, msg: "다시 만나요!");
     notifyListeners();
@@ -138,7 +139,7 @@ class Authenticate extends ChangeNotifier with Toast {
     }
   }
 
-  Future setProfile({Map<String, dynamic>? fields, dynamic files, bool? imgReset}) async {
+  Future setProfile({Map<String, dynamic>? fields, dynamic files, bool updateImage=false}) async {
     bool successful = false;
 
     try {
@@ -146,20 +147,29 @@ class Authenticate extends ChangeNotifier with Toast {
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
         /// files == null 여부에 따라 raw-data로 보내거나 multipart type으로 분리
-        Future<dynamic> request = imgReset!
-            ? HttpRequest().patch(
-          path: "community/api/v1/users/${me!.id}/json",
+        await HttpRequest().patch(
+          path: "community/api/v1/users/${me!.id}",
           body: fields,
           authToken: authToken,
-        ) : HttpRequest().patchMultipart(
-          path: "community/api/v1/users/${me!.id}",
-          fields: fields!,
-          files: files,
-          authToken: authToken,
-        );
-        await request.then((response) async {
+        ).then((response) async {
           if (response.statusCode == 200) {
-            await getMyProfile();
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+
+            /// S3 Presigned Urls
+            if (updateImage) {
+              List<dynamic> presignedUrls = [jsonData['presignedUrl']];
+              if (presignedUrls.isNotEmpty) {
+                await HttpRequest().put(
+                  presignedUrls: presignedUrls,
+                  files: files,
+                ).then((response) async {
+                  await getMyProfile();
+                });
+              }
+            } else {
+              await getMyProfile();
+            }
             successful = true;
             showToast(success: true, msg: "프로필을 설정했습니다.");
           } else {
