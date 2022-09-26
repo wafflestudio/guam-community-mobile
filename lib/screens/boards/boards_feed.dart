@@ -37,7 +37,11 @@ class _BoardsFeedState extends State<BoardsFeed> {
   }
 
   void _firstLoad() async {
-    setState(() => _isFirstLoadRunning = true);
+    setState((){
+      _isFirstLoadRunning = true;
+      _hasNextPage = true;
+      _rankFrom = 0;
+    });
     try {
       if (!_isSorted) {
         // 시간순 정렬
