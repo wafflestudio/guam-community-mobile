@@ -27,8 +27,11 @@ class Authenticate extends ChangeNotifier with Toast {
   List<Post>? _newScrappedPosts;
   bool? _hasNext;
   bool loading = true;
+  bool initialLoading = false;
 
   Authenticate() {
+    initialLoading = true;
+    notifyListeners();
     getMyProfile();
   }
 
@@ -135,6 +138,7 @@ class Authenticate extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
+      initialLoading = false;
       notifyListeners();
     }
   }
