@@ -15,7 +15,6 @@ class _SignUpState extends State<SignUp> with Toast {
   Map<String, dynamic> input = {};
   int pageIdx = 0;
 
-
   @override
   Widget build(BuildContext context) {
     List pages = [
@@ -26,7 +25,7 @@ class _SignUpState extends State<SignUp> with Toast {
 
     Future signUp() async {
       input['updateImage'] = false;
-      if (input['nickname'] == '') {
+      if (input['nickname'] == null || input['nickname'].isEmpty) {
         showToast(success: false, msg: '닉네임을 입력해주세요.');
         return null;
       }

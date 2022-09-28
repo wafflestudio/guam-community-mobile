@@ -39,7 +39,7 @@ class Authenticate extends ChangeNotifier with Toast {
   List<Post>? get newMyPosts => _newMyPosts;
   List<Post>? get scrappedPosts => _scrappedPosts;
   List<Post>? get newScrappedPosts => _newScrappedPosts;
-  bool userSignedIn() => auth.currentUser != null && me != null; // 로그인 된 유저 존재 여부
+  bool userSignedIn() => auth.currentUser != null; // 로그인 된 유저 존재 여부
   bool profileExists() => me != null && me!.profileSet!; // 프로필까지 만든 정상 유저인지 여부
   bool isMe(int? userId) => me!.id == userId;
 
@@ -141,12 +141,10 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Future setProfile({Map<String, dynamic>? fields, dynamic files, bool updateImage=false}) async {
     bool successful = false;
-
     try {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
-        /// files == null 여부에 따라 raw-data로 보내거나 multipart type으로 분리
         await HttpRequest().patch(
           path: "community/api/v1/users/${me!.id}",
           body: fields,
