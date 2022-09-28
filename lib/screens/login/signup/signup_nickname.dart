@@ -17,7 +17,7 @@ class _SignupNicknameState extends State<SignupNickname> {
 
   @override
   void initState() {
-    _nicknameTextFieldController.text = widget.input['nickname'];
+    _nicknameTextFieldController.text = "";
     super.initState();
   }
 
@@ -70,10 +70,7 @@ class _SignupNicknameState extends State<SignupNickname> {
           controller: _nicknameTextFieldController,
           minLines: 1,
           maxLength: widget.input['nickname'] == '' ? null : 10,
-          onChanged: (e) {
-            _setNickname(_nicknameTextFieldController.text);
-            // _checkButtonEnable();
-          },
+          onChanged: (e) => _setNickname(_nicknameTextFieldController.text),
           cursorColor: GuamColorFamily.purpleCore,
           decoration: InputDecoration(
             hintText: "ex) 크로플보다와플",

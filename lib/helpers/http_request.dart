@@ -7,8 +7,6 @@ import 'package:path/path.dart' as p;
 import '../mixins/toast.dart';
 
 class HttpRequest with Toast {
-  // TODO: Remove immigrationAuthority & @isHttps param after immigrationAuthority is merged to gateway
-
   final String gatewayAuthority = "guam.jon-snow-korea.com";
   final String immigrationAuthority = "guam-immigration.jon-snow-korea.com";
   final String s3BaseAuthority = "https://guam.s3.ap-northeast-2.amazonaws.com/";
@@ -112,35 +110,6 @@ class HttpRequest with Toast {
       return response;
     } catch (e) {
       print("Error on PUT request: $e");
-      showToast(success: false, msg: e.toString());
-    }
-  }
-
-  Future patchMultipart({bool isHttps = false, String? authority, String? path, String? authToken, required Map<String, dynamic> fields, List<File>? files}) async {
-    try {
-      final uri = isHttps
-          ? Uri.https(authority ?? gatewayAuthority, path!)
-          : Uri.http(authority ?? gatewayAuthority, path!);
-
-      http.MultipartRequest request = http.MultipartRequest("PATCH", uri);
-      request.headers['Authorization'] = 'Bearer $authToken';
-      fields.entries.forEach((e) => request.fields[e.key] = e.value ?? "");
-
-      if (files != null)
-        files.forEach((e) async {
-          final multipartFile = http.MultipartFile(
-            "profileImage",
-            e.readAsBytes().asStream(),
-            e.lengthSync(),
-            filename: e.path.split("/").last,
-            contentType: MediaType("image", "${p.extension(e.path)}"),
-          );
-          request.files.add(multipartFile);
-        });
-      http.Response response = await http.Response.fromStream(await request.send());
-      return response;
-    } catch (e) {
-      print("Error on PATCH Multipart request: ${e.toString()}");
       showToast(success: false, msg: e.toString());
     }
   }
