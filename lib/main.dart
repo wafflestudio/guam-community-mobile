@@ -32,10 +32,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final authProvider = Authenticate();
     return FutureBuilder(
       future: Future.delayed(Duration(milliseconds: 1500)),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting || authProvider.initialLoading) {
           return MaterialApp(
             initialRoute: '/',
             debugShowCheckedModeBanner: false,
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         } else {
           return MultiProvider(
             providers: [
-              ChangeNotifierProvider<Authenticate>(create: (_) => Authenticate()),
+              ChangeNotifierProvider<Authenticate>(create: (_) => authProvider),
             ],
             child: MaterialApp(
               initialRoute: '/',
