@@ -164,7 +164,7 @@ class Search extends ChangeNotifier with Toast {
             final jsonUtf8 = decodeKo(response);
             _count = json.decode(jsonUtf8);
           } else {
-            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+            String msg = '서버가 검색 결과 수를 불러올 수 없습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = '접근 권한이 없습니다.'; break;
             }
