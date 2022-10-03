@@ -11,11 +11,10 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart' as share_plus;
 
 class Share with Toast {
-  String? title;
   BuildContext context;
   bool isLoading = false;
 
-  Share({this.title="", required this.context});
+  Share({required this.context});
 
   Future<bool> initialize() async {
     bool dynamicLinkExists = await _getInitialLink();
@@ -81,7 +80,7 @@ class Share with Toast {
     );
   }
 
-  Future<String> _getShortLink(int id) async {
+  Future<String> _getShortLink(int id, String postTitle) async {
     String dynamicLinkPrefix = 'https://wafflestudio.page.link';
     final dynamicLinkParams = DynamicLinkParameters(
       uriPrefix: dynamicLinkPrefix,
@@ -97,7 +96,7 @@ class Share with Toast {
         minimumVersion: '12.0',
       ),
       socialMetaTagParameters: SocialMetaTagParameters(
-        title: this.title != "" ? this.title : "IT 커뮤니티 : 괌(Guam)",
+        title: postTitle,
         imageUrl: Uri.parse("https://guam.wafflestudio.com/_next/static/media/favicon.e7a111af.svg"),
       ),
     );
@@ -109,11 +108,11 @@ class Share with Toast {
     return unguessableDynamicLink.shortUrl.toString();
   }
 
-  void share(int? id) async{
+  void share(int? id, String? postTitle) async{
     if(!isLoading){
       isLoading = true;
       share_plus.Share.share(
-        await _getShortLink(id!),
+        await _getShortLink(id!, postTitle!),
       ).then((value) {
         Future.delayed(Duration(milliseconds: 500),(){
           isLoading = false;
