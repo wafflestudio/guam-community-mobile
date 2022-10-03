@@ -11,9 +11,11 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart' as share_plus;
 
 class Share with Toast {
+  String? title;
   BuildContext context;
   bool isLoading = false;
-  Share({required this.context});
+
+  Share({this.title="", required this.context});
 
   Future<bool> initialize() async {
     bool dynamicLinkExists = await _getInitialLink();
@@ -80,7 +82,6 @@ class Share with Toast {
   }
 
   Future<String> _getShortLink(int id) async {
-
     String dynamicLinkPrefix = 'https://wafflestudio.page.link';
     final dynamicLinkParams = DynamicLinkParameters(
       uriPrefix: dynamicLinkPrefix,
@@ -93,11 +94,10 @@ class Share with Toast {
       iosParameters: IOSParameters(
         //fallbackUrl: Uri.parse('https://guam.wafflestudio.com/posts/$id'),
         bundleId: 'com.wafflestudio.guam-community',
-        minimumVersion: '11.0',
+        minimumVersion: '12.0',
       ),
       socialMetaTagParameters: SocialMetaTagParameters(
-        // 임시로 입력해놨습니다.
-        title: "개발자 괌",
+        title: this.title != "" ? this.title : "IT 커뮤니티 : 괌(Guam)",
         imageUrl: Uri.parse("https://guam.wafflestudio.com/_next/static/media/favicon.e7a111af.svg"),
       ),
     );
@@ -115,8 +115,7 @@ class Share with Toast {
       share_plus.Share.share(
         await _getShortLink(id!),
       ).then((value) {
-        // 임시로 해놨습니다.
-        Future.delayed(Duration(seconds: 1),(){
+        Future.delayed(Duration(milliseconds: 500),(){
           isLoading = false;
         });
       });
