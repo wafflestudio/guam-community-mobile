@@ -176,7 +176,7 @@ class _PostInfoState extends State<PostInfo> {
               'assets/icons/share_outlined.svg',
               color: widget.iconColor,
             ),
-            onPressed: () => share.share(widget.post!.id),
+            onPressed: () => share.share(widget.post!.id, widget.post!.title),
           ),
         ],
       ),

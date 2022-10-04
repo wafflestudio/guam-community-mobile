@@ -129,9 +129,7 @@ class Authenticate extends ChangeNotifier with Toast {
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
             me = Profile.fromJson(jsonData);
           } else {
-            final jsonUtf8 = decodeKo(response);
-            final String? err = json.decode(jsonUtf8)["message"];
-            showToast(success: false, msg: err);
+            showToast(success: false, msg: "서버로부터 유저 정보를 불러올 수 없습니다.");
           }
         });
       }
