@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
     return FutureBuilder(
       future: Future.delayed(Duration(milliseconds: 1500)),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting || authProvider.initialLoading) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return MaterialApp(
             initialRoute: '/',
             debugShowCheckedModeBanner: false,

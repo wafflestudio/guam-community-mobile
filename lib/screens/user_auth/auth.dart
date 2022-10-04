@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/screens/app/splash/splash_screen.dart';
+import 'package:guam_community_client/screens/login/login_wallpaper.dart';
 import 'package:guam_community_client/screens/login/signup/signup.dart';
 import 'package:provider/provider.dart';
 import '../../providers/home/home_provider.dart';
@@ -11,7 +13,7 @@ class Auth extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
 
-    return authProvider.userSignedIn()
+    return authProvider.initialLoading ? Scaffold(body: LoginWallpaper()) : authProvider.userSignedIn()
         ? authProvider.profileExists()
           ? ChangeNotifierProvider(
             create: (_) => HomeProvider(),

@@ -21,7 +21,7 @@ class _SplashTextState extends State<SplashText> with SingleTickerProviderStateM
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
-    )..repeat();
+    )..forward();
   }
 
   @override
