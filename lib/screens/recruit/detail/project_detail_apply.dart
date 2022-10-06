@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/models/projects/project.dart';
-import 'package:guam_community_client/screens/recruit/detail/project_detail_apply_button.dart';
+import 'package:guam_community_client/screens/recruit/detail/project_detail_apply_position.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
 import '../../../commons/button_size_circular_progress_indicator.dart';
@@ -80,7 +80,7 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
       padding: EdgeInsets.only(top: 10, bottom: 20),
       child: Column(
         children: [
-          ProjectDetailApplyButton(myPosition: myPosition, setMyPosition: setMyPosition),
+          ProjectDetailApplyPosition(myPosition: myPosition, setMyPosition: setMyPosition),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
             child: Container(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
-class ProjectDetailApplyButton extends StatelessWidget {
+class ProjectDetailApplyPosition extends StatelessWidget {
   final String? myPosition;
   final Function setMyPosition;
   final Map<String, dynamic> pos = {
@@ -11,7 +11,7 @@ class ProjectDetailApplyButton extends StatelessWidget {
     'DESIGNER': {'label': '디자이너'},
   };
 
-  ProjectDetailApplyButton({required this.myPosition, required this.setMyPosition});
+  ProjectDetailApplyPosition({required this.myPosition, required this.setMyPosition});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class ProjectDetailApplyButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: GuamColorFamily.grayscaleGray7,
         borderRadius: BorderRadius.all(Radius.circular(10)),
-        border: Border.all(color: GuamColorFamily.grayscaleGray5, width: 1),
+        border: Border.all(color: GuamColorFamily.grayscaleGray6, width: 0.5),
       ),
       child: ToggleButtons(
         borderWidth: 0.1,
