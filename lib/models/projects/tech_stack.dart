@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TechStack extends ChangeNotifier {
   final int? id;
-  final int? name;
+  final String? name;
   List<String>? aliases;
   String? icon;
   String? position;
