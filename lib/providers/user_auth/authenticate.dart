@@ -95,6 +95,21 @@ class Authenticate extends ChangeNotifier with Toast {
     }
   }
 
+  Future appleSignIn(UserCredential userCredential) async {
+    try {
+      loading = true;
+      showToast(success: true, msg: "애플 로그인 성공!");
+      await getMyProfile();
+      loading = false;
+    } on FirebaseAuthException {
+      showToast(success: false, msg: "Firebase 인증에 문제가 발생했습니다.");
+    } catch (e) {
+      showToast(success: false, msg: e.toString());
+    } finally {
+      notifyListeners();
+    }
+  }
+
   Future<String> getFirebaseIdToken() async {
     String idToken;
     try {
