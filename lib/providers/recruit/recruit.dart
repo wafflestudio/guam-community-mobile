@@ -36,12 +36,17 @@ class Recruit extends ChangeNotifier with Toast {
 
   var dummy = [
     Project(
-        id: 1,
-        title: 'StackOverflow 토이 프로젝트',
-      leader: Profile(nickname: 'DockerS2', profileImg: 'DEV/PROFILE/8/image_picker_A11D9F16-D6BE-415C-8E74-1505826D1CB6-2693-000000AB1F3911BA.jpg'),
+      id: 0,
+      title: 'StackOverflow 토이 프로젝트',
+      due: 'THREE',
+      leader: Profile(id: 8, nickname: 'DockerS2', profileImg: 'DEV/PROFILE/8/image_picker_A11D9F16-D6BE-415C-8E74-1505826D1CB6-2693-000000AB1F3911BA.jpg'),
       thumbnail: 'https://cdn.pixabay.com/photo/2020/09/09/02/12/smearing-5556288_960_720.jpg',
+      mobileHeadCount: 2,
+      mobileHeadLeft: 0,
       techStacks: [
         TechStack(
+          name: 'Flutter',
+          position: 'MOBILE',
           icon: 'https://engineering.linecorp.com/wp-content/uploads/2019/08/flutter1.png'
         ),
       ],
@@ -51,15 +56,25 @@ class Recruit extends ChangeNotifier with Toast {
     ),
     Project(
       id: 1,
-      title: 'SoundCloud 만들기',
-      leader: Profile(nickname: '영현님 팬', profileImg: 'DEV/PROFILE/8/image_picker_A11D9F16-D6BE-415C-8E74-1505826D1CB6-2693-000000AB1F3911BA.jpg'),
+      title: 'SoundCloud 만들기 \n SoundCloud 만들기 SoundCloud 만들기',
+      due: 'SIX',
+      description: 'SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기 \n SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기 \n SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기SoundCloud 만들기',
+      leader: Profile(id: 8, nickname: '영현님 팬', profileImg: 'DEV/PROFILE/8/image_picker_A11D9F16-D6BE-415C-8E74-1505826D1CB6-2693-000000AB1F3911BA.jpg'),
       thumbnail: 'https://cdn.pixabay.com/photo/2020/09/09/02/12/smearing-5556288_960_720.jpg',
+      webHeadCount: 2,
+      webHeadLeft: 2,
+      mobileHeadCount: 2,
+      mobileHeadLeft: 0,
       techStacks: [
         TechStack(
-            icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/220px-React-icon.svg.png'
+          name: 'React',
+          position: 'WEB',
+          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/220px-React-icon.svg.png',
         ),
         TechStack(
-            icon: 'https://engineering.linecorp.com/wp-content/uploads/2019/08/flutter1.png'
+          name: 'Flutter',
+          position: 'MOBILE',
+          icon: 'https://engineering.linecorp.com/wp-content/uploads/2019/08/flutter1.png',
         ),
       ],
       createdAt: "2022-09-19T09:49:52.021Z",
@@ -67,19 +82,32 @@ class Recruit extends ChangeNotifier with Toast {
       starred: true,
     ),
     Project(
-      id: 1,
+      id: 2,
       title: '괌 만들기',
-      leader: Profile(nickname: 'marcel ko', profileImg: 'DEV/PROFILE/8/image_picker_A11D9F16-D6BE-415C-8E74-1505826D1CB6-2693-000000AB1F3911BA.jpg'),
+      due: 'MORE',
+      leader: Profile(id: 8, nickname: 'marcel ko', profileImg: 'DEV/PROFILE/8/image_picker_A11D9F16-D6BE-415C-8E74-1505826D1CB6-2693-000000AB1F3911BA.jpg'),
       thumbnail: 'https://cdn.pixabay.com/photo/2020/09/09/02/12/smearing-5556288_960_720.jpg',
+      serverHeadCount: 3,
+      serverHeadLeft: 1,
+      webHeadCount: 2,
+      webHeadLeft: 1,
+      mobileHeadCount: 2,
+      mobileHeadLeft: 0,
       techStacks: [
         TechStack(
-            icon: 'https://5pecia1.github.io/spring-study/static/images/spring-logo.png'
+          name: 'Spring',
+          position: 'SERVER',
+          icon: 'https://5pecia1.github.io/spring-study/static/images/spring-logo.png',
         ),
         TechStack(
-            icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/220px-React-icon.svg.png'
+          name: 'React',
+          position: 'WEB',
+          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/220px-React-icon.svg.png',
         ),
         TechStack(
-            icon: 'https://engineering.linecorp.com/wp-content/uploads/2019/08/flutter1.png'
+          name: 'Flutter',
+          position: 'MOBILE',
+          icon: 'https://engineering.linecorp.com/wp-content/uploads/2019/08/flutter1.png',
         ),
       ],
       createdAt: "2022-09-19T09:49:52.021Z",
@@ -87,13 +115,19 @@ class Recruit extends ChangeNotifier with Toast {
       starred: false,
     ),
     Project(
-      id: 1,
-      title: 'StackOverflow 토이 프로젝트',
-      leader: Profile(nickname: 'DockerS2', profileImg: 'DEV/PROFILE/8/image_picker_A11D9F16-D6BE-415C-8E74-1505826D1CB6-2693-000000AB1F3911BA.jpg'),
+      id: 3,
+      title: 'StackOverflow 토이 프로젝트 (StackOverflow Toy Project) \n develop with me',
+      due: 'ONE',
+      description: 'StackOverflowStackOverflowStackOverflowStackOverflowStackOverflowStackOverflowStackOverflowStackOverflowStackOverflowStackOverflowStackOverflowStackOverflowStackOverflowStackOverflowStackOverflow',
+      leader: Profile(id: 8, nickname: 'DockerS2', profileImg: 'DEV/PROFILE/8/image_picker_A11D9F16-D6BE-415C-8E74-1505826D1CB6-2693-000000AB1F3911BA.jpg'),
       thumbnail: 'https://cdn.pixabay.com/photo/2020/09/09/02/12/smearing-5556288_960_720.jpg',
+      mobileHeadCount: 2,
+      mobileHeadLeft: 0,
       techStacks: [
         TechStack(
-            icon: 'https://engineering.linecorp.com/wp-content/uploads/2019/08/flutter1.png'
+          name: 'Flutter',
+          position: 'MOBILE',
+          icon: 'https://engineering.linecorp.com/wp-content/uploads/2019/08/flutter1.png',
         ),
       ],
       createdAt: "2022-09-19T09:49:52.021Z",
@@ -101,16 +135,25 @@ class Recruit extends ChangeNotifier with Toast {
       starred: false,
     ),
     Project(
-      id: 1,
+      id: 4,
       title: 'SoundCloud 만들기',
-      leader: Profile(nickname: '영현님 팬', profileImg: 'DEV/PROFILE/8/image_picker_A11D9F16-D6BE-415C-8E74-1505826D1CB6-2693-000000AB1F3911BA.jpg'),
+      due: 'THREE',
+      leader: Profile(id: 8, nickname: '영현님 팬', profileImg: 'DEV/PROFILE/8/image_picker_A11D9F16-D6BE-415C-8E74-1505826D1CB6-2693-000000AB1F3911BA.jpg'),
       thumbnail: 'https://cdn.pixabay.com/photo/2020/09/09/02/12/smearing-5556288_960_720.jpg',
+      webHeadCount: 2,
+      webHeadLeft: 2,
+      mobileHeadCount: 2,
+      mobileHeadLeft: 0,
       techStacks: [
         TechStack(
-            icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/220px-React-icon.svg.png'
+          name: 'React',
+          position: 'WEB',
+          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/220px-React-icon.svg.png',
         ),
         TechStack(
-            icon: 'https://engineering.linecorp.com/wp-content/uploads/2019/08/flutter1.png'
+          name: 'Flutter',
+          position: 'MOBILE',
+          icon: 'https://engineering.linecorp.com/wp-content/uploads/2019/08/flutter1.png',
         ),
       ],
       createdAt: "2022-09-19T09:49:52.021Z",
@@ -118,19 +161,31 @@ class Recruit extends ChangeNotifier with Toast {
       starred: true,
     ),
     Project(
-      id: 1,
+      id: 5,
       title: '괌 만들기',
-      leader: Profile(nickname: 'marcel ko', profileImg: 'DEV/PROFILE/8/image_picker_A11D9F16-D6BE-415C-8E74-1505826D1CB6-2693-000000AB1F3911BA.jpg'),
+      leader: Profile(id: 8, nickname: 'marcel ko', profileImg: 'DEV/PROFILE/8/image_picker_A11D9F16-D6BE-415C-8E74-1505826D1CB6-2693-000000AB1F3911BA.jpg'),
       thumbnail: 'https://cdn.pixabay.com/photo/2020/09/09/02/12/smearing-5556288_960_720.jpg',
+      serverHeadCount: 3,
+      serverHeadLeft: 1,
+      webHeadCount: 2,
+      webHeadLeft: 2,
+      mobileHeadCount: 2,
+      mobileHeadLeft: 0,
       techStacks: [
         TechStack(
-            icon: 'https://5pecia1.github.io/spring-study/static/images/spring-logo.png'
+          name: 'Spring',
+          position: 'SERVER',
+          icon: 'https://5pecia1.github.io/spring-study/static/images/spring-logo.png',
         ),
         TechStack(
-            icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/220px-React-icon.svg.png'
+          name: 'React',
+          position: 'WEB',
+          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/220px-React-icon.svg.png',
         ),
         TechStack(
-            icon: 'https://engineering.linecorp.com/wp-content/uploads/2019/08/flutter1.png'
+          name: 'Flutter',
+          position: 'MOBILE',
+          icon: 'https://engineering.linecorp.com/wp-content/uploads/2019/08/flutter1.png',
         ),
       ],
       createdAt: "2022-09-19T09:49:52.021Z",
@@ -296,29 +351,30 @@ class Recruit extends ChangeNotifier with Toast {
   Future<Project?> getProject(int? projectId) async {
     loading = true;
     try {
-      String authToken = await _authProvider.getFirebaseIdToken();
-
-      if (authToken.isNotEmpty) {
-        await HttpRequest()
-            .get(
-          authToken: authToken,
-          path: "community/api/v1/projects/$projectId",
-        ).then((response) {
-          if (response.statusCode == 200) {
-            final jsonUtf8 = decodeKo(response);
-            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
-            _project = Project.fromJson(jsonData);
-          } else {
-            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
-            switch (response.statusCode) {
-              case 401: msg = '접근 권한이 없습니다.'; break;
-              case 404: msg = '존재하지 않는 프로젝트입니다.'; break;
-            }
-            _project = null;
-            showToast(success: false, msg: msg);
-          }
-        });
-      }
+      // String authToken = await _authProvider.getFirebaseIdToken();
+      //
+      // if (authToken.isNotEmpty) {
+      //   await HttpRequest()
+      //       .get(
+      //     authToken: authToken,
+      //     path: "community/api/v1/projects/$projectId",
+      //   ).then((response) {
+      //     if (response.statusCode == 200) {
+      //       final jsonUtf8 = decodeKo(response);
+      //       final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+      //       _project = Project.fromJson(jsonData);
+      //     } else {
+      //       String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+      //       switch (response.statusCode) {
+      //         case 401: msg = '접근 권한이 없습니다.'; break;
+      //         case 404: msg = '존재하지 않는 프로젝트입니다.'; break;
+      //       }
+      //       _project = null;
+      //       showToast(success: false, msg: msg);
+      //     }
+      //   });
+      // }
+      _project = dummy[projectId ?? 0]; // 임시로...
     } catch (e) {
       print(e);
     } finally {
