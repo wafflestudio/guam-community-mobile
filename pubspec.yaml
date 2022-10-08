@@ -28,6 +28,7 @@ dependencies:
   jiffy: ^5.0.0
   flutter_linkify: ^5.0.2
   path_provider: ^2.0.11
+  percent_indicator: ^4.2.2
 
   # Image
   flutter_svg: ^1.0.3

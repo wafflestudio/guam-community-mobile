@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/models/projects/project.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../../helpers/svg_provider.dart';
 import '../../../styles/colors.dart';
@@ -88,7 +89,7 @@ class ProjectDetailInfo extends StatelessWidget {
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   _columnName('인원 현황'),
                   Column(
@@ -151,31 +152,31 @@ Widget _columnName(String colName) {
 }
 
 Widget _percentBar({required Size size, required int currentCnt, required int totalCnt}) {
-  return Padding(
-    padding: EdgeInsets.symmetric(vertical: 8),
-    child: Stack(
-      textDirection: TextDirection.rtl,
-      children: [
-        SizedBox(
-          height: 20,
-          width: size.width * 0.2,
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-            child: LinearProgressIndicator(
-              backgroundColor: GuamColorFamily.grayscaleGray5,
-              value: totalCnt == 0 ? 0 : currentCnt / totalCnt,
-              valueColor: AlwaysStoppedAnimation(GuamColorFamily.purpleCore),
+  return Container(
+    child: Padding(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: ClipRRect(
+        clipBehavior: Clip.hardEdge,
+        borderRadius: BorderRadius.circular(30),
+        child: LinearPercentIndicator(
+          lineHeight: 22,
+          animation: true,
+          animationDuration: 500,
+          width: 61,
+          padding: const EdgeInsets.symmetric(horizontal: 0.0),
+          progressColor: GuamColorFamily.purpleCore,
+          backgroundColor: GuamColorFamily.grayscaleGray5,
+          percent: totalCnt == 0 ? 0 : currentCnt / totalCnt,
+          center: Container(
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.only(right: 8),
+            child: Text(
+              "$totalCnt",
+              style: TextStyle(fontSize: 12, color: GuamColorFamily.grayscaleWhite),
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(right: 10),
-          child: Text(
-            "$totalCnt",
-            style: TextStyle(fontSize: 12, color: GuamColorFamily.grayscaleWhite),
-          ),
-        ),
-      ],
+      ),
     ),
   );
 }
