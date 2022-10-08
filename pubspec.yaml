@@ -55,6 +55,7 @@ dependencies:
   # Share & Dynamic links
   firebase_dynamic_links: ^4.3.6
   share_plus: ^4.1.0
+  sign_in_with_apple: ^4.1.0
 
 dev_dependencies:
   flutter_test:

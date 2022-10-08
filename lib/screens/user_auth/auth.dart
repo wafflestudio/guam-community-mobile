@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/screens/app/splash/splash_screen.dart';
 import 'package:guam_community_client/screens/login/login_wallpaper.dart';
 import 'package:guam_community_client/screens/login/signup/signup.dart';
 import 'package:provider/provider.dart';

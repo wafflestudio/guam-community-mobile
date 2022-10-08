@@ -1,4 +1,7 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
+import 'package:guam_community_client/screens/user_auth/apple_login.dart';
 import 'package:guam_community_client/screens/user_auth/google_login.dart';
 import '../../styles/colors.dart';
 import '../user_auth/kakao_login.dart';
@@ -23,6 +26,7 @@ class _LoginButtonsState extends State<LoginButtons> {
             children: [
               KakaoLogin(setLoading),
               GoogleLogin(setLoading),
+              if (Platform.isIOS) AppleLogin(setLoading),
             ],
           );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +32,7 @@ class _GoogleLoginState extends State<GoogleLogin> with Toast {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     if (googleUser != null) {
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = (await googleUser?.authentication)!;
+      final GoogleSignInAuthentication googleAuth = (await googleUser.authentication);
 
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
@@ -54,13 +53,13 @@ class _GoogleLoginState extends State<GoogleLogin> with Toast {
 
       final UserCredential? _userCredential = await _signInWithGoogle();
       if (_userCredential != null) {
-        await authProvider.googleSignIn(_userCredential!);
+        await authProvider.googleSignIn(_userCredential);
       } else {
         widget.setLoading(false);
       }
     } catch (e) {
       widget.setLoading(false);
-      showToast(success: false, msg: '일시적인 오류로 인해\n다른 소셜 로그인을 이용해주세요.');
+      // showToast(success: false, msg: '일시적인 오류로 인해\n다른 소셜 로그인을 이용해주세요.');
       print(e);
     } finally {
       widget.setLoading(false);
@@ -71,8 +70,9 @@ class _GoogleLoginState extends State<GoogleLogin> with Toast {
   Widget build(BuildContext context) {
     return LoginButton(
       'google_logo',
-      '구글로 시작하기',
+      'Sign in with Google',
       GuamColorFamily.grayscaleWhite,
+      GuamColorFamily.grayscaleGray1,
       () => _loginWithGoogle(),
     );
   }
