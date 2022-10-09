@@ -12,7 +12,7 @@ class NotificationsBody extends StatefulWidget {
 }
 
 class _NotificationsBodyState extends State<NotificationsBody> {
-  List _notifications = [];
+  List? _notifications = [];
   int _currentPage = 1;
   bool _hasNextPage = true;
   bool _isFirstLoadRunning = false;
@@ -43,7 +43,7 @@ class _NotificationsBodyState extends State<NotificationsBody> {
           page: _currentPage,
         );
         if (fetchedNotifications != null && fetchedNotifications.length > 0) {
-          setState(() => _notifications.addAll(fetchedNotifications));
+          setState(() => _notifications!.addAll(fetchedNotifications));
         } else {
           // This means there is no more data
           // and therefore, we will not send another GET request
@@ -99,7 +99,7 @@ class _NotificationsBodyState extends State<NotificationsBody> {
                   controller: _scrollController,
                   physics: AlwaysScrollableScrollPhysics(),
                   child: Column(children: [
-                    if (_notifications.isEmpty)
+                    if (_notifications!.isEmpty)
                       Center(
                         child: Padding(
                           padding: EdgeInsets.only(
@@ -114,8 +114,8 @@ class _NotificationsBodyState extends State<NotificationsBody> {
                           ),
                         ),
                       ),
-                    if (_notifications.isNotEmpty)
-                      ..._notifications.map((noti) => NotificationsPreview(noti, onRefresh: _firstLoad)),
+                    if (_notifications!.isNotEmpty)
+                      ..._notifications!.map((noti) => NotificationsPreview(noti, onRefresh: _firstLoad)),
                     if (_isLoadMoreRunning == true)
                       Padding(
                         padding: EdgeInsets.only(top: 10, bottom: 40),

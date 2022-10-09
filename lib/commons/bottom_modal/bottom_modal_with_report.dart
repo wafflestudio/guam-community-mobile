@@ -6,22 +6,34 @@ import 'package:guam_community_client/models/profiles/profile.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
-class PostCommentReport extends StatefulWidget {
+import '../../providers/user_auth/authenticate.dart';
+
+class BottomModalWithReport extends StatefulWidget {
+  final bool reportPost;
+  final int reportId;
   final Profile profile;
 
-  PostCommentReport(this.profile);
+  BottomModalWithReport({
+    this.reportPost=true, required this.reportId, required this.profile
+  });
 
   @override
-  _PostCommentReportState createState() => _PostCommentReportState();
+  _BottomModalWithReportState createState() => _BottomModalWithReportState();
 }
 
-class _PostCommentReportState extends State<PostCommentReport> {
+class _BottomModalWithReportState extends State<BottomModalWithReport> {
   String reportReason = '';
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -44,13 +56,28 @@ class _PostCommentReportState extends State<PostCommentReport> {
               title: '사용자 신고하기',
               back: '취소',
               body: '${widget.profile.nickname} 님을 신고하는 이유를 알려주세요',
-              alert: '허위 신고자는 서비스 이용에 불이익을 받을 수 있으니 신중하게 신고해주세요. 자세한 사항은 개발자 문의를 이용해주세요.',
+              alert: '허위 신고자는 서비스 이용에 불이익을 받을 수 있으니 신중하게 신고해주세요. 자세한 문의는 개발팀 메일을 이용해주세요. \n📧 marcel@wafflestudio.com',
               confirm: '신고하기',
+              func: () async {
+                await context.read<Authenticate>().reportUser(
+                  reportPost: widget.reportPost,
+                  body: {
+                    (widget.reportPost ? "postId" : "commentId"): widget.reportId.toString(),
+                    "userId": widget.profile.id.toString(),
+                    "reason": reportReason,
+                  }
+                ).then((successful) {
+                  if (successful) {
+                    Navigator.of(context).pop();
+                  }
+                });
+              },
               children: [
-                _choice(myState, '욕설/비방/음담패설'),
-                _choice(myState, '사행성 게시물'),
+                _choice(myState, '욕설/비방'),
+                _choice(myState, '음담패설'),
                 _choice(myState, '불법 복제/무단 도용'),
-                _choice(myState, '게시글/댓글 도배'),
+                _choice(myState, '사행성 게시물'),
+                _choice(myState, '도배'),
                 _choice(myState, '기타'),
               ],
             );

@@ -25,7 +25,7 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
     super.initState();
   }
 
-  void setBoardType(String boardType){
+  void setBoardType(String? boardType){
     setState(() {
       widget.input['boardType'] = boardType;
       widget.input['boardId'] = transferBoardType(boardType).toString();
@@ -103,7 +103,7 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
     );
   }
 
-  Widget _boardType(String boardType) {
+  Widget _boardType(String? boardType) {
     return Builder(
       builder: (context) => InkWell(
         onTap: () {
@@ -118,7 +118,7 @@ class _PostCreationBoardState extends State<PostCreationBoard> {
               Container(
                 height: 20,
                 child: Text(
-                  boardType + '게시판',
+                  boardType! + '게시판',
                   style: TextStyle(
                     fontSize: 16,
                     fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,

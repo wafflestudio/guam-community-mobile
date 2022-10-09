@@ -22,7 +22,7 @@ import '../edit/profile_edit_intro.dart';
 import '../edit/profile_edit_optional.dart';
 
 class ProfilesEdit extends StatefulWidget {
-  final Profile profile;
+  final Profile? profile;
 
   ProfilesEdit(this.profile);
 
@@ -32,18 +32,19 @@ class ProfilesEdit extends StatefulWidget {
 
 class _ProfilesEditState extends State<ProfilesEdit> with Toast {
   bool sending = false;
-  bool imgReset = true;
   Map<String, dynamic> input = {};
   List<dynamic> profileImage = [];
-  String profileImg;
+  String? profileImg;
 
   @override
   void initState() {
-    input['nickname'] = widget.profile.nickname;
-    input['introduction'] = widget.profile.intro;
-    input['githubId'] = widget.profile.githubId;
-    input['blogUrl'] = widget.profile.blogUrl;
-    profileImg = widget.profile.profileImg;
+    input['updateImage'] = false;
+    input['imagePath'] = widget.profile!.profileImg;
+    input['nickname'] = widget.profile!.nickname;
+    input['introduction'] = widget.profile!.intro;
+    input['githubId'] = widget.profile!.githubId;
+    input['blogUrl'] = widget.profile!.blogUrl;
+    profileImg = widget.profile!.profileImg;
     super.initState();
   }
 
@@ -57,15 +58,18 @@ class _ProfilesEditState extends State<ProfilesEdit> with Toast {
 
   Future<void> setImageFile(PickedFile val) async {
     setState(() {
+      input['updateImage'] = true;
       if (profileImage.isNotEmpty) profileImage.clear();
-      if (val != null) profileImage.add(val);
+      profileImage.add(val);
+      input['imagePath'] = val.path.split('/').last;
     });
   }
 
   Future<void> resetImageFile() async {
     setState(() {
-      imgReset = true;
       profileImg = null;
+      input['updateImage'] = true;
+      input['imagePath'] = null;
       if (profileImage.isNotEmpty) profileImage.clear();
     });
   }
@@ -83,7 +87,6 @@ class _ProfilesEditState extends State<ProfilesEdit> with Toast {
 
   Future setProfile() async {
     toggleSending();
-    imgReset = profileImage.isEmpty && profileImg == null;
     try {
       if (input['nickname'] == null || input['nickname'] == '') {
         return showToast(success: false, msg: '닉네임을 설정해주세요.');
@@ -96,7 +99,7 @@ class _ProfilesEditState extends State<ProfilesEdit> with Toast {
         files: profileImage.isNotEmpty
             ? [File(profileImage[0].path)] /// 프사 새롭게 추가
             : null,
-        imgReset: imgReset,
+        updateImage: input['updateImage'],
       ).then((successful) {
         toggleSending();
         if (successful) {

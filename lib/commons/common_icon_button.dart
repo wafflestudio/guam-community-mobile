@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class CommonIconButton extends StatelessWidget {
   final IconData icon;
   final Function onPressed;
-  final Color iconColor;
+  final Color? iconColor;
 
-  CommonIconButton({@required this.icon, @required this.onPressed, this.iconColor});
+  CommonIconButton({required this.icon, required this.onPressed, this.iconColor});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class CommonIconButton extends StatelessWidget {
       constraints: BoxConstraints(
           maxWidth: 24, maxHeight: 24
       ),
-      onPressed: onPressed
+      onPressed: onPressed as void Function()?
     );
   }
 }

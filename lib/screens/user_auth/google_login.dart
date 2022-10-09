@@ -19,7 +19,7 @@ class GoogleLogin extends StatefulWidget {
 }
 
 class _GoogleLoginState extends State<GoogleLogin> with Toast {
-  Authenticate authProvider;
+  late Authenticate authProvider;
 
   @override
   void initState() {
@@ -27,32 +27,39 @@ class _GoogleLoginState extends State<GoogleLogin> with Toast {
     super.initState();
   }
 
-  Future<UserCredential> _signInWithGoogle() async {
+  Future<UserCredential?> _signInWithGoogle() async {
     // Trigger the authentication flow
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser != null) {
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication googleAuth = (await googleUser.authentication);
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth = await googleUser?.authentication;
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+      // Once signed in, return the UserCredential
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } else {
+      return null;
+    }
   }
 
   _loginWithGoogle() async {
     try {
       widget.setLoading(true);
 
-      final _userCredential = await _signInWithGoogle();
-      await authProvider.googleSignIn(_userCredential);
+      final UserCredential? _userCredential = await _signInWithGoogle();
+      if (_userCredential != null) {
+        await authProvider.googleSignIn(_userCredential);
+      } else {
+        widget.setLoading(false);
+      }
     } catch (e) {
       widget.setLoading(false);
-      showToast(success: false, msg: '일시적인 오류로 인해\n다른 소셜 로그인을 이용해주세요.');
+      // showToast(success: false, msg: '일시적인 오류로 인해\n다른 소셜 로그인을 이용해주세요.');
       print(e);
     } finally {
       widget.setLoading(false);
@@ -63,8 +70,9 @@ class _GoogleLoginState extends State<GoogleLogin> with Toast {
   Widget build(BuildContext context) {
     return LoginButton(
       'google_logo',
-      '구글로 시작하기',
+      'Sign in with Google',
       GuamColorFamily.grayscaleWhite,
+      GuamColorFamily.grayscaleGray1,
       () => _loginWithGoogle(),
     );
   }

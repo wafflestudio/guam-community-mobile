@@ -4,8 +4,8 @@ import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 
 class LongButton extends StatelessWidget {
-  final String label;
-  final Function onPressed;
+  final String? label;
+  final Function? onPressed;
 
   LongButton({this.label, this.onPressed});
 
@@ -22,7 +22,7 @@ class LongButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            label,
+            label!,
               style: TextStyle(
                 fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
                 fontSize: 14,
@@ -37,7 +37,7 @@ class LongButton extends StatelessWidget {
           )
         ],
       ),
-      onPressed: onPressed,
+      onPressed: onPressed as void Function()?,
     );
   }
 }

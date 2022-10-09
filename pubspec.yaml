@@ -1,71 +1,66 @@
 name: guam_community_client
 description: We connect developers.
 
-# The following line prevents the package from being accidentally published to
-# pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.2.3
+version: 1.2.5
 
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
+  flutter: ^3.3.1
 
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.13.1
-  provider: ^5.0.0
-  cupertino_icons: ^1.0.2
-  hexcolor: ^2.0.3
-  modal_bottom_sheet: ^2.0.0
-  conditional_builder: ^1.0.2
-  flutter_form_builder: ^6.0.0-nullsafety.1
+  http: ^0.13.5
+  provider: ^6.0.3
+  cupertino_icons: ^1.0.5
+  hexcolor: ^2.0.7
+  modal_bottom_sheet: ^2.0.1
+  flutter_form_builder: ^7.3.1
   intl: ^0.17.0
-  bot_toast: ^4.0.1
-  dotted_border: ^2.0.0+1
-  url_launcher: ^6.0.5
-  flutter_secure_storage: ^5.0.2
+  bot_toast: ^4.0.3
+  dotted_border: ^2.0.0+2
+  url_launcher: ^6.1.5
+  flutter_secure_storage: ^6.0.0
   flutter_portal: ^0.4.0
-  flutter_mentions: 2.0.1
+  flutter_mentions: ^2.0.1
   jiffy: ^5.0.0
   flutter_linkify: ^5.0.2
-  path_provider: ^2.0.9
+  path_provider: ^2.0.11
 
   # Image
-  flutter_svg: ^0.23.0+1
+  flutter_svg: ^1.0.3
   transparent_image: ^2.0.0
-  image_picker: ^0.7.4
-  carousel_slider: ^4.0.0
+  image_picker: ^0.8.5+3
+  carousel_slider: ^4.1.1
 
   # FlutterFire
-  firebase_core: ^1.12.0
-  firebase_analytics: ^9.1.0
-  firebase_auth: ^3.3.6
-  cloud_firestore: ^3.1.7
-  firebase_messaging: ^11.2.6
+  firebase_core: ^1.22.0
+  firebase_analytics: ^9.3.4
+  firebase_auth: ^3.4.2
+  cloud_firestore: ^3.4.7
+  firebase_messaging: ^13.0.1
 
   # Social Login Dependency
-  kakao_flutter_sdk: ^0.9.0
-  dio: ^4.0.4
-  json_annotation: ^4.4.0
-  shared_preferences: ^2.0.13
+  kakao_flutter_sdk: ^1.2.2
+  dio: ^4.0.6
+  json_annotation: ^4.6.0
+  shared_preferences: ^2.0.15
   platform: ^3.1.0
   package_info: ^2.0.2
-  google_sign_in: ^5.3.3
+  google_sign_in: ^5.4.1
+  flutter_dotenv: ^5.0.2
+
+  # Share & Dynamic links
+  firebase_dynamic_links: ^4.3.6
+  share_plus: ^4.1.0
+  sign_in_with_apple: ^4.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  test: ^1.19.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -74,6 +69,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - .env
     - assets/icons/
     - assets/logos/
     - assets/images/

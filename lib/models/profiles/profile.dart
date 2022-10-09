@@ -5,20 +5,20 @@ import 'package:guam_community_client/models/boards/comment.dart';
 import './interest.dart';
 
 class Profile extends ChangeNotifier {
-  final int id;
-  final String nickname;
-  final String intro;
-  final String email;
-  final String profileImg;
-  final String githubId;
-  final String blogUrl;
-  final bool profileSet;
-  final List<Interest> interests;
+  final int? id;
+  final String? nickname;
+  final String? intro;
+  final String? email;
+  final String? profileImg;
+  final String? githubId;
+  final String? blogUrl;
+  final bool? profileSet;
+  final List<Interest>? interests;
 
   // TODO: Remove from Profile attributes. Directly request at the view.
-  final List<Post> myPosts;
-  final List<Post> scrappedPosts;
-  final List<Comment> myComments;
+  final List<Post>? myPosts;
+  final List<Post>? scrappedPosts;
+  final List<Comment>? myComments;
 
   Profile({
     this.id,
@@ -36,10 +36,10 @@ class Profile extends ChangeNotifier {
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
-    List<Interest> interests;
-    List<Post> myPosts;
-    List<Post> scrappedPosts;
-    List<Comment> myComments;
+    List<Interest>? interests;
+    List<Post>? myPosts;
+    List<Post>? scrappedPosts;
+    List<Comment>? myComments;
 
     if (json["interests"] != null) {
       interests = [...json['interests'].map((i) => Interest(name: i['name']))];

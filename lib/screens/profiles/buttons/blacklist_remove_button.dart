@@ -7,7 +7,7 @@ import 'package:guam_community_client/styles/fonts.dart';
 import '../../../providers/user_auth/authenticate.dart';
 
 class BlackListRemoveButton extends StatefulWidget {
-  final int blockedUserId;
+  final int? blockedUserId;
   final Function firstLoad;
 
   BlackListRemoveButton(this.blockedUserId, this.firstLoad);
@@ -47,9 +47,9 @@ class _BlackListRemoveButtonState extends State<BlackListRemoveButton> {
 
     return CommonTextButton(
       text: '해제',
-      fontSize: 14,
+      fontSize: 15,
       fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-      textColor: GuamColorFamily.grayscaleGray4,
+      textColor: GuamColorFamily.grayscaleGray3,
       onPressed: () => deleteInterest(),
     );
   }

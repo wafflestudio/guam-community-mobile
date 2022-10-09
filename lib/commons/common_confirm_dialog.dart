@@ -4,10 +4,10 @@ class CommonConfirmDialog extends StatelessWidget {
   final String dialogText;
   final String confirmText;
   final String declineText;
-  final Function onPressConfirm;
-  final Function onPressDecline;
+  final Function? onPressConfirm;
+  final Function? onPressDecline;
 
-  CommonConfirmDialog({@required this.dialogText, confirmText = "확인",
+  CommonConfirmDialog({required this.dialogText, confirmText = "확인",
     declineText = "취소", this.onPressConfirm, this.onPressDecline})
       : this.confirmText = confirmText, this.declineText = declineText;
 
@@ -45,7 +45,7 @@ class CommonConfirmDialog extends StatelessWidget {
           onPressed: () {
             // 일단은 dialog 2개 연달아 띄우는 tutorial을 위해 순서 유지
             Navigator.of(context).pop();
-            if (onPressConfirm != null) onPressConfirm();
+            if (onPressConfirm != null) onPressConfirm!();
           },
         ),
         TextButton(
@@ -56,7 +56,7 @@ class CommonConfirmDialog extends StatelessWidget {
           onPressed: () {
             // 일단은 dialog 2개 연달아 띄우는 tutorial을 위해 순서 유지
             Navigator.of(context).pop();
-            if (onPressDecline != null) onPressDecline();
+            if (onPressDecline != null) onPressDecline!();
           },
         ),
       ],

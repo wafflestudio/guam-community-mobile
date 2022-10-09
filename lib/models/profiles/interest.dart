@@ -1,5 +1,5 @@
 class Interest {
-  final String name;
+  final String? name;
 
   Interest({this.name});
 }

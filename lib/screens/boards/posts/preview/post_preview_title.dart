@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PostPreviewTitle extends StatelessWidget {
-  final String title;
+  final String? title;
 
   PostPreviewTitle(this.title);
 
@@ -9,7 +9,7 @@ class PostPreviewTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: Text(
-        title,
+        title!,
         style: TextStyle(fontSize: 14),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,

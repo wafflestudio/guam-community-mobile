@@ -8,7 +8,7 @@ import '../../providers/messages/messages.dart';
 import 'message_preview.dart';
 
 class MessageBoxEdit extends StatefulWidget {
-  final Function onRefresh;
+  final Function? onRefresh;
 
   MessageBoxEdit({this.onRefresh});
 
@@ -17,7 +17,7 @@ class MessageBoxEdit extends StatefulWidget {
 }
 
 class _MessageBoxEditState extends State<MessageBoxEdit> {
-  List _messageBoxes = [];
+  List? _messageBoxes = [];
   bool _isFirstLoadRunning = false;
 
   void _firstLoad() async {
@@ -63,7 +63,7 @@ class _MessageBoxEditState extends State<MessageBoxEdit> {
               ),
             ),
             onPressed: () {
-              widget.onRefresh();
+              widget.onRefresh!();
               Navigator.pop(context);
             },
           )
@@ -79,7 +79,7 @@ class _MessageBoxEditState extends State<MessageBoxEdit> {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              ..._messageBoxes.map((messageBox) => MessagePreview(
+              ..._messageBoxes!.map((messageBox) => MessagePreview(
                 messageBox,
                 reload: _firstLoad,
                 onRefresh: widget.onRefresh,

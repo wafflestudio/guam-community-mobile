@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:guam_community_client/commons/guam_progress_indicator.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import 'package:kakao_flutter_sdk/all.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'package:provider/provider.dart';
 import '../login/login_button.dart';
@@ -19,14 +18,15 @@ class KakaoLogin extends StatefulWidget {
 }
 
 class KakaoLoginState extends State<KakaoLogin> {
-  Authenticate authProvider;
-  bool _isKakaoTalkInstalled;
+  late Authenticate authProvider;
+  late bool _isKakaoTalkInstalled;
 
   @override
   void initState() {
     authProvider = context.read<Authenticate>();
-    KakaoContext.clientId = authProvider.kakaoClientId;
-    KakaoContext.javascriptClientId = authProvider.kakaoJavascriptClientId;
+    // https://github.com/kakao/kakao_flutter_sdk/commit/428409fd277d7012ff3cd80ae6e91157e088f6a3
+    KakaoSdk.nativeKey = authProvider.kakaoNativeKey;
+    KakaoSdk.jsKey = authProvider.kakaoJSKey;
     _initKakaoTalkInstalled();
     super.initState();
   }
@@ -38,7 +38,7 @@ class KakaoLoginState extends State<KakaoLogin> {
 
   _issueAccessToken(String authCode) async {
     try {
-      final token = await AuthApi.instance.issueAccessToken(authCode);
+      final token = await AuthApi.instance.issueAccessToken(authCode: authCode);
       final tokenManager = new DefaultTokenManager();
       tokenManager.setToken(token); // Store access token in TokenManager for future API requests.
       return token;
@@ -100,8 +100,9 @@ class KakaoLoginState extends State<KakaoLogin> {
   Widget build(BuildContext context) {
     return LoginButton(
       'kakao_logo',
-      '카카오로 시작하기',
+      'Sign in with Kakao',
       GuamColorFamily.kakaoYellow,
+        GuamColorFamily.grayscaleGray1,
       () => _isKakaoTalkInstalled ? _loginWithTalk() : _loginWithKakao()
     );
   }

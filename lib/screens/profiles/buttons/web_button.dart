@@ -4,7 +4,7 @@ import 'package:guam_community_client/styles/colors.dart';
 import '../../../commons/icon_text.dart';
 
 class WebButton extends StatelessWidget {
-  final String url;
+  final String? url;
   final String iconPath;
 
   WebButton(this.url, this.iconPath);
@@ -21,6 +21,6 @@ class WebButton extends StatelessWidget {
   }
 
   void _launchURL() async {
-    if (!await launch(url)) throw 'Could not launch $url';
+    if (!await launch(url!)) throw 'Could not launch $url';
   }
 }

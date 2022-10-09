@@ -39,15 +39,15 @@ class _PostCreationState extends State<PostCreation> with Toast {
 
   @override
   void initState() {
-    Post editPost = widget.editTarget;
+    Post? editPost = widget.editTarget;
     if (widget.editTarget != null) {
       input = {
-        'title': editPost.title,
+        'title': editPost!.title,
         'content': editPost.content,
         'boardType': editPost.boardType,
         'boardId': transferBoardType(editPost.boardType),
-        'category': editPost.category != null ? editPost.category.title : "",
-        'categoryId': editPost.category != null ? editPost.category.categoryId : 0,
+        'category': editPost.category != null ? editPost.category!.title : "",
+        'categoryId': editPost.category != null ? editPost.category!.categoryId : 0,
         'images': editPost.imagePaths, /// 이미지는 S3 주소 받아와서 그대로 전송 (수정 불가능)
       };
     } else {
@@ -64,7 +64,7 @@ class _PostCreationState extends State<PostCreation> with Toast {
     super.initState();
   }
 
-  Future createOrUpdatePost({List<File> files}) async {
+  Future createOrUpdatePost({required List<File> files}) async {
     Posts postProvider = context.read<Posts>();
     Authenticate authProvider = context.read<Authenticate>();
     List<String> imageFilePaths = files.map((e) => e.path.split('/').last).toList();
@@ -142,13 +142,13 @@ class _PostCreationState extends State<PostCreation> with Toast {
                   ],
                   child: FutureBuilder(
                     future: postProvider.getCreatedPost(postProvider.createdPostId),
-                    builder: (_, AsyncSnapshot<Post> snapshot) {
+                    builder: (_, AsyncSnapshot<Post?> snapshot) {
                       if (snapshot.hasData) {
                         return PostDetail(post: snapshot.data);
                       } else if (snapshot.hasError) {
-                        Navigator.pop(context);
                         showToast(success: false, msg: '게시글을 찾을 수 없습니다.');
-                        return null;
+                        Navigator.pop(context);
+                        return Container();
                       } else {
                         return Center(child: guamProgressIndicator());
                       }

@@ -4,7 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 class CustomDivider extends StatelessWidget {
   final double height;
   final double thickness;
-  final HexColor color;
+  final HexColor? color;
 
   CustomDivider({
     this.height = 1,

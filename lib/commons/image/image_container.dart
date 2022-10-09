@@ -9,10 +9,10 @@ class ImageThumbnail extends StatelessWidget {
   * imagePath: for network image path (S3)
   * IMPORTANT: only 1 of above should be passed to parameter
   * */
-  final Widget image;
-  final String imagePath;
-  final double height;
-  final double width;
+  final Widget? image;
+  final String? imagePath;
+  final double? height;
+  final double? width;
 
   ImageThumbnail({this.image, this.imagePath, this.height, this.width});
 
@@ -26,7 +26,7 @@ class ImageThumbnail extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           child: image ?? FadeInImage(
             placeholder: MemoryImage(kTransparentImage),
-            image: NetworkImage(HttpRequest().s3BaseAuthority + imagePath),
+            image: NetworkImage(HttpRequest().s3BaseAuthority + imagePath!),
             fit: BoxFit.cover,
           ),
         ),

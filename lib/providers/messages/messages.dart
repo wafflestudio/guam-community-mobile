@@ -10,9 +10,9 @@ import '../../helpers/decode_ko.dart';
 import '../user_auth/authenticate.dart';
 
 class Messages extends ChangeNotifier with Toast {
-  Authenticate _authProvider;
-  List<MessageBox> _messageBoxes;
-  List<Message> _messages;
+  late Authenticate _authProvider;
+  List<MessageBox>? _messageBoxes;
+  List<Message>? _messages;
   bool loading = false;
 
   Messages(Authenticate authProvider) {
@@ -20,10 +20,10 @@ class Messages extends ChangeNotifier with Toast {
     fetchMessageBoxes();
   }
 
-  List<MessageBox> get messageBoxes => _messageBoxes;
-  List<Message> get messages => _messages;
+  List<MessageBox>? get messageBoxes => _messageBoxes;
+  List<Message>? get messages => _messages;
 
-  Future<List<MessageBox>> fetchMessageBoxes() async {
+  Future<List<MessageBox>?> fetchMessageBoxes() async {
     loading = true;
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
@@ -40,7 +40,7 @@ class Messages extends ChangeNotifier with Toast {
             _messageBoxes = jsonList.map((e) => MessageBox.fromJson(e)).toList();
             loading = false;
           } else {
-            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+            String msg = '서버가 쪽지함을 불러올 수 없습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 400: msg = '메시지를 불러올 수 없습니다.'; break;
               case 401: msg = '열람 권한이 없습니다.'; break;
@@ -58,7 +58,7 @@ class Messages extends ChangeNotifier with Toast {
     return _messageBoxes;
   }
 
-  Future<bool> deleteMessageBox(int otherProfileId) async {
+  Future<bool> deleteMessageBox(int? otherProfileId) async {
     bool successful = false;
     loading = true;
 
@@ -75,7 +75,7 @@ class Messages extends ChangeNotifier with Toast {
             showToast(success: true, msg: '쪽지함을 삭제했습니다.');
             successful = true;
           } else {
-            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+            String msg = '쪽지함 삭제 실패: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = '삭제 권한이 없습니다.'; break;
               case 404: msg = '비활성화된 유저입니다.'; break;
@@ -93,7 +93,7 @@ class Messages extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<List<Message>> getMessages(int otherProfileId) async {
+  Future<List<Message>?> getMessages(int? otherProfileId) async {
     loading = true;
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
@@ -109,7 +109,7 @@ class Messages extends ChangeNotifier with Toast {
             final List<dynamic> jsonList = json.decode(jsonUtf8)["letters"];
             _messages = jsonList.map((e) => Message.fromJson(e)).toList();
           } else {
-            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+            String msg = '쪽지함 열람 실패: ${response.statusCode}';
             switch (response.statusCode) {
               case 401: msg = '접근 권한이 없습니다.'; break;
               case 403: msg = '상대방으로부터 차단되었습니다.'; break;
@@ -128,7 +128,7 @@ class Messages extends ChangeNotifier with Toast {
     return _messages;
   }
 
-  Future<bool> sendMessage({Map<String, dynamic> fields, dynamic files}) async {
+  Future<bool> sendMessage({Map<String, dynamic>? fields, dynamic files}) async {
     bool successful = false;
     loading = true;
 
@@ -140,7 +140,7 @@ class Messages extends ChangeNotifier with Toast {
           pluralImages: false, // pluralImage boolean 으로 "images" or "image" 구분
           path: "community/api/v1/letters",
           authToken: authToken,
-          fields: fields,
+          fields: fields!,
           files: files,
         ).then((response) async {
           if (response.statusCode == 200) {
@@ -148,7 +148,7 @@ class Messages extends ChangeNotifier with Toast {
             loading = false;
             showToast(success: true, msg: '쪽지를 발송했습니다.');
           } else {
-            String msg = "알 수 없는 오류가 발생했습니다.";
+            String msg = "쪽지 전송 실패";
             switch (response.statusCode) {
               case 400: msg = "메시지를 입력해주세요."; break;
               case 401: msg = "권한이 없습니다."; break;

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class CommonTextButton extends StatelessWidget {
-  final double fontSize;
-  final String text;
-  final Function onPressed;
-  final HexColor textColor;
-  final String fontFamily;
+  final double? fontSize;
+  final String? text;
+  final Function? onPressed;
+  final HexColor? textColor;
+  final String? fontFamily;
 
   CommonTextButton({this.text, this.fontSize, this.fontFamily, this.textColor, this.onPressed});
 
@@ -14,7 +14,7 @@ class CommonTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       child: Text(
-        text,
+        text!,
         style: TextStyle(
             fontSize: fontSize,
             fontFamily: fontFamily,
@@ -26,7 +26,7 @@ class CommonTextButton extends StatelessWidget {
         alignment: Alignment.centerLeft,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
-      onPressed: onPressed,
+      onPressed: onPressed as void Function()?,
     );
   }
 }

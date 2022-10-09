@@ -27,7 +27,7 @@ class MessageBoxScaffold extends StatefulWidget {
 
 class _MessageBoxScaffoldState extends State<MessageBoxScaffold> {
   final bool newMessage = true;
-  int _unReadMsg = 0;
+  int? _unReadMsg = 0;
   bool _countRunning = false;
 
   Future<void> _countMsg() async {

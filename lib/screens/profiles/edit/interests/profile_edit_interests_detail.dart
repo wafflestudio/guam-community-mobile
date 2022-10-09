@@ -18,7 +18,7 @@ class ProfileEditInterestsDetail extends StatefulWidget {
 }
 
 class _ProfileEditInterestsDetailState extends State<ProfileEditInterestsDetail> {
-  List<Interest> _interests;
+  late List<Interest> _interests;
 
   @override
   void initState() {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:guam_community_client/commons/sub_headings.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview.dart';
 import 'package:guam_community_client/styles/colors.dart';
@@ -16,7 +15,7 @@ class SearchFeed extends StatefulWidget {
 
 class _SearchFeedState extends State<SearchFeed> {
   List _searchedPosts = [];
-  int _beforePostId;
+  int? _beforePostId;
   bool _hasNextPage = true;
   bool _isFirstLoadRunning = false;
   bool _isLoadMoreRunning = false;
@@ -100,12 +99,12 @@ class _SearchFeedState extends State<SearchFeed> {
                   onRefresh: () async => _firstLoad(),
                   child: Container(
                     height: double.infinity,
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      physics: AlwaysScrollableScrollPhysics(),
-                      child: Column(
-                        children: [
-                          Padding(
+                    child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: (_isLoadMoreRunning || (!_hasNextPage && _searchedPosts.length > 10))
+                            ? _searchedPosts.length + 2 : _searchedPosts.length + 1,
+                        itemBuilder: (context, index){
+                          if(index == 0) return Padding(
                             padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,17 +119,14 @@ class _SearchFeedState extends State<SearchFeed> {
                                 // SearchFilter(provider: context.read<Search>()),
                               ],
                             ),
-                          ),
-                          Column(
-                            children: [..._searchedPosts.mapIndexed((idx, p) => PostPreview(idx, p, refreshPost))],
-                          ),
-                          if (_isLoadMoreRunning == true)
-                            Padding(
+                          );
+                          // index == 0 -> header
+                          else if(index == _searchedPosts.length + 1){
+                            if(_isLoadMoreRunning) return Padding(
                               padding: EdgeInsets.only(top: 10, bottom: 40),
                               child: guamProgressIndicator(size: 40),
-                            ),
-                          if (_hasNextPage == false && _searchedPosts.length > 10)
-                            Container(
+                            );
+                            else return Container(
                               color: GuamColorFamily.purpleLight2,
                               padding: EdgeInsets.only(top: 10, bottom: 10),
                               child: Center(child: Text(
@@ -141,10 +137,14 @@ class _SearchFeedState extends State<SearchFeed> {
                                   fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
                                 ),
                               )),
-                            ),
-                        ],
-                      ),
-                    ),
+                            );
+                          }
+                          else if(index == _searchedPosts.length) return Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: PostPreview(index-1, _searchedPosts[index-1], refreshPost),
+                          );
+                          else return PostPreview(index-1, _searchedPosts[index-1], refreshPost);
+                        }),
                   ),
                 ),
               if (_showBackToTopButton)

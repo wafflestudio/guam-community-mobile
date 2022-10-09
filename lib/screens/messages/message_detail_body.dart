@@ -15,15 +15,15 @@ import '../../providers/user_auth/authenticate.dart';
 
 class MessageDetailBody extends StatelessWidget {
   final Message message;
-  final Profile otherProfile;
+  final Profile? otherProfile;
 
   MessageDetailBody(this.message, this.otherProfile);
 
   @override
   Widget build(BuildContext context) {
     Authenticate authProvider = context.read<Authenticate>();
-    bool isMe = message.sentBy == authProvider.me.id;
-    Profile sentBy = isMe ? authProvider.me : otherProfile;
+    bool isMe = message.sentBy == authProvider.me!.id;
+    Profile? sentBy = isMe ? authProvider.me : otherProfile;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
@@ -41,16 +41,16 @@ class MessageDetailBody extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: sentBy.profileImg != null
-                            ? NetworkImage(HttpRequest().s3BaseAuthority + sentBy.profileImg)
-                            : SvgProvider('assets/icons/profile_image.svg')
+                        image: (sentBy!.profileImg != null
+                            ? NetworkImage(HttpRequest().s3BaseAuthority + sentBy.profileImg!)
+                            : SvgProvider('assets/icons/profile_image.svg')) as ImageProvider<Object>
                       ),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 6),
                     child: Text(
-                      isMe ? sentBy.nickname + ' (나)': sentBy.nickname,
+                      isMe ? sentBy.nickname! + ' (나)': sentBy.nickname!,
                       style: TextStyle(
                         fontSize: 12,
                         fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
@@ -62,7 +62,7 @@ class MessageDetailBody extends StatelessWidget {
                   ),
                 ],
               ) : CommonImgNickname(
-                userId: sentBy.id,
+                userId: sentBy!.id,
                 nickname: sentBy.nickname,
                 // profileClickable: post.profile.id != 0,
                 // 익명 프로필은 프로필 열람 불가
@@ -85,7 +85,7 @@ class MessageDetailBody extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 10, top: 8, bottom: 10),
             child: Text(
-              message.text,
+              message.text!,
               style: TextStyle(
                 height: 1.6,
                 fontSize: 13,
@@ -105,7 +105,7 @@ class MessageDetailBody extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(HttpRequest().s3BaseAuthority + message.imagePath),
+                      image: NetworkImage(HttpRequest().s3BaseAuthority + message.imagePath!),
                     ),
                   ),
                 ),

@@ -7,9 +7,9 @@ import '../../../providers/user_auth/authenticate.dart';
 
 class ProfileInterestButton extends StatefulWidget {
   final Interest interest;
-  final int index;
+  final int? index;
   final bool deletable;
-  final Function removeInterest;
+  final Function? removeInterest;
 
   ProfileInterestButton(this.interest, {this.index, this.removeInterest, this.deletable = false});
 
@@ -32,7 +32,7 @@ class _ProfileInterestButtonState extends State<ProfileInterestButton> {
       ).then((successful) {
         toggleSending();
         if (successful) {
-          widget.removeInterest(widget.index);
+          widget.removeInterest!(widget.index);
         } else {
           print("Error!");
         }
@@ -46,7 +46,7 @@ class _ProfileInterestButtonState extends State<ProfileInterestButton> {
   Widget build(BuildContext context) {
     return Chip(
       padding: EdgeInsets.all(4),
-      label: Text(widget.interest.name),
+      label: Text(widget.interest.name!),
       labelStyle: TextStyle(
         fontSize: 12,
         height: 19.2/12,

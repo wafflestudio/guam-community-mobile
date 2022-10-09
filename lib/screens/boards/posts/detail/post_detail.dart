@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guam_community_client/commons/back.dart';
@@ -23,9 +24,9 @@ import '../../../../providers/messages/messages.dart';
 import '../../../../providers/user_auth/authenticate.dart';
 
 class PostDetail extends StatefulWidget {
-  final int index;
-  final Post post;
-  final Function refreshPost;
+  final int? index;
+  final Post? post;
+  final Function? refreshPost;
 
   PostDetail({this.index, this.post, this.refreshPost});
 
@@ -34,41 +35,40 @@ class PostDetail extends StatefulWidget {
 }
 
 class _PostDetailState extends State<PostDetail> with Toast {
-  Post _post;
-  Future comments;
+  Post? _post;
+  Future? comments;
   bool commentImageExist = false;
   final int maxRenderImgCnt = 4;
-  Set<int> mentionListId = {};
+  Set<int?> mentionListId = {};
   List<Map<String, dynamic>> mentionList = [];
   List<Map<String, dynamic>> result = [];
 
   @override
   void initState() {
     _post = widget.post;
-    mentionList = [_post.profile.toJson()];
-    mentionListId = {_post.profile.id};
-    comments = context.read<Posts>().fetchComments(_post.id);
+    mentionList = [_post!.profile!.toJson()];
+    mentionListId = {_post!.profile!.id};
+    comments = context.read<Posts>().fetchComments(_post!.id);
     super.initState();
   }
 
   /// 게시글 수정 시, API의 request는 Client가 들고있다는 원칙 및 서버 통신 성공 가정 하에
   /// 수정 버튼 클릭하면 사용자에게 수정 내용 바로 반영되도록 만듦.
   getEditedPost(Map editedPost) {
-    if (editedPost == null) return;
     int editedBoardId = int.parse(editedPost['boardId']);
     int editedCategoryId = int.parse(editedPost['categoryId']);
 
     Category editedCategory = Category(
-      postId: widget.post.id,
+      postId: widget.post!.id,
       categoryId: editedCategoryId,
       title: transferCategoryId(editedCategoryId),
     );
 
     setState(() {
-      _post.title = editedPost['title'];
-      _post.content = editedPost['content'];
-      _post.boardType = transferBoardId(editedBoardId);
-      _post.category = editedCategory;
+      _post!.title = editedPost['title'];
+      _post!.content = editedPost['content'];
+      _post!.boardType = transferBoardId(editedBoardId);
+      _post!.category = editedCategory;
     });
   }
 
@@ -92,19 +92,19 @@ class _PostDetailState extends State<PostDetail> with Toast {
     Authenticate authProvider = context.read<Authenticate>();
 
     void fetchComments() {
-      comments = postsProvider.fetchComments(_post.id);
+      comments = postsProvider.fetchComments(_post!.id);
     }
 
-    Future createComment({Map<String, dynamic> body, dynamic files}) async {
+    Future createComment({Map<String, dynamic>? body, dynamic files}) async {
       return await postsProvider.createComment(
-        postId: _post.id,
+        postId: _post!.id,
         body: body,
         files: files,
       ).then((successful) async {
         if (successful) fetchComments();
-        Post _temp = await postsProvider.getPost(_post.id);
-        _post.commentCount = _temp.commentCount;
-        widget.refreshPost(widget.index, _temp);
+        Post? _temp = await postsProvider.getPost(_post!.id);
+        _post!.commentCount = _temp?.commentCount;
+        widget.refreshPost!(widget.index, _temp);
         return successful;
       });
     }
@@ -150,7 +150,7 @@ class _PostDetailState extends State<PostDetail> with Toast {
           onTap: () => FocusScope.of(context).unfocus(),
           child: RefreshIndicator(
             color: Color(0xF9F8FFF), // GuamColorFamily.purpleLight1
-            onRefresh: () => context.read<Posts>().getPost(widget.post.id),
+            onRefresh: () => context.read<Posts>().getPost(widget.post!.id),
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               child: Padding(
@@ -212,7 +212,7 @@ class _PostDetailState extends State<PostDetail> with Toast {
                                   ...snapshot.data.map((comment) => Comments(
                                     comment: comment,
                                     deleteFunc: deleteComment,
-                                    isAuthor: _post.profile.id == comment.profile.id,
+                                    isAuthor: _post!.profile!.id == comment.profile.id,
                                   ))
                                 ],
                               );
@@ -229,7 +229,8 @@ class _PostDetailState extends State<PostDetail> with Toast {
                             }
                           } else if (snapshot.hasError) {
                             showToast(success: true, msg: '알 수 없는 오류가 발생했습니다.');
-                            return null;
+                            Navigator.pop(context);
+                            return Container();
                           } else {
                             return Center(child: CircularProgressIndicator(
                               color: GuamColorFamily.purpleLight3,

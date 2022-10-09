@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:guam_community_client/commons/custom_app_bar.dart';
 import 'package:guam_community_client/providers/user_auth/authenticate.dart';
 import 'package:guam_community_client/screens/boards/posts/preview/post_preview.dart';
@@ -16,8 +15,7 @@ class MyPosts extends StatefulWidget {
 }
 
 class _MyPostsState extends State<MyPosts> {
-  List _myPosts = [];
-  int _beforePostId;
+  List? _myPosts = [];
   int _currentPage = 1;
   bool _hasNextPage = true;
   bool _isFirstLoadRunning = false;
@@ -42,14 +40,13 @@ class _MyPostsState extends State<MyPosts> {
         _isLoadMoreRunning == false &&
         _scrollController.position.extentAfter < 300) {
       setState(() => _isLoadMoreRunning = true);
-      _beforePostId = _myPosts.last.id;
       try {
         _currentPage ++;
         final fetchedMyPosts = await context.read<Authenticate>().addMyPosts(
           beforePostId: _currentPage,
         );
         if (fetchedMyPosts != null && fetchedMyPosts.length > 0) {
-          setState(() => _myPosts.addAll(fetchedMyPosts));
+          setState(() => _myPosts!.addAll(fetchedMyPosts));
         } else {
           // This means there is no more data
           // and therefore, we will not send another GET request
@@ -104,12 +101,12 @@ class _MyPostsState extends State<MyPosts> {
                 height: double.infinity,
                 padding: EdgeInsets.only(top: 18),
                 color: GuamColorFamily.purpleLight3,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: Column(children: [
-                    if (_myPosts.isEmpty)
-                      Center(
+                child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: (_myPosts!.isEmpty || _isLoadMoreRunning || (!_hasNextPage && _currentPage > 2))
+                        ? _myPosts!.length + 1 : _myPosts!.length,
+                    itemBuilder: (context, index){
+                      if(index == 0 && _myPosts!.isEmpty) return Center(
                         child: Padding(
                           padding: EdgeInsets.only(
                               top: MediaQuery.of(context).size.height * 0.1),
@@ -122,29 +119,28 @@ class _MyPostsState extends State<MyPosts> {
                             ),
                           ),
                         ),
-                      ),
-                    if (_myPosts.isNotEmpty)
-                      ..._myPosts.mapIndexed((idx, p) => PostPreview(idx, p, _firstLoad)),
-                    if (_isLoadMoreRunning == true)
-                      Padding(
-                        padding: EdgeInsets.only(top: 10, bottom: 40),
-                        child: guamProgressIndicator(size: 40),
-                      ),
-                    if (_hasNextPage == false && _currentPage > 2)
-                      Container(
-                        color: GuamColorFamily.purpleLight2,
-                        padding: EdgeInsets.only(top: 10, bottom: 10),
-                        child: Center(child: Text(
-                          '작성글을 모두 불러왔습니다!',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: GuamColorFamily.grayscaleGray2,
-                            fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                          ),
-                        )),
-                      ),
-                  ]),
-                ),
+                      );
+                      // index == 0 -> header
+                      else if(index == _myPosts!.length){
+                        if(_isLoadMoreRunning) return Padding(
+                          padding: EdgeInsets.only(top: 10, bottom: 40),
+                          child: guamProgressIndicator(size: 40),
+                        );
+                        else return Container(
+                          color: GuamColorFamily.purpleLight2,
+                          padding: EdgeInsets.only(top: 10, bottom: 10),
+                          child: Center(child: Text(
+                            '작성글을 모두 불러왔습니다!',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: GuamColorFamily.grayscaleGray2,
+                              fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
+                            ),
+                          )),
+                        );
+                      }
+                      else return PostPreview(index, _myPosts![index], _firstLoad);
+                    }),
               ),
             ),
             floatingActionButton: _showBackToTopButton == false

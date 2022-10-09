@@ -15,7 +15,7 @@ class PostFilter extends StatefulWidget {
 }
 
 class PostFilterState extends State<PostFilter> {
-  String filter;
+  String? filter;
   static List<String> filters = ['시간순', '추천순'];
 
   @override

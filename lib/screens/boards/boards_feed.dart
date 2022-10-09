@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/guam_progress_indicator.dart';
 import 'package:guam_community_client/screens/boards/posts/post_list.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 
 import '../../models/boards/post.dart';
 
 class BoardsFeed extends StatefulWidget {
-  final int boardId;
+  final int? boardId;
 
   BoardsFeed({this.boardId});
 
@@ -18,8 +17,8 @@ class BoardsFeed extends StatefulWidget {
 }
 
 class _BoardsFeedState extends State<BoardsFeed> {
-  List _posts = [];
-  int _beforePostId;
+  List<Post>? _posts = [];
+  int? _beforePostId;
   int _rankFrom = 0;
   bool _isSorted = false;
   bool _hasNextPage = true;
@@ -37,7 +36,11 @@ class _BoardsFeedState extends State<BoardsFeed> {
   }
 
   void _firstLoad() async {
-    setState(() => _isFirstLoadRunning = true);
+    setState((){
+      _isFirstLoadRunning = true;
+      _hasNextPage = true;
+      _rankFrom = 0;
+    });
     try {
       if (!_isSorted) {
         // 시간순 정렬
@@ -60,14 +63,14 @@ class _BoardsFeedState extends State<BoardsFeed> {
         _isLoadMoreRunning == false &&
         _scrollController.position.extentAfter < 300) {
       setState(() => _isLoadMoreRunning = true);
-      _beforePostId = _posts.last.id;
+      _beforePostId = _posts!.last.id;
       _rankFrom += 20;
       try {
         final fetchedPosts = _isSorted
             ? await context.read<Posts>().addFavoritePosts(boardId: widget.boardId, rankFrom: _rankFrom)
             : await context.read<Posts>().addPosts(boardId: widget.boardId, beforePostId: _beforePostId);
         if (fetchedPosts != null && fetchedPosts.length > 0) {
-          setState(() => _posts.addAll(fetchedPosts));
+          setState(() => _posts!.addAll(fetchedPosts));
         } else {
           // This means there is no more data
           // and therefore, we will not send another GET request
@@ -82,11 +85,11 @@ class _BoardsFeedState extends State<BoardsFeed> {
 
   void refreshPost(int idx, Post refreshedPost) {
     setState(() {
-      _posts.elementAt(idx).commentCount = refreshedPost.commentCount;
-      _posts.elementAt(idx).isLiked = refreshedPost.isLiked;
-      _posts.elementAt(idx).likeCount = refreshedPost.likeCount;
-      _posts.elementAt(idx).isScrapped = refreshedPost.isScrapped;
-      _posts.elementAt(idx).scrapCount = refreshedPost.scrapCount;
+      _posts!.elementAt(idx).commentCount = refreshedPost.commentCount;
+      _posts!.elementAt(idx).isLiked = refreshedPost.isLiked;
+      _posts!.elementAt(idx).likeCount = refreshedPost.likeCount;
+      _posts!.elementAt(idx).isScrapped = refreshedPost.isScrapped;
+      _posts!.elementAt(idx).scrapCount = refreshedPost.scrapCount;
     });
   }
 
@@ -126,33 +129,13 @@ class _BoardsFeedState extends State<BoardsFeed> {
                 onRefresh: () async => _firstLoad(),
                 child: Container(
                   height: double.infinity,
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        PostList(_posts, refreshPost, sortPosts, _isSorted),
-                        if (_isLoadMoreRunning == true)
-                          Padding(
-                            padding: EdgeInsets.only(top: 10, bottom: 40),
-                            child: guamProgressIndicator(size: 40),
-                          ),
-                        if (_hasNextPage == false && _posts.length > 10)
-                          Container(
-                            color: GuamColorFamily.purpleLight2,
-                            padding: EdgeInsets.only(top: 10, bottom: 10),
-                            child: Center(child: Text(
-                              '모든 게시글을 불러왔습니다!',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: GuamColorFamily.grayscaleGray2,
-                                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                              ),
-                            )),
-                          ),
-                      ],
-                    ),
-                  ),
+                  child: PostList(posts: _posts!,
+                      refreshPost: refreshPost,
+                      sortPosts: sortPosts,
+                      isSorted: _isSorted,
+                      hasNextPage: _hasNextPage,
+                      isLoadMoreRunning: _isLoadMoreRunning,
+                      scrollController: _scrollController),
                 ),
             ),
             if (_showBackToTopButton)
