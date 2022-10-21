@@ -131,6 +131,50 @@ class Authenticate extends ChangeNotifier with Toast {
     notifyListeners();
   }
 
+  Future<bool> deleteUser() async {
+    loading = false;
+    bool successful = false;
+    try {
+      toggleLoading();
+      String authToken = await getFirebaseIdToken();
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest().delete(
+          path: "community/api/v1/users/${me!.id}",
+          authToken: authToken,
+        ).then((response) async {
+          if (response.statusCode == 200) {
+            print(response.statusCode);
+            await getMyProfile();
+            successful = true;
+            showToast(success: true, msg: "계정을 삭제했습니다.");
+
+            // Firebase user 삭제 -> auth.currentUser가 null이 되어 userSignedIn() == false;
+            try {
+              await auth.currentUser?.delete();
+            } on FirebaseException catch (e) {
+              if (e.code == 'requires-recent-login') {
+                print('The user must reauthenticate before this operation can be executed.');
+              }
+            } catch (e) {
+              print('$e');
+            }
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String? err = json.decode(jsonUtf8)["message"];
+            showToast(success: false, msg: err);
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      toggleLoading();
+    }
+    notifyListeners();
+    return successful;
+  }
+
   Future getMyProfile() async {
     try {
       String authToken = await getFirebaseIdToken();
