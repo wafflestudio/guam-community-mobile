@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> with Toast {
             future: userLoggedIn,
             builder: (_, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
-                return Positioned(top: size.height*0.72, child: LoginButtons());
+                return Positioned(top: size.height*0.7, child: LoginButtons());
               } else if (snapshot.hasError) {
                 showToast(success: false, msg: '일시적인 오류입니다. \n잠시 후 다시 시도해주세요.');
                 Navigator.pop(context);
@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> with Toast {
                     padding: EdgeInsets.only(bottom: size.height*0.15),
                     child: CircularProgressIndicator(color: GuamColorFamily.purpleCore),
                   ),
-                ) : Positioned(top: size.height*0.72, child: LoginButtons());
+                ) : Positioned(top: size.height*0.7, child: LoginButtons());
               }
             },
           ),

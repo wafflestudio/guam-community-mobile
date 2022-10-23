@@ -13,6 +13,7 @@ import 'package:share_plus/share_plus.dart' as share_plus;
 class Share with Toast {
   BuildContext context;
   bool isLoading = false;
+
   Share({required this.context});
 
   Future<bool> initialize() async {
@@ -79,8 +80,7 @@ class Share with Toast {
     );
   }
 
-  Future<String> _getShortLink(int id) async {
-
+  Future<String> _getShortLink(int id, String postTitle) async {
     String dynamicLinkPrefix = 'https://wafflestudio.page.link';
     final dynamicLinkParams = DynamicLinkParameters(
       uriPrefix: dynamicLinkPrefix,
@@ -93,11 +93,10 @@ class Share with Toast {
       iosParameters: IOSParameters(
         //fallbackUrl: Uri.parse('https://guam.wafflestudio.com/posts/$id'),
         bundleId: 'com.wafflestudio.guam-community',
-        minimumVersion: '11.0',
+        minimumVersion: '12.0',
       ),
       socialMetaTagParameters: SocialMetaTagParameters(
-        // 임시로 입력해놨습니다.
-        title: "개발자 괌",
+        title: postTitle,
         imageUrl: Uri.parse("https://guam.wafflestudio.com/_next/static/media/favicon.e7a111af.svg"),
       ),
     );
@@ -109,14 +108,13 @@ class Share with Toast {
     return unguessableDynamicLink.shortUrl.toString();
   }
 
-  void share(int? id) async{
+  void share(int? id, String? postTitle) async{
     if(!isLoading){
       isLoading = true;
       share_plus.Share.share(
-        await _getShortLink(id!),
+        await _getShortLink(id!, postTitle!),
       ).then((value) {
-        // 임시로 해놨습니다.
-        Future.delayed(Duration(seconds: 1),(){
+        Future.delayed(Duration(milliseconds: 500),(){
           isLoading = false;
         });
       });

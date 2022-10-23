@@ -48,7 +48,7 @@ class PostDetailMore extends StatelessWidget {
           children: post!.isMine! ? [
             BottomModalDefault(
               text: '게시글 공유하기',
-              onPressed: () => share.share(post!.id),
+              onPressed: () => share.share(post!.id, post!.title),
             ),
             BottomModalDefault(
               text: '수정하기',
@@ -72,7 +72,7 @@ class PostDetailMore extends StatelessWidget {
           ] : [
             BottomModalDefault(
               text: '게시글 공유하기',
-              onPressed: () => share.share(post!.id),
+              onPressed: () => share.share(post!.id, post!.title),
             ),
             /// Deprecated: until 'if (widget.post.profile.id != 0)' exists in PostDetail
             if (post!.profile!.id != 0)

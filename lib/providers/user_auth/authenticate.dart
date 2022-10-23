@@ -27,8 +27,11 @@ class Authenticate extends ChangeNotifier with Toast {
   List<Post>? _newScrappedPosts;
   bool? _hasNext;
   bool loading = true;
+  bool initialLoading = false;
 
   Authenticate() {
+    initialLoading = true;
+    notifyListeners();
     getMyProfile();
   }
 
@@ -39,7 +42,7 @@ class Authenticate extends ChangeNotifier with Toast {
   List<Post>? get newMyPosts => _newMyPosts;
   List<Post>? get scrappedPosts => _scrappedPosts;
   List<Post>? get newScrappedPosts => _newScrappedPosts;
-  bool userSignedIn() => auth.currentUser != null && me != null; // 로그인 된 유저 존재 여부
+  bool userSignedIn() => auth.currentUser != null; // 로그인 된 유저 존재 여부
   bool profileExists() => me != null && me!.profileSet!; // 프로필까지 만든 정상 유저인지 여부
   bool isMe(int? userId) => me!.id == userId;
 
@@ -92,6 +95,21 @@ class Authenticate extends ChangeNotifier with Toast {
     }
   }
 
+  Future appleSignIn(UserCredential userCredential) async {
+    try {
+      loading = true;
+      showToast(success: true, msg: "애플 로그인 성공!");
+      await getMyProfile();
+      loading = false;
+    } on FirebaseAuthException {
+      showToast(success: false, msg: "Firebase 인증에 문제가 발생했습니다.");
+    } catch (e) {
+      showToast(success: false, msg: e.toString());
+    } finally {
+      notifyListeners();
+    }
+  }
+
   Future<String> getFirebaseIdToken() async {
     String idToken;
     try {
@@ -107,6 +125,7 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Future<void> signOut() async {
     loading = false;
+    me = null;
     await auth.signOut();
     showToast(success: true, msg: "다시 만나요!");
     notifyListeners();
@@ -125,41 +144,47 @@ class Authenticate extends ChangeNotifier with Toast {
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
             me = Profile.fromJson(jsonData);
           } else {
-            final jsonUtf8 = decodeKo(response);
-            final String? err = json.decode(jsonUtf8)["message"];
-            showToast(success: false, msg: err);
+            showToast(success: false, msg: "서버로부터 유저 정보를 불러올 수 없습니다.");
           }
         });
       }
     } catch (e) {
       print(e);
     } finally {
+      initialLoading = false;
       notifyListeners();
     }
   }
 
-  Future setProfile({Map<String, dynamic>? fields, dynamic files, bool? imgReset}) async {
+  Future setProfile({Map<String, dynamic>? fields, dynamic files, bool updateImage=false}) async {
     bool successful = false;
-
     try {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
-        /// files == null 여부에 따라 raw-data로 보내거나 multipart type으로 분리
-        Future<dynamic> request = imgReset!
-            ? HttpRequest().patch(
-          path: "community/api/v1/users/${me!.id}/json",
+        await HttpRequest().patch(
+          path: "community/api/v1/users/${me!.id}",
           body: fields,
           authToken: authToken,
-        ) : HttpRequest().patchMultipart(
-          path: "community/api/v1/users/${me!.id}",
-          fields: fields!,
-          files: files,
-          authToken: authToken,
-        );
-        await request.then((response) async {
+        ).then((response) async {
           if (response.statusCode == 200) {
-            await getMyProfile();
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8);
+
+            /// S3 Presigned Urls
+            if (updateImage) {
+              List<dynamic> presignedUrls = [jsonData['presignedUrl']];
+              if (presignedUrls.isNotEmpty) {
+                await HttpRequest().put(
+                  presignedUrls: presignedUrls,
+                  files: files,
+                ).then((response) async {
+                  await getMyProfile();
+                });
+              }
+            } else {
+              await getMyProfile();
+            }
             successful = true;
             showToast(success: true, msg: "프로필을 설정했습니다.");
           } else {

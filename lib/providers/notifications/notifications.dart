@@ -48,7 +48,7 @@ class Notifications extends ChangeNotifier with Toast {
 
             loading = false;
           } else {
-            String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+            String msg = '서버가 알림을 불러올 수 없습니다.: ${response.statusCode}';
             switch (response.statusCode) {
               case 400: msg = '정보를 모두 입력해주세요.'; break;
               case 401: msg = '열람 권한이 없습니다.'; break;

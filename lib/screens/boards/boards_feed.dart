@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/commons/guam_progress_indicator.dart';
 import 'package:guam_community_client/screens/boards/posts/post_list.dart';
 import 'package:guam_community_client/styles/colors.dart';
-import 'package:guam_community_client/styles/fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:guam_community_client/providers/posts/posts.dart';
 
@@ -18,7 +17,7 @@ class BoardsFeed extends StatefulWidget {
 }
 
 class _BoardsFeedState extends State<BoardsFeed> {
-  List? _posts = [];
+  List<Post>? _posts = [];
   int? _beforePostId;
   int _rankFrom = 0;
   bool _isSorted = false;
@@ -37,7 +36,11 @@ class _BoardsFeedState extends State<BoardsFeed> {
   }
 
   void _firstLoad() async {
-    setState(() => _isFirstLoadRunning = true);
+    setState((){
+      _isFirstLoadRunning = true;
+      _hasNextPage = true;
+      _rankFrom = 0;
+    });
     try {
       if (!_isSorted) {
         // 시간순 정렬
@@ -126,33 +129,13 @@ class _BoardsFeedState extends State<BoardsFeed> {
                 onRefresh: () async => _firstLoad(),
                 child: Container(
                   height: double.infinity,
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        PostList(_posts as List<Post>?, refreshPost, sortPosts, _isSorted),
-                        if (_isLoadMoreRunning == true)
-                          Padding(
-                            padding: EdgeInsets.only(top: 10, bottom: 40),
-                            child: guamProgressIndicator(size: 40),
-                          ),
-                        if (_hasNextPage == false && _posts!.length > 10)
-                          Container(
-                            color: GuamColorFamily.purpleLight2,
-                            padding: EdgeInsets.only(top: 10, bottom: 10),
-                            child: Center(child: Text(
-                              '모든 게시글을 불러왔습니다!',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: GuamColorFamily.grayscaleGray2,
-                                fontFamily: GuamFontFamily.SpoqaHanSansNeoRegular,
-                              ),
-                            )),
-                          ),
-                      ],
-                    ),
-                  ),
+                  child: PostList(posts: _posts!,
+                      refreshPost: refreshPost,
+                      sortPosts: sortPosts,
+                      isSorted: _isSorted,
+                      hasNextPage: _hasNextPage,
+                      isLoadMoreRunning: _isLoadMoreRunning,
+                      scrollController: _scrollController),
                 ),
             ),
             if (_showBackToTopButton)

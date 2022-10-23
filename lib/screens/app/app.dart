@@ -52,19 +52,20 @@ class AppState extends State<App> with Toast {
       create: (_) => HomeProvider(),
       child: WillPopScope(
         onWillPop: () async {
-          final isFirstRouteInCurrentTab = await _navigatorKeys[_currentTab]!.currentState!.maybePop();
+          final isFirstRouteInCurrentTab = !_navigatorKeys[_currentTab]!.currentState!.canPop();
           if (isFirstRouteInCurrentTab) {
             // if not on the 'main' tab
-            if (_currentTab == TabItem.home) {
+            if (_currentTab != TabItem.home) {
               // select 'main' tab
               _selectTab(TabItem.home);
               // back button handled by app
               return false;
             }
+            return true;
+          }else {
+            _navigatorKeys[_currentTab]!.currentState!.maybePop();
+            return false;
           }
-          return Future.value(true);
-          // let system handle back button if we're on the first route
-          // return isFirstRouteInCurrentTab;
         },
         child: Scaffold(
           body: Stack(children: <Widget>[

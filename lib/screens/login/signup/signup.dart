@@ -15,7 +15,6 @@ class _SignUpState extends State<SignUp> with Toast {
   Map<String, dynamic> input = {};
   int pageIdx = 0;
 
-
   @override
   Widget build(BuildContext context) {
     List pages = [
@@ -25,11 +24,12 @@ class _SignUpState extends State<SignUp> with Toast {
     Size size = MediaQuery.of(context).size;
 
     Future signUp() async {
-      if (input['nickname'] == '') {
+      input['updateImage'] = false;
+      if (input['nickname'] == null || input['nickname'].isEmpty) {
         showToast(success: false, msg: '닉네임을 입력해주세요.');
         return null;
       }
-      await context.read<Authenticate>().setProfile(fields: input, imgReset: true);
+      await context.read<Authenticate>().setProfile(fields: input);
     }
 
     return Scaffold(

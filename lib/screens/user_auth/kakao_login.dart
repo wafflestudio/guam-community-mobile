@@ -100,8 +100,9 @@ class KakaoLoginState extends State<KakaoLogin> {
   Widget build(BuildContext context) {
     return LoginButton(
       'kakao_logo',
-      '카카오로 시작하기',
+      'Sign in with Kakao',
       GuamColorFamily.kakaoYellow,
+        GuamColorFamily.grayscaleGray1,
       () => _isKakaoTalkInstalled ? _loginWithTalk() : _loginWithKakao()
     );
   }
