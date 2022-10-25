@@ -144,8 +144,6 @@ class Authenticate extends ChangeNotifier with Toast {
           authToken: authToken,
         ).then((response) async {
           if (response.statusCode == 200) {
-            print(response.statusCode);
-            await getMyProfile();
             successful = true;
             showToast(success: true, msg: "계정을 삭제했습니다.");
 
