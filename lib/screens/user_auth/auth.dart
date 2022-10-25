@@ -12,13 +12,15 @@ class Auth extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
 
-    return authProvider.initialLoading ? Scaffold(body: LoginWallpaper()) : authProvider.userSignedIn()
-        ? authProvider.profileExists()
-          ? ChangeNotifierProvider(
-            create: (_) => HomeProvider(),
-            child: App(),
-          )
-          : SignUp()
-        : LoginPage();
+    return authProvider.initialLoading
+        ? Scaffold(body: LoginWallpaper())
+        : authProvider.userSignedIn()
+          ? authProvider.profileExists()
+            ? ChangeNotifierProvider(
+              create: (_) => HomeProvider(),
+              child: App(),
+            )
+            : SignUp()
+          : LoginPage();
   }
 }
