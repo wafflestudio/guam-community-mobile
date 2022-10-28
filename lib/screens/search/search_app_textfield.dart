@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:provider/provider.dart';
-import '../../commons/common_text_button.dart';
+import '../../commons/buttons/common_text_button.dart';
 import 'package:guam_community_client/styles/fonts.dart';
 import '../../providers/search/search.dart';
 
