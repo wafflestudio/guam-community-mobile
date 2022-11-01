@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 
 class NextButton extends StatelessWidget {
+  final int page;
   final bool active;
   final String label;
   final Function onTap;
 
   NextButton({
+    this.page=1,
     this.active=true,
     required this.label,
     required this.onTap,
@@ -21,7 +23,9 @@ class NextButton extends StatelessWidget {
         child: Container(
           height: 56,
           alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * 0.9,
+          width: page == 1
+              ? MediaQuery.of(context).size.width * 0.9
+              : MediaQuery.of(context).size.width * 0.45,
           decoration: BoxDecoration(
             color: active
                 ? GuamColorFamily.purpleCore
