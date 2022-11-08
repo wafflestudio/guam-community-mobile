@@ -22,6 +22,9 @@ class Recruit extends ChangeNotifier with Toast {
   List<Project>? _almostFullProjects;
   List<Project>? _newAlmostFullProjects;
   bool loading = false;
+  String? _searchedKeyword;
+  List<Project> _searchedProjects = [];
+  List<Project> _newSearchedProjects = [];
 
   Recruit(Authenticate authProvider){
     _authProvider = authProvider;
@@ -33,6 +36,7 @@ class Recruit extends ChangeNotifier with Toast {
   List<Project>? get projects => _projects;
   List<Project>? get starredProjects => _starredProjects;
   List<Project>? get almostFullProjects => _almostFullProjects;
+  List<Project> get searchedProjects => _searchedProjects;
 
   var dummy = [
     Project(
@@ -277,7 +281,8 @@ class Recruit extends ChangeNotifier with Toast {
   }
 
   var temp = 0;
-  Future addProjects({int? beforeProjectId}) async {
+  Future addProjects({String? keyword, String? skill,
+    int? due, String? position, int? beforeProjectId}) async {
     loading = true;
     /*try {
       await HttpRequest()
@@ -312,6 +317,94 @@ class Recruit extends ChangeNotifier with Toast {
   }
 
   var temp2 = 0;
+  Future searchProjects({required String keyword, String? skill,
+    int? due, String? position, int rankFrom=0}) async {
+    loading = true;
+    // try {
+    //   if (keyword.trim() == '') {
+    //     _searchedProjects.clear();
+    //     return;
+    //   }
+    //   if (keyword.length < 2) {
+    //     showToast(success: false, msg: '두 글자 이상 입력해주세요.');
+    //     loading = false;
+    //     return;
+    //   }
+    //   await HttpRequest()
+    //       .get(
+    //     path: "community/api/v1/projects",
+    //     queryParams: {"keyword": keyword, "skill": skill, "due":due?.toString() , "position": position},
+    //     authToken: await _authProvider.getFirebaseIdToken(),
+    //   ).then((response) async {
+    //     /// 현재 게시판 위치 저장해두기 (게시판 reload 시 사용)
+    //     if (response.statusCode == 200) {
+    //       final jsonUtf8 = decodeKo(response);
+    //       final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+    //       _hasNext = json.decode(jsonUtf8)["hasNext"];
+    //       _projects = jsonList.map((e) => Project.fromJson(e)).toList();
+    //       _searchedKeyword = keyword;
+    //       loading = false;
+    //     } else {
+    //       String msg = '알 수 없는 오류가 발생했습니다.: ${response.statusCode}';
+    //       switch (response.statusCode) {
+    //         case 400: msg = '정보를 모두 입력해주세요.'; break;
+    //         case 401: msg = '열람 권한이 없습니다.'; break;
+    //         case 404: msg = '존재하지 않는 게시판입니다.'; break;
+    //       }
+    //       showToast(success: false, msg: msg);
+    //     }
+    //   });
+    //   loading = false;
+    //
+    // } catch (e) {
+    //   print(e);
+    // } finally {
+    //   notifyListeners();
+    // }
+    _hasNext = true;
+    _searchedProjects = dummy;
+    loading = false;
+    notifyListeners();
+    return _searchedProjects;
+
+  }
+
+  Future addSearchedProjects({String? skill,
+    int? due, String? position, int? beforeProjectId}) async {
+    loading = true;
+    // try {
+    //   await HttpRequest()
+    //       .get(
+    //     path: "community/api/v1/projects",
+    //     queryParams: {
+    //       "keyword": _searchedKeyword, "skill": skill, "due":due?.toString() , "position": position,
+    //       "beforeProjectId": beforeProjectId.toString(),
+    //     },
+    //     authToken: await _authProvider.getFirebaseIdToken(),
+    //   ).then((response) async {
+    //     if (response.statusCode == 200) {
+    //       final jsonUtf8 = decodeKo(response);
+    //       final List<dynamic> jsonList = json.decode(jsonUtf8)["content"];
+    //       _hasNext = json.decode(jsonUtf8)["hasNext"];
+    //       _newSearchedProjects = jsonList.map((e) => Project.fromJson(e)).toList();
+    //       loading = false;
+    //     } else {
+    //       showToast(success: false, msg: '더 이상 게시글을 불러올 수 없습니다.');
+    //     }
+    //   });
+    //   loading = false;
+    // } catch (e) {
+    //   print(e);
+    // } finally {
+    //   notifyListeners();
+    // }
+    if((temp2++) > 2) return null;
+    _newSearchedProjects = dummy;
+    loading = false;
+    notifyListeners();
+    return _newSearchedProjects;
+  }
+
   Future addAlmostFullProjects({int? beforeProjectId}) async {
     loading = true;
     /*try {
