@@ -10,7 +10,7 @@ class NextButton extends StatelessWidget {
   NextButton({
     this.page=1,
     this.active=true,
-    required this.label,
+    this.label='다음',
     required this.onTap,
   });
 
@@ -20,7 +20,7 @@ class NextButton extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(5, 40, 5, 20),
       child: Center(
         child: InkWell(
-          onTap: onTap as void Function()?,
+          onTap: active ? onTap as void Function()? : null,
           child: Container(
             height: 56,
             alignment: Alignment.center,
@@ -42,8 +42,8 @@ class NextButton extends StatelessWidget {
                     : GuamColorFamily.grayscaleGray5,
               ),
             ),
-          )
-        )
+          ),
+        ),
       ),
     );
   }
