@@ -32,7 +32,7 @@ class _ProjectCreationSelectedPositionsState
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.all(20),
               child: Text(
-                "프로젝트에서 사용할 기술 스택과 참가 인원을 선택하세요.",
+                "기술 스택과 인원을 선택해주세요.",
                 style: TextStyle(fontSize: 14, color: GuamColorFamily.purpleCore),
               ),
             ),
@@ -43,7 +43,7 @@ class _ProjectCreationSelectedPositionsState
             Wrap(
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -132,7 +132,7 @@ class _ProjectCreationSelectedPositionsState
   Widget _headCount(String position) {
     return (widget.input[position]["techStack"].toString() != '')
         ? Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
             child: Text(
               widget.input[position]["headCount"].toString(),
               style: TextStyle(fontSize: 14, color: Colors.black),

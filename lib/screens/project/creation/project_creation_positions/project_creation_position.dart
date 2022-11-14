@@ -25,88 +25,84 @@ class _ProjectCreationPositionState extends State<ProjectCreationPosition> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(3, 10, 10, 10),
-          decoration: BoxDecoration(
-            border: Border.all(color: HexColor("979797")),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            children: [
-              Row(children: [
-                ...widget.filterOptions.entries.map((e) => ProjectCreationFilterChip(
-                  content: e.key,
-                  display: translatePosition(e.key)!,
-                  selected: selectedKey == e.key,
-                  selectKey: selectKey,
-                  filterValues: e.value as List<TechStack>,
-                ))
-              ]),
-              if (selectedKey != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                      child: Text(
-                        "인원",
-                        style: TextStyle(fontSize: 18, color: GuamColorFamily.grayscaleGray3),
-                      ),
+    return Padding(
+      padding: EdgeInsets.only(top: 15),
+      child: Column(
+        children: [
+          Container(
+            color: GuamColorFamily.grayscaleWhite,
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                  child: Text(
+                    '포지션',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
                     ),
-                    Container(
-                        padding: EdgeInsets.only(left: 20),
-                        child: headCounter()),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                      child: Text(
-                        "기술 스택",
-                        style: TextStyle(fontSize: 18, color: GuamColorFamily.grayscaleGray3),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Wrap(
-                        children: [
-                          ...filterValues!.map((e) {
-                            return ProjectCreationFilterValueChip(
-                              techStack: e,
-                              selected: widget.input[selectedKey]["techStack"] == e.name,
-                              selectValue: selectValue,
-                              checkButtonEnable: widget.checkButtonEnable,
-                            );
-                          })
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-            ],
-          ),
-        ),
-        Container(
-          // color: GuamColorFamily.grayscaleWhite,
-          padding: EdgeInsets.only(top: 10, left: 5, bottom: 5),
-          alignment: Alignment.centerLeft,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
-                child: Text(
-                  '포지션',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
                   ),
                 ),
-              ),
-              ProjectCreationSelectedPositions(widget.input),
-            ],
+                Row(children: [
+                  ...widget.filterOptions.entries.map((e) => ProjectCreationFilterChip(
+                    content: e.key,
+                    display: translatePosition(e.key)!,
+                    selected: selectedKey == e.key,
+                    selectKey: selectKey,
+                    filterValues: e.value,
+                  ))
+                ]),
+                if (selectedKey != null)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(left: 10, top: 15, bottom: 5),
+                        child: Text(
+                          "인원",
+                          style: TextStyle(fontSize: 15, color: GuamColorFamily.grayscaleGray1),
+                        ),
+                      ),
+                      Container(
+                          padding: EdgeInsets.only(left: 10, bottom: 5),
+                          child: headCounter()),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                        child: Text(
+                          "기술 스택",
+                          style: TextStyle(fontSize: 15, color: GuamColorFamily.grayscaleGray1),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 10, bottom: 10),
+                        child: Wrap(
+                          runSpacing: 5,
+                          children: [
+                            ...filterValues!.map((e) {
+                              return ProjectCreationFilterValueChip(
+                                techStack: e,
+                                selected: widget.input[selectedKey]["techStack"] == e.name,
+                                selectValue: selectValue,
+                                checkButtonEnable: widget.checkButtonEnable,
+                              );
+                            })
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  alignment: Alignment.centerLeft,
+                  child: ProjectCreationSelectedPositions(widget.input),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -114,11 +110,11 @@ class _ProjectCreationPositionState extends State<ProjectCreationPosition> {
     return Row(
       children: [
         Container(
-          width: 36.0,
-          height: 36.0,
+          width: 30,
+          height: 30,
           child: RawMaterialButton(
             shape: CircleBorder(side: BorderSide(color: Colors.white, width: 1.5)),
-            elevation: 5.0,
+            elevation: 5,
             fillColor: Colors.black,
             child: Icon(Icons.remove, color: GuamColorFamily.purpleLight1),
             onPressed: () {
@@ -137,11 +133,11 @@ class _ProjectCreationPositionState extends State<ProjectCreationPosition> {
           ),
         ),
         Container(
-          width: 36.0,
-          height: 36.0,
+          width: 30,
+          height: 30,
           child: RawMaterialButton(
             shape: CircleBorder(side: BorderSide(color: Colors.white, width: 1.5)),
-            elevation: 5.0,
+            elevation: 5,
             fillColor: Colors.black,
             child: Icon(Icons.add, color: GuamColorFamily.purpleLight1),
             onPressed: () {

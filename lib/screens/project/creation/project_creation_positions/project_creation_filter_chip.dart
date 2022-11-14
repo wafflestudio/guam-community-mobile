@@ -4,15 +4,15 @@ import 'package:guam_community_client/styles/colors.dart';
 
 class ProjectCreationFilterChip extends StatelessWidget {
   final String content;
-  final String display;
-  final Function selectKey;
+  final String? display;
+  final Function? selectKey;
   final bool selected;
-  final List<TechStack> filterValues;
+  final List<dynamic> filterValues;
 
   ProjectCreationFilterChip({
+    this.display,
+    this.selectKey,
     required this.content,
-    required this.display,
-    required this.selectKey,
     required this.selected,
     required this.filterValues,
   });
@@ -21,22 +21,22 @@ class ProjectCreationFilterChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Container(
-        padding: EdgeInsets.only(left: 10),
+        padding: EdgeInsets.only(left: 5),
         child: ChoiceChip(
           label: Text(
-            display,
+            display ?? content,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 13,
               color: selected
-                  ? GuamColorFamily.grayscaleGray1
-                  : GuamColorFamily.grayscaleWhite,
+                  ? GuamColorFamily.grayscaleWhite
+                  : GuamColorFamily.grayscaleGray2,
             ),
           ),
           selected: selected,
-          backgroundColor: GuamColorFamily.purpleDark1,
-          selectedColor: GuamColorFamily.blueCore,
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          onSelected: (val) => selectKey(content, filterValues),
+          selectedColor: GuamColorFamily.purpleCore,
+          backgroundColor: GuamColorFamily.grayscaleGray6,
+          onSelected: (val) => selectKey!(content, filterValues),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
         ),
       ),
     );

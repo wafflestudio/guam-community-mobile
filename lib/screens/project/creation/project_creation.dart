@@ -20,12 +20,12 @@ class _ProjectCreateState extends State<ProjectCreate> {
   Map input = {
     'title': '',
     'description': '',
-    'due': '',
+    'due': 0,
     'SERVER': {'id': 0, 'techStack': '', 'headCount': 0},
     'WEB': {'id': 0, 'techStack': '', 'headCount': 0},
     'MOBILE': {'id': 0, 'techStack': '', 'headCount': 0},
     'DESIGNER': {'id': 0, 'techStack': '', 'headCount': 0},
-    'thumbnail': null,
+    'thumbnail': [],
     'isThumbnailChanged': false,
   };
 
@@ -57,6 +57,8 @@ class _ProjectCreateState extends State<ProjectCreate> {
     return Scaffold(
       appBar: CustomAppBar(
         title: '프로젝트 만들기',
+        titleColor: GuamColorFamily.grayscaleWhite,
+        backgroundColor: GuamColorFamily.purpleDark1,
         trailing: TextButton(
           onPressed: () => Navigator.maybePop(context),
           style: TextButton.styleFrom(
@@ -71,37 +73,26 @@ class _ProjectCreateState extends State<ProjectCreate> {
             ),
           ),
         ),
-        titleColor: GuamColorFamily.grayscaleWhite,
-        backgroundColor: GuamColorFamily.purpleDark1,
       ),
       body: Container(
+        height: double.infinity,
         padding: EdgeInsets.only(top: 5),
         color: GuamColorFamily.purpleLight3,
-        height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               if (_currentPage == 1)
                 ProjectCreationPageOne(
                   input: input,
-                  dueSelected: dueSelected,
                   goToNextPage: goToNextPage,
                 ),
               if (_currentPage == 2)
                 ProjectCreationPageTwo(
                   input: input,
+                  dueSelected: dueSelected,
                   filterOptions: _filterOptions,
-                  goToNextPage: goToNextPage,
                   goToPreviousPage: goToPreviousPage,
                 ),
-              // if (_currentPage == 3)
-              //   ProjectCreatePageThree(
-              //     input: input,
-              //     positionSelected: positionSelected,
-              //     goToPreviousPage: goToPreviousPage,
-              //     isNewProject: true,
-              //   ),
             ],
           ),
         ),

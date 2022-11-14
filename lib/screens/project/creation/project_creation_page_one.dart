@@ -6,15 +6,11 @@ import 'package:guam_community_client/screens/project/creation/project_creation_
 
 class ProjectCreationPageOne extends StatefulWidget {
   final Map input;
-  final bool isNewProject;
-  final List<bool> dueSelected;
   final Function goToNextPage;
 
   ProjectCreationPageOne({
     required this.input,
-    required this.dueSelected,
     required this.goToNextPage,
-    this.isNewProject=false,
   });
 
   @override
@@ -26,17 +22,13 @@ class ProjectCreationPageOneState extends State<ProjectCreationPageOne> {
 
   @override
   void initState() {
-    nextBtnEnabled = widget.input['title'] != '' &&
-        widget.input['description'] != '';
-        // && widget.input['due'] != null;
+    nextBtnEnabled =
+        widget.input['title'] != '' && widget.input['description'] != '';
     super.initState();
   }
 
-  void checkButtonEnable() => setState(() {
-        nextBtnEnabled = widget.input['title'] != '' &&
-            widget.input['description'] != '';
-            // && widget.input['due'] != null;
-      });
+  void checkButtonEnable() => setState(() => nextBtnEnabled =
+      widget.input['title'] != '' && widget.input['description'] != '');
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +39,13 @@ class ProjectCreationPageOneState extends State<ProjectCreationPageOne> {
           ProjectCreateTitle(input: widget.input, checkButtonEnable: checkButtonEnable),
           ProjectCreateDescription(input: widget.input, checkButtonEnable: checkButtonEnable),
           ProjectCreationThumbnail(widget.input),
-          NextButton(
-            page: 1,
-            label: '다음',
-            active: nextBtnEnabled,
-            onTap: widget.goToNextPage,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: NextButton(
+              page: 1,
+              active: nextBtnEnabled,
+              onTap: widget.goToNextPage,
+            ),
           )
         ],
       ),

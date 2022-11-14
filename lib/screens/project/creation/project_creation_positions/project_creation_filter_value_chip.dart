@@ -18,11 +18,12 @@ class ProjectCreationFilterValueChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 5),
+      padding: EdgeInsets.only(right: 5),
       child: ChoiceChip(
         selected: selected,
         backgroundColor: GuamColorFamily.purpleLight3,
         selectedColor: GuamColorFamily.grayscaleWhite,
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         onSelected: (val) {
           selectValue(techStack);
           checkButtonEnable();
@@ -30,7 +31,7 @@ class ProjectCreationFilterValueChip extends StatelessWidget {
         label: Text(
           techStack.name!,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 13,
             color: selected ? GuamColorFamily.blueCore : GuamColorFamily.purpleLight1,
           ),
         ),

@@ -19,27 +19,8 @@ class ProjectCreationThumbnail extends StatefulWidget {
 }
 
 class _ProjectCreationThumbnailState extends State<ProjectCreationThumbnail> {
-  late Map input;
   final double maxImgSize = 80;
   final double imgSheetHeight = 96;
-  bool sending = false;
-
-  @override
-  void initState() {
-    super.initState();
-    input = widget.input;
-    input['thumbnail'] = [];
-  }
-
-  @override
-  void dispose() {
-    input['thumbnail'].clear();
-    super.dispose();
-  }
-
-  void toggleSending() {
-    setState(() => sending = !sending);
-  }
 
   @override
   Widget build(BuildContext context) {
