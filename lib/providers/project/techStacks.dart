@@ -93,6 +93,27 @@ class TechStacks extends ChangeNotifier with Toast {
       icon: 'https://play-lh.googleusercontent.com/5e7z5YCt7fplN4qndpYzpJjYmuzM2WSrfs35KxnEw-Ku1sClHRWHoIDSw3a3YS5WpGcI=w480-h960',
       position: 'MOBILE',
     ),
+    TechStack(
+      id: 12,
+      name: 'Node.js',
+      aliases: ['node', 'js', 'Node.js'],
+      icon: 'https://play-lh.googleusercontent.com/5e7z5YCt7fplN4qndpYzpJjYmuzM2WSrfs35KxnEw-Ku1sClHRWHoIDSw3a3YS5WpGcI=w480-h960',
+      position: 'SERVER',
+    ),
+    TechStack(
+      id: 13,
+      name: 'Flask',
+      aliases: ['Flask', 'python'],
+      icon: 'https://play-lh.googleusercontent.com/5e7z5YCt7fplN4qndpYzpJjYmuzM2WSrfs35KxnEw-Ku1sClHRWHoIDSw3a3YS5WpGcI=w480-h960',
+      position: 'SERVER',
+    ),
+    TechStack(
+      id: 14,
+      name: 'FastAPI',
+      aliases: ['FastAPI', 'python', 'fast'],
+      icon: 'https://play-lh.googleusercontent.com/5e7z5YCt7fplN4qndpYzpJjYmuzM2WSrfs35KxnEw-Ku1sClHRWHoIDSw3a3YS5WpGcI=w480-h960',
+      position: 'SERVER',
+    ),
   // final int? id;
   // final String? name;
   // List<String>? aliases;
