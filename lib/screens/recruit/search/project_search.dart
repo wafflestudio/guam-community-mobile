@@ -27,6 +27,16 @@ class _ProjectSearchState extends State<ProjectSearch> {
     setState(() => cancel = bool);
   }
 
+  void _setFilter(String key, String? value) {
+    setState(() {
+      if (value == null) {
+        filter.remove(key);
+      } else {
+        filter[key] = value;
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -48,36 +58,11 @@ class _ProjectSearchState extends State<ProjectSearch> {
       backgroundColor: GuamColorFamily.purpleLight3,
       appBar: SearchAppBar(
         title: ProjectSearchTextField(filter: filter, focusNode: myFocusNode, cancelSearch: cancelSearch),
-        trailing: FilterButton(filter: filter, setSkill: (skill){
-          setState(() {
-            if(skill == null){
-              filter.remove('skill');
-            }else{
-              filter['skill'] = skill;
-            }
-          });
-        }, setPosition: (position){
-          setState(() {
-            if(position == null){
-              filter.remove('position');
-            }else{
-              filter['position'] = position;
-            }
-          });
-        }, setDue: (due){
-          setState(() {
-            if(due == null){
-              filter.remove('due');
-            }else{
-              filter['due'] = due;
-            }
-          });
-        },
-        clearFilter: (){
-          setState(() {
-            filter.clear();
-          });
-        },
+        trailing: FilterButton(filter: filter,
+          setSkill: (skill)=> _setFilter('skill', skill),
+          setPosition: (position)=> _setFilter('position', position),
+          setDue: (due)=> _setFilter('due', due),
+          clearFilter: ()=> setState(() => filter.clear()),
           requestFocus: ()=> myFocusNode.requestFocus(),
         ),
       ),

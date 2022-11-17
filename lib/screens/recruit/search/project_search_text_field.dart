@@ -98,17 +98,13 @@ class SearchAppTextFieldState extends State<ProjectSearchTextField> {
             ),
           ),
           Padding(padding: EdgeInsets.only(right: 4)),
-          // '취소' 키 누르면 'x'키 및 '취소' 키 사라짐.
           if (!isTextEmpty || recruitProvider.searchedProjects.isNotEmpty)
             CommonTextButton(
                 text: '취소',
                 fontSize: 14,
                 textColor: GuamColorFamily.purpleCore,
                 onPressed: () {
-                  isTextEmpty = true;
-                  widget.cancelSearch(true);
-                  FocusScope.of(context).unfocus();
-                  controller.clear();
+                  Navigator.pop(context);
                 }
             ),
         ],
