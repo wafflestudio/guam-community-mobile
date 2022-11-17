@@ -88,9 +88,9 @@ class _ProjectSearchState extends State<ProjectSearch> {
             height: 46,
             child: FilterStatus(
             filter: filter,
-            removeSkill: ()=>setState((){filter.remove('skill');}),
-            removePosition: ()=>setState((){filter.remove('position');}),
-            removeDue: ()=>setState((){filter.remove('due');}),
+            removeSkill: ()=>setState(() => filter.remove('skill')),
+            removePosition: ()=>setState(() => filter.remove('position')),
+            removeDue: ()=>setState(() => filter.remove('due')),
           ),
           ),
           cancel
