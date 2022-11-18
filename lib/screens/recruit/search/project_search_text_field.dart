@@ -104,6 +104,8 @@ class SearchAppTextFieldState extends State<ProjectSearchTextField> {
                 fontSize: 14,
                 textColor: GuamColorFamily.purpleCore,
                 onPressed: () {
+                  controller.clear();
+                  isTextEmpty = true;
                   Navigator.pop(context);
                 }
             ),
