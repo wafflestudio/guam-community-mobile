@@ -59,7 +59,7 @@ class _ProjectCreationPositionState extends State<ProjectCreationPosition> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        padding: EdgeInsets.only(left: 10, top: 15, bottom: 5),
+                        padding: EdgeInsets.only(left: 10, top: 15),
                         child: Text(
                           "인원",
                           style: TextStyle(fontSize: 15, color: GuamColorFamily.grayscaleGray1),
@@ -113,10 +113,10 @@ class _ProjectCreationPositionState extends State<ProjectCreationPosition> {
           width: 30,
           height: 30,
           child: RawMaterialButton(
-            shape: CircleBorder(side: BorderSide(color: Colors.white, width: 1.5)),
-            elevation: 5,
-            fillColor: Colors.black,
-            child: Icon(Icons.remove, color: GuamColorFamily.purpleLight1),
+            shape: CircleBorder(side: BorderSide(color: GuamColorFamily.grayscaleGray6, width: 1.5)),
+            elevation: 1,
+            fillColor: GuamColorFamily.grayscaleWhite,
+            child: Icon(Icons.remove, color: GuamColorFamily.grayscaleGray2),
             onPressed: () {
               if (selectedKey != null) {
                 minusHeadcount(selectedKey);
@@ -136,10 +136,10 @@ class _ProjectCreationPositionState extends State<ProjectCreationPosition> {
           width: 30,
           height: 30,
           child: RawMaterialButton(
-            shape: CircleBorder(side: BorderSide(color: Colors.white, width: 1.5)),
-            elevation: 5,
-            fillColor: Colors.black,
-            child: Icon(Icons.add, color: GuamColorFamily.purpleLight1),
+            shape: CircleBorder(side: BorderSide(color: GuamColorFamily.grayscaleGray6, width: 1.5)),
+            elevation: 1,
+            fillColor: GuamColorFamily.grayscaleWhite,
+            child: Icon(Icons.add, color: GuamColorFamily.grayscaleGray2),
             onPressed: () {
               if (selectedKey != null) {
                 addHeadcount(selectedKey);
