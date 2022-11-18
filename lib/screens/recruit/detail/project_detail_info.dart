@@ -46,7 +46,7 @@ class ProjectDetailInfo extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(top: 30, bottom: 15),
+            padding: EdgeInsets.only(top: 20, bottom: 15),
             child: Row(
               children: [
                 Image(

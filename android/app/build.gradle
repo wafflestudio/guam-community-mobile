@@ -20,12 +20,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '25' // android version (24 means 1.2.4)
+    flutterVersionCode = '26' // android version (24 means 1.2.4)
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.2.5' // android version (24 means 1.2.4)
+    flutterVersionName = '1.2.6' // android version (24 means 1.2.4)
 }
 
 apply plugin: 'com.android.application'

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_community_client/styles/colors.dart';
 import 'package:guam_community_client/styles/fonts.dart';
-import 'package:guam_community_client/commons/common_text_button.dart';
+import 'package:guam_community_client/commons/buttons/common_text_button.dart';
 
 import '../../../helpers/pick_image.dart';
 

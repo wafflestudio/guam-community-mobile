@@ -6,16 +6,18 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final dynamic leading;
   final dynamic trailing;
   final dynamic bottom;
+  final Color? titleColor;
   final Color? backgroundColor;
 
-  CustomAppBar({this.title, this.leading, this.trailing, this.bottom, this.backgroundColor});
+  CustomAppBar({this.title, this.leading, this.trailing, this.bottom, this.titleColor, this.backgroundColor});
 
   @override
   Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
 
   @override
   Widget build(BuildContext context) {
-    var textColor = GuamColorFamily.grayscaleGray1;
+    var textColor = titleColor != null
+        ? titleColor : GuamColorFamily.grayscaleGray1;
     var iconColor = GuamColorFamily.grayscaleGray1;
     return AppBar(
       centerTitle: true,

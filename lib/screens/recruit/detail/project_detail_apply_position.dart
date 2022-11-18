@@ -16,12 +16,12 @@ class ProjectDetailApplyPosition extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      height: 48,
       padding: EdgeInsets.zero,
       decoration: BoxDecoration(
         color: GuamColorFamily.grayscaleGray7,
         borderRadius: BorderRadius.all(Radius.circular(10)),
-        border: Border.all(color: GuamColorFamily.grayscaleGray6, width: 0.5),
+        border: Border.all(color: GuamColorFamily.grayscaleWhite, width: 0.5),
       ),
       child: ToggleButtons(
         borderWidth: 0.1,

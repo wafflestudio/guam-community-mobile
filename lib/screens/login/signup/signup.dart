@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guam_community_client/commons/next_button.dart';
+import 'package:guam_community_client/commons/buttons/next_button.dart';
 import 'package:guam_community_client/mixins/toast.dart';
 import 'package:guam_community_client/screens/login/signup/signup_nickname.dart';
 import 'package:guam_community_client/styles/colors.dart';
