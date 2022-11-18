@@ -52,6 +52,7 @@ class _ProjectCreationDueState extends State<ProjectCreationDue> {
                       setState(() {
                         widget.checkButtonEnable();
                         saveDue(_periods.indexOf(e));
+                        if (selectedKey == e) widget.input["due"] = 0;
                         selectedKey = selectedKey == e ? null : e;
                       });
                     },
