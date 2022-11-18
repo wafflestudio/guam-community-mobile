@@ -30,17 +30,14 @@ class ProjectCreationModal extends StatelessWidget {
     /// Modal 본문 내용
     String _body =
     '''
-    프로젝트명
-      - $_title
+\t\t프로젝트명
+\t\t\t- $_title
     
-    기간
-      - ${_periods[_due] ?? ''}
+\t\t기간
+\t\t\t- ${_periods[_due] ?? ''}
       
-    포지션
-      - Server : ${_serverHeadCount != 0 ? '$_serverStack ($_serverHeadCount)' : ''}
-      - Web : ${_webHeadCount != 0 ? '$_webStack ($_webHeadCount)' : ''}
-      - Mobile : ${_mobileHeadCount != 0 ? '$_mobileStack ($_mobileHeadCount)' : ''}
-      - Designer : ${_designerHeadCount != 0 ? ' $_designerStack ($_designerHeadCount)' : ''}
+\t\t포지션
+${_serverStack != '' ? '\t\t\t- Server : $_serverStack ($_serverHeadCount명)\n' : ''}${_webStack != '' ? '\t\t\t- Web : $_webStack ($_webHeadCount명)\n' : ''}${_mobileStack != '' ? '\t\t\t- Mobile : $_mobileStack ($_mobileHeadCount명)\n' : ''}${_designerStack != '' ? '\t\t\t- Designer :  $_designerStack ($_designerHeadCount명)\n' : ''}
     ''';
 
     return MultiProvider(
