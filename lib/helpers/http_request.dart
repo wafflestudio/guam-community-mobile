@@ -7,11 +7,11 @@ import 'package:path/path.dart' as p;
 import '../mixins/toast.dart';
 
 class HttpRequest with Toast {
-  final String gatewayAuthority = "guam.jon-snow-korea.com";
+  final String gatewayAuthority = "guam-api.wafflestudio.com";
   final String immigrationAuthority = "guam-immigration.jon-snow-korea.com";
   final String s3BaseAuthority = "https://guam.s3.ap-northeast-2.amazonaws.com/";
 
-  Future get({bool isHttps = false, String? authority, String? path, dynamic queryParams, String? authToken}) async {
+  Future get({bool isHttps = true, String? authority, String? path, dynamic queryParams, String? authToken}) async {
     try {
       final uri = isHttps
           ? Uri.https(authority ?? gatewayAuthority, path!, queryParams)
@@ -29,7 +29,7 @@ class HttpRequest with Toast {
     }
   }
 
-  Future post({bool isHttps = false, String? authority, String? path, String? authToken, dynamic queryParams, dynamic body}) async {
+  Future post({bool isHttps = true, String? authority, String? path, String? authToken, dynamic queryParams, dynamic body}) async {
     try {
       final uri = isHttps
           ? Uri.https(authority ?? gatewayAuthority, path!, queryParams)
@@ -49,7 +49,7 @@ class HttpRequest with Toast {
   }
 
   // pluralImage boolean 으로 "images" or "image" 구분.
-  Future postMultipart({bool isHttps = false, String? authority, String? path, String? authToken, required Map<String, dynamic> fields, List<File>? files, bool pluralImages=true}) async {
+  Future postMultipart({bool isHttps = true, String? authority, String? path, String? authToken, required Map<String, dynamic> fields, List<File>? files, bool pluralImages=true}) async {
     try {
       final uri = isHttps
           ? Uri.https(authority ?? gatewayAuthority, path!)
@@ -95,7 +95,7 @@ class HttpRequest with Toast {
     }
   }
 
-  Future patch({bool isHttps = false, String? authority, String? path, String? authToken, dynamic body}) async {
+  Future patch({bool isHttps = true, String? authority, String? path, String? authToken, dynamic body}) async {
     try {
       final uri = isHttps
           ? Uri.https(authority ?? gatewayAuthority, path!)
@@ -114,7 +114,7 @@ class HttpRequest with Toast {
     }
   }
 
-  Future delete({bool isHttps = false, String? authority, String? path, dynamic queryParams, dynamic body, String? authToken}) async {
+  Future delete({bool isHttps = true, String? authority, String? path, dynamic queryParams, dynamic body, String? authToken}) async {
     try {
       final uri = isHttps
           ? Uri.https(authority ?? gatewayAuthority, path!, queryParams)
