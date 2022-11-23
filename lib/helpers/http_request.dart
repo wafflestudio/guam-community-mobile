@@ -7,11 +7,11 @@ import 'package:path/path.dart' as p;
 import '../mixins/toast.dart';
 
 class HttpRequest with Toast {
-  final String gatewayAuthority = "guam.jon-snow-korea.com";
+  final String gatewayAuthority = "guam-api.wafflestudio.com";
   final String immigrationAuthority = "guam-immigration.jon-snow-korea.com";
   final String s3BaseAuthority = "https://guam.s3.ap-northeast-2.amazonaws.com/";
 
-  Future get({bool isHttps = false, String? authority, String? path, dynamic queryParams, String? authToken}) async {
+  Future get({bool isHttps = true, String? authority, String? path, dynamic queryParams, String? authToken}) async {
     try {
       final uri = isHttps
           ? Uri.https(authority ?? gatewayAuthority, path!, queryParams)
