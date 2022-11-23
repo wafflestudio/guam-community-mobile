@@ -55,7 +55,8 @@ class Authenticate extends ChangeNotifier with Toast {
     try {
       loading = true;
       await HttpRequest().get(
-        authority: HttpRequest().immigrationAuthority,
+        /// deprecated: guam-immigration. is only used in the Gateway
+        // authority: HttpRequest().immigrationAuthority,
         path: "/api/v1/user/token",
         queryParams: {"kakaoToken": kakaoAccessToken},
       ).then((response) async {
