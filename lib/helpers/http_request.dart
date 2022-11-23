@@ -29,7 +29,7 @@ class HttpRequest with Toast {
     }
   }
 
-  Future post({bool isHttps = false, String? authority, String? path, String? authToken, dynamic queryParams, dynamic body}) async {
+  Future post({bool isHttps = true, String? authority, String? path, String? authToken, dynamic queryParams, dynamic body}) async {
     try {
       final uri = isHttps
           ? Uri.https(authority ?? gatewayAuthority, path!, queryParams)
@@ -49,7 +49,7 @@ class HttpRequest with Toast {
   }
 
   // pluralImage boolean 으로 "images" or "image" 구분.
-  Future postMultipart({bool isHttps = false, String? authority, String? path, String? authToken, required Map<String, dynamic> fields, List<File>? files, bool pluralImages=true}) async {
+  Future postMultipart({bool isHttps = true, String? authority, String? path, String? authToken, required Map<String, dynamic> fields, List<File>? files, bool pluralImages=true}) async {
     try {
       final uri = isHttps
           ? Uri.https(authority ?? gatewayAuthority, path!)
@@ -95,7 +95,7 @@ class HttpRequest with Toast {
     }
   }
 
-  Future patch({bool isHttps = false, String? authority, String? path, String? authToken, dynamic body}) async {
+  Future patch({bool isHttps = true, String? authority, String? path, String? authToken, dynamic body}) async {
     try {
       final uri = isHttps
           ? Uri.https(authority ?? gatewayAuthority, path!)
@@ -114,7 +114,7 @@ class HttpRequest with Toast {
     }
   }
 
-  Future delete({bool isHttps = false, String? authority, String? path, dynamic queryParams, dynamic body, String? authToken}) async {
+  Future delete({bool isHttps = true, String? authority, String? path, dynamic queryParams, dynamic body, String? authToken}) async {
     try {
       final uri = isHttps
           ? Uri.https(authority ?? gatewayAuthority, path!, queryParams)
